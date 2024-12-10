@@ -1,1 +1,6 @@
 # Oracle Database Java Samples
+
+| Sample Project                                                                         | Description                                                                                                                                                                                              |
+|----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Spring Boot Dynamic Property Source](./spring-boot-dynamic-property-source/README.md) | Demonstrates implementing dynamic Spring Boot property sources using Oracle Database as a property store. Valuable for Spring Developers who want to get the most out of their configuration management. |
+| [Spring Boot JMS Example](./spring-boot-jms-example/README.md)                         | Learn how to use Oracle Database Transactional Event Queues with the Java JMS API for asynchronous event-streaming.                                                                                      |

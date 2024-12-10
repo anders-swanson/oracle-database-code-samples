@@ -21,6 +21,8 @@
     </properties>
 
     <modules>
+        <module>spring-boot-dynamic-property-source</module>
         <module>spring-boot-jms-example</module>
+
     </modules>
 </project>

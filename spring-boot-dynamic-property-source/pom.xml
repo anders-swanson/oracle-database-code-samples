@@ -8,10 +8,10 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring-boot-jms-example</artifactId>
+    <artifactId>spring-boot-dynamic-property-source</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>spring-boot-jms-example</name>
-    <description>Example implementation Spring JMS with Oracle Database Transactional Event Queues</description>
+    <name>spring-boot-dynamic-property-source</name>
+    <description>Example implementation of dynamic property sources with Spring Boot</description>
 
     <dependencies>
         <dependency>
@@ -20,16 +20,9 @@
         </dependency>
         <dependency>
             <groupId>com.oracle.database.spring</groupId>
-            <artifactId>oracle-spring-boot-starter-aqjms</artifactId>
+            <artifactId>oracle-spring-boot-starter-ucp</artifactId>
             <version>${oracle.starters.version}</version>
         </dependency>
-
-        <!-- Include if using Oracle Database Wallet -->
-<!--        <dependency>-->
-<!--            <groupId>com.oracle.database.spring</groupId>-->
-<!--            <artifactId>oracle-spring-boot-starter-wallet</artifactId>-->
-<!--            <version>${oracle.version}</version>-->
-<!--        </dependency>-->
 
         <!--Test Dependencies-->
         <dependency>

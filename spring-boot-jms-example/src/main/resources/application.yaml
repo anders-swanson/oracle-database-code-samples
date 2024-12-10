@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    username: ${USERNAME}
+    password: ${PASSWORD}
+    url: ${JDBC_URL}
+
+    # Set these to use UCP over Hikari.
+    driver-class-name: oracle.jdbc.OracleDriver
+    type: oracle.ucp.jdbc.PoolDataSourceImpl
+    oracleucp:
+      initial-pool-size: 1
+      min-pool-size: 1
+      max-pool-size: 30
+      connection-pool-name: UCPSampleApplication
+      connection-factory-class-name: oracle.jdbc.pool.OracleDataSource

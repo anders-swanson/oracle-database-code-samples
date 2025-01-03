@@ -17,12 +17,14 @@
 
     <properties>
         <oracle.starters.version>24.4.0</oracle.starters.version>
+        <oracle.version>23.6.0.24.10</oracle.version>
         <java.version>21</java.version>
     </properties>
 
     <modules>
         <module>spring-boot-dynamic-property-source</module>
         <module>spring-boot-jms-example</module>
+        <module>testcontainers</module>
 
     </modules>
 </project>

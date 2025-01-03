@@ -25,7 +25,7 @@ public class SpringJmsTest {
             .withPassword(("testpwd"));
 
     /**
-     * Set up the test envrionment:
+     * Set up the test environment:
      * 1. configure Spring Properties to use the test database.
      * 2. run a SQL script to configure the test database for our JMS example.
      */

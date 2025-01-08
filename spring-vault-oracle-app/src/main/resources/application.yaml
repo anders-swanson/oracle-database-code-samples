@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    oci:
+      config:
+        type: file
+      region:
+        static: ${OCI_REGION}
+      vault:
+        # OCI Compartment containing OCI Vault instance(s)
+        compartment: ${OCI_COMPARTMENT_ID}
+        enabled: true
+        # How often to refresh properties loaded from OCI Vault
+        property-refresh-interval: 10000ms
+        # OCI Vault instance(s) loaded as spring property sources
+        property-sources:
+        - vault-id: ${OCI_VAULT_ID}

@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.0</version>
+        <version>3.4.1</version>
         <relativePath/>
     </parent>
     <groupId>com.example</groupId>
@@ -17,6 +17,7 @@
 
     <properties>
         <oracle.starters.version>24.4.0</oracle.starters.version>
+        <spring.cloud.oracle.version>1.3.1</spring.cloud.oracle.version>
         <oracle.version>23.6.0.24.10</oracle.version>
         <java.version>21</java.version>
     </properties>
@@ -24,7 +25,8 @@
     <modules>
         <module>spring-boot-dynamic-property-source</module>
         <module>spring-boot-jms-example</module>
+        <module>spring-resource-sample</module>
+        <module>spring-vault-oracle-app</module>
         <module>testcontainers</module>
-
     </modules>
 </project>

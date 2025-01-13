@@ -27,7 +27,7 @@ public class DatabasePropertySourceTest {
     static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.5-slim-faststart")
             .withStartupTimeout(Duration.ofMinutes(2))
             .withUsername("testuser")
-            .withPassword(("testpwd"));
+            .withPassword("testpwd");
 
     /**
      * Dynamically configure Spring Boot properties to use the Testcontainers database.

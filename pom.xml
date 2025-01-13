@@ -28,6 +28,7 @@
         <module>oracle-database-kafka-apis</module>
         <module>spring-boot-dynamic-property-source</module>
         <module>spring-boot-jms-example</module>
+        <module>spring-jpa</module>
         <module>spring-resource-sample</module>
         <module>spring-vault-oracle-app</module>
         <module>testcontainers</module>
@@ -39,6 +40,21 @@
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>
                 <version>${kafka.clients.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>3.4.1</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.mockito</groupId>
+                        <artifactId>mockito-junit-jupiter</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.mockito</groupId>
+                        <artifactId>mockito-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
         </dependencies>
     </dependencyManagement>

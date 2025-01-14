@@ -4,6 +4,14 @@ create table director (
     last_name     varchar2(50) not null
 );
 
+
+-- Director Biography Table (One-to-One with Director)
+create table director_bio (
+    director_id   number primary key,
+    biography     clob,
+    constraint fk_director_bio foreign key (director_id) references director(director_id) on delete cascade
+);
+
 -- A director has one or more movies. A movie has at most one director.
 create table movie (
     movie_id      number generated always as identity primary key,
@@ -35,6 +43,15 @@ values ('Christopher', 'Nolan');
 
 insert into director (first_name, last_name)
 values ('Quentin', 'Tarantino');
+
+-- Insert Biography for Christopher Nolan
+insert into director_bio (director_id, biography)
+values (1, 'Christopher Nolan is a British-American filmmaker known for his complex storytelling and visual style.');
+
+-- Insert Biography for Quentin Tarantino
+insert into director_bio (director_id, biography)
+values (2, 'Quentin Tarantino is an American filmmaker celebrated for his unique narrative style and dialogue-driven stories.');
+
 
 -- Insert Movies
 insert into movie (title, release_year, genre, director_id)

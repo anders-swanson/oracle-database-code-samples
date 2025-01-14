@@ -3,11 +3,14 @@ package com.example;
 import java.time.Duration;
 import java.util.Optional;
 
-import com.example.model.Actor;
-import com.example.model.Director;
-import com.example.model.Movie;
-import com.example.repository.ActorRepository;
-import com.example.repository.MovieRepository;
+import com.example.relationships.model.Actor;
+import com.example.relationships.model.Director;
+import com.example.relationships.model.DirectorBio;
+import com.example.relationships.model.Movie;
+import com.example.relationships.repository.ActorRepository;
+import com.example.relationships.repository.DirectorBioRepository;
+import com.example.relationships.repository.DirectorRepository;
+import com.example.relationships.repository.MovieRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +21,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.oracle.OracleContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -33,15 +37,49 @@ public class JPARelationshipsTest {
 
     // Autowire JPA repositories
     @Autowired
+    DirectorRepository directorRepository;
+    @Autowired
+    DirectorBioRepository directorBioRepository;
+    @Autowired
     MovieRepository movieRepository;
     @Autowired
     ActorRepository actorRepository;
 
     @Test
+    void oneToOneExample() {
+        Optional<Director> director = directorRepository.findByFirstNameAndLastName("Christopher", "Nolan");
+        assertTrue(director.isPresent());
+
+        // Verify the biography was fetched.
+        assertThat(director.get().getDirectorBio().getBiography()).isNotEmpty();
+
+        // Create a new Director
+        Director newDirector = new Director();
+        newDirector.setFirstName("Steven");
+        newDirector.setLastName("Spielberg");
+        // Create a new DirectorBio
+        DirectorBio directorBio = new DirectorBio();
+        directorBio.setBiography("Steven Spielberg is an iconic American filmmaker known for blockbuster films like Jaws, E.T., and Jurassic Park.");
+        // Set the relationships
+        newDirector.setDirectorBio(directorBio);
+
+        Director savedDirector = directorRepository.save(newDirector);
+
+        // Verify the bio was added
+        Optional<DirectorBio> fetchedBio = directorBioRepository.findById(savedDirector.getDirectorId());
+        assertTrue(fetchedBio.isPresent());
+        assertThat(fetchedBio.get().getBiography()).isEqualTo(directorBio.getBiography());
+
+        // Delete the director, and the CASCADE effect deletes the bio
+        directorRepository.delete(savedDirector);
+        assertFalse(directorBioRepository.findById(savedDirector.getDirectorId()).isPresent());
+    }
+
+    @Test
     // The use of the Transactional annotation here will keep the database session open for relational queries, e.g., Movie-Actor.
     // This is useful for lazy initialization of JPA fields, so related data is fetched when-needed.
     @Transactional
-    void relationshipsExample() {
+    void oneToManyExample() {
         Optional<Movie> pulpFiction = movieRepository.findByTitle("Pulp Fiction");
         assertThat(pulpFiction.isPresent()).isTrue();
 
@@ -63,8 +101,9 @@ public class JPARelationshipsTest {
     }
 
     @Test
+    // For lazy loading sessions, as in oneToManyExample
     @Transactional
-    void newMovieActor() {
+    void manyToManyExample() {
         Optional<Movie> pulpFiction = movieRepository.findByTitle("Pulp Fiction");
         assertThat(pulpFiction.isPresent()).isTrue();
 

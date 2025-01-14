@@ -1,4 +1,4 @@
-package com.example.model;
+package com.example.relationships.model;
 
 import java.util.HashSet;
 import java.util.Objects;

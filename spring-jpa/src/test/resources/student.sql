@@ -1,5 +1,5 @@
 create table student (
-    id         varchar2(36) default sys_guid() primary key,
+    id         raw(16) default sys_guid() primary key,
     first_name varchar2(50) not null,
     last_name  varchar2(50) not null,
     email      varchar2(100),

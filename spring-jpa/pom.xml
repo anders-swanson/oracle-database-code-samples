@@ -33,7 +33,7 @@
             <version>${oracle.starters.version}</version>
         </dependency>
 
-        <!-- Include if using Oracle Database Wallet -->
+    <!-- Include if using Oracle Database Wallet -->
 <!--        <dependency>-->
 <!--            <groupId>com.oracle.database.spring</groupId>-->
 <!--            <artifactId>oracle-spring-boot-starter-wallet</artifactId>-->

@@ -44,9 +44,7 @@ public class SpringJPATest {
 
         // Create a new student using the student repository.
         Student saved = studentRepository.save(s);
-        assertThat(saved.getId()).isNotEmpty();
-
-
+        assertThat(saved.getId()).isNotNull();
 
         // Update the student credits and GPA.
         saved.setCredits(64);

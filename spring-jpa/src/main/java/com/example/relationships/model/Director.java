@@ -6,7 +6,6 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,13 +32,13 @@ public class Director {
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
-    @OneToMany(mappedBy = "director")
+    @OneToMany(mappedBy = "director") // Reference related entity's associated field
     private Set<Movie> movies;
 
     @OneToOne(
-            mappedBy = "director",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            mappedBy = "director", // Reference related entity's associated field
+            cascade = CascadeType.ALL, // Cascade persistence to the mapped entity
+            orphanRemoval = true // Remove director bio from director if deleted
     )
     // The primary key of the Director entity is used as the foreign key of the DirectorBio entity.
     @PrimaryKeyJoinColumn

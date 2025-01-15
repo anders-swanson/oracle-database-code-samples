@@ -1,20 +1,20 @@
 create table director (
-    director_id   number generated always as identity primary key,
+    director_id   number(10) generated always as identity primary key,
     first_name    varchar2(50) not null,
     last_name     varchar2(50) not null
 );
 
 
--- Director Biography Table (One-to-One with Director)
+-- A director has exactly one biography, and a biography is mapped to one director.
 create table director_bio (
-    director_id   number primary key,
+    director_id   number(10) primary key,
     biography     clob,
     constraint fk_director_bio foreign key (director_id) references director(director_id) on delete cascade
 );
 
 -- A director has one or more movies. A movie has at most one director.
 create table movie (
-    movie_id      number generated always as identity primary key,
+    movie_id      number(10) generated always as identity primary key,
     title         varchar2(100) not null,
     release_year  number(4),
     genre         varchar2(50),
@@ -23,7 +23,7 @@ create table movie (
 );
 
 create table actor (
-    actor_id    number generated always as identity primary key,
+    actor_id    number(10) generated always as identity primary key,
     first_name  varchar2(50) not null,
     last_name   varchar2(50) not null
 );
@@ -36,6 +36,10 @@ create table movie_actor (
     constraint fk_movie_actor_movie foreign key (movie_id) references movie(movie_id),
     constraint fk_movie_actor_actor foreign key (actor_id) references actor(actor_id)
 );
+
+create index idx_movie_director_id on movie(director_id);
+create index idx_movie_actor_movie_id on movie_actor(movie_id);
+create index idx_movie_actor_actor_id on movie_actor(actor_id);
 
 -- Insert Directors
 insert into director (first_name, last_name)

@@ -13,7 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface BookRepository extends JpaRepository<Book, Long> {
     Optional<Book> findFirstByOrderByTitleAsc();
 
-
     // The following methods aren't used in the PagingSortingFiltering test,
     // but are provided as an example of JPA Query Methods.
 

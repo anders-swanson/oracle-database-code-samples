@@ -9,3 +9,9 @@
 | [Spring Boot Resource Loader](./spring-resource-sample/README.md)                      | Access Oracle Database blobs using the [Spring Resource API](https://docs.spring.io/spring-framework/reference/core/resources.html).                                                                                                                                                   |
 | [Spring Vault Oracle App](./spring-vault-oracle-app/README.md)                         | Sample application demonstrating how to dynamically load [Oracle Cloud Infrastructure (OCI) Vault](https://docs.oracle.com/en-us/iaas/Content/KeyManagement/home.htm) key/values as Spring properties leveraging [Spring Cloud Oracle](https://github.com/oracle/spring-cloud-oracle). |
 | [Oracle Testcontainers](./testcontainers/README.md)                                    | Learn how to use the popular [Testcontainers](https://testcontainers.com/) library by example with [Oracle Database Free](https://medium.com/@anders.swanson.93/oracle-database-23ai-free-11abf827ab37).                                                                               |
+
+# Oracle Database Free
+
+This repository uses containerized instances of *Oracle Database Free* for testing. The [testcontainers module](./testcontainers) provides a hands-on example using Oracle Database Free to test Java applications on a local machine with throwaway database container instances.
+
+If you're using Oracle Database, I highly recommend Oracle Database Free + Testcontainers to build modular, simple test cases.

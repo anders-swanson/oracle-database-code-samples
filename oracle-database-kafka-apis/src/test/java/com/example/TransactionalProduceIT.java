@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TransactionalProduceIT {
     // Oracle Databse 23ai Free container image
-    private static final String oracleImage = "gvenzl/oracle-free:23.5-slim-faststart";
+    private static final String oracleImage = "gvenzl/oracle-free:23.6-slim-faststart";
     private static final String testUser = "testuser";
     private static final String testPassword = "Welcome123#";
     private final String topicName = "TEST";

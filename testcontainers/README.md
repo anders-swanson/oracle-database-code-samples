@@ -2,7 +2,7 @@
 
 This module provides examples using [Testcontainers](https://java.testcontainers.org/) with [Oracle Database Free](https://www.oracle.com/database/free/) to test your Oracle Database Java applications using dispoable containers.
 
-The `gvenzl/oracle-free` Oracle Database container images are recommended for use with Testcontainers and Java. The examples in this module use the Oracle Database 23ai Free image `gvenzl/oracle-free:23.5-slim-faststart`.
+The `gvenzl/oracle-free` Oracle Database container images are recommended for use with Testcontainers and Java. The examples in this module use the Oracle Database 23ai Free image `gvenzl/oracle-free:23.6-slim-faststart`.
 
 ### [GetDatabaseConnectionTest](./src/test/java/com/example/GetDatabaseConnectionTest.java)
 

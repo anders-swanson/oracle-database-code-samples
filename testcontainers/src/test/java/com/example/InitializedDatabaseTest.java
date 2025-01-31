@@ -18,7 +18,7 @@ public class InitializedDatabaseTest {
     /**
      * Use a containerized Oracle Database instance for testing.
      */
-    static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.5-slim-faststart")
+    static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.6-slim-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
             .withUsername("testuser")
             .withPassword("testpwd")

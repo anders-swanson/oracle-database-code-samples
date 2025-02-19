@@ -1,0 +1,28 @@
+news:
+  topic:
+    raw: news-raw
+    parsed: news
+
+oci:
+  chatModelID: OCI_CHAT_MODEL_ID
+  embeddingModelID: OCI_EMBEDDING_MODEL_ID
+  compartment: OCI_COMPARTMENT
+
+spring:
+  profiles:
+    active: oci
+  datasource:
+    username: testuser
+    password: testpwd
+    url: jdbc:oracle:thin:@localhost:1521/freepdb1
+    driver-class-name: oracle.jdbc.OracleDriver
+    type: oracle.ucp.jdbc.PoolDataSourceImpl
+    oracleucp:
+      initial-pool-size: 1
+      min-pool-size: 1
+      max-pool-size: 30
+      connection-pool-name: OracleDatabaseTest
+      connection-factory-class-name: oracle.jdbc.pool.OracleDataSource
+  data:
+    rest:
+      base-path: api/v1

@@ -12,7 +12,7 @@
 
     <artifactId>news-event-streaming</artifactId>
     <name>news-event-streaming</name>
-    <description>Demo Vector Database and Event Streaming Capabilities of Oracle Database</description>
+    <description>Demo Oracle's Vector Database and Event Streaming Capabilities</description>
     <version>1.0.0-SNAPSHOT</version>
 
     <dependencies>

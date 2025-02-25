@@ -1,3 +1,4 @@
+
 okafka:
   ojdbcPath: ${OJDBC_PATH}
 

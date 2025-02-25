@@ -34,7 +34,7 @@ public class TransationalProducer implements AutoCloseable {
         this.topic = topic;
         this.limit = limit;
         // Initialize transactional producer
-        this.producer.initTransactions();
+        this.producer. initTransactions();
     }
 
     public void produce(Stream<String> inputs) {

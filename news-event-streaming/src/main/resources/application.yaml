@@ -1,3 +1,13 @@
+news:
+  topic:
+    raw: news-raw
+    parsed: news
+
+oci:
+  chatModelID: OCI_CHAT_MODEL_ID
+  embeddingModelID: OCI_EMBEDDING_MODEL_ID
+  compartment: OCI_COMPARTMENT
+
 spring:
   profiles:
     active: oci
@@ -13,3 +23,6 @@ spring:
       max-pool-size: 30
       connection-pool-name: OracleDatabaseTest
       connection-factory-class-name: oracle.jdbc.pool.OracleDataSource
+  data:
+    rest:
+      base-path: api/v1

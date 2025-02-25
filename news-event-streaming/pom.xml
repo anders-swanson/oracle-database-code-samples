@@ -10,15 +10,20 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>oracle-vector-db-event-streaming</artifactId>
-    <name>vector-db-event-streaming</name>
+    <artifactId>news-event-streaming</artifactId>
+    <name>news-event-streaming</name>
     <description>Demo Oracle's Vector Database and Event Streaming Capabilities</description>
     <version>1.0.0-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
             <groupId>com.oracle.database.spring</groupId>
-            <artifactId>oracle-spring-boot-starter-ucp</artifactId>
+            <artifactId>oracle-spring-boot-starter-okafka</artifactId>
+            <version>${oracle.starters.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.database.spring</groupId>
+            <artifactId>oracle-spring-boot-starter-json-collections</artifactId>
             <version>${oracle.starters.version}</version>
         </dependency>
 

@@ -27,6 +27,7 @@
     </properties>
 
     <modules>
+        <module>news-event-streaming</module>
         <module>oracle-database-kafka-apis</module>
         <module>spring-boot-dynamic-property-source</module>
         <module>spring-boot-jms-example</module>
@@ -34,7 +35,6 @@
         <module>spring-resource-sample</module>
         <module>spring-vault-oracle-app</module>
         <module>testcontainers</module>
-        <module>vector-db-event-streaming</module>
     </modules>
 
     <dependencyManagement>

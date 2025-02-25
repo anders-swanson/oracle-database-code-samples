@@ -24,14 +24,16 @@ alter session set current_schema = testuser;
 -- News articles
 create table if not exists news (
     news_id   raw(16) primary key,
-    title     varchar2(1000),
+    highlight varchar2(2000),
     article   clob,
     published timestamp
 );
 
 -- News Vectors, one-to-one with news
 create table if not exists news_vector (
-    news_id   raw(16) primary key,
+    id        raw(16) primary key,
+    news_id   raw(16),
+    chunk     varchar2(2000),
     embedding vector(1024, FLOAT64) annotations(Distance 'COSINE', IndexType 'IVF'),
     constraint fk_news_vector foreign key (news_id)
     references news(news_id) on delete cascade
@@ -45,3 +47,13 @@ create vector index if not exists news_vector_index on news_vector (embedding)
     parameters (type IVF, neighbor partitions 10);
 
 -- JSON Relational Duality View for the News Schema
+create force editionable json relational duality view news_dv
+ as
+news {
+    _id : news_id
+    news_vector
+             @link (to : [news_id]) {
+        news_id : news_id
+        embedding
+    }
+};

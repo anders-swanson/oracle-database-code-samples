@@ -1,18 +1,13 @@
-package com.example.news.factory;
+package com.example.news.events.factory;
 
-import java.sql.Connection;
 import java.util.Properties;
 
-import com.example.news.events.model.News;
+import com.example.news.model.News;
 import com.example.news.events.serde.JSONBDeserializer;
-import com.example.news.events.serde.JSONBSerializer;
 import com.oracle.spring.json.jsonb.JSONB;
 import org.apache.kafka.common.serialization.Deserializer;
-import org.apache.kafka.common.serialization.Serializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.oracle.okafka.clients.consumer.KafkaConsumer;
-import org.oracle.okafka.clients.producer.KafkaProducer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +22,7 @@ public class NewsConsumerFactory {
         this.jsonb = jsonb;
     }
 
-    public KafkaConsumer<String, News> create(Connection connection) {
+    public KafkaConsumer<String, News> create() {
         Properties props = new Properties();
         props.putAll(okafkaProperties);
         props.put("auto.offset.reset", "earliest");

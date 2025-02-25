@@ -5,17 +5,16 @@ import java.nio.file.Paths;
 
 import com.example.news.genai.chat.ChatService;
 import com.example.news.genai.chat.OCIChatService;
-import com.example.news.genai.embeddingmodel.EmbeddingService;
-import com.example.news.genai.embeddingmodel.OCIEmbeddingService;
 import com.oracle.bmc.auth.BasicAuthenticationDetailsProvider;
 import com.oracle.bmc.auth.ConfigFileAuthenticationDetailsProvider;
+import com.oracle.bmc.generativeaiinference.GenerativeAiInference;
 import com.oracle.bmc.generativeaiinference.GenerativeAiInferenceClient;
+import com.oracle.bmc.generativeaiinference.model.EmbedTextDetails;
 import com.oracle.bmc.generativeaiinference.model.OnDemandServingMode;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import static com.example.news.genai.chat.OCIChatService.InferenceRequestType.COHERE;
 
 @Configuration
 public class GenAIConfiguration {
@@ -40,30 +39,41 @@ public class GenAIConfiguration {
     }
 
     @Bean
-    public ChatService chatService(BasicAuthenticationDetailsProvider authProvider) {
+    public GenerativeAiInference generativeAiInferenceClient(BasicAuthenticationDetailsProvider authProvider) {
+        return GenerativeAiInferenceClient.builder()
+                .build(authProvider);
+    }
+
+    @Bean
+    @Qualifier("chatServingMode")
+    public OnDemandServingMode chatModelServingMode() {
         // Create a chat service for an On-Demand OCI GenAI chat model.
-        OnDemandServingMode chatServingMode = OnDemandServingMode.builder()
+        return OnDemandServingMode.builder()
                 .modelId(chatModelId)
-                .build();
-        return OCIChatService.builder()
-                .authProvider(authProvider)
-                .servingMode(chatServingMode)
-                .inferenceRequestType(COHERE)
-                .compartment(compartmentId)
                 .build();
     }
 
     @Bean
-    public EmbeddingService embeddingModel(BasicAuthenticationDetailsProvider authProvider) {
-        OnDemandServingMode embeddingServingMode = OnDemandServingMode.builder()
+    @Qualifier("embedServingMode")
+    public OnDemandServingMode embeddingModelServingMode() {
+        // Create a chat service for an On-Demand OCI GenAI chat model.
+        return OnDemandServingMode.builder()
                 .modelId(embeddingModelId)
                 .build();
-        // Create an OCI Embedding model for text embedding.
-        return OCIEmbeddingService.builder()
-                .servingMode(embeddingServingMode)
-                .aiClient(GenerativeAiInferenceClient.builder()
-                        .build(authProvider))
-                .compartmentId(compartmentId)
+    }
+
+    @Bean
+    public EmbedTextDetails.Truncate truncate() {
+        return EmbedTextDetails.Truncate.End;
+    }
+
+    @Bean
+    public ChatService chatService(GenerativeAiInference aiClient,
+                                   @Qualifier("chatServingMode") OnDemandServingMode servingMode) {
+        return OCIChatService.builder()
+                .servingMode(servingMode)
+                .aiClient(aiClient)
+                .compartment(compartmentId)
                 .build();
     }
 }

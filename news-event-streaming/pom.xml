@@ -12,7 +12,7 @@
 
     <artifactId>news-event-streaming</artifactId>
     <name>news-event-streaming</name>
-    <description>Demo Oracle's Vector Database and Event Streaming Capabilities</description>
+    <description>Demo Vector Database and Event Streaming Capabilities of Oracle Database</description>
     <version>1.0.0-SNAPSHOT</version>
 
     <dependencies>
@@ -105,6 +105,10 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>

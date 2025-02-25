@@ -4,10 +4,11 @@ import java.util.Collections;
 import java.util.List;
 
 import com.example.news.genai.vectorstore.Embedding;
+import oracle.sql.VECTOR;
 
 public interface EmbeddingService {
-    List<Embedding> embedAll(List<String> chunks);
-    default Embedding embed(String chunk) {
+    List<VECTOR> embedAll(List<String> chunks);
+    default VECTOR embed(String chunk) {
         return embedAll(Collections.singletonList(chunk)).getFirst();
     }
 }

@@ -7,11 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
+import com.example.news.model.News;
 import oracle.jdbc.OracleType;
 import oracle.sql.VECTOR;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,46 +31,44 @@ public class NewsVectorStore {
     /**
      * Vector table name to add/search Embeddings.
      */
-    private final String tableName;
 
     private final VectorDataAdapter dataAdapter;
 
-    public NewsVectorStore(
-            @Value("${vectordb.tableName}") String tableName, VectorDataAdapter dataAdapter) {
-        this.tableName = tableName;
+    public NewsVectorStore(VectorDataAdapter dataAdapter) {
         this.dataAdapter = dataAdapter;
     }
 
     /**
      * Adds an Embedding to the vector store.
-     * @param embedding To add.
+     * @param news To add.
      * @param connection Database connection used for upsert.
      */
-    public void add(Embedding embedding, Connection connection) {
-        addAll(Collections.singletonList(embedding), connection);
+    public void add(News news, Connection connection) {
+        addAll(Collections.singletonList(news), connection);
     }
 
     /**
      * Adds a list of Embeddings to the vector store, in batches.
-     * @param embeddings To add.
+     * @param newsList To add.
      * @param connection Database connection used for upsert.
      */
-    public void addAll(List<Embedding> embeddings, Connection connection) {
+    public void addAll(List<News> newsList, Connection connection) {
         // Upsert is used in case of any conflicts.
-        String upsert = String.format("""
-                merge into %s target using (values(?, ?, ?)) source (id, content, embedding) on (target.id = source.id)
+        String upsert = """
+                merge into news_dv target using (values(?, ?, ?)) source (id, embedding) on (target.id = source.id)
                 when matched then update set target.content = source.content, target.embedding = source.embedding
                 when not matched then insert (target.id, target.content, target.embedding) values (source.id, source.content, source.embedding)
-                """, tableName);
+                """;
         try (PreparedStatement stmt = connection.prepareStatement(upsert)) {
-            for (int i = 0; i < embeddings.size(); i++) {
-                Embedding embedding = embeddings.get(i);
-                // Generate and set a random ID for the embedding.
-                stmt.setString(1, UUID.randomUUID().toString());
-                // Set the embedding text content if it exists.
-                stmt.setString(2, embedding.content() != null ? embedding.content() : "");
-                // When using the VECTOR data type with prepared statements, always use setObject with the OracleType.VECTOR targetSqlType.
-                stmt.setObject(3, dataAdapter.toVECTOR(embedding.vector()), OracleType.VECTOR.getVendorTypeNumber());
+            for (int i = 0; i < newsList.size(); i++) {
+                News news = newsList.get(i);
+                // TODO:
+//                // Generate and set a random ID for the embedding.
+//                stmt.setString(1, UUID.randomUUID().toString());
+//                // Set the embedding text content if it exists.
+//                stmt.setString(2, embedding.content() != null ? embedding.content() : "");
+//                // When using the VECTOR data type with prepared statements, always use setObject with the OracleType.VECTOR targetSqlType.
+//                stmt.setObject(3, dataAdapter.toVECTOR(embedding.vector()), OracleType.VECTOR.getVendorTypeNumber());
                 stmt.addBatch();
 
                 // If BATCH_SIZE records have been added to the statement, execute the batch.
@@ -80,7 +77,7 @@ public class NewsVectorStore {
                 }
             }
             // if any remaining batches, execute them.
-            if (embeddings.size() % BATCH_SIZE != 0) {
+            if (newsList.size() % BATCH_SIZE != 0) {
                 stmt.executeBatch();
             }
             stmt.executeBatch();
@@ -99,12 +96,12 @@ public class NewsVectorStore {
         String searchQuery = String.format("""
                 select * from (
                     select id, content, embedding, (1 - vector_distance(embedding, ?, COSINE)) as score
-                    from %s
+                    from news_dv
                     order by score desc
                 )
                 where score >= ?
                 fetch first %d rows only
-                """, tableName, searchRequest.getMaxResults());
+                """, searchRequest.getMaxResults());
         List<Embedding> matches = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(searchQuery)) {
             VECTOR searchVector = dataAdapter.toVECTOR(searchRequest.getVector());
@@ -115,7 +112,7 @@ public class NewsVectorStore {
                 while (rs.next()) {
                     double[] vector = rs.getObject("embedding", double[].class);
                     String content = rs.getObject("content", String.class);
-                    Embedding embedding = new Embedding(dataAdapter.toFloatArray(vector), content);
+                    Embedding embedding = new Embedding(dataAdapter.toVECTOR(vector), content);
                     matches.add(embedding);
                 }
             }
@@ -126,7 +123,7 @@ public class NewsVectorStore {
     }
 
     public int countEmbeddings(Connection connection) throws SQLException {
-        final String sql = "select count(*) from " + tableName;
+        final String sql = "select count(*) from news_dv";
         try (PreparedStatement ps = connection.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {

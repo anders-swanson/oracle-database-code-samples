@@ -1,4 +1,4 @@
-# Spring Boot OCI-Chat-Service
+# News Streaming Service
 
-Java 21 implementation of a RAG-powered chat workflow using Spring Boot, OCI GenAI, OCI Object Storage, and Oracle Database.
+Uses the [CNN Dailymail](https://huggingface.co/datasets/abisee/cnn_dailymail) for event streaming.
 

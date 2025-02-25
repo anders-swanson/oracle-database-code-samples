@@ -1,16 +1,19 @@
+okafka:
+  ojdbcPath: ${OJDBC_PATH}
+
 news:
+  threads:
+    newsParserConsumerProducer: 1
   topic:
-    raw: news-raw
+    raw: news_raw
     parsed: news
 
 oci:
-  chatModelID: OCI_CHAT_MODEL_ID
-  embeddingModelID: OCI_EMBEDDING_MODEL_ID
-  compartment: OCI_COMPARTMENT
+  chatModelID: ${OCI_CHAT_MODEL_ID}
+  embeddingModelID: ${OCI_EMBEDDING_MODEL_ID}
+  compartment: ${OCI_COMPARTMENT_ID}
 
 spring:
-  profiles:
-    active: oci
   datasource:
     username: testuser
     password: testpwd
@@ -23,6 +26,6 @@ spring:
       max-pool-size: 30
       connection-pool-name: OracleDatabaseTest
       connection-factory-class-name: oracle.jdbc.pool.OracleDataSource
-  data:
-    rest:
-      base-path: api/v1
+  threads:
+    virtual:
+      enabled: true # Turn on Java Virtual Threads

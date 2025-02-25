@@ -1,6 +1,7 @@
 package com.example.news.genai.vectorstore;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import oracle.sql.VECTOR;
 import org.springframework.stereotype.Component;
@@ -13,8 +14,19 @@ public class VectorDataAdapter {
      * @return Converted Oracle VECTOR type.
      * @throws SQLException If the conversion fails.
      */
-    VECTOR toVECTOR(float[] vector) throws SQLException {
+    public VECTOR toVECTOR(float[] vector) throws SQLException {
         return VECTOR.ofFloat64Values(normalize(vector));
+    }
+
+    public VECTOR toVECTOR(double[] vector) throws SQLException {
+        return VECTOR.ofFloat64Values(vector);
+    }
+
+    public VECTOR toVECTOR(List<Float> e) throws SQLException {
+        double[] vector = e.stream()
+                .mapToDouble(Float::floatValue)
+                .toArray();
+        return VECTOR.ofFloat64Values(vector);
     }
 
     /**
@@ -47,7 +59,7 @@ public class VectorDataAdapter {
      * @param values Array of double values.
      * @return Converted float[].
      */
-    float[] toFloatArray(double[] values) {
+    public float[] toFloatArray(double[] values) {
         float[] result = new float[values.length];
         for (int i = 0; i < values.length; i++) {
             result[i] = (float) values[i];

@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import com.oracle.bmc.auth.BasicAuthenticationDetailsProvider;
 import com.oracle.bmc.generativeaiinference.GenerativeAiInference;
-import com.oracle.bmc.generativeaiinference.GenerativeAiInferenceClient;
 import com.oracle.bmc.generativeaiinference.model.BaseChatRequest;
 import com.oracle.bmc.generativeaiinference.model.BaseChatResponse;
 import com.oracle.bmc.generativeaiinference.model.ChatChoice;
@@ -26,12 +24,10 @@ import com.oracle.bmc.generativeaiinference.requests.ChatRequest;
 import com.oracle.bmc.generativeaiinference.responses.ChatResponse;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.context.annotation.Profile;
 
 /**
  * OCI GenAI Chat
  */
-@Profile("oci")
 public class OCIChatService implements ChatService {
     private final GenerativeAiInference client;
     private final ServingMode servingMode;
@@ -48,7 +44,7 @@ public class OCIChatService implements ChatService {
     private List<ChatChoice> genericChatMessages;
 
     @Builder
-    public OCIChatService(BasicAuthenticationDetailsProvider authProvider,
+    public OCIChatService(GenerativeAiInference aiClient,
                           ServingMode servingMode,
                           String compartment,
                           String preambleOverride,
@@ -59,8 +55,7 @@ public class OCIChatService implements ChatService {
                           Double topP,
                           Integer topK,
                           InferenceRequestType inferenceRequestType) {
-        this.client = GenerativeAiInferenceClient.builder()
-                .build(authProvider);
+        this.client = aiClient;
         this.servingMode = servingMode;
         this.compartment = compartment;
         this.preambleOverride = preambleOverride;

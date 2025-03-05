@@ -23,49 +23,37 @@ alter session set current_schema = testuser;
 
 -- News articles
 create table if not exists news (
-    news_id   raw(16) primary key,
-<<<<<<< HEAD
-    highlight varchar2(2000),
-=======
-    title     varchar2(1000),
->>>>>>> 2f04e9360fe556b3a2a63ad010667db95076c325
-    article   clob,
-    published timestamp
+    news_id    varchar2(36) default sys_guid() primary key,
+    article    clob
 );
 
--- News Vectors, one-to-one with news
+-- News Vectors, many-to-one with news
 create table if not exists news_vector (
-<<<<<<< HEAD
-    id        raw(16) primary key,
-    news_id   raw(16),
-    chunk     varchar2(2000),
-=======
-    news_id   raw(16) primary key,
->>>>>>> 2f04e9360fe556b3a2a63ad010667db95076c325
+    id        varchar2(36) default sys_guid() primary key,
+    news_id   varchar2(36) ,
+    chunk     varchar2(2250),
     embedding vector(1024, FLOAT64) annotations(Distance 'COSINE', IndexType 'IVF'),
     constraint fk_news_vector foreign key (news_id)
     references news(news_id) on delete cascade
 );
 
 -- Vector index for News Vectors
-create vector index if not exists news_vector_index on news_vector (embedding)
-    organization neighbor partitions
-    distance COSINE
-    with target accuracy 95
-    parameters (type IVF, neighbor partitions 10);
+create vector index news_vector_ivf_idx on news_vector (embedding) organization neighbor partitions
+distance COSINE
+with target accuracy 90
+parameters (type IVF, neighbor partitions 10);
 
-<<<<<<< HEAD
 -- JSON Relational Duality View for the News Schema
-create force editionable json relational duality view news_dv
+create or replace force editionable json relational duality view news_dv
  as
-news {
+news @insert @update @delete {
     _id : news_id
-    news_vector
-             @link (to : [news_id]) {
-        news_id : news_id
+    article
+    news_vector @insert @update @delete
+             @link (to : [NEWS_ID]) {
+        id
+        chunk
         embedding
     }
-};
-=======
--- JSON Relational Duality View for the News Schema
->>>>>>> 2f04e9360fe556b3a2a63ad010667db95076c325
+}
+;

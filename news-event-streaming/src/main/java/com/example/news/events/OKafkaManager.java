@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
+import com.example.news.events.factory.NewsConsumerFactory;
 import com.example.news.events.factory.NewsParserConsumerProducerFactory;
 import com.example.news.events.producerconsumer.OKafkaTask;
 import jakarta.annotation.PostConstruct;
@@ -34,17 +35,20 @@ public class OKafkaManager implements AutoCloseable {
     private final List<OKafkaTask> okafkaTasks = new ArrayList<>();
 
     private final NewsParserConsumerProducerFactory newsParserConsumerProducerFactory;
+    private final NewsConsumerFactory newsConsumerFactory;
 
     public OKafkaManager(@Qualifier("applicationTaskExecutor") AsyncTaskExecutor asyncTaskExecutor,
                          @Qualifier("okafkaProperties") Properties okafkaProperties,
                          @Value("${news.topic.raw}") String rawTopic,
                          @Value("${news.topic.parsed}") String parsedTopic,
-                         NewsParserConsumerProducerFactory newsParserConsumerProducerFactory) {
+                         NewsParserConsumerProducerFactory newsParserConsumerProducerFactory,
+                         NewsConsumerFactory newsConsumerFactory) {
         this.asyncTaskExecutor = asyncTaskExecutor;
         this.okafkaProperties = okafkaProperties;
         this.rawTopic = rawTopic;
         this.parsedTopic = parsedTopic;
         this.newsParserConsumerProducerFactory = newsParserConsumerProducerFactory;
+        this.newsConsumerFactory = newsConsumerFactory;
     }
 
     @PostConstruct
@@ -55,6 +59,7 @@ public class OKafkaManager implements AutoCloseable {
         }
 
         submit(newsParserConsumerProducerFactory.create());
+        submit(newsConsumerFactory.create());
     }
 
     private void submit(List<OKafkaTask> tasks) {

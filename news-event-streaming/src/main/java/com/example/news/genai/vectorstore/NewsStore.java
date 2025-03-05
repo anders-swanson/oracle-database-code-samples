@@ -5,12 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.example.news.model.News;
+import com.oracle.spring.json.jsonb.JSONB;
 import oracle.jdbc.OracleType;
+import oracle.jdbc.OracleTypes;
 import oracle.sql.VECTOR;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,30 +24,18 @@ import org.springframework.stereotype.Component;
  * @author  Anders Swanson
  */
 @Component
-public class NewsVectorStore {
+public class NewsStore {
     /**
      * A batch size of 50 to 100 records is recommending for bulk inserts.
      */
     private static final int BATCH_SIZE = 50;
 
-
-    /**
-     * Vector table name to add/search Embeddings.
-     */
-
     private final VectorDataAdapter dataAdapter;
+    private final JSONB jsonb;
 
-    public NewsVectorStore(VectorDataAdapter dataAdapter) {
+    public NewsStore(VectorDataAdapter dataAdapter, JSONB jsonb) {
         this.dataAdapter = dataAdapter;
-    }
-
-    /**
-     * Adds an Embedding to the vector store.
-     * @param news To add.
-     * @param connection Database connection used for upsert.
-     */
-    public void add(News news, Connection connection) {
-        addAll(Collections.singletonList(news), connection);
+        this.jsonb = jsonb;
     }
 
     /**
@@ -52,35 +43,29 @@ public class NewsVectorStore {
      * @param newsList To add.
      * @param connection Database connection used for upsert.
      */
-    public void addAll(List<News> newsList, Connection connection) {
-        // Upsert is used in case of any conflicts.
-        String upsert = """
-                merge into news_dv target using (values(?, ?, ?)) source (id, embedding) on (target.id = source.id)
-                when matched then update set target.content = source.content, target.embedding = source.embedding
-                when not matched then insert (target.id, target.content, target.embedding) values (source.id, source.content, source.embedding)
+    public void addAll(ConsumerRecords<String, News> newsList, Connection connection) {
+        final String sql = """
+                insert into news_dv (data) values(?)
                 """;
-        try (PreparedStatement stmt = connection.prepareStatement(upsert)) {
-            for (int i = 0; i < newsList.size(); i++) {
-                News news = newsList.get(i);
-                // TODO:
-//                // Generate and set a random ID for the embedding.
-//                stmt.setString(1, UUID.randomUUID().toString());
-//                // Set the embedding text content if it exists.
-//                stmt.setString(2, embedding.content() != null ? embedding.content() : "");
-//                // When using the VECTOR data type with prepared statements, always use setObject with the OracleType.VECTOR targetSqlType.
-//                stmt.setObject(3, dataAdapter.toVECTOR(embedding.vector()), OracleType.VECTOR.getVendorTypeNumber());
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            int i = 0;
+            for (ConsumerRecord<String, News> record : newsList) {
+                News news = record.value();
+                byte[] oson = jsonb.toOSON(news);
+
+                stmt.setObject(1, oson, OracleTypes.JSON);
                 stmt.addBatch();
 
                 // If BATCH_SIZE records have been added to the statement, execute the batch.
                 if (i % BATCH_SIZE == BATCH_SIZE - 1) {
                     stmt.executeBatch();
                 }
+                i++;
             }
-            // if any remaining batches, execute them.
-            if (newsList.size() % BATCH_SIZE != 0) {
+            // If there are any remaining batches, execute them.
+            if (newsList.count() % BATCH_SIZE != 0) {
                 stmt.executeBatch();
             }
-            stmt.executeBatch();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -96,7 +81,7 @@ public class NewsVectorStore {
         String searchQuery = String.format("""
                 select * from (
                     select id, content, embedding, (1 - vector_distance(embedding, ?, COSINE)) as score
-                    from news_dv
+                    from news_vector
                     order by score desc
                 )
                 where score >= ?

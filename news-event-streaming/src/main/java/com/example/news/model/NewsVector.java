@@ -7,8 +7,7 @@ import oracle.sql.VECTOR;
 
 @Data
 public class NewsVector {
-    private UUID _id = UUID.randomUUID();
-    private UUID news_id;
+    private String id = UUID.randomUUID().toString();
     private String chunk;
-    private VECTOR embedding;
+    private float[] embedding;
 }

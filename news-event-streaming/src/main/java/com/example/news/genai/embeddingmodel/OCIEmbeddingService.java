@@ -91,11 +91,9 @@ public class OCIEmbeddingService implements EmbeddingService {
 
     private List<VECTOR> toEmbeddings(EmbedTextResponse response, List<String> batch) {
         List<List<Float>> embeddings = response.getEmbedTextResult().getEmbeddings();
-        return IntStream.range(0, embeddings.size())
-                .mapToObj(i -> {
-                    List<Float> e = embeddings.get(i);
+        return embeddings.stream().map(embedding -> {
                     try {
-                        return vectorDataAdapter.toVECTOR(e);
+                        return vectorDataAdapter.toVECTOR(embedding);
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     }

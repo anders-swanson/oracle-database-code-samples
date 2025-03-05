@@ -1,4 +1,4 @@
-package com.example;
+package com.example.news;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -12,8 +12,6 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.oracle.OracleContainer;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Testcontainers

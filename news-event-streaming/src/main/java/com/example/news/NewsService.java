@@ -1,15 +1,11 @@
 package com.example.news;
 
 
-import javax.sql.DataSource;
 import java.net.URI;
 import java.sql.SQLException;
 import java.util.List;
 
 import com.example.news.events.producerconsumer.RawNewsProducer;
-import com.example.news.genai.chat.ChatService;
-import com.example.news.genai.embeddingmodel.EmbeddingService;
-import com.example.news.genai.vectorstore.NewsVectorStore;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

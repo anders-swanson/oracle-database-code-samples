@@ -5,9 +5,10 @@ okafka:
 news:
   threads:
     newsParserConsumerProducer: 1
+    newsConsumer: 1
   topic:
     raw: news_raw
-    parsed: news
+    parsed: news_parsed
 
 oci:
   chatModelID: ${OCI_CHAT_MODEL_ID}

@@ -1,9 +1,11 @@
 package com.example.news.events.producerconsumer;
 
-import java.sql.Connection;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import com.example.news.model.News;
 import com.example.news.events.parser.Parser;
@@ -47,61 +49,26 @@ public class NewsParserConsumerProducer implements OKafkaTask {
         }
     }
 
-    public void run() {
-        // Subscribe to the news_raw topic, consuming unparsed news events.
-        consumer.subscribe(Collections.singletonList("raw_news"));
-        while (true) {
-            // Poll a batch of records from the news_raw topic.
-            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(200));
-            producer.beginTransaction();
-            try {
-                for (ConsumerRecord<String, String> record : records) {
-                    News news = parseRecord(record);
-                    ProducerRecord<String, News> pr = new ProducerRecord<>("news", news);
-                    producer.send(pr);
-                }
-                // Commit the consumer/producer
-                producer.commitTransaction();
-            } catch (Exception e) {
-                // Abort both the poll and event publish on an unexpected processing error.
-                producer.abortTransaction();
-            }
-        }
-    }
-
-    public void run() {
-        // Subscribe to the news_raw topic, consuming unparsed news events.
-        consumer.subscribe(Collections.singletonList("news"));
-        while (true) {
-            // Poll a batch of records from the news_raw topic.
-            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(200));
-            // Get the current database connection for the transaction.
-            Connection conn = consumer.getDBConnection();
-            for (ConsumerRecord<String, String> record : records) {
-                // Run database queries for each record.
-                processRecord(record, conn);
-            }
-
-            // Commit the database transaction for a batch of records
-            // May also use commitAsync or auto-commit!
-            consumer.commitSync();
-        }
-    }
-
-
-
     private void processRecords(ConsumerRecords<String, String> records) {
         producer.beginTransaction();
         try {
+            List<CompletableFuture<News>> futures = new ArrayList<>();
             for (ConsumerRecord<String, String> record : records) {
-
+                // Asynchronous (with virtual threads) parse each record
+                futures.add(parser.parseAsync(record.value()));
             }
-            // Process the news events, publishing them to the news topic.
-            List<News> newsList = parser.parse(records);
-            for (News news : newsList) {
-                ProducerRecord<String, News> pr = new ProducerRecord<>(parsedTopic, news);
+
+            for (CompletableFuture<News> future : futures) {
+                // Process the news events, publishing them to the news topic.
+                News news = future.get();
+                ProducerRecord<String, News> pr = new ProducerRecord<>(
+                        parsedTopic,
+                        news.get_id(),
+                        news
+                );
                 producer.send(pr);
             }
+
             // Commit both the poll and publish of events.
             producer.commitTransaction();
         } catch (Exception e) {

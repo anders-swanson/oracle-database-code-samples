@@ -31,7 +31,7 @@ create table if not exists news (
 create table if not exists news_vector (
     id        varchar2(36) default sys_guid() primary key,
     news_id   varchar2(36) ,
-    chunk     varchar2(2250),
+    chunk     varchar2(2500),
     embedding vector(1024, FLOAT64) annotations(Distance 'COSINE', IndexType 'IVF'),
     constraint fk_news_vector foreign key (news_id)
     references news(news_id) on delete cascade

@@ -4,8 +4,8 @@ okafka:
 
 news:
   threads:
-    newsParserConsumerProducer: 1
-    newsConsumer: 1
+    newsParserConsumerProducer: 3
+    newsConsumer: 3
   topic:
     raw: news_raw
     parsed: news_parsed

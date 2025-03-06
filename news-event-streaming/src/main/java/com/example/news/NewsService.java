@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.example.news.events.producerconsumer.RawNewsProducer;
+import com.example.news.genai.vectorstore.NewsQueryService;
+import com.example.news.genai.vectorstore.NewsStore;
+import com.example.news.model.SearchRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RestController
 public class NewsService {
     private final RawNewsProducer rawNewsProducer;
+    private final NewsQueryService newsQueryService;
 
     private final String promptTemplate = """
             You are an assistant for question-answering tasks.
@@ -27,8 +31,9 @@ public class NewsService {
             Answer:
             """;
 
-    public NewsService(RawNewsProducer rawNewsProducer) {
+    public NewsService(RawNewsProducer rawNewsProducer, NewsQueryService newsQueryService) {
         this.rawNewsProducer = rawNewsProducer;
+        this.newsQueryService = newsQueryService;
     }
 
 
@@ -39,16 +44,21 @@ public class NewsService {
     }
 
     @GetMapping("/news")
-    public ResponseEntity<ChatResponse> getNews(@RequestBody ChatRequest chatRequest) throws Exception {
-        return ResponseEntity.created(location()).body(new ChatResponse(""));
+    public ResponseEntity<?> getNews(@RequestBody SearchRequest searchRequest) throws Exception {
+        List<String> results = newsQueryService.search(searchRequest);
+        if (results.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(new SearchResponse(results));
     }
 
-    public record ChatResponse(String response) {
+    public record SearchResponse(List<String> articles) {
     }
 
-
-    public record ChatRequest(String input,
-                              Double minScore) {
+    @PostMapping("/news/reset")
+    public ResponseEntity<?> resetNews() throws Exception {
+        newsQueryService.cleanup();
+        return ResponseEntity.noContent().build();
     }
 
 

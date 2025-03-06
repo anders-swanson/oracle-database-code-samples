@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.example.news.model.News;
+import com.example.news.model.SearchRequest;
 import com.oracle.spring.json.jsonb.JSONB;
 import oracle.jdbc.OracleType;
 import oracle.jdbc.OracleTypes;
@@ -53,6 +55,7 @@ public class NewsStore {
                 News news = record.value();
                 byte[] oson = jsonb.toOSON(news);
 
+                news.setNews_vector(new ArrayList<>());
                 stmt.setObject(1, oson, OracleTypes.JSON);
                 stmt.addBatch();
 
@@ -71,34 +74,39 @@ public class NewsStore {
         }
     }
 
-    public List<Embedding> search(NewsSearchRequest searchRequest, Connection connection) {
+public List<String> search(SearchRequest searchRequest, VECTOR vector, Connection connection) {
         // This query is designed to:
         // 1. Calculate a similarity score for each row based on the cosine distance between the embedding column
         // and a given vector using the "vector_distance" function.
         // 2. Order the rows by this similarity score in descending order.
         // 3. Filter out rows with a similarity score below a specified threshold.
         // 4. Return only the top rows that meet the criteria.
-        String searchQuery = String.format("""
-                select * from (
-                    select id, content, embedding, (1 - vector_distance(embedding, ?, COSINE)) as score
+        // 5. Group by article ID, so multiple chunks from the same article do not duplicate results.
+        final String searchQuery = """
+            select n.news_id, n.article, nv.score
+            from news n
+            join (
+                select news_id, max(score) as score
+                from (
+                    select news_id, (1 - vector_distance(embedding, ?, cosine)) as score
                     from news_vector
                     order by score desc
                 )
                 where score >= ?
-                fetch first %d rows only
-                """, searchRequest.getMaxResults());
-        List<Embedding> matches = new ArrayList<>();
+                group by news_id
+                order by score desc
+                fetch first 5 rows only
+            ) nv on n.news_id = nv.news_id
+            order by nv.score desc""";
+
+        List<String> matches = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(searchQuery)) {
-            VECTOR searchVector = dataAdapter.toVECTOR(searchRequest.getVector());
             // When using the VECTOR data type with prepared statements, always use setObject with the OracleType.VECTOR targetSqlType.
-            stmt.setObject(1, searchVector, OracleType.VECTOR.getVendorTypeNumber());
+            stmt.setObject(1, vector, OracleType.VECTOR.getVendorTypeNumber());
             stmt.setObject(2, searchRequest.getMinScore(), OracleType.NUMBER.getVendorTypeNumber());
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    double[] vector = rs.getObject("embedding", double[].class);
-                    String content = rs.getObject("content", String.class);
-                    Embedding embedding = new Embedding(dataAdapter.toVECTOR(vector), content);
-                    matches.add(embedding);
+                    matches.add(rs.getString("article"));
                 }
             }
         } catch (SQLException e) {
@@ -107,8 +115,15 @@ public class NewsStore {
         return matches;
     }
 
+    public void cleanup(Connection conn) throws SQLException {
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeQuery("truncate table news_vector");
+            stmt.executeQuery("truncate table news");
+        }
+    }
+
     public int countEmbeddings(Connection connection) throws SQLException {
-        final String sql = "select count(*) from news_dv";
+        final String sql = "select count(*) from news_vector";
         try (PreparedStatement ps = connection.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {

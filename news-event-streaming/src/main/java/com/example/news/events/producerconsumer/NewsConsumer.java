@@ -41,6 +41,7 @@ public class NewsConsumer implements OKafkaTask {
                 vectorStore.addAll(records, consumer.getDBConnection());
                 // You may also use auto-commit, or consumer.commitAsync()
                 consumer.commitSync();
+                log.info("Committed {} records", records.count());
             } catch (Exception e) {
                 log.error("Error processing news events", e);
                 handleError();

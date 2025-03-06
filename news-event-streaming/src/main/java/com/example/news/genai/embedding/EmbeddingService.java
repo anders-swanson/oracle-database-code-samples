@@ -1,9 +1,8 @@
-package com.example.news.genai.embeddingmodel;
+package com.example.news.genai.embedding;
 
 import java.util.Collections;
 import java.util.List;
 
-import com.example.news.genai.vectorstore.Embedding;
 import oracle.sql.VECTOR;
 
 public interface EmbeddingService {

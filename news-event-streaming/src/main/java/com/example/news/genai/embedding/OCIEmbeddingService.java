@@ -1,10 +1,9 @@
-package com.example.news.genai.embeddingmodel;
+package com.example.news.genai.embedding;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import com.example.news.genai.vectorstore.VectorDataAdapter;
 import com.oracle.bmc.generativeaiinference.GenerativeAiInference;

@@ -2,9 +2,11 @@ package com.example.news.events.producerconsumer;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.oracle.okafka.clients.producer.KafkaProducer;
 
+@Slf4j
 public class RawNewsProducer implements AutoCloseable {
     private final String rawTopic;
     private final KafkaProducer<String, String> producer;
@@ -19,11 +21,11 @@ public class RawNewsProducer implements AutoCloseable {
 
     public void send(List<String> news) {
         try {
-            for (String newsItem : news) {
-                // Write data to the raws new topic, adding to the transaction.
+            news.parallelStream().forEach(newsItem -> {
                 ProducerRecord<String, String> record = new ProducerRecord<>(rawTopic, newsItem);
                 producer.send(record);
-            }
+            });
+            log.info("Successfully produced {} records", news.size());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

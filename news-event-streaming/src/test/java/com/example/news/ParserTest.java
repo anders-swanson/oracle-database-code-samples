@@ -4,7 +4,7 @@ import com.example.news.events.parser.Parser;
 import com.example.news.events.parser.ParserConfiguration;
 import com.example.news.events.parser.Splitter;
 import com.example.news.genai.GenAIConfiguration;
-import com.example.news.genai.embeddingmodel.OCIEmbeddingService;
+import com.example.news.genai.embedding.OCIEmbeddingService;
 import com.example.news.genai.vectorstore.VectorDataAdapter;
 import com.example.news.model.News;
 import org.junit.jupiter.api.Test;

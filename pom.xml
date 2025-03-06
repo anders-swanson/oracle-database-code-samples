@@ -40,6 +40,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>com.oracle.database.messaging</groupId>
+                <artifactId>okafka</artifactId>
+                <version>${okafka.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>
                 <version>${kafka.clients.version}</version>

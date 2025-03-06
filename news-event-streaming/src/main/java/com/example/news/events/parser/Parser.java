@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.example.news.model.News;
-import com.example.news.genai.embeddingmodel.EmbeddingService;
+import com.example.news.genai.embedding.EmbeddingService;
 import com.example.news.model.NewsVector;
 import oracle.sql.VECTOR;
 import org.springframework.scheduling.annotation.Async;

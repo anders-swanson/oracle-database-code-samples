@@ -3,8 +3,6 @@ package com.example.news.events;
 import java.util.Properties;
 
 import com.example.news.events.producerconsumer.RawNewsProducer;
-import org.apache.kafka.clients.admin.Admin;
-import org.oracle.okafka.clients.admin.AdminClient;
 import org.oracle.okafka.clients.producer.KafkaProducer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;

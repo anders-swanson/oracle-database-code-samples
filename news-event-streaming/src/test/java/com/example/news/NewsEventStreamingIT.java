@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -24,7 +23,6 @@ import org.testcontainers.utility.MountableFile;
 
 import static com.example.news.Utils.readFile;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 @SpringBootTest
 @Testcontainers

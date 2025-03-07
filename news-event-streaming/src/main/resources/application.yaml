@@ -33,7 +33,7 @@ spring:
     password: testpwd
     url: jdbc:oracle:thin:@localhost:1521/freepdb1
     driver-class-name: oracle.jdbc.OracleDriver
-    type: oracle.ucp.jdbc.PoolDataSourceImpl
+    type: oracle.ucp.jdbc.PoolDataSource
     oracleucp:
       initial-pool-size: 1
       min-pool-size: 1

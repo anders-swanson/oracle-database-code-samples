@@ -2,7 +2,11 @@
 
 This demo application streams news articles as events from a REST API, processing those articles and storing them in a multimodal database that includes relational, document, event, and vector data types.
 
+![streaming diagram](./images/streaming-diagram.png)
+
 Processed news articles can be queried over REST using vector similarity search, for a plain query or an LLM-enhanced summarization query. 
+
+![query diagram](./images/summary.png)
 
 The News Event Streaming Application makes use of the following (4) Oracle Database features, in addition to OCI GenAI apis for text embedding and chat:
 
@@ -12,6 +16,8 @@ The News Event Streaming Application makes use of the following (4) Oracle Datab
 4. [Vector Data and Similarity Search](https://www.oracle.com/database/ai-vector-search/): Using news article vector embeddings and the NewsService REST API, we can query for news articles that are similar in meaning to an input text. We can also summarize news articles similar to an input query by combing vector search with an OCI GenAI chat model!
 
 > What's neat about this? Each of the above features runs within the same database engine. It  works on [Oracle Database Free](https://medium.com/@anders.swanson.93/oracle-database-23ai-free-11abf827ab37), which I used to test this application in a local container instance.
+
+![converged database](./images/converged.png)
 
 ##### Stay tuned for an in-depth blog post that covers this application in detail!
 
@@ -36,7 +42,7 @@ After a few moments, the database should start up. Once your database is ready, 
 
 #### App configuration
 
-You'll need to the following environment variables where your application is running, or provide this values in the [application properties file](./src/main/resources/application.yaml)
+You'll need to set the following environment variables where your application is running, or provide these values in the [application properties file](./src/main/resources/application.yaml)
 
 - `OJDBC_PATH`: Path to the directory containing your `ojdbc.properties` file. I use the ojdbc.properties file in [src/test/resources](./src/test/resources).
 - `OCI_COMPARTMENT_ID`: OCI Compartment OCID where your GenAI models are found. You can find this on the OCI console.
@@ -81,7 +87,7 @@ curl -X POST "http://localhost:8080/news" \
 
 ### POST a large batch of articles
 
-#### WARNING: The large data set contains almost 12,000 records. Before running this, be sure you're OK issuing ~25,000 embed text requests.
+#### WARNING: The large data set contains almost 12,000 records. Before running this, ensure you're comfortable with issuing approximately 25,000 text embedding requests.
 
 ```bash
 curl -X POST "http://localhost:8080/news" \

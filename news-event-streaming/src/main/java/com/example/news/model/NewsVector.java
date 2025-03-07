@@ -3,7 +3,6 @@ package com.example.news.model;
 import java.util.UUID;
 
 import lombok.Data;
-import oracle.sql.VECTOR;
 
 @Data
 public class NewsVector {

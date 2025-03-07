@@ -7,8 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.example.news.model.News;
+import com.example.news.model.NewsDTO;
 import com.example.news.model.SearchRequest;
 import com.oracle.spring.json.jsonb.JSONB;
 import oracle.jdbc.OracleType;
@@ -74,7 +76,7 @@ public class NewsStore {
         }
     }
 
-public List<String> search(SearchRequest searchRequest, VECTOR vector, Connection connection) {
+public List<NewsDTO> search(SearchRequest searchRequest, VECTOR vector, Connection connection) {
         // This query is designed to:
         // 1. Calculate a similarity score for each row based on the cosine distance between the embedding column
         // and a given vector using the "vector_distance" function.
@@ -99,20 +101,33 @@ public List<String> search(SearchRequest searchRequest, VECTOR vector, Connectio
             ) nv on n.news_id = nv.news_id
             order by nv.score desc""";
 
-        List<String> matches = new ArrayList<>();
+        List<NewsDTO> matches = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(searchQuery)) {
             // When using the VECTOR data type with prepared statements, always use setObject with the OracleType.VECTOR targetSqlType.
             stmt.setObject(1, vector, OracleType.VECTOR.getVendorTypeNumber());
             stmt.setObject(2, searchRequest.getMinScore(), OracleType.NUMBER.getVendorTypeNumber());
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    matches.add(rs.getString("article"));
+                    matches.add(fromResultSet(rs));
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return matches;
+    }
+
+    public Optional<NewsDTO> findByID(String id, Connection conn) throws SQLException {
+        final String sql = "select * from news where news_id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(fromResultSet(rs));
+                }
+            }
+        }
+        return Optional.empty();
     }
 
     public void cleanup(Connection conn) throws SQLException {
@@ -122,15 +137,10 @@ public List<String> search(SearchRequest searchRequest, VECTOR vector, Connectio
         }
     }
 
-    public int countEmbeddings(Connection connection) throws SQLException {
-        final String sql = "select count(*) from news_vector";
-        try (PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        }
-
-        return 0;
+    private NewsDTO fromResultSet(ResultSet rs) throws SQLException {
+        return new NewsDTO(
+                rs.getString("news_id"),
+                rs.getString("article")
+        );
     }
 }

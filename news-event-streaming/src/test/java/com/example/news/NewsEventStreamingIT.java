@@ -1,17 +1,30 @@
 package com.example.news;
 
-import javax.sql.DataSource;
-import java.sql.SQLException;
+import com.example.news.model.SearchRequest;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import oracle.ucp.jdbc.PoolDataSource;
-import oracle.ucp.jdbc.PoolDataSourceFactory;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.oracle.OracleContainer;
+import org.testcontainers.utility.MountableFile;
+
+import static com.example.news.Utils.readFile;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 @SpringBootTest
 @Testcontainers
@@ -21,39 +34,54 @@ import org.testcontainers.oracle.OracleContainer;
 @EnabledIfEnvironmentVariable(named = "OCI_COMPARTMENT", matches = ".+")
 @EnabledIfEnvironmentVariable(named = "OCI_CHAT_MODEL_ID", matches = ".+")
 @EnabledIfEnvironmentVariable(named = "OCI_EMBEDDING_MODEL_ID", matches = ".+")
+@EnabledIfEnvironmentVariable(named = "OJDBC_PROPERTIES", matches = ".+")
 public class NewsEventStreamingIT {
-    private final String compartmentId = System.getenv("OCI_COMPARTMENT");
-    // You can find your model id in the OCI Console.
-    private final String chatModelId = System.getenv("OCI_CHAT_MODEL_ID");
-    // https://smith.langchain.com/hub/rlm/rag-prompt
-    private final String promptTemplate = """
-            You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
-            Question: {%s}
-            Context: {%s}
-            Answer:
-            """;
-
     // Pre-pull this image to avoid testcontainers image pull timeouts:
-    // docker pull gvenzl/oracle-free:23.4-slim-faststart
+    // docker pull gvenzl/oracle-free:23.6-slim-faststart
     @Container
     @ServiceConnection
     private static final OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.6-slim-faststart")
             .withUsername("testuser")
-            .withPassword("testpwd");
+            .withPassword("testpwd")
+            .withInitScript("news-schema.sql");
 
-    @Test
-    public void newsWorkflow() {
-
+    @BeforeAll
+    static void setUp() throws IOException, InterruptedException {
+        oracleContainer.start();
+        oracleContainer.copyFileToContainer(MountableFile.forClasspathResource("testuser.sql"), "/tmp/user.sql");
+        oracleContainer.execInContainer("sqlplus", "sys / as sysdba", "@/tmp/user.sql");
     }
 
-    private DataSource testContainersDataSource() throws SQLException {
-        // Configure a datasource for the Oracle container.
-        PoolDataSource dataSource = PoolDataSourceFactory.getPoolDataSource();
-        dataSource.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
-        dataSource.setConnectionPoolName("NEWS_EVENT_STREAMING");
-        dataSource.setUser(oracleContainer.getUsername());
-        dataSource.setPassword(oracleContainer.getPassword());
-        dataSource.setURL(oracleContainer.getJdbcUrl());
-        return dataSource;
+    @DynamicPropertySource
+    static void setProperties(DynamicPropertyRegistry registry) throws IOException, InterruptedException {
+        registry.add("okafka.bootstrapServers", () -> "localhost:" + oracleContainer.getOraclePort());
+    }
+
+    @Autowired
+    NewsService newsService;
+
+    @Test
+    public void newsWorkflow() throws Exception {
+        String s = readFile("one-record.json");
+        List<String> article = new ObjectMapper().readValue(s, new TypeReference<>() {});
+        ResponseEntity<?> resp = newsService.postNews(article);
+        assertThat(resp.getStatusCode().is2xxSuccessful()).isTrue();
+
+
+        Thread.sleep(20000);
+        ResponseEntity<NewsService.SearchResponse> resp2 = newsService.getNews(new SearchRequest(
+                "Large Hadron Collider particle accelerator",
+                0.2
+        ));
+        assertThat(resp2.getStatusCode().is2xxSuccessful()).isTrue();
+
+        assertThat(resp2.getBody()).isNotNull();
+        assertThat(resp2.getBody().articles()).isNotEmpty();
+        String id = resp2.getBody().articles().getFirst().id();
+
+        ResponseEntity<NewsService.SummarizeResponse> resp3 = newsService.summarizeById(id);
+        assertThat(resp3.getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(resp3.getBody()).isNotNull();
+        assertThat(resp3.getBody().result()).isNotEmpty();
     }
 }

@@ -8,20 +8,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class VectorDataAdapter {
-    /**
-     * Convert a float[] to an Oracle VECTOR type.
-     * @param vector To convert.
-     * @return Converted Oracle VECTOR type.
-     * @throws SQLException If the conversion fails.
-     */
-    public VECTOR toVECTOR(float[] vector) throws SQLException {
-        return VECTOR.ofFloat64Values(normalize(vector));
-    }
-
-    public VECTOR toVECTOR(double[] vector) throws SQLException {
-        return VECTOR.ofFloat64Values(vector);
-    }
-
     public VECTOR toVECTOR(List<Float> e) throws SQLException {
         double[] vector = e.stream()
                 .mapToDouble(Float::floatValue)
@@ -52,18 +38,5 @@ public class VectorDataAdapter {
         }
 
         return v;
-    }
-
-    /**
-     * Converts a double[] to a float[].
-     * @param values Array of double values.
-     * @return Converted float[].
-     */
-    public float[] toFloatArray(double[] values) {
-        float[] result = new float[values.length];
-        for (int i = 0; i < values.length; i++) {
-            result[i] = (float) values[i];
-        }
-        return result;
     }
 }

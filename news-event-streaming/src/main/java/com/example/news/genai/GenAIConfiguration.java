@@ -66,14 +66,4 @@ public class GenAIConfiguration {
     public EmbedTextDetails.Truncate truncate() {
         return EmbedTextDetails.Truncate.End;
     }
-
-    @Bean
-    public ChatService chatService(GenerativeAiInference aiClient,
-                                   @Qualifier("chatServingMode") OnDemandServingMode servingMode) {
-        return OCIChatService.builder()
-                .servingMode(servingMode)
-                .aiClient(aiClient)
-                .compartment(compartmentId)
-                .build();
-    }
 }

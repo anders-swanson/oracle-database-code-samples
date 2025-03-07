@@ -1,6 +1,9 @@
 
 okafka:
   ojdbcPath: ${OJDBC_PATH}
+  bootstrapServers: ${BOOTSTRAP_SERVERS:localhost:1521}
+  serviceName: ${OKAFKA_SERVICE_NAME:freepdb1}
+  securityProtocol: ${OKAFKA_SECURITY_PROTOCOL:PLAINTEXT}
 
 news:
   threads:
@@ -14,6 +17,15 @@ oci:
   chatModelID: ${OCI_CHAT_MODEL_ID}
   embeddingModelID: ${OCI_EMBEDDING_MODEL_ID}
   compartment: ${OCI_COMPARTMENT_ID}
+  chat:
+    preambleOverride: ""
+    temperature: 1.0
+    frequencyPenalty: 0.0
+    presencePenalty: 0.0
+    maxTokens: 4000
+    topP: 0.75
+    topK: 0
+    inferenceRequestType: COHERE
 
 spring:
   datasource:
@@ -31,3 +43,11 @@ spring:
   threads:
     virtual:
       enabled: true # Turn on Java Virtual Threads
+
+logging:
+  level:
+    org:
+      apache:
+        kafka: WARN
+      oracle:
+        okafka: WARN

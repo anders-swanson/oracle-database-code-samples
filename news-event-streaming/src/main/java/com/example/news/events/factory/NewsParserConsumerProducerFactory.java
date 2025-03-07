@@ -46,10 +46,9 @@ public class NewsParserConsumerProducerFactory {
         List<OKafkaTask> tasks = new ArrayList<>();
         for (int i = 0; i < numThreads; i++) {
             KafkaConsumer<String, String> consumer = createConsumer();
-            KafkaProducer<String, News> producer = createProducer(consumer.getDBConnection());
             NewsParserConsumerProducer consumerProducer = new NewsParserConsumerProducer(
                     consumer,
-                    producer,
+                    createProducer(consumer.getDBConnection()),
                     parser,
                     rawTopic,
                     parsedTopic

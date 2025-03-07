@@ -22,12 +22,15 @@ import com.oracle.bmc.generativeaiinference.model.TextContent;
 import com.oracle.bmc.generativeaiinference.model.UserMessage;
 import com.oracle.bmc.generativeaiinference.requests.ChatRequest;
 import com.oracle.bmc.generativeaiinference.responses.ChatResponse;
-import lombok.Builder;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * OCI GenAI Chat
  */
+@Component
 public class OCIChatService implements ChatService {
     private final GenerativeAiInference client;
     private final ServingMode servingMode;
@@ -43,18 +46,17 @@ public class OCIChatService implements ChatService {
     private List<CohereMessage> cohereChatMessages;
     private List<ChatChoice> genericChatMessages;
 
-    @Builder
     public OCIChatService(GenerativeAiInference aiClient,
-                          ServingMode servingMode,
-                          String compartment,
-                          String preambleOverride,
-                          Double temperature,
-                          Double frequencyPenalty,
-                          Integer maxTokens,
-                          Double presencePenalty,
-                          Double topP,
-                          Integer topK,
-                          InferenceRequestType inferenceRequestType) {
+                          @Qualifier("chatServingMode") ServingMode servingMode,
+                          @Value("${oci.compartment}") String compartment,
+                          @Value("${oci.chat.preambleOverride}") String preambleOverride,
+                          @Value("${oci.chat.temperature}") Double temperature,
+                          @Value("${oci.chat.frequencyPenalty}") Double frequencyPenalty,
+                          @Value("${oci.chat.maxTokens}") Integer maxTokens,
+                          @Value("${oci.chat.presencePenalty}") Double presencePenalty,
+                          @Value("${oci.chat.topP}") Double topP,
+                          @Value("${oci.chat.topK}") Integer topK,
+                          @Value("${oci.chat.inferenceRequestType}") InferenceRequestType inferenceRequestType) {
         this.client = aiClient;
         this.servingMode = servingMode;
         this.compartment = compartment;

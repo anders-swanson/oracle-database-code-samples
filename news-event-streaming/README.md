@@ -2,6 +2,8 @@
 
 This demo application streams news articles as events from a REST API, processing those articles and storing them in a multimodal database that includes relational, document, event, and vector data types.
 
+You can use this README to get started, or follow the [in-depth blog post](https://medium.com/@anders.swanson.93/building-a-converged-database-java-application-with-spring-boot-d3b3cabbf613).
+
 ![streaming diagram](./images/streaming-diagram.png)
 
 Processed news articles can be queried over REST using vector similarity search, for a plain query or an LLM-enhanced summarization query. 

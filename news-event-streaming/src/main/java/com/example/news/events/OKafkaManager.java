@@ -64,7 +64,7 @@ public class OKafkaManager implements AutoCloseable {
 
     private void submit(List<OKafkaTask> tasks) {
         okafkaTasks.addAll(tasks);
-        for (OKafkaTask task : okafkaTasks) {
+        for (OKafkaTask task : tasks) {
             asyncTaskExecutor.execute(task);
         }
     }

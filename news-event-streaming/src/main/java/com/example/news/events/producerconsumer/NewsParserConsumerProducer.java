@@ -70,7 +70,6 @@ public class NewsParserConsumerProducer implements OKafkaTask {
 
             // Commit both the poll and publish of events.
             producer.commitTransaction();
-            consumer.commitSync();
             log.info("Successfully processed {} records", records.count());
         } catch (Exception e) {
             log.error("Error processing records", e);

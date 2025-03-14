@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SpringJPATest {
     @Container
     @ServiceConnection
-    static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.6-slim-faststart")
+    static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.7-slim-faststart")
             .withStartupTimeout(Duration.ofMinutes(2))
             .withUsername("testuser")
             .withPassword("testpwd")

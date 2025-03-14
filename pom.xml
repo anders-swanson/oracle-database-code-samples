@@ -24,9 +24,16 @@
         <oci.sdk.version>3.57.2</oci.sdk.version>
         <java.version>21</java.version>
         <lombok.version>1.18.36</lombok.version>
+        <aqapi.version>23.3.0.0</aqapi.version>
+        <aqapi.jakarta.version>23.3.1.0</aqapi.jakarta.version>
+        <jakarta.jms-api.version>3.1.0</jakarta.jms-api.version>
+        <jakarta.transaction-api.version>2.0.1</jakarta.transaction-api.version>
+        <jta.version>1.1</jta.version>
     </properties>
 
     <modules>
+        <module>database-per-service-example</module>
+        <module>jms-producer-consumer</module>
         <module>news-event-streaming</module>
         <module>oracle-database-kafka-apis</module>
         <module>spring-boot-dynamic-property-source</module>
@@ -87,6 +94,33 @@
                 <groupId>com.oracle.oci.sdk</groupId>
                 <artifactId>oci-java-sdk-common-httpclient-jersey3</artifactId>
                 <version>${oci.sdk.version}</version>
+            </dependency>
+
+            <!-- JMS -->
+            <dependency>
+                <groupId>com.oracle.database.messaging</groupId>
+                <artifactId>aqapi</artifactId>
+                <version>${aqapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.transaction</groupId>
+                <artifactId>jta</artifactId>
+                <version>${jta.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.transaction</groupId>
+                <artifactId>jakarta.transaction-api</artifactId>
+                <version>${jakarta.transaction-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.jms</groupId>
+                <artifactId>jakarta.jms-api</artifactId>
+                <version>${jakarta.jms-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.oracle.database.messaging</groupId>
+                <artifactId>aqapi-jakarta</artifactId>
+                <version>${aqapi.jakarta.version}</version>
             </dependency>
 
             <dependency>

@@ -1,9 +1,6 @@
-# Java Message Service (JMS) Producer Consumer Example
+# Java Message Service (JMS) Producer / Consumer Example
 
-Under construction! Stay tuned.
-
-This example demonstrates how to write a multi-threaded pub/sub application using the JDBC JMS API for [Oracle Database Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/23/adque/aq-introduction.html). If you're unfamiliar with Transactional Event Queues, it is a high-throughput, distributed asynchronous messaging system built into Oracle Database. The integration of Transactional Event Queues with Spring JMS provides a simple interface for rapid development of messaging applications.
-
+This example demonstrates how to write a multi-threaded pub/sub application using the JDBC JMS API for [Oracle Database Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/23/adque/aq-introduction.html). If you're unfamiliar with Transactional Event Queues (TxEventQ), it is a high-throughput, distributed, asynchronous messaging system built into Oracle Database. TxEventQ's JMS APIs provide a simple, familiar interface for developing applications with service-to-service messaging capabilities.
 ## Prerequisites
 
 - Java 21+, Maven
@@ -13,16 +10,25 @@ This example demonstrates how to write a multi-threaded pub/sub application usin
 
 The sample provides an all-in-one test leveraging Testcontainers and Oracle Database to do the following: 
 
-1. Start and configure a database server using Testcontainers
-2. Produce messages to a Transactional Event Queue using JMS
-3. Concurrently consume and verify all messages with JMS consumers
+1. Start and configure a database server using Testcontainers.
+   2. You can find the [database initialization script here](./src/test/resources/create-table.sql), which creates a database table for storing JSON events. The [testuser.sql](./src/test/resources/testuser.sql) script assigns appropriate permissions to the `testuser` database user amd creates a JMS topic and subscriber group.
+2. Produce messages to a Transactional Event Queue using JMS.
+3. Concurrently consume and verify all messages with JMS consumers.
+
 
 You can run the test like so, from the project's root directory:
 
-`mvn test`
+```bash
+mvn test
+```
 
 You should see output similar to the following:
 
 ```
-TBD output
+[PRODUCER] Sent all JMS messages. Closing producer!
+[CONSUMER 3] Received all JMS messages. Closing consumer!
+Queue is empty, closing
+[CONSUMER 1] Received all JMS messages. Closing consumer!
+Queue is empty, closing
+[CONSUMER 2] Received all JMS messages. Closing consumer!
 ```

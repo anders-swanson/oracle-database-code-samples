@@ -15,12 +15,19 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.oracle.database.messaging</groupId>
-            <artifactId>aqapi</artifactId>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ucp</artifactId>
+            <version>${oracle.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>jta</artifactId>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc11</artifactId>
+            <version>${oracle.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.database.messaging</groupId>
+            <artifactId>aqapi-jakarta</artifactId>
+            <version>${aqapi.jakarta.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.transaction</groupId>
@@ -31,9 +38,11 @@
             <artifactId>jakarta.jms-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.oracle.database.messaging</groupId>
-            <artifactId>aqapi-jakarta</artifactId>
+            <groupId>jakarta.management.j2ee</groupId>
+            <artifactId>jakarta.management.j2ee-api</artifactId>
+            <version>1.1.4</version>
         </dependency>
+
 
         <!--Test Dependencies-->
         <dependency>

@@ -1,6 +1,7 @@
 package com.example.jms;
 
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.jms.JMSException;
 import jakarta.jms.Session;
@@ -40,8 +41,8 @@ public class JMSProducer implements Runnable {
             // Write the input data as JMS text messages to a JMS topic.
             for (String s : input) {
                 TextMessage message = session.createTextMessage(s);
+                message.setJMSCorrelationID(UUID.randomUUID().toString());
                 publisher.publish(message);
-                System.out.println("Message published: " + s);
             }
             session.commit();
         } catch (JMSException e) {

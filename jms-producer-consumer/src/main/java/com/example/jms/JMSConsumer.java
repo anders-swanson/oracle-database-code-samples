@@ -11,7 +11,7 @@ import jakarta.jms.Session;
 import jakarta.jms.Topic;
 import jakarta.jms.TopicConnection;
 import javax.sql.DataSource;
-import oracle.jakarta.jms.AQjmsAgent;
+import oracle.jakarta.jms.AQjmsException;
 import oracle.jakarta.jms.AQjmsFactory;
 import oracle.jakarta.jms.AQjmsSession;
 import oracle.jakarta.jms.AQjmsTextMessage;
@@ -53,6 +53,8 @@ public class JMSConsumer implements Runnable {
                 }
             }
 
+        } catch (AQjmsException e) {
+            System.out.println("Topic is empty, closing");
         } catch (JMSException | SQLException e) {
             System.out.println("Exception caught: " + e);
             throw new RuntimeException(e);

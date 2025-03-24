@@ -60,7 +60,7 @@ public class JMSMultiConsumerTest {
         // the test completes.
         CountDownLatch latch = new CountDownLatch(input.size());
         // Number of consumer threads, may be 1 - 6.
-        final int consumerThreads = 1;
+        final int consumerThreads = 3;
 
         // Create an executor to submit producer and consumer threads.
         ExecutorService executor = newVirtualThreadPerTaskExecutor();

@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.2</version>
+        <version>3.4.3</version>
         <relativePath/>
     </parent>
     <groupId>com.example</groupId>
@@ -19,7 +19,7 @@
         <okafka.version>23.6.0.0</okafka.version>
         <oracle.starters.version>25.1.0</oracle.starters.version>
         <spring.cloud.oracle.version>1.3.1</spring.cloud.oracle.version>
-        <oracle.version>23.6.0.24.10</oracle.version>
+        <oracle.version>23.7.0.25.01</oracle.version>
         <kafka.clients.version>3.7.1</kafka.clients.version>
         <oci.sdk.version>3.57.2</oci.sdk.version>
         <java.version>21</java.version>
@@ -97,16 +97,6 @@
             </dependency>
 
             <!-- JMS -->
-            <dependency>
-                <groupId>com.oracle.database.messaging</groupId>
-                <artifactId>aqapi</artifactId>
-                <version>${aqapi.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.transaction</groupId>
-                <artifactId>jta</artifactId>
-                <version>${jta.version}</version>
-            </dependency>
             <dependency>
                 <groupId>jakarta.transaction</groupId>
                 <artifactId>jakarta.transaction-api</artifactId>

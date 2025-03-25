@@ -7,9 +7,9 @@ This example module demonstrates how to write pub/sub applications using the JDB
 - Java 21+, Maven
 - Docker compatible environment
 
-## JMS Topic Sample
+## JMS Topic Sample (Pub/Sub)
 
-The [com.example.jms.topic](./src/main/java/com/example/jms/topic) package implements a JMSProducer and JMSConsumer for reading and writing data from JMS Topics. Topics 
+The [com.example.jms.topic](./src/main/java/com/example/jms/topic) package implements a JMSProducer and JMSConsumer for reading and writing data from JMS Topics. Topics are useful for high-throughput, multi-consumer pub/sub architectures.
 
 The sample provides an all-in-one test leveraging Testcontainers and Oracle Database to do the following: 
 
@@ -32,4 +32,29 @@ You should see output similar to the following. Note that the ordering of the co
 [CONSUMER 1] Received all JMS messages. Closing consumer!
 [CONSUMER 3] Received all JMS messages. Closing consumer!
 [CONSUMER 2] Received all JMS messages. Closing consumer!
+```
+
+## JMS Queue Sample (Point-to-point)
+
+The [com.example.jms.queue](./src/main/java/com/example/jms/queue) package implements a QueueProducer and QueueConsumer for reading and writing data from JMS Queues. Queues allow for a point-to-point producer/consumer architecture.
+
+The sample provides an all-in-one test leveraging Testcontainers and Oracle Database to do the following:
+
+1. Start and configure a database server using Testcontainers.
+   2. You can find the [database initialization script here](./src/test/resources/create-table.sql), which creates a database table for storing JSON events. The [testuser-queue.sql](./src/test/resources/testuser-queue.sql) script assigns appropriate permissions to the `testuser` database user amd creates a JMS queue.
+2. Produce messages to a queue using JMS.
+3. Consume and verify all messages with a JMS queue consumer.
+
+
+You can run the test like so, from the project's root directory:
+
+```bash
+mvn test
+```
+
+You should see output similar to the following:
+
+```
+[PRODUCER] Sent all JMS messages. Closing producer!
+[CONSUMER] Received all JMS messages. Closing consumer!
 ```

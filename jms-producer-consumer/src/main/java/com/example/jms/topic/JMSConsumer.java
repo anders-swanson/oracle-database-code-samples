@@ -1,4 +1,4 @@
-package com.example.jms;
+package com.example.jms.topic;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -73,5 +73,4 @@ public class JMSConsumer implements Runnable {
             stmt.executeUpdate();
         }
     }
-
 }

@@ -1,8 +1,11 @@
-package com.example.jms;
+package com.example.jms.topic;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +23,8 @@ import org.testcontainers.oracle.OracleContainer;
 import org.testcontainers.utility.MountableFile;
 
 import static java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @Testcontainers
 public class JMSMultiConsumerTest {
@@ -46,7 +51,7 @@ public class JMSMultiConsumerTest {
     static void setUp() throws Exception {
         // Configure the Oracle Database container with the TxEventQ test user.
         oracleContainer.start();
-        oracleContainer.copyFileToContainer(MountableFile.forClasspathResource("testuser.sql"), "/tmp/init.sql");
+        oracleContainer.copyFileToContainer(MountableFile.forClasspathResource("testuser-topic.sql"), "/tmp/init.sql");
         oracleContainer.execInContainer("sqlplus", "sys / as sysdba", "@/tmp/init.sql");
 
         dataSource = getDataSource();
@@ -55,7 +60,7 @@ public class JMSMultiConsumerTest {
     }
 
     @Test
-    void produceConsume() throws InterruptedException {
+    void produceConsume() throws Exception {
         // Used for tracking the number of messages consumed. Once all messages have been consumed and the latch is empty,
         // the test completes.
         CountDownLatch latch = new CountDownLatch(input.size());
@@ -75,6 +80,22 @@ public class JMSMultiConsumerTest {
 
         // Wait for the consumer(s) to receive all messages.
         latch.await();
+
+        // Verify consumer inserted all the messages to the weather_events database table.
+        verifyEventsSent(input.size());
+    }
+
+    private void verifyEventsSent(int count) throws SQLException {
+        try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement()) {
+            String sql = "select count(*) from weather_events";
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                assertThat(count).isEqualTo(rs.getInt(1));
+            } else {
+                fail("no records found");
+            }
+        }
     }
 
     private JMSProducer getProducer() {

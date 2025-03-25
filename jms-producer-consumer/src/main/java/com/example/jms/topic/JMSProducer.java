@@ -1,4 +1,4 @@
-package com.example.jms;
+package com.example.jms.topic;
 
 import java.util.List;
 import java.util.UUID;

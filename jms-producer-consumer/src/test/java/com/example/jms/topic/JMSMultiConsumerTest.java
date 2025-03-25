@@ -7,10 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.sql.DataSource;
 import oracle.ucp.jdbc.PoolDataSource;
@@ -63,23 +66,26 @@ public class JMSMultiConsumerTest {
     void produceConsume() throws Exception {
         // Used for tracking the number of messages consumed. Once all messages have been consumed and the latch is empty,
         // the test completes.
-        CountDownLatch latch = new CountDownLatch(input.size());
+        AtomicInteger count = new AtomicInteger(input.size());
         // Number of consumer threads, may be 1 - 6.
         final int consumerThreads = 3;
 
         // Create an executor to submit producer and consumer threads.
         ExecutorService executor = newVirtualThreadPerTaskExecutor();
 
-        // Start the consumer thread(s).
+        List<Future<?>> consumers = new ArrayList<>();
+        // Start the consumer thread(s) concurrently.
         for (int i = 0; i < consumerThreads; i++) {
-            executor.submit(getConsumer(i+1, latch));
+            consumers.add(executor.submit(getConsumer(i+1, count)));
         }
 
         // Start the producer thread.
         executor.submit(getProducer());
 
         // Wait for the consumer(s) to receive all messages.
-        latch.await();
+        for (Future<?> consumer : consumers) {
+            consumer.get();
+        }
 
         // Verify consumer inserted all the messages to the weather_events database table.
         verifyEventsSent(input.size());
@@ -107,13 +113,13 @@ public class JMSMultiConsumerTest {
         );
     }
 
-    private JMSConsumer getConsumer(int id, CountDownLatch latch) {
+    private JMSConsumer getConsumer(int id, AtomicInteger count) {
         return new JMSConsumer(
                 dataSource,
                 id,
                 testUser,
                 topicName,
-                latch
+                count
         );
     }
 

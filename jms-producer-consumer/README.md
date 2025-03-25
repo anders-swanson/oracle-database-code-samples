@@ -25,13 +25,11 @@ You can run the test like so, from the project's root directory:
 mvn test
 ```
 
-You should see output similar to the following:
+You should see output similar to the following. Note that the ordering of the consumers may differ due to their parallel nature:
 
 ```
 [PRODUCER] Sent all JMS messages. Closing producer!
-[CONSUMER 3] Received all JMS messages. Closing consumer!
-Queue is empty, closing
 [CONSUMER 1] Received all JMS messages. Closing consumer!
-Queue is empty, closing
+[CONSUMER 3] Received all JMS messages. Closing consumer!
 [CONSUMER 2] Received all JMS messages. Closing consumer!
 ```

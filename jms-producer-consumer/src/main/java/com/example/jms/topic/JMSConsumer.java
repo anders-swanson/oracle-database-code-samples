@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import jakarta.jms.JMSException;
 import jakarta.jms.MessageConsumer;
@@ -22,14 +23,14 @@ public class JMSConsumer implements Runnable {
     private final int consumerID;
     private final String username;
     private final String topicName;
-    private final CountDownLatch latch;
+    private final AtomicInteger count;
 
-    public JMSConsumer(DataSource dataSource, int consumerID, String username, String topicName, CountDownLatch latch) {
+    public JMSConsumer(DataSource dataSource, int consumerID, String username, String topicName, AtomicInteger count) {
         this.dataSource = dataSource;
         this.consumerID = consumerID;
         this.username = username;
         this.topicName = topicName;
-        this.latch = latch;
+        this.count = count;
     }
 
     @Override
@@ -43,24 +44,27 @@ public class JMSConsumer implements Runnable {
             topicConn.start();
             MessageConsumer consumer = session.createDurableSubscriber(jmsTopic, "example_subscriber");
 
-            while (latch.getCount() > 0) {
+            while (true) {
                 AQjmsTextMessage message = (AQjmsTextMessage) consumer.receive(1_000); // Timeout: 1 second
                 if (message != null) {
-                    latch.countDown();
-                    String msg = message.getText();
-                    processMessage(msg, dbConn);
-                    session.commit();  // Only commit if message received and processed successfully
+                    // The atomic count abstraction is for example purposes only.
+                    // We want to stop all the consumers after the count reaches 0.
+                    if (count.decrementAndGet() >= 0) {
+                        String msg = message.getText();
+                        processMessage(msg, dbConn);
+                        session.commit();  // Only commit if message received and processed successfully
+                    }
+                }
+
+                if (count.get() <= 0) {
+                    System.out.printf("[CONSUMER %d] Received all JMS messages. Closing consumer!%n", consumerID);
+                    return;
                 }
             }
-
-        } catch (AQjmsException e) {
-            System.out.println("Topic is empty, closing");
         } catch (JMSException | SQLException e) {
             System.out.println("Exception caught: " + e);
             throw new RuntimeException(e);
         }
-
-        System.out.printf("[CONSUMER %d] Received all JMS messages. Closing consumer!%n", consumerID);
     }
 
     private void processMessage(String message, Connection dbConn) throws SQLException {

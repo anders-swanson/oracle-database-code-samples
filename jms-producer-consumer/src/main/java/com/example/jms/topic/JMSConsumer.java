@@ -23,18 +23,21 @@ public class JMSConsumer implements Runnable {
     private final int consumerID;
     private final String username;
     private final String topicName;
+    private final String groupName;
     private final AtomicInteger count;
 
-    public JMSConsumer(DataSource dataSource, int consumerID, String username, String topicName, AtomicInteger count) {
+    public JMSConsumer(DataSource dataSource, int consumerID, String groupName, String username, String topicName, AtomicInteger count) {
         this.dataSource = dataSource;
         this.consumerID = consumerID;
         this.username = username;
         this.topicName = topicName;
+        this.groupName = groupName;
         this.count = count;
     }
 
     @Override
     public void run() {
+        int consumedMessages = 0;
         // Create a new JMS connection and session.
         try (TopicConnection topicConn = AQjmsFactory.getTopicConnectionFactory(dataSource).createTopicConnection();
              AQjmsSession session = (AQjmsSession) topicConn.createTopicSession(true, Session.AUTO_ACKNOWLEDGE);
@@ -42,7 +45,7 @@ public class JMSConsumer implements Runnable {
             Topic jmsTopic = session.getTopic(username, topicName);
             // The JMS Connection must be started before use.
             topicConn.start();
-            MessageConsumer consumer = session.createDurableSubscriber(jmsTopic, "example_subscriber");
+            MessageConsumer consumer = session.createDurableSubscriber(jmsTopic, groupName);
 
             while (true) {
                 AQjmsTextMessage message = (AQjmsTextMessage) consumer.receive(1_000); // Timeout: 1 second
@@ -53,11 +56,12 @@ public class JMSConsumer implements Runnable {
                         String msg = message.getText();
                         processMessage(msg, dbConn);
                         session.commit();  // Only commit if message received and processed successfully
+                        consumedMessages++;
                     }
                 }
 
                 if (count.get() <= 0) {
-                    System.out.printf("[CONSUMER %d] Received all JMS messages. Closing consumer!%n", consumerID);
+                    System.out.printf("[CONSUMER %d (%s)] Received %d JMS messages. Closing consumer!%n", consumerID, groupName, consumedMessages);
                     return;
                 }
             }

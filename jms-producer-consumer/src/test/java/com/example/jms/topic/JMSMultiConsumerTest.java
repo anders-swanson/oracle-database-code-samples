@@ -67,6 +67,7 @@ public class JMSMultiConsumerTest {
         // Used for tracking the number of messages consumed. Once all messages have been consumed and the latch is empty,
         // the test completes.
         AtomicInteger count = new AtomicInteger(input.size());
+        AtomicInteger count2 = new AtomicInteger(input.size());
         // Number of consumer threads, may be 1 - 6.
         final int consumerThreads = 3;
 
@@ -76,7 +77,8 @@ public class JMSMultiConsumerTest {
         List<Future<?>> consumers = new ArrayList<>();
         // Start the consumer thread(s) concurrently.
         for (int i = 0; i < consumerThreads; i++) {
-            consumers.add(executor.submit(getConsumer(i+1, count)));
+            consumers.add(executor.submit(getConsumer(i+1, count, "example_subscriber_1")));
+            consumers.add(executor.submit(getConsumer(i+1, count2, "example_subscriber_2")));
         }
 
         // Start the producer thread.
@@ -88,7 +90,8 @@ public class JMSMultiConsumerTest {
         }
 
         // Verify consumer inserted all the messages to the weather_events database table.
-        verifyEventsSent(input.size());
+        // Total records should be input.size * 2, because there are two parallel consumer groups.
+        verifyEventsSent(input.size() * 2);
     }
 
     private void verifyEventsSent(int count) throws SQLException {
@@ -113,10 +116,11 @@ public class JMSMultiConsumerTest {
         );
     }
 
-    private JMSConsumer getConsumer(int id, AtomicInteger count) {
+    private JMSConsumer getConsumer(int id, AtomicInteger count, String group) {
         return new JMSConsumer(
                 dataSource,
                 id,
+                group,
                 testUser,
                 topicName,
                 count

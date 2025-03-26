@@ -41,7 +41,11 @@ end;
 begin
     dbms_aqadm.add_subscriber(
             queue_name => 'testuser.mytopic',
-            subscriber => sys.aq$_agent('example_subscriber', null, null)
+            subscriber => sys.aq$_agent('example_subscriber_1', null, null)
+    );
+    dbms_aqadm.add_subscriber(
+            queue_name => 'testuser.mytopic',
+            subscriber => sys.aq$_agent('example_subscriber_2', null, null)
     );
 end;
 /

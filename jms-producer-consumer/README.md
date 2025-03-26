@@ -15,7 +15,8 @@ The sample provides an all-in-one test leveraging Testcontainers and Oracle Data
 
 1. Start and configure a database server using Testcontainers. You can find the [database initialization script here](./src/test/resources/create-table.sql), which creates a database table for storing JSON events. The [testuser-topic.sql](./src/test/resources/testuser-topic.sql) script assigns appropriate permissions to the `testuser` database user amd creates a JMS topic and subscriber group.
 2. Produce messages to a Transactional Event Queue using JMS.
-3. Concurrently consume and verify all messages with JMS consumers.
+3. Concurrently start two consumer groups, each with three consumer threads.
+4. Verify all messages were sent and inserted in the database.
 
 
 You can run the test like so, from the project's root directory:
@@ -28,9 +29,12 @@ You should see output similar to the following. Note that the ordering of the co
 
 ```
 [PRODUCER] Sent all JMS messages. Closing producer!
-[CONSUMER 3] Received all JMS messages. Closing consumer!
-[CONSUMER 1] Received all JMS messages. Closing consumer!
-[CONSUMER 2] Received all JMS messages. Closing consumer!
+[CONSUMER 2 (example_subscriber_2)] Received 28 JMS messages. Closing consumer!
+[CONSUMER 1 (example_subscriber_2)] Received 36 JMS messages. Closing consumer!
+[CONSUMER 3 (example_subscriber_2)] Received 22 JMS messages. Closing consumer!
+[CONSUMER 1 (example_subscriber_1)] Received 21 JMS messages. Closing consumer!
+[CONSUMER 2 (example_subscriber_1)] Received 36 JMS messages. Closing consumer!
+[CONSUMER 3 (example_subscriber_1)] Received 29 JMS messages. Closing consumer!
 ```
 
 ## JMS Queue Sample (Point-to-point)

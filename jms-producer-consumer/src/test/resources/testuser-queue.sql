@@ -15,7 +15,7 @@ begin
     -- See https://docs.oracle.com/en/database/oracle/oracle-database/23/arpls/DBMS_AQADM.html#GUID-93B0FF90-5045-4437-A9C4-B7541BEBE573
     -- For documentation on creating Transactional Event Queues.
     dbms_aqadm.create_transactional_event_queue(
-            queue_name         => 'testuser.mytopic',
+            queue_name => 'testuser.myqueue',
         -- Payload can be RAW, JSON, DBMS_AQADM.JMS_TYPE, or an object type.
         -- Default is DBMS_AQADM.JMS_TYPE.
             queue_payload_type => DBMS_AQADM.JMS_TYPE,
@@ -24,7 +24,7 @@ begin
 
     -- Start the queue
     dbms_aqadm.start_queue(
-            queue_name         => 'testuser.mytopic'
+            queue_name => 'testuser.myqueue'
     );
 end;
 /

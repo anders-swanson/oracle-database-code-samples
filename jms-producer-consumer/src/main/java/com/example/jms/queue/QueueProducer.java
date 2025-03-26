@@ -29,6 +29,7 @@ public class QueueProducer implements Runnable {
 
     @Override
     public void run() {
+        System.out.printf("[PRODUCER] Producing %d messages.\n", input.size());
         // Create a new JMS connection and session.
         try (QueueConnection connection = AQjmsFactory.getQueueConnectionFactory(dataSource).createQueueConnection();
              AQjmsSession session = (AQjmsSession) connection.createQueueSession(true, Session.AUTO_ACKNOWLEDGE)) {

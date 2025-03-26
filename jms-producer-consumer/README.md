@@ -13,8 +13,7 @@ The [com.example.jms.topic](./src/main/java/com/example/jms/topic) package imple
 
 The sample provides an all-in-one test leveraging Testcontainers and Oracle Database to do the following: 
 
-1. Start and configure a database server using Testcontainers.
-   2. You can find the [database initialization script here](./src/test/resources/create-table.sql), which creates a database table for storing JSON events. The [testuser-topic.sql](./src/test/resources/testuser-topic.sql) script assigns appropriate permissions to the `testuser` database user amd creates a JMS topic and subscriber group.
+1. Start and configure a database server using Testcontainers. You can find the [database initialization script here](./src/test/resources/create-table.sql), which creates a database table for storing JSON events. The [testuser-topic.sql](./src/test/resources/testuser-topic.sql) script assigns appropriate permissions to the `testuser` database user amd creates a JMS topic and subscriber group.
 2. Produce messages to a Transactional Event Queue using JMS.
 3. Concurrently consume and verify all messages with JMS consumers.
 
@@ -29,8 +28,8 @@ You should see output similar to the following. Note that the ordering of the co
 
 ```
 [PRODUCER] Sent all JMS messages. Closing producer!
-[CONSUMER 1] Received all JMS messages. Closing consumer!
 [CONSUMER 3] Received all JMS messages. Closing consumer!
+[CONSUMER 1] Received all JMS messages. Closing consumer!
 [CONSUMER 2] Received all JMS messages. Closing consumer!
 ```
 
@@ -40,8 +39,7 @@ The [com.example.jms.queue](./src/main/java/com/example/jms/queue) package imple
 
 The sample provides an all-in-one test leveraging Testcontainers and Oracle Database to do the following:
 
-1. Start and configure a database server using Testcontainers.
-   2. You can find the [database initialization script here](./src/test/resources/create-table.sql), which creates a database table for storing JSON events. The [testuser-queue.sql](./src/test/resources/testuser-queue.sql) script assigns appropriate permissions to the `testuser` database user amd creates a JMS queue.
+1. Start and configure a database server using Testcontainers. You can find the [database initialization script here](./src/test/resources/create-table.sql), which creates a database table for storing JSON events. The [testuser-queue.sql](./src/test/resources/testuser-queue.sql) script assigns appropriate permissions to the `testuser` database user amd creates a JMS queue.
 2. Produce messages to a queue using JMS.
 3. Consume and verify all messages with a JMS queue consumer.
 
@@ -52,9 +50,11 @@ You can run the test like so, from the project's root directory:
 mvn test
 ```
 
-You should see output similar to the following:
+You should see output similar to the following. The ordering and consumer message counts may differ due to parallel message consumption:
 
 ```
 [PRODUCER] Sent all JMS messages. Closing producer!
-[CONSUMER] Received all JMS messages. Closing consumer!
+[CONSUMER 1] Received 25 messages. Closing consumer!
+[CONSUMER 2] Received 24 messages. Closing consumer!
+[CONSUMER 3] Received 37 messages. Closing consumer!
 ```

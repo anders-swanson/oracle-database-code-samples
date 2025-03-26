@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -33,7 +34,7 @@ public class JMSQueueTest {
     private static final String testUser = "testuser";
     private static final String testPassword = "Welcome123#";
 
-    private static final String topicName = "mytopic";
+    private static final String queueName = "myqueue";
 
     @Container
     private static final OracleContainer oracleContainer = new OracleContainer(oracleImage)
@@ -69,13 +70,21 @@ public class JMSQueueTest {
         // Create an executor to submit producer and consumer threads.
         ExecutorService executor = newVirtualThreadPerTaskExecutor();
 
-        Future<?> consumer = executor.submit(getConsumer(count));
+        // Number of consumer threads.
+        final int consumerThreads = 3;
+        List<Future<?>> consumers = new ArrayList<>();
+        // Start the consumer thread(s) concurrently.
+        for (int i = 0; i < consumerThreads; i++) {
+            consumers.add(executor.submit(getConsumer(i + 1, count)));
+        }
 
         // Start the producer thread.
         executor.submit(getProducer());
 
-        // Wait for the consumer to receive all messages.
-        consumer.get();
+        // Wait for the consumer(s) to receive all messages.
+        for (Future<?> consumer : consumers) {
+            consumer.get();
+        }
 
         // Verify consumer inserted all the messages to the weather_events database table.
         verifyEventsSent(input.size());
@@ -98,16 +107,17 @@ public class JMSQueueTest {
         return new QueueProducer(
                 dataSource,
                 testUser,
-                topicName,
+                queueName,
                 input
         );
     }
 
-    private QueueConsumer getConsumer(AtomicInteger count) {
+    private QueueConsumer getConsumer(int id, AtomicInteger count) {
         return new QueueConsumer(
+                id,
                 dataSource,
                 testUser,
-                topicName,
+                queueName,
                 count
         );
     }

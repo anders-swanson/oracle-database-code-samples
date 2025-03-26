@@ -17,12 +17,14 @@ import oracle.jakarta.jms.AQjmsTextMessage;
 import oracle.jdbc.OracleTypes;
 
 public class QueueConsumer implements Runnable {
+    private final int consumerID;
     private final DataSource dataSource;
     private final String username;
     private final String queueName;
     private final AtomicInteger count;
 
-    public QueueConsumer(DataSource dataSource, String username, String queueName, AtomicInteger count) {
+    public QueueConsumer(int consumerID, DataSource dataSource, String username, String queueName, AtomicInteger count) {
+        this.consumerID = consumerID;
         this.dataSource = dataSource;
         this.username = username;
         this.queueName = queueName;
@@ -31,10 +33,11 @@ public class QueueConsumer implements Runnable {
 
     @Override
     public void run() {
+        int consumedMessages = 0;
         // Create a new JMS connection and session.
-    try (QueueConnection queueCon = AQjmsFactory.getQueueConnectionFactory(dataSource).createQueueConnection();
-         AQjmsSession session = (AQjmsSession) queueCon.createQueueSession(true, Session.AUTO_ACKNOWLEDGE);
-         Connection dbConn = session.getDBConnection()) {
+        try (QueueConnection queueCon = AQjmsFactory.getQueueConnectionFactory(dataSource).createQueueConnection();
+             AQjmsSession session = (AQjmsSession) queueCon.createQueueSession(true, Session.AUTO_ACKNOWLEDGE);
+             Connection dbConn = session.getDBConnection()) {
             Queue queue = session.getQueue(username, queueName);
             // The JMS Connection must be started before use.
             queueCon.start();
@@ -49,11 +52,12 @@ public class QueueConsumer implements Runnable {
                         String msg = message.getText();
                         processMessage(msg, dbConn);
                         session.commit();  // Only commit if message received and processed successfully
+                        consumedMessages++;
                     }
                 }
 
                 if (count.get() <= 0) {
-                    System.out.printf("[CONSUMER] Received all JMS messages. Closing consumer!%n");
+                    System.out.printf("[CONSUMER %d] Received %d messages. Closing consumer!%n", consumerID, consumedMessages);
                     return;
                 }
             }

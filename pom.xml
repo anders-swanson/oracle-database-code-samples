@@ -33,6 +33,7 @@
 
     <modules>
         <module>database-per-service-example</module>
+        <module>jdbc-event-streaming</module>
         <module>jms-producer-consumer</module>
         <module>news-event-streaming</module>
         <module>oracle-database-kafka-apis</module>

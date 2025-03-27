@@ -16,6 +16,8 @@ public class JDBCConsumer implements Runnable {
     private final DataSource dataSource;
     private final int id;
     private final CountDownLatch expectedEvents;
+    private boolean done = false;
+    private int consumedEvents = 0;
 
     public JDBCConsumer(DataSource dataSource, int id, CountDownLatch expectedEvents) {
         this.dataSource = dataSource;
@@ -25,7 +27,7 @@ public class JDBCConsumer implements Runnable {
 
     @Override
     public void run() {
-        while (expectedEvents.getCount() > 0) {
+        if (expectedEvents.getCount() > 0) {
             try (Connection conn = dataSource.getConnection();
                  CallableStatement cs = conn.prepareCall("{? = call consume_json_event()}");
                  ) {
@@ -41,17 +43,18 @@ public class JDBCConsumer implements Runnable {
                         ps.setObject(1, oson, OracleTypes.JSON);
                         ps.execute();
                         expectedEvents.countDown();
+                        consumedEvents++;
                     }
                 }
-                Thread.sleep(1000);
             } catch (SQLException e) {
                 if (e.getErrorCode() != END_OF_FETCH_CODE) {
                     System.err.println("Error consuming event: " + e.getMessage());
                 }
-            } catch (InterruptedException e) {
-                System.err.println("Timeout consuming event: " + e.getMessage());
             }
+        } else if (!done) {
+            done = true;
+            System.out.printf("[CONSUMER %d] Consumed %d events. Shutting down consumer.\n", id, consumedEvents);
         }
-        System.out.printf("[CONSUMER %d] All events consumed. Shutting down consumer.\n", id);
+
     }
 }

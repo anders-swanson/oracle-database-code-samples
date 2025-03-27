@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import com.oracle.spring.json.jsonb.JSONB;
 import jakarta.json.bind.JsonbBuilder;
@@ -28,6 +30,7 @@ import org.testcontainers.oracle.OracleContainer;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import org.testcontainers.utility.MountableFile;
 
+import static java.util.concurrent.Executors.newScheduledThreadPool;
 import static java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -85,8 +88,9 @@ public class JDBCEventStreamingTest {
         ExecutorService executor = newVirtualThreadPerTaskExecutor();
         executor.submit(producer);
 
-        // Start a JDBC consumer group with three consumer threads.
+        // Start three JDBC consumer threads.
         CountDownLatch latch = new CountDownLatch(input.size());
+        ScheduledExecutorService scheduledExecutorService = newScheduledThreadPool(3, Thread.ofVirtual().factory());
         final int consumerThreads = 3;
         for (int i = 0; i < consumerThreads; i++) {
             JDBCConsumer consumer = new JDBCConsumer(
@@ -94,10 +98,11 @@ public class JDBCEventStreamingTest {
                     i+1,
                     latch
             );
-            executor.submit(consumer);
+            // Submit each consumer with a 1 ms delay between consume
+            scheduledExecutorService.scheduleAtFixedRate(consumer, 0, 100, TimeUnit.MILLISECONDS);
         }
 
-        // Wait for the consumer group to receive all events.
+        // Wait for the consumers to receive all events.
         latch.await();
         // Verify that all events were sent, processed by consumers,
         // and saved into the weather_events table.

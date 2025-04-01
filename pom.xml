@@ -32,6 +32,7 @@
     </properties>
 
     <modules>
+        <module>ai-vector-search</module>
         <module>database-per-service-example</module>
         <module>jdbc-event-streaming</module>
         <module>jms-producer-consumer</module>

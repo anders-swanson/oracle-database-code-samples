@@ -40,6 +40,7 @@
         <module>oracle-database-kafka-apis</module>
         <module>spring-boot-dynamic-property-source</module>
         <module>spring-boot-jms-example</module>
+        <module>spring-data-mongodb-oracle-api</module>
         <module>spring-jpa</module>
         <module>spring-resource-sample</module>
         <module>spring-vault-oracle-app</module>

@@ -15,9 +15,9 @@
     <description>Example of the Database Per Service pattern with PDBs</description>
 
     <modules>
-        <module>courses</module>
-        <module>students</module>
-        <module>sample</module>
+<!--        <module>courses</module>-->
+<!--        <module>students</module>-->
+<!--        <module>sample</module>-->
     </modules>
 
     <dependencies>

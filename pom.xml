@@ -36,6 +36,8 @@
         <module>database-per-service-example</module>
         <module>jdbc-event-streaming</module>
         <module>jms-producer-consumer</module>
+        <module>migrate-kafka-to-oracle/kafka-app</module>
+        <module>migrate-kafka-to-oracle/txeventq-app</module>
         <module>news-event-streaming</module>
         <module>oracle-database-kafka-apis</module>
         <module>spring-boot-dynamic-property-source</module>

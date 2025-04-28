@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    oracleucp:
+      connection-pool-name: JMSProducer
+  banner:
+    location: classpath:banner-jms-producer.txt
+
+server:
+  port: 8998

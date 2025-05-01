@@ -102,8 +102,9 @@ private static Properties connectionProperties() {
     props.setProperty("security.protocol", "SSL");
     // TNS Alias
     props.put("oracle.service.name", "mydb_tp");
+    props.put("tns.alias", "mydb_tp");
     // If using Oracle Database wallet, pass wallet directory
-    String resourcesDir = new File(TxEventQApp.class.getClassLoader().getResource("").getFile())
+    String resourcesDir = new File(KafkaApp.class.getClassLoader().getResource("").getFile())
             .getAbsolutePath();
     props.put("oracle.net.tns_admin", resourcesDir);
     return props;

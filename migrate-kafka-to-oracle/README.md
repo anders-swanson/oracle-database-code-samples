@@ -1,5 +1,7 @@
 # Migrate Apache Kafka to Oracle Database Transactional Event Queues (TxEventQ)
 
+![Migrate to TxEventQ](migrate-kafka-to-oracle-txeventq.png)
+
 This module demonstrates migrating application code from Apache Kafka to [TxEventQ](https://oracle.github.io/microservices-datadriven/transactional-event-queues/getting-started/index.html), using the Kafka Java Client for Oracle Database Transactional Event Queues.
 
 This module includes two sub-modules, [kafka-app](./kafka-app), which contains a simple Apache Kafka application, and [txeventq-app](./txeventq-app), which contains an updated version of the application that is modified to use Oracle Database instead of Apache Kafka.

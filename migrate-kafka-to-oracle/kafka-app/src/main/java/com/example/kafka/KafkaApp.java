@@ -73,8 +73,8 @@ public class KafkaApp {
         // Start the producer, which sends 10 total messages (value of TOTAL_RECORDS).
         return EXECUTOR.submit(() -> {
             try (Producer<String, String> producer = createProducer(connectionProperties())) {
-                for (int i = 0; i < TOTAL_RECORDS; i++) {
-                    String message = "Message #" + (i + 1);
+                for (WeatherEvent event : WeatherEvent.getSampleEvents()) {
+                    String message = event.toString();
                     ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME, message);
                     producer.send(record);
                     System.out.println("[PRODUCER] Sent: " + message);

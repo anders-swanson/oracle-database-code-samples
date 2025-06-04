@@ -17,7 +17,7 @@
 
     <properties>
         <okafka.version>23.6.0.0</okafka.version>
-        <oracle.starters.version>25.1.0</oracle.starters.version>
+        <oracle.starters.version>25.2.0</oracle.starters.version>
         <spring.cloud.oracle.version>1.4.1</spring.cloud.oracle.version>
         <oracle.version>23.8.0.25.04</oracle.version>
         <kafka.clients.version>3.7.1</kafka.clients.version>
@@ -36,7 +36,9 @@
         <module>jdbc-event-streaming</module>
         <module>jms-producer-consumer</module>
         <module>migrate-kafka-to-oracle/kafka-app</module>
-        <module>migrate-kafka-to-oracle/txeventq-app</module>
+        <module>migrate-kafka-to-oracle/kafka-app-step-1</module>
+        <module>migrate-kafka-to-oracle/kafka-app-step-2</module>
+        <module>migrate-kafka-to-oracle/kafka-app-step-3</module>
         <module>news-event-streaming</module>
         <module>oracle-database-kafka-apis</module>
         <module>spring-boot-dynamic-property-source</module>

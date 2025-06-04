@@ -1,4 +1,4 @@
-package com.example.kafka;
+package com.example.kafka1;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;

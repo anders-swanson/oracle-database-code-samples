@@ -2,7 +2,7 @@
 
 This module demonstrates how to use [Sessionless Transactions](https://docs.oracle.com/en/database/oracle/oracle-database/23/adfns/developing-applications-sessionless-transactions.html#GUID-C1F67D04-CE72-416E-8CED-243E5710E83D) using the Oracle JDBC driver.
 
-For a detailed walkthrough, see [Fire-and-Forget: The Power of Sessionless Transactions]()
+For a detailed walkthrough, see [Fire-and-Forget: The Power of Sessionless Transactions](https://andersswanson.dev/2025/06/17/fire-and-forget-the-power-of-sessionless-transactions/)
 
 ### Running Example
 

@@ -42,6 +42,7 @@
         <module>news-event-streaming</module>
         <module>oracle-database-kafka-apis</module>
         <module>sessionless-transactions</module>
+        <module>spring-boot-cdc</module>
         <module>spring-boot-dynamic-property-source</module>
         <module>spring-boot-jms-example</module>
         <module>spring-data-mongodb-oracle-api</module>

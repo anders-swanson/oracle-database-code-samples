@@ -35,7 +35,7 @@ Prerequisites:
 The app requires access to an Oracle Database instance. The default configuration assumes a local containerized database running on port `1521`. You can replicate this configuration by starting an Oracle Database Free container:
 
 ```bash
-docker run --name oracledb -d -p 1521:1521 -e ORACLE_PASSWORD=testpwd gvenzl/oracle-free:23.7-slim-faststart
+docker run --name oracledb -d -p 1521:1521 -e ORACLE_PASSWORD=testpwd gvenzl/oracle-free:23.8-slim-faststart
 ```
 
 After a few moments, the database should start up. Once your database is ready, run the [testuser.sql](./src/test/resources/testuser.sql) and [news-schema.sql](./src/test/resources/news-schema.sql) scripts to create a user, grants, tables, and duality view required by the application. A companion cleanup script, [cleanup.sql](./src/test/resources/cleanup.sql), is provided to delete the tables, duality view, and topics used by the app.

@@ -35,10 +35,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @EnabledIfEnvironmentVariable(named = "OJDBC_PROPERTIES", matches = ".+")
 public class NewsEventStreamingIT {
     // Pre-pull this image to avoid testcontainers image pull timeouts:
-    // docker pull gvenzl/oracle-free:23.7-slim-faststart
+    // docker pull gvenzl/oracle-free:23.8-slim-faststart
     @Container
     @ServiceConnection
-    private static final OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.7-slim-faststart")
+    private static final OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.8-slim-faststart")
             .withUsername("testuser")
             .withPassword("testpwd")
             .withInitScript("news-schema.sql");

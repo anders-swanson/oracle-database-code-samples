@@ -6,13 +6,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "book_genre")
-@Getter
-@Setter
 public class BookGenre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +17,20 @@ public class BookGenre {
 
     @Column(name = "genre_name", nullable = false, unique = true, length = 50)
     private String genreName;
+
+    public Long getGenreId() {
+        return genreId;
+    }
+
+    public void setGenreId(Long genreId) {
+        this.genreId = genreId;
+    }
+
+    public String getGenreName() {
+        return genreName;
+    }
+
+    public void setGenreName(String genreName) {
+        this.genreName = genreName;
+    }
 }

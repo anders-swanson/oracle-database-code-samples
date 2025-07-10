@@ -10,11 +10,12 @@ import com.example.news.events.factory.NewsConsumerFactory;
 import com.example.news.events.factory.NewsParserConsumerProducerFactory;
 import com.example.news.events.producerconsumer.OKafkaTask;
 import jakarta.annotation.PostConstruct;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.Admin;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.common.errors.TopicExistsException;
 import org.oracle.okafka.clients.admin.AdminClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.AsyncTaskExecutor;
@@ -25,9 +26,10 @@ import org.springframework.stereotype.Component;
  * If the topics already exist, a message is logged.
  * Additionally, the OKafkaManager starts consumer threads on application startup.
  */
-@Slf4j
 @Component
 public class OKafkaManager implements AutoCloseable {
+    private static final Logger log = LoggerFactory.getLogger(OKafkaManager.class);
+
     private final AsyncTaskExecutor asyncTaskExecutor;
     private final Properties okafkaProperties;
     private final String rawTopic;

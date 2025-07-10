@@ -6,13 +6,15 @@ import java.util.Collections;
 
 import com.example.news.genai.vectorstore.NewsStore;
 import com.example.news.model.News;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.oracle.okafka.clients.consumer.KafkaConsumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
-@Slf4j
 public class NewsConsumer implements OKafkaTask {
+    private static final Logger log = LoggerFactory.getLogger(NewsConsumer.class);
+
     private final KafkaConsumer<String, News> consumer;
     private final String newsTopic;
     private final NewsStore vectorStore;

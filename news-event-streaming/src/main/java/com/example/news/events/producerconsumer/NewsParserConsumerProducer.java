@@ -8,15 +8,17 @@ import java.util.concurrent.CompletableFuture;
 
 import com.example.news.model.News;
 import com.example.news.events.parser.Parser;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.oracle.okafka.clients.consumer.KafkaConsumer;
 import org.oracle.okafka.clients.producer.KafkaProducer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
 public class NewsParserConsumerProducer implements OKafkaTask {
+    private static final Logger log = LoggerFactory.getLogger(NewsParserConsumerProducer.class);
+
     private final KafkaConsumer<String, String> consumer;
     private final KafkaProducer<String, News> producer;
     private final Parser parser;

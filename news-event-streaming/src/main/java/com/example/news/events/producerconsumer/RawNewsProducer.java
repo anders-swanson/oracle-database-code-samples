@@ -2,12 +2,14 @@ package com.example.news.events.producerconsumer;
 
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.oracle.okafka.clients.producer.KafkaProducer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
 public class RawNewsProducer implements AutoCloseable {
+    private static final Logger log = LoggerFactory.getLogger(RawNewsProducer.class);
+
     private final String rawTopic;
     private final KafkaProducer<String, String> producer;
 

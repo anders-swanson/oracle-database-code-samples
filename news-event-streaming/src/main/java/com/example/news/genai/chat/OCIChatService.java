@@ -22,7 +22,6 @@ import com.oracle.bmc.generativeaiinference.model.TextContent;
 import com.oracle.bmc.generativeaiinference.model.UserMessage;
 import com.oracle.bmc.generativeaiinference.requests.ChatRequest;
 import com.oracle.bmc.generativeaiinference.responses.ChatResponse;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -85,7 +84,6 @@ public class OCIChatService implements ChatService {
         });
     }
 
-    @Getter
     public enum InferenceRequestType {
         COHERE("COHERE"),
         LLAMA("LLAMA");
@@ -94,6 +92,10 @@ public class OCIChatService implements ChatService {
 
         InferenceRequestType(String type) {
             this.type = type;
+        }
+
+        public String getType() {
+            return type;
         }
     }
 

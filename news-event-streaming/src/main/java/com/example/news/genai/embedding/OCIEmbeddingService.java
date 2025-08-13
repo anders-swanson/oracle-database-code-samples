@@ -92,7 +92,7 @@ public class OCIEmbeddingService implements EmbeddingService {
         List<List<Float>> embeddings = response.getEmbedTextResult().getEmbeddings();
         return embeddings.stream().map(embedding -> {
                     try {
-                        return vectorDataAdapter.toVECTOR(embedding);
+                        return vectorDataAdapter.toFloat32VECTOR(embedding);
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     }

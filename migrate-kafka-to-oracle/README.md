@@ -138,7 +138,7 @@ private static Properties connectionProperties() {
 To run the updated app, start an Oracle Database Free container:
 
 ```bash
-docker run --name oracledb -d -p 1521:1521 -e ORACLE_PASSWORD=testpwd gvenzl/oracle-free:23.8-slim-faststart
+docker run --name oracledb -d -p 1521:1521 -e ORACLE_PASSWORD=testpwd gvenzl/oracle-free:23.9-slim-faststart
 ```
 
 Next, run the [testuser.sql](./testuser.sql) script against the database as sysdba. This script creates a database user for the app with all necessary grants to create topics and produce/consume messages.

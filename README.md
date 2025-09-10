@@ -1,11 +1,22 @@
-# Oracle Database Java Samples
+# Oracle Database Samples
+
+### Navigating this repository
+
+Each module in this project contains a separate Oracle Database sample, mainly implemented in Java. Use the README to find a sample you're interested in, or navigate to the directory of your choice.
+
+#### Samples in other languages
+
+- [Python](golang/dualityviews/README.md): Python code samples using the [python-oracledb driver](https://python-oracledb.readthedocs.io/en/latest/) 
+- [Go](./golang/README.md): Go code samples using the [godror driver](https://github.com/godror/godror).
+- [PLSQL](./sql/README.md): Code samples in PL/SQL.
+
+### Java Oracle Database Code Samples
 
 Collection of Java samples and demo applications using Oracle Database, with a focus on the converged database architecture.
 
 | Sample Project                                                                         | Description                                                                                                                                                                                                                                                                            |
 |----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [AI Vector Search](./ai-vector-search/README.md)                                       | Implement AI Vector Search with Oracle Database over JDBC to find semantically similar documents. The [OracleVectorSample](./ai-vector-search/src/main/java/com/example/OracleVectorSample.java) class provides a reference implementation for Vector Search with Oracle Database.     |
-| [GoLang Samples](./golang)                                                             | Oracle Database code samples using the Go programming language with [godror](https://github.com/godror/godror).                                                                                                                                                                        |
 | [Oracle Database JDBC Event Streaming](./jdbc-event-streaming/README.md)               | Stream events with Oracle Database TxEventQ using plain JDBC! The producer and consumer invoke stored procedures to send and receive asynchronous messages on Oracle Database Transactional Event Queues.                                                                              |
 | [Oracle Database JMS Producer Consumer Example](./jms-producer-consumer/README.md)     | Example using  Oracle Database JDBC to produce and consume messages over the JMS API. Includes examples using topics for JMS multi-consumer pub/sub, and JMS queues (point-to-point).                                                                                                  |
 | [Migrate Apache Kafka to Oracle Database TxEventQ](./migrate-kafka-to-oracle)          | Sample that demonstrates how to migrate an Apache Kafka application to use Oracle Database Transactional Event Queues                                                                                                                                                                  |
@@ -19,9 +30,8 @@ Collection of Java samples and demo applications using Oracle Database, with a f
 | [Spring Boot JMS Example](./spring-boot-jms-example/README.md)                         | Learn how to use Oracle Database Transactional Event Queues with the Java JMS API for asynchronous event-streaming.                                                                                                                                                                    |
 | [Spring Boot Resource Loader](./spring-resource-sample/README.md)                      | Access Oracle Database blobs using the [Spring Resource API](https://docs.spring.io/spring-framework/reference/core/resources.html).                                                                                                                                                   |
 | [Spring Vault Oracle App](./spring-vault-oracle-app/README.md)                         | Sample application demonstrating how to dynamically load [Oracle Cloud Infrastructure (OCI) Vault](https://docs.oracle.com/en-us/iaas/Content/KeyManagement/home.htm) key/values as Spring properties leveraging [Spring Cloud Oracle](https://github.com/oracle/spring-cloud-oracle). |
-| [SQL Examples](./sql/README.md)                                                        | SQL samples for Oracle Database.                                                                                                                                                                                                                                                       |
 | [TxEventQ Examples](./txeventq-examples)                                               | Assorted messages examples with Oracle Database Transactional Event Queues, including Kafka, JMS, PL/SQL, and ORDS.                                                                                                                                                                    |
-| [Oracle Testcontainers](./testcontainers/README.md)                                    | Learn how to use the popular [Testcontainers](https://testcontainers.com/) library by example with [Oracle Database Free](https://medium.com/@anders.swanson.93/oracle-database-23ai-free-11abf827ab37).                                                                               |
+| [Oracle Testcontainers](./testcontainers/README.md)                                    | Learn how to use the popular [Testcontainers](https://testcontainers.com/) library by example with [Oracle Database Free](https://andersswanson.dev/2025/05/22/oracle-database-for-free/).                                                                                             |
 
 # Oracle Database Free
 

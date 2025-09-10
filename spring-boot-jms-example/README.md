@@ -4,7 +4,7 @@ This example demonstrates how to write a pub/sub application using [Spring JMS](
 
 The [Spring Boot Starter for AQ/JMS](https://github.com/oracle/spring-cloud-oracle/tree/main/database/starters/oracle-spring-boot-starter-aqjms) used in the example pulls in all necessary dependencies to use Spring JMS with Oracle Database Transactional Event Queues, requiring minimal configuration.
 
-For an in-depth walkthough of Spring JMS with Transactional Event Queues, see the following guide: [Use JMS for asynchronous messaging in Spring Boot](https://medium.com/@anders.swanson.93/use-jms-for-asynchronous-messaging-in-spring-boot-d67f8349c7c4).
+For an in-depth walkthough of Spring JMS with Transactional Event Queues, see the following guide: [Use JMS for asynchronous messaging in Spring Boot](https://andersswanson.dev/2025/06/19/use-jms-for-asynchronous-messaging-in-spring-boot/).
 
 ## Prerequisites
 

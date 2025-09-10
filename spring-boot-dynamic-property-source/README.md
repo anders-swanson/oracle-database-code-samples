@@ -4,7 +4,7 @@ This example application demonstrates how to use the Spring Boot EnumerablePrope
 
 The use of dynamic property sources allows applications to manage and rotate properties from external services, such as secure key vaults, file servers, or databases for increased application configurability and security. 
 
-For an in-depth walkthough, see the following guide: [Dynamically load Spring properties from external repositories](https://medium.com/@anders.swanson.93/dynamically-load-spring-properties-from-external-locations-3ef644b42035).
+For an in-depth walkthough, see the following guide: [Dynamically load Spring properties from external repositories](https://andersswanson.dev/2025/05/29/dynamically-load-spring-properties-from-external-repositories/).
 . See also [Spring Cloud Config](https://docs.spring.io/spring-cloud-config/docs/current/reference/html/) for an example of externalized configuration in distributed systems.
 
 ## Prerequisites

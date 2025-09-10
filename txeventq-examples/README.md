@@ -2,11 +2,7 @@
 
 Prerequisites: An Oracle Database instance. The examples are configured to use a local, Oracle Database Free container running on port 1521, but any 23ai instance will work if configured accordingly.
 
-<<<<<<< Updated upstream
 Like all my samples, you can run it on [Oracle Database Free](https://andersswanson.dev/2025/05/22/oracle-database-for-free/)
-=======
-Like all my samples, you can run it on Oracle Database Free: https://andersswanson.dev/2025/05/22/oracle-database-for-free/
->>>>>>> Stashed changes
 
 ### [Kafka API](https://github.com/oracle/okafka)
 

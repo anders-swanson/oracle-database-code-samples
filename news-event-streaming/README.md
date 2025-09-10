@@ -17,7 +17,7 @@ The News Event Streaming Application makes use of the following (4) Oracle Datab
 3. [Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/23/adque/aq-introduction.html): We stream news articles using the [Kafka Java Client for Oracle Database Transactional Event Queues](https://github.com/oracle/okafka), with topic for raw news, and a topic for parsed news JSON data (including vector embeddings).
 4. [Vector Data and Similarity Search](https://www.oracle.com/database/ai-vector-search/): Using news article vector embeddings and the NewsService REST API, we can query for news articles that are similar in meaning to an input text. We can also summarize news articles similar to an input query by combing vector search with an OCI GenAI chat model!
 
-> What's neat about this? Each of the above features runs within the same database engine. It  works on [Oracle Database Free](https://medium.com/@anders.swanson.93/oracle-database-23ai-free-11abf827ab37), which I used to test this application in a local container instance.
+> What's neat about this? Each of the above features runs within the same database engine. It  works on [Oracle Database Free](https://andersswanson.dev/2025/05/22/oracle-database-for-free/), which I used to test this application in a local container instance.
 
 ![converged database](./images/converged.png)
 

@@ -4,7 +4,7 @@ This code sample demonstrates how to use Oracle Database 23ai as a vector store 
 
 The [OracleVectorSample](src/main/java/com/example/OracleVectorSample.java) implements a vector store abstraction that supports inserting embeddings into the database, and querying embeddings.
 
-To learn more about Vector Database, read my article [Intro to Vector Databases](https://medium.com/@anders.swanson.93/intro-to-vector-databases-9f4330c47ac0)
+To learn more about Vector Database, read my article [Intro to Vector Databases](https://andersswanson.dev/2025/06/23/whats-a-vector-database/)
 
 ## Running the sample
 

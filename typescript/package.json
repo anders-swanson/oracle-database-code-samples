@@ -1,0 +1,25 @@
+{
+  "name": "typescript-oracle-samples",
+  "version": "1.0.0",
+  "description": "Sample code for Oracle Database using typescript",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest",
+
+    "testcontainers-example": "vitest test/testcontainers/oracle_database.test.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "type": "module",
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "@types/oracledb": "^6.9.1",
+    "oracledb": "^6.9.0",
+    "testcontainers": "^11.5.1"
+  }
+}

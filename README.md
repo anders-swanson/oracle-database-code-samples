@@ -8,6 +8,7 @@ Each module in this project contains a separate Oracle Database sample, mainly i
 
 - [Python](golang/dualityviews/README.md): Python code samples using the [python-oracledb driver](https://python-oracledb.readthedocs.io/en/latest/) 
 - [Go](./golang/README.md): Go code samples using the [godror driver](https://github.com/godror/godror).
+- [Typescript/NodeJS](./typescript/README.md): Typescript code samples using the [node-oracledb driver](https://node-oracledb.readthedocs.io/en/latest/user_guide/introduction.html)
 - [PLSQL](./sql/README.md): Code samples in PL/SQL.
 
 ### Java Oracle Database Code Samples

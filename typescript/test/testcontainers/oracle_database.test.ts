@@ -16,7 +16,7 @@ describe("OracleDatabaseContainer", () => {
     it("should connect and get the current database version", async () => {
         let conn = await db.getDatabaseConnection();
 
-        const result = await conn.execute("select * from V$VERSION")
+        const result = await conn.execute("SELECT banner FROM v$version")
 
         expect(result).not.toBeUndefined()
         if (result.rows) {

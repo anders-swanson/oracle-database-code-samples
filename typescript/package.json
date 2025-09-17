@@ -6,7 +6,8 @@
     "build": "tsc",
     "test": "vitest",
 
-    "testcontainers-example": "vitest test/testcontainers/oracle_database.test.ts"
+    "testcontainers-example": "vitest test/testcontainers/oracle_database.test.ts",
+    "sql-producer-consumer": "vitest run test/txeventq/txeventq.test.ts -t 'plsql pub-sub'"
   },
   "keywords": [],
   "author": "",

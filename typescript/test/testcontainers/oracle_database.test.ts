@@ -7,7 +7,7 @@ describe("OracleDatabaseContainer", () => {
     beforeAll(async () => {
         db = new OracleDatabaseContainer();
         await db.start();
-    }, 10 * 60 * 1000); // Oracle XE can take a few minutes to start
+    }, 10 * 60 * 1000); // With a pre-pulled image, the container should start up in seconds.
 
     afterAll(async () => {
         await db.stop();

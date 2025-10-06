@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.5</version>
+        <version>3.5.6</version>
         <relativePath/>
     </parent>
     <groupId>com.example</groupId>
@@ -44,6 +44,7 @@
         <module>spring-boot-cdc</module>
         <module>spring-boot-dynamic-property-source</module>
         <module>spring-boot-jms-example</module>
+        <module>spring-boot-jms-tracing</module>
         <module>spring-data-mongodb-oracle-api</module>
         <module>spring-jpa</module>
         <module>spring-resource-sample</module>
@@ -124,6 +125,13 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-nop</artifactId>
                 <version>${slf4j.nop.version}</version>
+            </dependency>
+
+            <!-- Observability -->
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-tracing-bridge-otel</artifactId>
+                <version>${micrometer-tracing.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

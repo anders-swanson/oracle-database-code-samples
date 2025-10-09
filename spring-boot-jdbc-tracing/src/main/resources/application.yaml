@@ -10,7 +10,7 @@ management:
 
 spring:
   application:
-    name: JMSTracingApp
+    name: JDBCTracingApp
   profiles:
     active: scheduleProducer
   datasource:

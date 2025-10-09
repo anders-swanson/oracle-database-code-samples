@@ -27,6 +27,7 @@
         <jakarta.jms-api.version>3.1.0</jakarta.jms-api.version>
         <jakarta.transaction-api.version>2.0.1</jakarta.transaction-api.version>
         <slf4j.nop.version>2.0.17</slf4j.nop.version>
+        <ojdbc.otel.version>1.0.6</ojdbc.otel.version>
     </properties>
 
     <modules>
@@ -43,6 +44,7 @@
         <module>sessionless-transactions</module>
         <module>spring-boot-cdc</module>
         <module>spring-boot-dynamic-property-source</module>
+        <module>spring-boot-jdbc-tracing</module>
         <module>spring-boot-jms-example</module>
         <module>spring-boot-jms-tracing</module>
         <module>spring-data-mongodb-oracle-api</module>
@@ -132,6 +134,11 @@
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-tracing-bridge-otel</artifactId>
                 <version>${micrometer-tracing.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.oracle.database.jdbc</groupId>
+                <artifactId>ojdbc-provider-opentelemetry</artifactId>
+                <version>${ojdbc.otel.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

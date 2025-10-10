@@ -28,3 +28,13 @@ mvn spring-boot:run
 1. Navigate to the Zipkin UI, using the container URL `http://localhost:9411/zipkin/`
 2. Click "Run Query" to find all traces, or search for a specific trace ID
 3. View the trace! You can see the producer scheduling, publishing the event, and consuming the event in a single trace.
+
+## Configure OJDBC Tracing Properties
+
+##### oracle.jdbc.provider.opentelemetry.enabled
+
+Set this property to `true` to enable the provider. Enabled by default.
+
+##### oracle.jdbc.provider.opentelemetry.sensitive-enabled
+
+Set this property to `true` to export sensitive data. Disabled by default.

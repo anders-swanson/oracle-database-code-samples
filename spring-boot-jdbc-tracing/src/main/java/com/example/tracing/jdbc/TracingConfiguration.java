@@ -3,6 +3,7 @@ package com.example.tracing.jdbc;
 import io.opentelemetry.api.trace.Tracer;
 import jakarta.annotation.PostConstruct;
 import oracle.jdbc.provider.opentelemetry.OpenTelemetryTraceEventListener;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -15,6 +16,7 @@ public class TracingConfiguration {
 
     @PostConstruct
     void init() {
-        OracleDatabaseTracingProvider.setTraceEventListener(new OpenTelemetryTraceEventListener(tracer));
+        OpenTelemetryTraceEventListener tel = new OpenTelemetryTraceEventListener(tracer);
+        OracleDatabaseTracingProvider.setTraceEventListener(tel);
     }
 }

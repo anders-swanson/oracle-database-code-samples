@@ -1,3 +1,5 @@
+
+# Tracing Configuration
 management:
   tracing:
     sampling:
@@ -12,7 +14,7 @@ spring:
   jmx:
     enabled: true
   application:
-    name: JDBCTracingApp
+    name: OJDBC Tracing
   profiles:
     active: scheduleProducer
   datasource:

@@ -44,6 +44,7 @@
         <module>sessionless-transactions</module>
         <module>spring-boot-cdc</module>
         <module>spring-boot-dynamic-property-source</module>
+        <module>spring-boot-jdbc-custom-tracer</module>
         <module>spring-boot-jdbc-tracing</module>
         <module>spring-boot-jms-example</module>
         <module>spring-boot-jms-tracing</module>

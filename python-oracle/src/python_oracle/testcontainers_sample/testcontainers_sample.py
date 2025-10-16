@@ -11,7 +11,7 @@ def testcontainers_example():
             app_user_password=app_password
     ) as oracledb:
         cursor = oracledb.get_connection().cursor()
-        for row in cursor.execute("select * from V$VERSION"):
+        for row in cursor.execute("SELECT banner FROM v$version WHERE ROWNUM = 1"):
             if row is None:
                 print("No result from query!")
             print(row)

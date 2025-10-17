@@ -12,6 +12,7 @@ public class TracingProperties {
     private boolean enabled = true;
     private boolean showSensitiveData = false;
     private boolean includeClientInfo = false;
+    private boolean includeSystemUsername = false;
 
     private List<String> clientInfoKeys = new ArrayList<>();
 
@@ -43,6 +44,14 @@ public class TracingProperties {
 
     public void setIncludeClientInfo(boolean includeClientInfo) {
         this.includeClientInfo = includeClientInfo;
+    }
+
+    public boolean isIncludeSystemUsername() {
+        return includeSystemUsername;
+    }
+
+    public void setIncludeSystemUsername(boolean includeSystemUsername) {
+        this.includeSystemUsername = includeSystemUsername;
     }
 
     public List<String> getClientInfoKeys() {

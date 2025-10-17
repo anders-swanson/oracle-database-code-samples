@@ -141,6 +141,10 @@ public class JDBCTraceEventListener implements TraceEventListener {
             }
         }
 
+        if (tracingProperties.isIncludeSystemUsername()) {
+            spanBuilder.setAttribute("System Username", System.getProperty("user.name"));
+        }
+
         // Add sensitive information (URL and SQL) if it is enabled
         if (tracingProperties.isEnabled()) {
             logger.log(Level.FINEST, "Sensitive information on");

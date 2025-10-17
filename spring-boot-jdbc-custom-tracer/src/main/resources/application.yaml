@@ -3,12 +3,19 @@
 management:
   tracing:
     ojdbc:
+      # Enable the OJDBC Tracer
       enabled: true
+      # Show full SQL query text
       show-sensitive-data: true
+      # Include the operating system username in spans
+      include-system-username: true
+      # Include JDBC client info
       include-client-info: true
+      # List of client info keys to include in spans
       client-info-keys:
         - OCSID.MODULE
         - OCSID.CLIENTID
+        - OCSID.ACTION
     sampling:
       # Send 100% of spans
       probability: 1

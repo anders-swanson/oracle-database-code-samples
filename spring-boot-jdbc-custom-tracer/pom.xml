@@ -8,7 +8,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring-boot-jdbc-tracing</artifactId>
+    <artifactId>spring-boot-jdbc-custom-tracer</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>spring-boot-jdbc-custom-tracer</name>
     <description>Implement a custom JDBC tracer with Oracle AI Database</description>

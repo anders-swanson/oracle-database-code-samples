@@ -6,9 +6,9 @@ management:
       enabled: true
       show-sensitive-data: true
       include-client-info: true
-      client-info:
-        OCSID.MODULE: ExampleTracingAPI
-        OCSID.CLIENT_INFO: OJDBCTracingExample
+      client-info-keys:
+        - OCSID.MODULE
+        - OCSID.CLIENTID
     sampling:
       # Send 100% of spans
       probability: 1

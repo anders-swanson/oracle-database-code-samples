@@ -2,7 +2,8 @@ package com.example.tracing.jdbc.custom;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.Properties;
+import java.util.ArrayList;
+import java.util.List;
 
 @ConfigurationProperties(prefix = TracingProperties.PREFIX)
 public class TracingProperties {
@@ -12,7 +13,7 @@ public class TracingProperties {
     private boolean showSensitiveData = false;
     private boolean includeClientInfo = false;
 
-    private Properties clientInfo = new Properties();
+    private List<String> clientInfoKeys = new ArrayList<>();
 
     public static TracingProperties defaultProperties() {
         TracingProperties props = new TracingProperties();
@@ -44,11 +45,11 @@ public class TracingProperties {
         this.includeClientInfo = includeClientInfo;
     }
 
-    public Properties getClientInfo() {
-        return clientInfo;
+    public List<String> getClientInfoKeys() {
+        return clientInfoKeys;
     }
 
-    public void setClientInfo(Properties clientInfo) {
-        this.clientInfo = clientInfo;
+    public void setClientInfoKeys(List<String> clientInfoKeys) {
+        this.clientInfoKeys = clientInfoKeys;
     }
 }

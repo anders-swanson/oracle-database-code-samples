@@ -85,6 +85,10 @@ public class JDBCTraceEventListener implements TraceEventListener {
                             .setAttribute("SID", params[5].toString())
                             .setAttribute("Connection data", params[6].toString());
                 }
+
+                if (tracingProperties.isIncludeClientInfo()) {
+                    System.out.println("foo");
+                }
                 return spanBuilder.startSpan();
             } else if (event == TraceEventListener.JdbcExecutionEvent.AC_REPLAY_STARTED
                     || event == TraceEventListener.JdbcExecutionEvent.AC_REPLAY_SUCCESSFUL) {
@@ -127,8 +131,13 @@ public class JDBCTraceEventListener implements TraceEventListener {
                 .setAttribute("SQL ID", traceContext.getSqlId());
 
         if (tracingProperties.isIncludeClientInfo()) {
-            for (String key : tracingProperties.getClientInfo().stringPropertyNames()) {
-                spanBuilder.setAttribute(key, tracingProperties.getClientInfo().getProperty(key));
+            for (String key : tracingProperties.getClientInfoKeys()) {
+                try {
+                    String value = traceContext.getClientInfo(key);
+                    spanBuilder.setAttribute(key, value);
+                } catch (SQLException e) {
+                    logger.log(Level.WARNING, "Failed to set client info for key " + key);
+                }
             }
         }
 

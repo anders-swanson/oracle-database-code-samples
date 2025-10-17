@@ -5,6 +5,10 @@ management:
     ojdbc:
       enabled: true
       show-sensitive-data: true
+      include-client-info: true
+      client-info:
+        OCSID.MODULE: ExampleTracingAPI
+        OCSID.CLIENT_INFO: OJDBCTracingExample
     sampling:
       # Send 100% of spans
       probability: 1

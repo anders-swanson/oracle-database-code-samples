@@ -13,9 +13,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+/**
+ * Based on: <a href="https://github.com/oracle/ojdbc-extensions/blob/main/ojdbc-provider-opentelemetry/src/main/java/oracle/jdbc/provider/opentelemetry/OpenTelemetryTraceEventListener.java">OpenTelemetryTraceEventListener.java</a>
+ */
 public class JDBCTraceEventListener implements TraceEventListener {
     private static final String TRACE_KEY = "clientcontext.ora$opentelem$tracectx";
-    private static Logger logger = Logger.getLogger(JDBCTraceEventListener.class.getName());
+    private static final Logger logger = Logger.getLogger(JDBCTraceEventListener.class.getName());
     // Number of parameters expected for each execution event
     private static final Map<JdbcExecutionEvent, Integer> EXECUTION_EVENTS_PARAMETERS = new EnumMap<>(
             JdbcExecutionEvent.class) {
@@ -107,13 +110,6 @@ public class JDBCTraceEventListener implements TraceEventListener {
         // Accept all events
         return true;
     }
-    public void setTracer(Tracer tracer) {
-        this.tracer = tracer;
-    }
-
-    public void setTracingProperties(TracingProperties tracingProperties) {
-        this.tracingProperties = tracingProperties;
-    }
 
     private Span initAndGetSpan(TraceContext traceContext, String spanName) {
         /*
@@ -121,15 +117,20 @@ public class JDBCTraceEventListener implements TraceEventListener {
          * child span to the current span. I.e. the current span in context becomes
          * parent to this child span.
          */
-        SpanBuilder spanBuilder = tracer
-                .spanBuilder(spanName)
-                .setAttribute("thread.id", Thread.currentThread().getId())
+        SpanBuilder spanBuilder = tracer.spanBuilder(spanName)
+                .setAttribute("thread.id", Thread.currentThread().threadId())
                 .setAttribute("thread.name", Thread.currentThread().getName())
                 .setAttribute("Connection ID", traceContext.getConnectionId())
                 .setAttribute("Database Operation", traceContext.databaseOperation())
                 .setAttribute("Database User", traceContext.user())
                 .setAttribute("Database Tenant", traceContext.tenant())
                 .setAttribute("SQL ID", traceContext.getSqlId());
+
+        if (tracingProperties.isIncludeClientInfo()) {
+            for (String key : tracingProperties.getClientInfo().stringPropertyNames()) {
+                spanBuilder.setAttribute(key, tracingProperties.getClientInfo().getProperty(key));
+            }
+        }
 
         // Add sensitive information (URL and SQL) if it is enabled
         if (tracingProperties.isEnabled()) {
@@ -173,5 +174,13 @@ public class JDBCTraceEventListener implements TraceEventListener {
 
         traceState.forEach((k, v) -> stringBuilder.append(k).append("=").append(v));
         return String.format("tracestate: %s\r\n", stringBuilder);
+    }
+
+    public void setTracer(Tracer tracer) {
+        this.tracer = tracer;
+    }
+
+    public void setTracingProperties(TracingProperties tracingProperties) {
+        this.tracingProperties = tracingProperties;
     }
 }

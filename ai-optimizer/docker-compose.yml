@@ -1,0 +1,22 @@
+services:
+  ai-optimizer:
+    image: ai-optimizer-aio:${TAG:-latest}
+    container_name: ai-optimizer
+    ports:
+      - 8501:8501
+
+  oraclefree:
+    image: gvenzl/oracle-free:23.9-slim-faststart
+    container_name: oraclefree
+    ports:
+      - 1522:1521
+    environment:
+      - ORACLE_PASSWORD=Welcome12345
+    volumes:
+      - ./oracle:/container-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "lsnrctl status | grep READY"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s

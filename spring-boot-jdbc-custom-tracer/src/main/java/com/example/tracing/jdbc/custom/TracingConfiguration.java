@@ -10,6 +10,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Properties;
 
 @Configuration
@@ -38,10 +40,19 @@ public class TracingConfiguration implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        InetAddress address;
+
+        try {
+            address = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
         if(bean instanceof DataSource ds) {
             Properties props = new Properties();
-            props.setProperty("OCSID.CLIENTID", appName);
+            String clientId = "%s@%s".formatted(appName, address.getHostName());
+            props.setProperty("OCSID.CLIENTID", clientId);
             return new ClientInfoDataSource(ds, props);
+
         }
         return BeanPostProcessor.super.postProcessAfterInitialization(bean, beanName);
     }

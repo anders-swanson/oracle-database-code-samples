@@ -43,6 +43,7 @@
         <module>oracle-database-kafka-apis</module>
         <module>sessionless-transactions</module>
         <module>spring-boot-cdc</module>
+        <module>spring-boot-database-client-info</module>
         <module>spring-boot-dynamic-property-source</module>
         <module>spring-boot-jdbc-custom-tracer</module>
         <module>spring-boot-jdbc-tracing</module>

@@ -77,13 +77,13 @@ public class BooksController {
     public ResponseEntity<Book> createBook(@RequestBody Book book) {
         try (Connection conn = getConnectionWithClientInfo("createBook");
              PreparedStatement pstmt = conn.prepareStatement(
-                     "INSERT INTO books (title, author, isbn, published_date) VALUES (?, ?, ?, ?) RETURNING id",
-                     new String[]{"id"})) {
+                     "INSERT INTO books (title, author, isbn, published_date) VALUES (?, ?, ?, ?)", new String[]{"id",})) {
             pstmt.setString(1, book.title());
             pstmt.setString(2, book.author());
             pstmt.setString(3, book.isbn());
             pstmt.setDate(4, book.publishedDate());
             pstmt.executeUpdate();
+
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
                 if (rs.next()) {
                     Long generatedId = rs.getLong(1);

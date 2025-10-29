@@ -60,7 +60,7 @@ public class Controller {
 
             prepareConnection(conn, ACTION_CREATE);
             ps.setString(1, iceCreamFlavor.flavor());
-            ps.executeUpdate ();
+            ps.executeUpdate();
 
             try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                 if (generatedKeys.next()) {

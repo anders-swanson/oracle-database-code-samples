@@ -29,8 +29,6 @@ spring:
     enabled: true
   application:
     name: OJDBC Tracing
-  profiles:
-    active: scheduleProducer
   datasource:
     username: testuser
     password: testpwd

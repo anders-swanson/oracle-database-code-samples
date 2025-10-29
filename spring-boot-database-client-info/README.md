@@ -1,35 +1,34 @@
-# Spring Boot Oracle Database JDBC Custom Tracer
+# Spring Boot Oracle Database Client Info
 
-This example application demonstrates how to implement a custom tracing implementation for the Oracle JDBC driver, using a Spring Boot app context and OpenTelemetry, as an alternative to the [OJDBC Trace Event Listener](https://github.com/oracle/ojdbc-extensions/blob/main/ojdbc-provider-opentelemetry/src/main/java/oracle/jdbc/provider/opentelemetry/OpenTelemetryTraceEventListener.java)
-
-Why would you want to implement a custom tracer for the Oracle JDBC Driver? To add your custom data to spans!
+This example application demonstrates how to add client information to Oracle Database connections in a Spring Boot application. It sets client identifiers on database connections for better monitoring and tracing. The application includes a simple REST API for managing books, which sets custom client info (MODULE and ACTION) on each connection used in the API operations.
 
 #### Important Classes
- 
-- [JDBCTraceEventListener](./src/main/java/com/example/tracing/jdbc/custom/JDBCTraceEventListener.java) implements spans for the Oracle JDBC Driver. Based on the [OpenTelemetryTraceEventListener](https://github.com/oracle/ojdbc-extensions/blob/main/ojdbc-provider-opentelemetry/src/main/java/oracle/jdbc/provider/opentelemetry/OpenTelemetryTraceEventListener.java)
-- [JDBCTraceEventListenerProvider](./src/main/java/com/example/tracing/jdbc/custom/JDBCTraceEventListenerProvider.java) provides an instance of the Trace Event Listener to the Oracle JDBC Driver during application startup.
-  - [TracingConfigurator](./src/main/java/com/example/tracing/jdbc/custom/TracingConfigurator.java) & [TracingProperties](./src/main/java/com/example/tracing/jdbc/custom/TracingProperties.java) provide Spring Boot configuration for the Trace Event Listener.
+
+- [ClientInfoApplication](./src/main/java/com/example/clientinfo/ClientInfoApplication.java): The main Spring Boot application class that configures the DataSource with client info using a BeanPostProcessor.
+- [ClientInfoDataSource](./src/main/java/com/example/clientinfo/ClientInfoDataSource.java): A wrapper around the DataSource that applies client info properties to connections.
+- [BooksController](./src/main/java/com/example/clientinfo/BooksController.java): A REST controller providing CRUD operations for books, using low-level JDBC with custom client info settings (OCSID.MODULE = "Books", OCSID.ACTION = method name).
 
 ## References
 
-- [Spring Boot tracing](https://docs.spring.io/spring-boot/reference/actuator/tracing.html)
-- [OJDBC OpenTelemetry provider](https://github.com/oracle/ojdbc-extensions/tree/main/ojdbc-provider-opentelemetry)
-- [Spring Boot with OJDBC Tracing](../spring-boot-jdbc-tracing/README.md)
+- [Oracle Database JDBC Documentation](https://docs.oracle.com/en/database/oracle/oracle-database/23/jjdbc/)
+- [Spring Boot Data JDBC](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#data.sql.jdbc)
+- Related samples: [Spring Boot with OJDBC Tracing](../spring-boot-jdbc-tracing/README.md)
 
 ## Prerequisites
 
 - Java 21+, Maven
-- Docker compatible environment with docker-compose
+- Docker compatible environment with docker compose (note: use `docker compose` instead of `docker-compose` on newer systems)
 
-## Setup Oracle Database Free and Zipkin with docker-compose
+## Setup Oracle Database Free with docker compose
 
-Start the Oracle Database Free and Zipkin containers with docker-compose:
+Start the Oracle Database Free container with docker compose:
 
 ```bash
-docker-compose -d
+cd spring-boot-database-client-info
+docker compose up -d
 ```
 
-When the database starts, the [grant_permissions.sql](./oracle/grant_permissions.sql) is run, creating a test user and a table.
+When the database starts, the [grant_permissions.sql](./oracle/grant_permissions.sql) is run, creating a test user and a `books` table.
 
 ## Run the sample
 
@@ -39,18 +38,52 @@ This command starts the Java application:
 mvn spring-boot:run
 ```
 
-## Create a trace
+The application will run on `http://localhost:8080`.
 
-POST to the app's REST API to create a trace, starting with a span for the HTTP invocation that drops into the JDBC/database layer:
+## Test the API
+
+The application provides a REST API under `/books` for managing books. Each operation sets client info on the database connection.
+
+### Create a book (POST)
 
 ```bash
-curl -X POST http://localhost:8080/flavors \
+curl -X POST http://localhost:8080/books \
   -H "Content-Type: application/json" \
-  -d '{"flavor": "Mint Chocolate Chip"}'
+  -d '{"title":"Test Book","author":"John Doe","isbn":"1234567890","publishedDate":"2023-01-01"}'
 ```
 
-## View traces
+### Get all books (GET)
 
-1. Navigate to the Zipkin UI, using the container URL `http://localhost:9411/zipkin/`
-2. Click "Run Query" to find all traces, or search for a specific trace ID
-3. View the trace! You can see the producer scheduling, publishing the event, and consuming the event in a single trace.
+```bash
+curl http://localhost:8080/books
+```
+
+### Get book by ID (GET)
+
+```bash
+curl http://localhost:8080/books/1
+```
+
+### Update book (PUT)
+
+```bash
+curl -X PUT http://localhost:8080/books/1 \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Updated Book","author":"Jane Doe","isbn":"0987654321","publishedDate":"2024-01-01"}'
+```
+
+### Delete book (DELETE)
+
+```bash
+curl -X DELETE http://localhost:8080/books/1
+```
+
+## Monitoring Client Info
+
+You can query the database (e.g., using SQL*Plus or another tool) to view active sessions and their client info:
+
+```sql
+SELECT sid, client_identifier, module, action FROM v$session WHERE username = 'TESTUSER';
+```
+
+This will show the client info set by the application, such as MODULE="Books" and ACTION corresponding to the API method (e.g., "createBook").

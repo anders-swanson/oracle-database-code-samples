@@ -1,0 +1,16 @@
+services:
+  clientinfodb:
+    image: gvenzl/oracle-free:23.9-slim-faststart
+    container_name: clientinfodb
+    ports:
+      - 1525:1521
+    environment:
+      - ORACLE_PASSWORD=Welcome12345
+    volumes:
+      - ./oracle:/container-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "lsnrctl status | grep READY"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s

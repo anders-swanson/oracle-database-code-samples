@@ -11,7 +11,7 @@
     <artifactId>spring-boot-database-client-info</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>spring-boot-database-client-info</name>
-    <description>Add Oracle DAtabase Client to Spring Boot connections</description>
+    <description>Add Oracle Database Client to Spring Boot connections</description>
 
     <dependencies>
         <dependency>
@@ -42,7 +42,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.example.tracing.jdbc.JDBCTracingApp</mainClass>
+                    <mainClass>com.example.clientinfo.ClientInfoApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

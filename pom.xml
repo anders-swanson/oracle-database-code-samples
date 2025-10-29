@@ -17,8 +17,8 @@
 
     <properties>
         <okafka.version>23.6.1.0</okafka.version>
-        <oracle.starters.version>25.4.0</oracle.starters.version>
-        <spring.cloud.oracle.version>1.4.4</spring.cloud.oracle.version>
+        <oracle.starters.version>26.0.0</oracle.starters.version>
+        <spring.cloud.oracle.version>1.4.5</spring.cloud.oracle.version>
         <oracle.version>23.8.0.25.04</oracle.version>
         <kafka.clients.version>3.7.1</kafka.clients.version>
         <oci.sdk.version>3.67.1</oci.sdk.version>

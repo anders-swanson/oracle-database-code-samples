@@ -13,8 +13,8 @@ Processed news articles can be queried over REST using vector similarity search,
 The News Event Streaming Application makes use of the following (4) Oracle Database features, in addition to OCI GenAI apis for text embedding and chat:
 
 1. Relational data schemas: `news` and `news_vector` tables are created to store news articles and their vector embeddings. A news article may have one or more vector embeddings, depending on the size of the article.
-2. [JSON Relational Duality Views](https://docs.oracle.com/en/database/oracle/oracle-database/23/jsnvu/overview-json-relational-duality-views.html): The `news` and `news_vector` tables are combined in a read-write duality view that gives document style access to data from both tables.
-3. [Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/23/adque/aq-introduction.html): We stream news articles using the [Kafka Java Client for Oracle Database Transactional Event Queues](https://github.com/oracle/okafka), with topic for raw news, and a topic for parsed news JSON data (including vector embeddings).
+2. [JSON Relational Duality Views](https://docs.oracle.com/en/database/oracle/oracle-database/26/jsnvu/overview-json-relational-duality-views.html): The `news` and `news_vector` tables are combined in a read-write duality view that gives document style access to data from both tables.
+3. [Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/26/adque/aq-introduction.html): We stream news articles using the [Kafka Java Client for Oracle Database Transactional Event Queues](https://github.com/oracle/okafka), with topic for raw news, and a topic for parsed news JSON data (including vector embeddings).
 4. [Vector Data and Similarity Search](https://www.oracle.com/database/ai-vector-search/): Using news article vector embeddings and the NewsService REST API, we can query for news articles that are similar in meaning to an input text. We can also summarize news articles similar to an input query by combing vector search with an OCI GenAI chat model!
 
 > What's neat about this? Each of the above features runs within the same database engine. It  works on [Oracle Database Free](https://andersswanson.dev/2025/05/22/oracle-database-for-free/), which I used to test this application in a local container instance.
@@ -35,7 +35,7 @@ Prerequisites:
 The app requires access to an Oracle Database instance. The default configuration assumes a local containerized database running on port `1521`. You can replicate this configuration by starting an Oracle Database Free container:
 
 ```bash
-docker run --name oracledb -d -p 1521:1521 -e ORACLE_PASSWORD=testpwd gvenzl/oracle-free:23.9-slim-faststart
+docker run --name oracledb -d -p 1521:1521 -e ORACLE_PASSWORD=testpwd gvenzl/oracle-free:23.26.0-slim-faststart
 ```
 
 After a few moments, the database should start up. Once your database is ready, run the [testuser.sql](./src/test/resources/testuser.sql) and [news-schema.sql](./src/test/resources/news-schema.sql) scripts to create a user, grants, tables, and duality view required by the application. A companion cleanup script, [cleanup.sql](./src/test/resources/cleanup.sql), is provided to delete the tables, duality view, and topics used by the app.

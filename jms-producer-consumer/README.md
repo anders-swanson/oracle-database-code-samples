@@ -1,6 +1,6 @@
 # Java Message Service (JMS) Producer / Consumer Example
 
-This example module demonstrates how to write pub/sub applications using the JDBC JMS API for [Oracle Database Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/23/adque/aq-introduction.html). If you're unfamiliar with Transactional Event Queues (TxEventQ), it is a high-throughput, distributed, asynchronous messaging system built into Oracle Database. TxEventQ's JMS APIs provide a simple, familiar interface for developing applications with service-to-service messaging capabilities.
+This example module demonstrates how to write pub/sub applications using the JDBC JMS API for [Oracle Database Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/26/adque/aq-introduction.html). If you're unfamiliar with Transactional Event Queues (TxEventQ), it is a high-throughput, distributed, asynchronous messaging system built into Oracle Database. TxEventQ's JMS APIs provide a simple, familiar interface for developing applications with service-to-service messaging capabilities.
 
 ## Prerequisites
 

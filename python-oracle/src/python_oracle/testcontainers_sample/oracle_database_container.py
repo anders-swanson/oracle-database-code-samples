@@ -7,7 +7,7 @@ class OracleDatabaseContainer(DbContainer):
     def __init__(self,
                  app_user,
                  app_user_password,
-                 image="gvenzl/oracle-free:23.9-slim-faststart",
+                 image="gvenzl/oracle-free:23.26.0-slim-faststart",
                  db_name="freepdb1",
                  container_port=1521,
                  host="localhost",

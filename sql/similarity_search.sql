@@ -1,5 +1,5 @@
 -- Create a table using the vector datatype
--- https://docs.oracle.com/en/database/oracle/oracle-database/23/vecse/create-tables-using-vector-data-type.html
+-- https://docs.oracle.com/en/database/oracle/oracle-database/26/vecse/create-tables-using-vector-data-type.html
 create table my_vector_table (
                                  id number generated always as identity primary key,
                                  content clob,

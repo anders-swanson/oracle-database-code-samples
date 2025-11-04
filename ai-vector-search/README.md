@@ -1,6 +1,6 @@
-# Similarity Search using Oracle Database 23ai
+# Similarity Search using Oracle Database 26ai
 
-This code sample demonstrates how to use Oracle Database 23ai as a vector store for similarity search on text embeddings.
+This code sample demonstrates how to use Oracle Database 26ai as a vector store for similarity search on text embeddings.
 
 The [OracleVectorSample](src/main/java/com/example/OracleVectorSample.java) implements a vector store abstraction that supports inserting embeddings into the database, and querying embeddings.
 

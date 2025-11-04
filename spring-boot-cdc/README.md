@@ -1,6 +1,6 @@
 # Spring Boot CDC with Transactional Event Queues (TxEventQ) (JMS) Example
 
-This example demonstrates how to implement event-based CDC in Spring Boot  using [Spring JMS](https://spring.io/guides/gs/messaging-jms) and [Oracle Database Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/23/adque/aq-introduction.html). In the example app, a service inserts database records, and a Spring JMS consumer reacts to each insert event.
+This example demonstrates how to implement event-based CDC in Spring Boot  using [Spring JMS](https://spring.io/guides/gs/messaging-jms) and [Oracle Database Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/26/adque/aq-introduction.html). In the example app, a service inserts database records, and a Spring JMS consumer reacts to each insert event.
 
 If you're unfamiliar with Transactional Event Queues, it is a high-throughput, distributed asynchronous messaging system built into Oracle Database. The integration of Transactional Event Queues with Spring JMS provides a simple interface for rapid development of messaging applications.
 

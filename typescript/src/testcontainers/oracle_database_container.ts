@@ -8,7 +8,7 @@ export class OracleDatabaseContainer {
     private container?: StartedTestContainer | undefined;
 
     constructor(
-        private readonly image: string = "gvenzl/oracle-free:23.9-slim-faststart",
+        private readonly image: string = "gvenzl/oracle-free:23.26.0-slim-faststart",
         private readonly port: number = 1521,
         private readonly username: string = "testuser",
         private readonly password: string = "Welcome12345",

@@ -29,6 +29,7 @@
         <jakarta.transaction-api.version>2.0.1</jakarta.transaction-api.version>
         <slf4j.nop.version>2.0.17</slf4j.nop.version>
         <ojdbc.otel.version>1.0.6</ojdbc.otel.version>
+        <langchain4j.version>1.8.0</langchain4j.version>
     </properties>
 
     <modules>
@@ -42,6 +43,7 @@
         <module>migrate-kafka-to-oracle/kafka-app-step-3</module>
         <module>news-event-streaming</module>
         <module>oracle-database-kafka-apis</module>
+        <module>mcp-agent</module>
         <module>sessionless-transactions</module>
         <module>spring-boot-cdc</module>
         <module>spring-boot-database-client-info</module>
@@ -62,6 +64,29 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- langchain4j -->
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-open-ai</artifactId>
+                <version>${langchain4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-agentic</artifactId>
+                <version>${langchain4j.version}-beta15</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-mcp</artifactId>
+                <version>${langchain4j.version}-beta15</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j</artifactId>
+                <version>${langchain4j.version}</version>
+            </dependency>
+
+            <!-- spring -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-config-server</artifactId>
@@ -73,19 +98,9 @@
                 <version>${spring.cloud.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.oracle.database.messaging</groupId>
-                <artifactId>okafka</artifactId>
-                <version>${okafka.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.kafka</groupId>
-                <artifactId>kafka-clients</artifactId>
-                <version>${kafka.clients.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
-                <version>3.4.5</version>
+                <version>3.5.7</version>
                 <exclusions>
                     <exclusion>
                         <groupId>org.mockito</groupId>
@@ -97,6 +112,19 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+
+            <!-- OKafka -->
+            <dependency>
+                <groupId>com.oracle.database.messaging</groupId>
+                <artifactId>okafka</artifactId>
+                <version>${okafka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka.clients.version}</version>
+            </dependency>
+
             <!-- OCI SDK -->
             <dependency>
                 <groupId>com.oracle.oci.sdk</groupId>

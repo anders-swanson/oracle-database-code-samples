@@ -3,8 +3,12 @@ package com.example.mcp;
 import dev.langchain4j.agentic.AgenticServices;
 import dev.langchain4j.agentic.UntypedAgent;
 import dev.langchain4j.agentic.agent.AgentResponse;
+import dev.langchain4j.memory.ChatMemory;
+import dev.langchain4j.memory.chat.ChatMemoryProvider;
+import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
+import dev.langchain4j.store.memory.chat.InMemoryChatMemoryStore;
 
 import java.util.function.Consumer;
 
@@ -16,11 +20,19 @@ public class MCPAgentApplication {
                 .build();
 
         Consumer<AgentResponse> agentCompletedLogger = agentResponse -> {
-            System.out.printf("### Agent %s completed%n ###", agentResponse.agentName());
+            System.out.printf("### Agent %s completed ###", agentResponse.agentName());
         };
+
+        // Use an in-memory chat memory
+        ChatMemory chatMemory = new MessageWindowChatMemory.Builder()
+                .id("12345")
+                .maxMessages(10)
+                .chatMemoryStore(new InMemoryChatMemoryStore())
+                .build();
 
         SQLclMCPAgent sqLclMCPAgent = AgenticServices.agentBuilder(SQLclMCPAgent.class)
                 .chatModel(chatModel)
+                .chatMemoryProvider((any) -> chatMemory)
                 .afterAgentInvocation(agentCompletedLogger)
                 .toolProvider(SQLclMCPToolProvider.create())
                 .outputKey("queryResults")

@@ -20,15 +20,20 @@ public class TerminalInput implements Runnable {
             System.out.print("> ");
             String input = scanner.nextLine();
 
+            if (input.trim().isEmpty()) {
+                continue;
+            }
+
             if ("exit".equalsIgnoreCase(input)) {
                 System.out.println("Goodbye!");
                 break;
             }
+
+            System.out.println("########### PROCESSING ###########");
             Object result = agent.invoke(Map.of(
                     "queryText", input,
                     "dbConnection", "cline_mcp"
             ));
-            System.out.println("########### RESULT ###########");
             System.out.println(result);
         }
         scanner.close();

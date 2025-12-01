@@ -14,6 +14,10 @@
     <description>Oracle Database MCP Agent Example</description>
     <version>1.0.0-SNAPSHOT</version>
 
+    <properties>
+        <exec.mainClass>com.example.mcp.MCPAgentApplication</exec.mainClass>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>

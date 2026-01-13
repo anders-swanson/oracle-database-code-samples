@@ -60,6 +60,7 @@
         <module>spring-vault-oracle-app</module>
         <module>testcontainers</module>
         <module>txeventq-examples</module>
+        <module>txeventq-multidb-replication</module>
     </modules>
 
     <dependencyManagement>

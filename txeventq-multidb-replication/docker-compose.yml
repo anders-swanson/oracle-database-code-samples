@@ -1,0 +1,33 @@
+services:
+  destdb:
+    image: gvenzl/oracle-free:23.26.0-slim-faststart
+    container_name: destdb
+    ports:
+      - 1523:1521
+    environment:
+      - ORACLE_PASSWORD=Welcome12345
+    volumes:
+      - ./dest_db:/container-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "lsnrctl status | grep READY" ]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+  sourcedb:
+    image: gvenzl/oracle-free:23.26.0-slim-faststart
+    container_name: sourcedb
+    ports:
+      - 1522:1521
+    environment:
+      - ORACLE_PASSWORD=Welcome12345
+    volumes:
+      - ./source_db:/container-entrypoint-initdb.d
+    depends_on:
+      - destdb
+    healthcheck:
+      test: ["CMD-SHELL", "lsnrctl status | grep READY"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s

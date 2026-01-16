@@ -1,17 +1,15 @@
 -- Set as appropriate for your database.
 alter session set container = freepdb1;
 
-create user testuser identified by testpwd;
-grant create session to testuser;
-grant unlimited tablespace to testuser;
+create user testuser identified by testpwd quota unlimited on users;
 grant connect, resource to testuser;
 
 -- Configure testuser with the necessary privileges to use Transactional Event Queues.
 grant aq_user_role to testuser;
 grant execute on dbms_aq to testuser;
 grant execute on dbms_aqadm to testuser;
-grant execute ON dbms_aqin TO testuser;
-grant execute ON dbms_aqjms TO testuser;
+grant execute ON dbms_aqin to testuser;
+grant execute ON dbms_aqjms to testuser;
 
 -- Create a Transactional Event Queue
 begin

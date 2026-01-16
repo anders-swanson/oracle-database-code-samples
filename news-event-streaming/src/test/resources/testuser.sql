@@ -1,9 +1,8 @@
 alter session set container = freepdb1;
 
--- Create app user. You may wish to modify tablespace as needed.
-create user if not exists testuser identified by testpwd;
-grant create session to testuser;
-grant connect, resource, unlimited tablespace to testuser;
+-- Create app user
+create user testuser identified by testpwd quota unlimited on users;
+grant connect, resource to testuser;
 
 -- Grants for the Kafka Java Client for Oracle Database Transactional Event Queues
 grant aq_user_role to testuser;

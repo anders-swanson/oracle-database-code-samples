@@ -3,9 +3,7 @@ alter session set container = freepdb1;
 -- queue-to-queue replication uses background processes from the job queue
 alter system set job_queue_processes=10;
 
-create user sourceuser identified by testpwd;
-grant create session to sourceuser;
-grant unlimited tablespace to sourceuser;
+create user sourceuser identified by testpwd quota unlimited on users;
 grant connect, resource to sourceuser;
 
 -- Configure sourceuser with the necessary privileges to use Transactional Event Queues for JMS.

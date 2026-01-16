@@ -8,11 +8,11 @@ create table my_vector_table (
 );
 
 -- Create a vector index
--- https://docs.oracle.com/en/database/oracle/oracle-database/23/sqlrf/create-vector-index.html
--- https://docs.oracle.com/en/database/oracle/oracle-database/23/vecse/create-vector-indexes-and-hybrid-vector-indexes.html
+-- https://docs.oracle.com/en/database/oracle/oracle-database/26/sqlrf/create-vector-index.html
+-- https://docs.oracle.com/en/database/oracle/oracle-database/26/vecse/create-vector-indexes-and-hybrid-vector-indexes.html
 create vector index vector_index on my_vector_table (embedding)
     organization neighbor partitions
-    distance COSINE -- see other distance metrics: https://docs.oracle.com/en/database/oracle/oracle-database/23/vecse/vector-distance-metrics.html
+    distance COSINE -- see other distance metrics: https://docs.oracle.com/en/database/oracle/oracle-database/26/vecse/vector-distance-metrics.html
     with target accuracy 95 -- high value is more accurate, also more computationally expensive
     parameters (
         type IVF, -- You may also use an in-memory graph vector index
@@ -20,7 +20,7 @@ create vector index vector_index on my_vector_table (embedding)
     );
 
 -- Vector search (Similarity search) on vector table
--- https://docs.oracle.com/en/database/oracle/oracle-database/23/vecse/overview-ai-vector-search.html
+-- https://docs.oracle.com/en/database/oracle/oracle-database/26/vecse/overview-ai-vector-search.html
 select * from (
                   -- calculate similarity score using vector_distance function
                   select id, content, embedding, (1 - vector_distance(embedding, ?, COSINE)) as score

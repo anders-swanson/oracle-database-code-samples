@@ -3,9 +3,7 @@ alter session set container = freepdb1;
 -- queue-to-queue replication uses background processes from the job queue
 alter system set job_queue_processes=10;
 
-create user destuser identified by testpwd;
-grant create session to destuser;
-grant unlimited tablespace to destuser;
+create user destuser identified by testpwd quota unlimited on users;
 grant connect, resource to destuser;
 
 -- Configure destuser with the necessary privileges to use Transactional Event Queues for JMS.

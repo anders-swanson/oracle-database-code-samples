@@ -1,8 +1,6 @@
 alter session set container = freepdb1;
-create user testuser identified by testpwd;
-
--- you may wish to modify the unlimited tablespace grant as appropriate.
-grant resource, connect, unlimited tablespace to testuser;
+create user testuser identified by testpwd quota unlimited on users;
+grant resource, connect to testuser;
 
 -- TxEventQ related grants
 grant aq_user_role to testuser;

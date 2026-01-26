@@ -20,7 +20,7 @@ spring:
     url: jdbc:oracle:thin:@localhost:1522/freepdb1
     # Set these to use UCP over Hikari.
     driver-class-name: oracle.jdbc.OracleDriver
-    type: oracle.ucp.jdbc.PoolDataSource
+    type: oracle.ucp.jdbc.PoolDataSourceImpl
     oracleucp:
       initial-pool-size: 1
       min-pool-size: 1

@@ -18,3 +18,9 @@ You can run the application like so:
 ```bash
 mvn exec:java
 ```
+
+### Run the test [SessionlessTransactionsTest.java](./src/test/java/com/example/txn/SessionlessTransactionsTest.java)
+
+You may also test the Sessionless Transactions example using Testcontainers. From the `sessionless-transactions` directory, run the test with `mvn test`.
+
+The test begins an order, which may succeed or fail depending on a dynamic timeout.

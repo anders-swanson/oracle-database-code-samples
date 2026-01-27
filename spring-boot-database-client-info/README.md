@@ -40,6 +40,23 @@ mvn spring-boot:run
 
 The application will run on `http://localhost:8080`.
 
+## Run the tests
+
+The integration test `src/test/java/com/example/clientinfo/ClientInfoApplicationTest.java` verifies that the client info settings are applied when interacting with the database.
+
+- Ensure Docker is running so Testcontainers can start Oracle Database Free.
+- From the `spring-boot-database-client-info` directory, run the module tests:
+
+  ```bash
+  mvn test
+  ```
+
+- To execute only this test class:
+
+  ```bash
+  mvn -Dtest=ClientInfoApplicationTest test
+  ```
+
 ## Test the API
 
 The application provides a REST API under `/books` for managing books. Each operation sets client info on the database connection.
@@ -87,3 +104,9 @@ SELECT sid, client_identifier, module, action FROM v$session WHERE username = 'T
 ```
 
 This will show the client info set by the application, such as MODULE="Books" and ACTION corresponding to the API method (e.g., "createBook").
+
+## Run the tests
+
+From the `spring-boot-database-client-info` directory, run the tests with `mvn test`.
+
+The test uses Testcontainers to spin up an Oracle AI Database Free instance, run a transaction with client info, and verify the client info in the `V$SESSION` view.

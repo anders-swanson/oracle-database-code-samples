@@ -26,7 +26,7 @@ public class BooksController {
         return conn;
     }
 
-    record Book(Long id, String title, String author, String isbn, Date publishedDate) {}
+    public record Book(Long id, String title, String author, String isbn, Date publishedDate) {}
 
     @GetMapping
     public List<Book> getAllBooks() {

@@ -4,8 +4,16 @@ The following code samples use the open-source [python-oracledb driver](https://
 
 This module uses [poetry](https://python-poetry.org/) to manage dependencies and virtual environments. It is recommended to install poetry before running samples.
 
+### Active the virtual environment with poetry
 
-| Example program                                                     | Description                                                                                                                                                  |
-|---------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [testcontainers](src/python_oracle/testcontainers_sample/README.md) | Spin up an Oracle Database Free container with [testcontainers](https://testcontainers.com/modules/oracle-free/?language=python) from within a Python script |
+```bash
+# Install dependencies
+poetry install
+# Print the command to active a virtual environment
+poetry env activate
+```
+
+| Example program                                                     | Description                                                                                                                                                   | Command                                                               |
+|---------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|
+| [testcontainers](src/python_oracle/testcontainers_sample/README.md) | Spin up an Oracle Database Free container with [testcontainers](https://testcontainers.com/modules/oracle-free/?language=python) from within a Python script. | `python python_oracle/testcontainers_sample/testcontainers_sample.py` |
 

@@ -8,13 +8,23 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.13,<4.0"
 dependencies = [
-    "oracledb (>=3.3.0,<4.0.0)",
-    "testcontainers (>=4.13.0,<5.0.0)"
+    # Oracle thin driver
+    "oracledb (>=3.4.2)",
+
+    # Run Oracle containers locally
+    "testcontainers (>=4.14.1)",
+
+    # LangChain
+    "langchain-oracledb (>=1.2.0,<2.0.0)",
+    "langchain-openai (>=1.1.7,<2.0.0)",
+    "langchain-community (>=0.4.1,<0.5.0)"
 ]
 
 [tool.poetry]
-packages = [{include = "python_oracle", from = "src"}]
-
+packages = [
+    { include = "src/" },
+    { include = "src/**/*.py" },
+]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

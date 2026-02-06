@@ -10,7 +10,11 @@ The container exists ephemerally for the runtime of the program, and is cleaned 
 
 You can use these scripts to run Oracle Database Free containers in your programs and tests.
 
-### Sample output
+### Run the program
+
+```bash
+python python_oracle/testcontainers_sample/testcontainers_sample.py
+```
 
 If you run the [sample program](testcontainers_sample.py), you should see output similar to the following, indicating a container was started, Testcontainers waited for it to be ready, and the output of the `select * from V$VERSION` SQL query:
 

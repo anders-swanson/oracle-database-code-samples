@@ -29,7 +29,8 @@
         <jakarta.transaction-api.version>2.0.1</jakarta.transaction-api.version>
         <slf4j.nop.version>2.0.17</slf4j.nop.version>
         <ojdbc.otel.version>1.0.6</ojdbc.otel.version>
-        <langchain4j.version>1.8.0</langchain4j.version>
+        <langchain4j.version>1.10.0</langchain4j.version>
+        <springai.version>1.1.2</springai.version>
     </properties>
 
     <modules>
@@ -44,6 +45,7 @@
         <module>news-event-streaming</module>
         <module>oracle-database-kafka-apis</module>
         <module>mcp-agent</module>
+        <module>agents/database-memory-agent</module>
         <module>sessionless-transactions</module>
         <module>spring-boot-cdc</module>
         <module>spring-boot-database-client-info</module>
@@ -74,12 +76,12 @@
             <dependency>
                 <groupId>dev.langchain4j</groupId>
                 <artifactId>langchain4j-agentic</artifactId>
-                <version>${langchain4j.version}-beta15</version>
+                <version>${langchain4j.version}-beta18</version>
             </dependency>
             <dependency>
                 <groupId>dev.langchain4j</groupId>
                 <artifactId>langchain4j-mcp</artifactId>
-                <version>${langchain4j.version}-beta15</version>
+                <version>${langchain4j.version}-beta18</version>
             </dependency>
             <dependency>
                 <groupId>dev.langchain4j</groupId>
@@ -88,6 +90,13 @@
             </dependency>
 
             <!-- spring -->
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>${springai.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-config-server</artifactId>

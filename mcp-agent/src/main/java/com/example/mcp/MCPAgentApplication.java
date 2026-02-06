@@ -2,24 +2,26 @@ package com.example.mcp;
 
 import dev.langchain4j.agentic.AgenticServices;
 import dev.langchain4j.agentic.UntypedAgent;
-import dev.langchain4j.agentic.agent.AgentResponse;
+import dev.langchain4j.agentic.observability.AgentListener;
+import dev.langchain4j.agentic.observability.AgentResponse;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.store.memory.chat.InMemoryChatMemoryStore;
 
-import java.util.function.Consumer;
-
 public class MCPAgentApplication {
     public static void main(String[] args) {
         ChatModel chatModel = OpenAiChatModel.builder()
                 .apiKey(System.getenv("OPENAI_API_KEY"))
-                .modelName("gpt-4o-mini")
+                .modelName("gpt-5-nano")
                 .build();
 
-        Consumer<AgentResponse> agentCompletedLogger = agentResponse -> {
-            System.out.printf("### Agent %s completed ###", agentResponse.agentName());
+        AgentListener agentCompletedLogger = new AgentListener() {
+            @Override
+            public void afterAgentInvocation(AgentResponse agentResponse) {
+                System.out.printf("### Agent %s completed ###", agentResponse.agentName());
+            }
         };
 
         // Use an in-memory chat memory
@@ -32,14 +34,14 @@ public class MCPAgentApplication {
         SQLclMCPAgent sqLclMCPAgent = AgenticServices.agentBuilder(SQLclMCPAgent.class)
                 .chatModel(chatModel)
                 .chatMemoryProvider((any) -> chatMemory)
-                .afterAgentInvocation(agentCompletedLogger)
+                .listener(agentCompletedLogger)
                 .toolProvider(SQLclMCPToolProvider.create())
                 .outputKey("queryResults")
                 .build();
 
         SQLSummaryAgent sqlSummaryAgent = AgenticServices.agentBuilder(SQLSummaryAgent.class)
                 .chatModel(chatModel)
-                .afterAgentInvocation(agentCompletedLogger)
+                .listener(agentCompletedLogger)
                 .outputKey("report")
                 .build();
 

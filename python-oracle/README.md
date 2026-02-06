@@ -13,7 +13,9 @@ poetry install
 poetry env activate
 ```
 
-| Example program                                                     | Description                                                                                                                                                   | Command                                                               |
-|---------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|
-| [testcontainers](src/python_oracle/testcontainers_sample/README.md) | Spin up an Oracle Database Free container with [testcontainers](https://testcontainers.com/modules/oracle-free/?language=python) from within a Python script. | `python python_oracle/testcontainers_sample/testcontainers_sample.py` |
+Run the samples from the `src` directory.
 
+| Example program                                                                | Description                                                                                                                                                   | Command                                                                                                   |
+|--------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| [langchain vector search](src/python_oracle/langchain/vector_search_sample.py) | Example using the popular LangChain & Oracle AI Database as a vector store for similarity search.                                                             | `export OPENAI_API_KEY=<Your OpenAI API Key> python src/python_oracle/langchain/vector_search_sample.py ` |
+| [testcontainers](src/python_oracle/testcontainers_sample/README.md)            | Spin up an Oracle Database Free container with [testcontainers](https://testcontainers.com/modules/oracle-free/?language=python) from within a Python script. | `python python_oracle/testcontainers_sample/testcontainers_sample.py`                                     |

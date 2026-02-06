@@ -25,5 +25,5 @@ public interface SQLclMCPAgent {
     The user query is "{{queryText}}".
     """)
     @Agent(description = "Run SQL queries")
-    String runQuery(@V("queryText") String queryText, @V("dbConnection") String dbConnection);
+    String runQuery(@V("question") String question);
 }

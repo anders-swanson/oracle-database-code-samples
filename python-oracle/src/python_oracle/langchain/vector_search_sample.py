@@ -1,9 +1,9 @@
 import getpass
 import os
 
-from langchain_community.vectorstores import OracleVS
 from langchain_community.vectorstores.utils import DistanceStrategy
 from langchain_openai import OpenAIEmbeddings
+from langchain_oracledb import OracleVS
 
 from src.python_oracle.testcontainers_sample.oracle_database_container import OracleDatabaseContainer
 
@@ -42,7 +42,7 @@ def main():
         # Verify the vectors are persisted in the database
         cursor = oracledb.get_connection().cursor()
         print("#### Display Embedded Data ####:")
-        for row in cursor.execute("SELECT id, text, metadata, embedding FROM sample_vectors"):
+        for row in cursor.execute('SELECT id, text, metadata, embedding FROM "sample_vectors"'):
             if row is None:
                 print("No result from query!")
             print(f"id (binary): {row[0]}, text: {row[1]}, metadata: {row[2]}, embedding: vector[{len(row[3])}]")

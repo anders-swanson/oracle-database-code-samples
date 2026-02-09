@@ -56,7 +56,7 @@ def main():
         conn.commit()
 
         print("Loading data into sample_vectors table")
-        upsert_text_embeddings(conn, openai, texts=[
+        insert_text_embeddings(conn, openai, texts=[
             "Reset the user’s password, clear MFA lockouts, and unlock the account after verifying identity.",
             "Reinstall the application, clear local cache/temp files, and validate the PDF upload workflow end-to-end.",
             "Submit an access request for the finance dashboard, confirm the required role, and route it to the user’s manager for approval.",
@@ -92,7 +92,7 @@ def embed_text(openai: OpenAI, text: str) -> tuple[str, array.array[float]]:
 
     return text, vector
 
-def upsert_text_embeddings(conn: oracledb.Connection, openai: OpenAI, texts: list[str]):
+def insert_text_embeddings(conn: oracledb.Connection, openai: OpenAI, texts: list[str]):
     # load embeddings: you may also do this asynchronously
     # as it's a series of network calls.
     data = [embed_text(openai, x) for x in texts]

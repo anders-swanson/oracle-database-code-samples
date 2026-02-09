@@ -48,16 +48,14 @@ def main():
             print(f"id (binary): {row[0]}, text: {row[1]}, metadata: {row[2]}, embedding: vector[{len(row[3])}]")
 
 
-        print("#### Similarity Search ####")
+        print("\n#### Similarity Search ####")
         query = "My VPN keeps disconnecting every few minutes when I’m on Wi‑Fi, but it stays connected on Ethernet. Can you fix it?"
         print(f"Search query: '{query}'")
         documents = vector_store.similarity_search(query, k=1)
 
-        print("#### Top Query Match ####")
+        print("\n#### Top Query Match ####")
         for doc in documents:
             print(doc.page_content)
 
 if __name__ == "__main__":
     main()
-
-

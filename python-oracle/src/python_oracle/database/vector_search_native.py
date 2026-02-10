@@ -78,7 +78,7 @@ def main():
             print("No result from similarity search query!")
         else:
             print("#### Top Query Match ####")
-            print(f"id: {result[0]}, content: {result[1]}, embedding: vector[{len(row[2])}]")
+            print(f"id: {result[0]}, content: {result[1]}, embedding: vector[{len(result[2])}]")
 
 
 def embed_text(openai: OpenAI, text: str) -> tuple[str, array.array[float]]:

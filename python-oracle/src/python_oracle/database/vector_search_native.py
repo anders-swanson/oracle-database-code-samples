@@ -45,10 +45,9 @@ def main():
         os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter your OpenAI API key: ")
     openai = OpenAI()
 
-    with OracleDatabaseContainer() as oracledb:
-        conn = oracledb.get_connection()
-        cursor = conn.cursor()
-
+    with (OracleDatabaseContainer() as db,
+          db.get_connection() as conn,
+          conn.cursor() as cursor):
         print("Creating table if not exists sample_vectors")
         cursor.execute(CREATE_TABLE)
         print("Creating index if not exists idx_sample_vectors")

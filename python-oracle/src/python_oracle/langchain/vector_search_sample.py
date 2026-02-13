@@ -22,8 +22,9 @@ def main():
         api_key=os.getenv("OPENAI_API_KEY")
     )
 
-    with OracleDatabaseContainer() as oracledb:
-        conn = oracledb.get_connection()
+    with (OracleDatabaseContainer() as db,
+          db.get_connection() as conn,
+          conn.cursor() as cursor):
         vector_store = OracleVS(conn,
                  embeddings,
                  table_name="sample_vectors",
@@ -40,7 +41,6 @@ def main():
         ])
 
         # Verify the vectors are persisted in the database
-        cursor = oracledb.get_connection().cursor()
         print("#### Display Embedded Data ####:")
         for row in cursor.execute('SELECT id, text, metadata, embedding FROM "sample_vectors"'):
             if row is None:

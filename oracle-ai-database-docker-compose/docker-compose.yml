@@ -1,6 +1,6 @@
 services:
   oracledb:
-    image: gvenzl/oracle-free:23.26.0-slim-faststart
+    image: gvenzl/oracle-free:23.26.1-slim-faststart
     container_name: oracledb
     ports:
       # container available on port 1521

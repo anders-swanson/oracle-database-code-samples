@@ -22,7 +22,7 @@ public class SpringBootCDCTest {
      * Use a containerized Oracle Database instance for testing.
      */
     @ServiceConnection
-    static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.0-slim-faststart")
+    static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.1-slim-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
             .withUsername("testuser")
             .withPassword("testpwd");

@@ -26,7 +26,7 @@ class ClientInfoApplicationTest {
 
     @Container
     @ServiceConnection
-    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.0-slim-faststart")
+    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.1-slim-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
             .withUsername("testuser")
             .withPassword("testpwd")

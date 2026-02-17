@@ -59,7 +59,7 @@ The setup includes pre-configured volumes for ORDS configuration and database in
 
 ## Notes
 
-- The database uses the `gvenzl/oracle-free:23.26.0-slim-faststart` image.
+- The database uses the `gvenzl/oracle-free:23.26.1-slim-faststart` image.
 - ORDS uses `container-registry.oracle.com/database/ords:latest`.
 - Volumes persist configuration; remove them with `docker-compose down -v` if needed.
 - For more details on ORDS, visit the [official documentation](https://docs.oracle.com/en/database/oracle/oracle-rest-data-services/).

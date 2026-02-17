@@ -17,8 +17,8 @@
 
     <properties>
         <okafka.version>23.7.0.0</okafka.version>
-        <oracle.starters.version>26.0.0</oracle.starters.version>
-        <spring.cloud.oracle.version>1.4.5</spring.cloud.oracle.version>
+        <oracle.starters.version>26.0.1</oracle.starters.version>
+        <spring.cloud.oracle.version>1.4.6</spring.cloud.oracle.version>
         <spring.cloud.version>5.0.0</spring.cloud.version>
         <oracle.version>23.26.1.0.0</oracle.version>
         <kafka.clients.version>3.7.1</kafka.clients.version>
@@ -38,6 +38,7 @@
         <module>database-per-service-example</module>
         <module>jdbc-event-streaming</module>
         <module>jms-producer-consumer</module>
+        <module>json/jpa-duality-views</module>
         <module>migrate-kafka-to-oracle/kafka-app</module>
         <module>migrate-kafka-to-oracle/kafka-app-step-1</module>
         <module>migrate-kafka-to-oracle/kafka-app-step-2</module>

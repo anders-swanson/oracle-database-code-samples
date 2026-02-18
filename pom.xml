@@ -31,6 +31,11 @@
         <ojdbc.otel.version>1.0.6</ojdbc.otel.version>
         <langchain4j.version>1.10.0</langchain4j.version>
         <springai.version>1.1.2</springai.version>
+
+        <jakarta.json-api.version>2.1.3</jakarta.json-api.version>
+        <jakarta.json.bind-api.version>3.0.1</jakarta.json.bind-api.version>
+        <parrson.version>1.1.7</parrson.version>
+        <yasson.version>3.0.4</yasson.version>
     </properties>
 
     <modules>
@@ -38,6 +43,7 @@
         <module>database-per-service-example</module>
         <module>jdbc-event-streaming</module>
         <module>jms-producer-consumer</module>
+        <module>json/crud-duality-views</module>
         <module>json/jpa-duality-views</module>
         <module>migrate-kafka-to-oracle/kafka-app</module>
         <module>migrate-kafka-to-oracle/kafka-app-step-1</module>

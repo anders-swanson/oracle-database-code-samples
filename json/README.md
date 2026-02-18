@@ -4,9 +4,10 @@ Samples in this directory demonstrate how Oracle AI Database treats JSON as a fi
 
 ## Modules
 
-| Sample | Description |
-| --- | --- |
-| [jpa-duality-views](./jpa-duality-views/README.md) | Generate JSON Relational Duality Views from Spring Data JPA entities, persist JSONB payloads, and exercise full CRUD flows backed by Oracle Database Free and Testcontainers. |
+| Sample                                               | Description                                                                                                                                                                   |
+|------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [jpa-duality-views](./jpa-duality-views/README.md)   | Generate JSON Relational Duality Views from Spring Data JPA entities, persist JSONB payloads, and exercise full CRUD flows backed by Oracle Database Free and Testcontainers. |
+| [crud-duality-views](./crud-duality-views/README.md) | Run CRUD operations against a JSON Relational Duality View using Oracle JDBC, OSON serialization, and Testcontainers-powered integration tests.                               |
 
 ## Prerequisites
 
@@ -16,6 +17,7 @@ Samples in this directory demonstrate how Oracle AI Database treats JSON as a fi
 - 
 ## Learn more
 
+- [Learn more about JSON Relational Duality Views](https://andersswanson.dev/2025/07/14/7-reasons-to-try-out-json-relational-duality-views-with-samples/)
 - [My JSON Blogs](https://andersswanson.dev/tag/json/)
 - [JSON Relational Duality Views overview](https://docs.oracle.com/en/database/oracle/oracle-database/26/jsnvu/overview-json-relational-duality-views.html)
 - [JSON Data Type in Oracle](https://docs.oracle.com/en/database/oracle/oracle-database/26/adjsn/json-data-type.html)

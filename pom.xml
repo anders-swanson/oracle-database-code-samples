@@ -44,6 +44,7 @@
         <module>jdbc-event-streaming</module>
         <module>jms-producer-consumer</module>
         <module>json/crud-duality-views</module>
+        <module>json/jdbc-json-basic</module>
         <module>json/jpa-duality-views</module>
         <module>migrate-kafka-to-oracle/kafka-app</module>
         <module>migrate-kafka-to-oracle/kafka-app-step-1</module>

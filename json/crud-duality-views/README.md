@@ -26,8 +26,7 @@ The test resources include `src/test/resources/init.sql`, which creates the `pro
 From the repository root, package the module and run the application with your JDBC connection details:
 
 ```bash
-mvn -pl json/crud-duality-views -am package
-java -cp json/crud-duality-views/target/crud-duality-views-*.jar com.example.jdv.crud.Application "jdbc:oracle:thin:@localhost:1521/freepdb1" testuser testpwd
+mvn compile exec:java -Dexec.args="jdbc:oracle:thin:@localhost:1521/freepdb1 testuser testpwd"
 ```
 
 The program will:

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.example</groupId>
         <artifactId>oracle-database-java-samples</artifactId>
@@ -9,12 +11,12 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>crud-duality-views</artifactId>
-    <name>crud-duality-views</name>
-    <description>Simple Java CRUD examples with JSON Relational Duality Views</description>
+    <artifactId>jdbc-json-analytics</artifactId>
+    <name>jdbc-json-analytics</name>
+    <description>JDBC sample demonstrating advanced SQL/JSON analytics</description>
 
     <properties>
-        <exec.mainClass>com.example.jdv.crud.Application</exec.mainClass>
+        <exec.mainClass>com.example.json.analytics.OrderAnalyticsSample</exec.mainClass>
     </properties>
 
     <dependencies>
@@ -46,16 +48,9 @@
             <version>${yasson.version}</version>
         </dependency>
 
-
-        <!--Test Dependencies-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-testcontainers</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -69,14 +64,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

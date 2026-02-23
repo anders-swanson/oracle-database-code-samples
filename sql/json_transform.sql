@@ -1,10 +1,13 @@
 
+
+
 -- create a table with a json column.
 create table employees (
     id   number generated always as identity primary key,
     data json
 );
--- insert a json object in the employees table using json_object and json_array to build a document.
+-- insert a json object in the employees table
+-- using json_object and json_array to build a document.
 insert into employees (data) values (
     json_object(
         'name' value 'alice johnson',

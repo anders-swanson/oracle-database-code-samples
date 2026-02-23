@@ -1,5 +1,7 @@
 # Oracle AI Database Samples
 
+New to Oracle AI Database? [Start Here](https://andersswanson.dev/2026/02/23/brand-new-to-oracle-ai-database-start-here/)
+
 ### Navigating this repository
 
 Each module in this project contains a separate Oracle AI Database sample, mainly implemented in Java. Use the README to find a sample you're interested in, or navigate to the directory of your choice.

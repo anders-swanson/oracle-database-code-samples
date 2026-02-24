@@ -1,5 +1,7 @@
 # CRUD with JSON Relational Duality Views
 
+[Click here for the in-depth blog](https://andersswanson.dev/2026/02/24/hands-on-crud-with-jdbc-and-json-relational-duality-views/)
+
 This sample performs create, read, update, and delete (CRUD) operations against a JSON Relational Duality View (JDV) using the Oracle JDBC driver and Oracle's binary JSON (OSON) format. A lightweight console application serializes Java POJOs into OSON, writes them to a JDV, and demonstrates how to query, mutate, and delete the backed JSON document while keeping the relational tables synchronized.
 
 ## What you will learn

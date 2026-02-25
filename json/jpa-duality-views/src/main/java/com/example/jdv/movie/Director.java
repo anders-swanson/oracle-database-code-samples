@@ -1,7 +1,5 @@
 package com.example.jdv.movie;
 
-import com.oracle.spring.json.duality.annotation.AccessMode;
-import com.oracle.spring.json.duality.annotation.JsonRelationalDualityView;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
@@ -17,7 +15,8 @@ public class Director {
     @JsonbProperty(_ID_FIELD)
     @Id
     @Column(name = "director_id")
-    private String directorId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long directorId;
 
     @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
@@ -28,24 +27,6 @@ public class Director {
     @JsonbTransient
     @OneToMany(mappedBy = "director") // Reference related entity's associated field
     private Set<Movie> movies;
-
-    @OneToOne(
-            mappedBy = "director", // Reference related entity's associated field
-            cascade = CascadeType.ALL, // Cascade persistence to the mapped entity
-            orphanRemoval = true // Remove director bio from director if deleted
-    )
-    // The primary key of the Director entity is used as the foreign key of the DirectorBio entity.
-    @PrimaryKeyJoinColumn
-    @JsonbTransient
-    //@JsonRelationalDualityView(name = "directorBio", accessMode = @AccessMode(insert = true))
-    private DirectorBio directorBio;
-
-    public void setDirectorBio(DirectorBio directorBio) {
-        this.directorBio = directorBio;
-        if (directorBio != null) {
-            directorBio.setDirector(this);
-        }
-    }
 
     @Override
     public final boolean equals(Object o) {
@@ -59,11 +40,11 @@ public class Director {
         return Objects.hashCode(getDirectorId());
     }
 
-    public String getDirectorId() {
+    public Long getDirectorId() {
         return directorId;
     }
 
-    public void setDirectorId(String directorId) {
+    public void setDirectorId(Long directorId) {
         this.directorId = directorId;
     }
 
@@ -89,9 +70,5 @@ public class Director {
 
     public void setMovies(Set<Movie> movies) {
         this.movies = movies;
-    }
-
-    public DirectorBio getDirectorBio() {
-        return directorBio;
     }
 }

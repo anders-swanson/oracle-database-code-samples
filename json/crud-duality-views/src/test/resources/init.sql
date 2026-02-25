@@ -12,7 +12,8 @@ create table orders (
     constraint fk_orders_product foreign key (product_id) references products(product_id) on delete cascade
 );
 
-create or replace force editionable json relational duality view orders_dv as orders @insert @update @delete {
+create or replace force editionable json relational duality view
+orders_dv as orders @insert @update @delete {
   _id : order_id
   quantity
   orderDate : order_date

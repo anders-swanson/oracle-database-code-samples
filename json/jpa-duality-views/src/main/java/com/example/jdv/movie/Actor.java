@@ -18,7 +18,8 @@ public class Actor {
     @JsonbProperty(_ID_FIELD)
     @Id
     @Column(name = "actor_id")
-    private String actorId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long actorId;
 
     @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
@@ -54,11 +55,11 @@ public class Actor {
         return Objects.hashCode(getActorId());
     }
 
-    public String getActorId() {
+    public Long getActorId() {
         return actorId;
     }
 
-    public void setActorId(String actorId) {
+    public void setActorId(Long actorId) {
         this.actorId = actorId;
     }
 

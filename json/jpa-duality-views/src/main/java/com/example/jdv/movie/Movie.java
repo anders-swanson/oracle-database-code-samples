@@ -18,7 +18,8 @@ public class Movie {
     @Id
     @Column(name = "movie_id")
     @JsonbProperty("_id")
-    private String movieId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long movieId;
 
     @Column(name = "title", nullable = false, length = 100)
     private String title;
@@ -31,8 +32,7 @@ public class Movie {
 
     @ManyToOne
     @JoinColumn(name = "director_id")
-    //@JsonRelationalDualityView(accessMode = @AccessMode(insert = true))
-    @JsonbTransient
+    @JsonRelationalDualityView(accessMode = @AccessMode(insert = true))
     private Director director;
 
     @ManyToMany
@@ -56,11 +56,11 @@ public class Movie {
         return Objects.hashCode(movieId);
     }
 
-    public String getMovieId() {
+    public Long getMovieId() {
         return movieId;
     }
 
-    public void setMovieId(String movieId) {
+    public void setMovieId(Long movieId) {
         this.movieId = movieId;
     }
 

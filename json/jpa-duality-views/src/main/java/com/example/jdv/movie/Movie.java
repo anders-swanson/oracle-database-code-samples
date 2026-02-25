@@ -11,9 +11,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "movie")
-@JsonRelationalDualityView(name = "movie_dv", accessMode = @AccessMode(
-        insert = true
-))
 public class Movie {
     @Id
     @Column(name = "movie_id")

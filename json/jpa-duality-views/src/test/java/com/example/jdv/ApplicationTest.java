@@ -4,6 +4,9 @@ import com.example.jdv.controller.JDVController;
 import com.example.jdv.movie.Actor;
 import com.example.jdv.movie.Director;
 import com.example.jdv.movie.Movie;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbConfig;
+import org.eclipse.yasson.YassonJsonb;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,8 +34,8 @@ public class ApplicationTest {
     @Test
     public void createMovieActorJDV() {
         Director director = new Director();
-        director.setFirstName("John");
-        director.setLastName("Doe");
+        director.setFirstName("Tim");
+        director.setLastName("Smith");
 
         Movie movie = new Movie();
         movie.setTitle("my movie");
@@ -51,5 +54,11 @@ public class ApplicationTest {
         Movie actorMovie = movies.iterator().next();
         assertThat(actorMovie.getTitle()).isEqualTo(movie.getTitle());
         assertThat(actorMovie.getDirector().getFirstName()).isEqualTo(movie.getDirector().getFirstName());
+
+        YassonJsonb yassonJsonb = (YassonJsonb) JsonbBuilder.newBuilder()
+                .withConfig(new JsonbConfig().withFormatting(true))
+                .build();
+        String actorString = yassonJsonb.toJson(actorCreated);
+        System.out.println("created actor: \n" + actorString);
     }
 }

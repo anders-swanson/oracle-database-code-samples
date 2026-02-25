@@ -8,6 +8,7 @@ import com.oracle.spring.json.jsonb.JSONBRowMapper;
 import oracle.jdbc.OraclePreparedStatement;
 import oracle.jdbc.OracleTypes;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,10 +42,9 @@ public class JDVController {
         return findById(Actor.class, id).orElse(null);
     }
 
-    @PostMapping("/movie)")
-    public Movie createMovie(Movie movie) {
-        long id = save(movie, Movie.class);
-        return findById(Movie.class, id).orElse(null);
+    @GetMapping("/actor")
+    public Actor findById(Long id) {
+        return findById(Actor.class, id).orElse(null);
     }
 
     public <T> long save(T entity, Class<T> entityJavaType) {

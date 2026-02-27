@@ -23,12 +23,12 @@
         <dependency>
             <groupId>com.oracle.database.messaging</groupId>
             <artifactId>okafka</artifactId>
-            <version>23.6.1.0</version>
+            <version>${okafka.version}</version>
         </dependency>
         <dependency>
             <groupId>com.oracle.database.spring</groupId>
             <artifactId>oracle-spring-boot-starter-json-collections</artifactId>
-            <version>25.3.0</version>
+            <version>${oracle.starters.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>

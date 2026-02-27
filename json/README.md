@@ -10,6 +10,7 @@ Samples in this directory demonstrate how Oracle AI Database treats JSON as a fi
 | [crud-duality-views](./crud-duality-views/README.md)   | Run CRUD operations against a JSON Relational Duality View using Oracle JDBC, OSON serialization, and Testcontainers-powered integration tests.                               |
 | [jdbc-json-basic](./jdbc-json-basic/README.md)         | Work with the Oracle JSON data type via JDBC: bind OracleJsonObject payloads, query with SQL/JSON operators, and validate the flow with Testcontainers.                       |
 | [jdbc-json-analytics](./jdbc-json-analytics/README.md) | Perform advanced SQL/JSON analytics with JSON_TABLE, JSON_EXISTS, and JSON_ARRAYAGG over nested order documents using plain JDBC.                                             |
+| [json-event-streaming](./json-event-streaming/README.md) | Publish and consume Oracle JSON documents over OKafka, streaming OSON payloads through Transactional Event Queue topics with integration tests.                               |
 
 ## Prerequisites
 

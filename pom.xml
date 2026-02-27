@@ -21,7 +21,7 @@
         <spring.cloud.oracle.version>1.4.6</spring.cloud.oracle.version>
         <spring.cloud.version>5.0.0</spring.cloud.version>
         <oracle.version>23.26.1.0.0</oracle.version>
-        <kafka.clients.version>3.7.1</kafka.clients.version>
+        <kafka.clients.version>3.9.1</kafka.clients.version>
         <oci.sdk.version>3.67.1</oci.sdk.version>
         <java.version>21</java.version>
         <aqapi.jakarta.version>23.8.0.0</aqapi.jakarta.version>
@@ -44,6 +44,7 @@
         <module>jdbc-event-streaming</module>
         <module>jms-producer-consumer</module>
         <module>json/crud-duality-views</module>
+        <module>json/json-event-streaming</module>
         <module>json/jdbc-json-analytics</module>
         <module>json/jdbc-json-basic</module>
         <module>json/jpa-duality-views</module>

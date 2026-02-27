@@ -77,7 +77,7 @@ To migrate the app, we'll make three key modifications:
 <dependency>
     <groupId>com.oracle.database.messaging</groupId>
     <artifactId>okafka</artifactId>
-    <version>23.6.1.0</version>
+    <version>23.7.0.0</version>
 </dependency>
 ```
 

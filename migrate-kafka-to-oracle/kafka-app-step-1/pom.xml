@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.oracle.database.messaging</groupId>
             <artifactId>okafka</artifactId>
-            <version>23.6.1.0</version>
+            <version>${okafka.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

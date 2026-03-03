@@ -5,8 +5,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.oracle.OracleContainer;
 
-import java.sql.SQLException;
-
 @Testcontainers
 class JsonAttributesSampleTest {
 
@@ -17,14 +15,11 @@ class JsonAttributesSampleTest {
             .withInitScript("schema.sql");
 
     @Test
-    void runCrudScenario() throws SQLException {
-        JsonAttributesSample sample = new JsonAttributesSample();
-        try (var connection = sample.createDataSource(
-                oracle.getJdbcUrl(),
-                oracle.getUsername(),
-                oracle.getPassword()
-        ).getConnection()) {
-            sample.runScenario(connection);
-        }
+    void runCrudScenario() throws Exception {
+        JsonAttributesSample.main(new String[]{
+            oracle.getJdbcUrl(),
+            oracle.getUsername(),
+            oracle.getPassword()
+        });
     }
 }

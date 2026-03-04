@@ -42,15 +42,15 @@ public class Movie {
     private Set<Actor> actors;
 
     @Override
-    public final boolean equals(Object o) {
-        if (!(o instanceof Movie movie)) return false;
-
-        return Objects.equals(movieId, movie.movieId);
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return Objects.equals(getMovieId(), movie.getMovieId()) && Objects.equals(getTitle(), movie.getTitle()) && Objects.equals(getReleaseYear(), movie.getReleaseYear()) && Objects.equals(getGenre(), movie.getGenre());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(movieId);
+        return Objects.hash(getMovieId(), getTitle(), getReleaseYear(), getGenre());
     }
 
     public Long getMovieId() {

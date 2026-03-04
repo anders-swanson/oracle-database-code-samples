@@ -34,26 +34,33 @@ public class ApplicationTest {
     @Test
     public void createMovieActorJDV() {
         Director director = new Director();
+        director.setDirectorId(1L); // so the same director is used
         director.setFirstName("Tim");
         director.setLastName("Smith");
 
-        Movie movie = new Movie();
-        movie.setTitle("my movie");
-        movie.setGenre("action");
-        movie.setReleaseYear(1993);
-        movie.setDirector(director);
+        Movie movie1 = new Movie();
+        movie1.setTitle("my movie");
+        movie1.setGenre("action");
+        movie1.setReleaseYear(1993);
+        movie1.setDirector(director);
+
+        Movie movie2 = new Movie();
+        movie2.setTitle("my movie2");
+        movie2.setGenre("thriller");
+        movie2.setReleaseYear(1994);
+        movie2.setDirector(director);
 
         Actor actor = new Actor();
         actor.setFirstName("John");
         actor.setLastName("Doe");
-        actor.setMovies(Set.of(movie));
+        actor.setMovies(Set.of(movie1, movie2));
 
         Actor actorCreated = jdvController.createActor(actor);
         Set<Movie> movies = actorCreated.getMovies();
-        assertThat(movies).hasSize(1);
-        Movie actorMovie = movies.iterator().next();
-        assertThat(actorMovie.getTitle()).isEqualTo(movie.getTitle());
-        assertThat(actorMovie.getDirector().getFirstName()).isEqualTo(movie.getDirector().getFirstName());
+        assertThat(movies).hasSize(2);
+        Movie actorMovie = movies.stream().filter(m -> m.getTitle().equals(movie1.getTitle())).findFirst().get();
+        assertThat(actorMovie.getTitle()).isEqualTo(movie1.getTitle());
+        assertThat(actorMovie.getDirector().getFirstName()).isEqualTo(movie1.getDirector().getFirstName());
 
         YassonJsonb yassonJsonb = (YassonJsonb) JsonbBuilder.newBuilder()
                 .withConfig(new JsonbConfig().withFormatting(true))

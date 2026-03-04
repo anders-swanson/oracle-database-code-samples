@@ -1,6 +1,5 @@
 package com.example.json.jdbc;
 
-import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.stream.JsonParser;
 import oracle.jdbc.OraclePreparedStatement;
 import oracle.jdbc.OracleTypes;
@@ -17,7 +16,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Demonstrates basic CRUD operations using the Oracle JSON data type over JDBC with OSON payloads.

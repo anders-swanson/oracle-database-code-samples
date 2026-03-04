@@ -1,7 +1,6 @@
 package com.example.jdv.controller;
 
 import com.example.jdv.movie.Actor;
-import com.example.jdv.movie.Movie;
 import com.oracle.spring.json.duality.annotation.JsonRelationalDualityView;
 import com.oracle.spring.json.jsonb.JSONB;
 import com.oracle.spring.json.jsonb.JSONBRowMapper;
@@ -13,13 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.sql.DataSource;
-import java.nio.ByteBuffer;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.UUID;
 
 import static com.oracle.spring.json.duality.builder.Annotations.getViewName;
 

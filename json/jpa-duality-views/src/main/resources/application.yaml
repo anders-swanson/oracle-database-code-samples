@@ -1,5 +1,8 @@
+
 spring:
   jpa:
+    properties:
+      hibernate.jdbc.fetch_size: 100
     hibernate:
       ddl-auto: create-drop
     show-sql: true

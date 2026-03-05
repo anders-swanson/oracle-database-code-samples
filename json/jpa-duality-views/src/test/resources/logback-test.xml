@@ -1,0 +1,15 @@
+<configuration>
+    <root level="WARN">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.testcontainers" level="ERROR"/>
+    <logger name="tc" level="ERROR"/>
+    <logger name="org.springframework.test" level="WARN"/>
+</configuration>

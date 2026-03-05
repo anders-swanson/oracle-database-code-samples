@@ -22,10 +22,17 @@ import java.util.List;
  */
 public class JsonAttributesSample {
 
-    private static final String INSERT_SQL = "insert into json_products (attributes) values (?)";
-    private static final String SELECT_BY_ID_SQL = "select attributes from json_products where id = ?";
-    private static final String SELECT_BY_CATEGORY_SQL = "select attributes from json_products where json_value(attributes, '$.category') = ?";
-    private static final String UPDATE_PRICE_SQL = "update json_products set attributes = json_transform(attributes, set '$.price' = ? returning json) where id = ?";
+    private static final String INSERT_SQL = """
+        insert into json_products (attributes) values (?)""";
+    private static final String SELECT_BY_ID_SQL = """
+        select attributes from json_products where id = ?""";
+    private static final String SELECT_BY_CATEGORY_SQL = """
+        select attributes from json_products 
+        where json_value(attributes, '$.category') = ?""";
+    private static final String UPDATE_PRICE_SQL = """
+        update json_products
+        set attributes = json_transform(attributes, set '$.price' = ? returning json)
+        where id = ?""";
     private static final String DELETE_SQL = "delete from json_products where id = ?";
 
     public static void main(String[] args) throws Exception {

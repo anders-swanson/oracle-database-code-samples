@@ -1,12 +1,17 @@
+# Tracing Configuration
 management:
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: http://localhost:4318/v1/traces
   tracing:
+    export:
+      otlp:
+        enabled: true
     sampling:
       # Send 100% of spans
       probability: 1
-  zipkin:
-    tracing:
-      # Default Zipkin tracing endpoint from Docker compose
-      endpoint: http://localhost:9411/api/v2/spans
 
 spring:
   application:

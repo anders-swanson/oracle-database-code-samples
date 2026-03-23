@@ -21,9 +21,9 @@ Why would you want to implement a custom tracer for the Oracle JDBC Driver? To a
 - Java 21+, Maven
 - Docker compatible environment with docker-compose
 
-## Setup Oracle Database Free and Zipkin with docker-compose
+## Setup Oracle Database Free and Grafana Tracing with docker-compose
 
-Start the Oracle Database Free and Zipkin containers with docker-compose:
+Start the Oracle Database Free and Grafana LGTM containers with docker-compose:
 
 ```bash
 docker-compose -d
@@ -51,6 +51,6 @@ curl -X POST http://localhost:8080/flavors \
 
 ## View traces
 
-1. Navigate to the Zipkin UI, using the container URL `http://localhost:9411/zipkin/`
-2. Click "Run Query" to find all traces, or search for a specific trace ID
-3. View the trace! You can see the producer scheduling, publishing the event, and consuming the event in a single trace.
+1. Navigate to the Grafana UI, using the container URL `http://localhost:3000/a/grafana-exploretraces-app`
+2. Click "Traces" to find all traces, or search for a specific trace ID
+3. View the trace, and see the OCSID.ACTION, OCSID.CLIENTID, and OCSID.MODULE custom properties set

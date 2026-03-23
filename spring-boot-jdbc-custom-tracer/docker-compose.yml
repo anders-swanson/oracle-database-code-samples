@@ -1,12 +1,12 @@
 services:
 
-  zipkin:
-    image: ghcr.io/openzipkin/zipkin-slim:${TAG:-latest}
-    container_name: zipkin
-    environment:
-      - STORAGE_TYPE=mem
+  grafana-lgtm:
+    container_name: lgtm
+    image: 'grafana/otel-lgtm:latest'
     ports:
-      - 9411:9411
+      - '3000:3000' # UI
+      - '4317:4317'
+      - '4318:4318'
   free23ai:
     image: gvenzl/oracle-free:23.26.1-slim-faststart
     container_name: free23ai

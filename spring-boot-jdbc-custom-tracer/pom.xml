@@ -28,26 +28,20 @@
             <version>${oracle.starters.version}</version>
         </dependency>
 
+        <!-- OJDBC Tracing provider -->
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc-provider-opentelemetry</artifactId>
+        </dependency>
         <!-- Observability / Tracing is implemented in Actuator. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!-- Tracing library. -->
         <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-tracing-bridge-otel</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-opentelemetry</artifactId>
         </dependency>
-        <!-- Report traces to Zipkin -->
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-exporter-zipkin</artifactId>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>net.ttddyy.observation</groupId>-->
-<!--            <artifactId>datasource-micrometer-spring-boot</artifactId>-->
-<!--            <version>1.0.2</version>-->
-<!--        </dependency>-->
 
         <!-- Include if using Oracle Database Wallet -->
 <!--        <dependency>-->
@@ -63,7 +57,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.example.tracing.jdbc.JDBCTracingApp</mainClass>
+                    <mainClass>com.example.tracing.jdbc.custom.JDBCCustomTracer</mainClass>
                 </configuration>
             </plugin>
         </plugins>

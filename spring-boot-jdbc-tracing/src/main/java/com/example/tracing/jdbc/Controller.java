@@ -15,6 +15,8 @@ public class Controller {
         this.jdbcClient = jdbcClient;
     }
 
+    public record CreateIceCreamFlavorRequest(String flavor) {}
+
     public record IceCreamFlavor(long id, String flavor) {}
 
     private final JdbcClient jdbcClient;
@@ -27,10 +29,10 @@ public class Controller {
     }
 
     @PostMapping("/flavors")
-    public IceCreamFlavor createIceCreamFlavor(@RequestBody IceCreamFlavor iceCreamFlavor) {
+    public IceCreamFlavor createIceCreamFlavor(@RequestBody CreateIceCreamFlavorRequest request) {
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcClient.sql("insert into ice_cream_flavors (flavor) values (?)")
-                .param(iceCreamFlavor.flavor)
+                .param(request.flavor)
                 .update(keyHolder, "id");
 
         return jdbcClient.sql("select * from ice_cream_flavors where id = ?")

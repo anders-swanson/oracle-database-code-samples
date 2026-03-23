@@ -28,7 +28,6 @@
             <version>${oracle.starters.version}</version>
         </dependency>
 
-
         <!-- OJDBC Tracing provider -->
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
@@ -39,21 +38,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!-- Tracing library. -->
         <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-tracing-bridge-otel</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-opentelemetry</artifactId>
         </dependency>
-        <!-- Report traces to Zipkin -->
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-exporter-zipkin</artifactId>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>net.ttddyy.observation</groupId>-->
-<!--            <artifactId>datasource-micrometer-spring-boot</artifactId>-->
-<!--            <version>1.0.2</version>-->
-<!--        </dependency>-->
 
         <!-- Include if using Oracle Database Wallet -->
 <!--        <dependency>-->

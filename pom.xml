@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.2</version>
+        <version>4.0.4</version>
         <relativePath/>
     </parent>
     <groupId>com.example</groupId>
@@ -43,11 +43,11 @@
         <module>database-per-service-example</module>
         <module>jdbc-event-streaming</module>
         <module>jms-producer-consumer</module>
-        <module>json/crud-duality-views</module>
         <module>json/json-event-streaming</module>
         <module>json/jdbc-json-analytics</module>
         <module>json/jdbc-json-basic</module>
         <module>json/jpa-duality-views</module>
+        <module>json/spring-jdbc-duality-views</module>
         <module>migrate-kafka-to-oracle/kafka-app</module>
         <module>migrate-kafka-to-oracle/kafka-app-step-1</module>
         <module>migrate-kafka-to-oracle/kafka-app-step-2</module>

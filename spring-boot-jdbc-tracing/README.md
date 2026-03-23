@@ -12,7 +12,7 @@ This example application demonstrates how to instrument Oracle Database JDBC con
 - Java 21+, Maven
 - Docker compatible environment with docker-compose
 
-## Setup Oracle Database Free and Zipkin with docker-compose
+## Setup Oracle Database Free and Grafana LGTM with docker-compose
 
 Start the Oracle Database Free and Zipkin containers with docker-compose:
 
@@ -42,9 +42,9 @@ curl -X POST http://localhost:8080/flavors \
 
 ## View traces
 
-1. Navigate to the Zipkin UI, using the container URL `http://localhost:9411/zipkin/`
-2. Click "Run Query" to find all traces, or search for a specific trace ID
-3. View the trace! You can see the producer scheduling, publishing the event, and consuming the event in a single trace.
+1. Navigate to the Grafana Tracing UI, using the container URL `http://localhost:3000/a/grafana-exploretraces-app`
+2. Click "Traces" to find all traces, or search for a specific trace ID
+3. View the trace! You can see HTTP request down to database query from a single trace
 
 ## Configure OJDBC Tracing System Properties
 

@@ -1,6 +1,15 @@
 
 # Tracing Configuration
 management:
+  otlp:
+    metrics:
+      export:
+        enabled: false
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: http://localhost:4318/v1/traces
   tracing:
     ojdbc:
       # Enable the OJDBC Tracer
@@ -16,13 +25,16 @@ management:
         - OCSID.MODULE
         - OCSID.CLIENTID
         - OCSID.ACTION
+    export:
+      otlp:
+        enabled: true
     sampling:
       # Send 100% of spans
       probability: 1
-  zipkin:
-    tracing:
-      # Default Zipkin tracing endpoint from Docker compose
-      endpoint: http://localhost:9411/api/v2/spans
+  logging:
+    export:
+      otlp:
+        enabled: false
 
 spring:
   jmx:

@@ -26,6 +26,8 @@ public class Controller {
         this.dataSource = dataSource;
     }
 
+    public record CreateIceCreamFlavorRequest(String flavor) {}
+
     public record IceCreamFlavor(long id, String flavor) {}
 
     private final RowMapper<IceCreamFlavor> rowMapper = (rs, rowNum) ->
@@ -51,7 +53,7 @@ public class Controller {
     }
 
     @PostMapping("/flavors")
-    public IceCreamFlavor createIceCreamFlavor(@RequestBody IceCreamFlavor iceCreamFlavor) throws SQLException {
+    public IceCreamFlavor createIceCreamFlavor(@RequestBody CreateIceCreamFlavorRequest request) throws SQLException {
         long generatedId;
 
         // --- Insert and capture generated key
@@ -59,7 +61,7 @@ public class Controller {
              PreparedStatement ps = conn.prepareStatement("INSERT INTO ice_cream_flavors (flavor) VALUES (?)", new String[]{"id",})) {
 
             prepareConnection(conn, ACTION_CREATE);
-            ps.setString(1, iceCreamFlavor.flavor());
+            ps.setString(1, request.flavor());
             ps.executeUpdate();
 
             try (ResultSet generatedKeys = ps.getGeneratedKeys()) {

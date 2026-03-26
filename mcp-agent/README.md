@@ -34,21 +34,10 @@ conn -save cline_mcp -savepwd testuser/testpwd@localhost:1530/freepdb1
 ```
 
 ### 2. Build the Application
-Build the Java application using Maven:
+Build and run the Java application using Maven:
 
 ```bash
-mvn clean package
-```
-
-This creates the executable JAR in the `target` directory.
-
-## Running the Project
-
-### 1. Start the MCP Agent Application
-Run the JAR to start the agent:
-
-```bash
-java -jar target/oracle-database-mcp-agent-1.0.0-SNAPSHOT.jar
+mvn compile exec:java
 ```
 
 This initializes the SQLcl MCP agent and starts a terminal input loop.

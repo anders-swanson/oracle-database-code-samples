@@ -14,14 +14,11 @@ import oracle.spatial.geometry.JGeometry;
 public final class SpatialDiagramGenerator {
     private static final int WIDTH = 900;
     private static final int HEIGHT = 700;
-    private static final int LEFT_PADDING = 80;
-    private static final int RIGHT_PADDING = 80;
+    private static final int LEFT_PADDING = 330;
+    private static final int RIGHT_PADDING = 70;
     private static final int TOP_PADDING = 150;
     private static final int BOTTOM_PADDING = 80;
     private static final double VIEW_MARGIN_RATIO = 0.08d;
-
-    private SpatialDiagramGenerator() {
-    }
 
     /**
      * Writes an SVG diagram to disk using the sample's stored geometries and exact distance calculations.
@@ -54,9 +51,12 @@ public final class SpatialDiagramGenerator {
                     .landmark { fill: #0f766e; stroke: white; stroke-width: 2; }
                     .polygon { fill: rgba(220,38,38,0.08); stroke: #dc2626; stroke-width: 3; stroke-dasharray: 10 6; }
                     .distance { stroke: #2563eb; stroke-width: 2; stroke-dasharray: 7 5; }
+                    .point-label-box { fill: rgba(248,250,252,0.92); stroke: #cbd5e1; stroke-width: 1; rx: 6; ry: 6; }
                     .label { font-size: 14px; font-weight: 600; }
-                    .distance-label { font-size: 13px; fill: #1d4ed8; }
-                    .distance-label-box { fill: #f8fafc; stroke: #bfdbfe; stroke-width: 1; rx: 6; ry: 6; }
+                    .distance-table { fill: #f8fafc; stroke: #bfdbfe; stroke-width: 1; rx: 10; ry: 10; }
+                    .distance-table-header { font-size: 13px; font-weight: 700; fill: #1e3a8a; }
+                    .distance-table-row { font-size: 12px; fill: #1f2937; }
+                    .distance-table-value { font-size: 12px; font-weight: 700; fill: #1d4ed8; }
                     .legend { font-size: 13px; fill: #374151; }
                   </style>
                   <rect x="0" y="0" width="900" height="700" fill="#f8fafc"/>
@@ -64,11 +64,17 @@ public final class SpatialDiagramGenerator {
                   <text x="70" y="72" class="subtitle">Sample landmarks around San Francisco with exact Oracle Spatial distances in meters</text>
                 """);
 
+        svg.append(distanceTableSvg(sample, List.of(
+                new DistanceMeasurement(ferryBuilding, coitTower),
+                new DistanceMeasurement(ferryBuilding, oraclePark),
+                new DistanceMeasurement(ferryBuilding, goldenGateBridge),
+                new DistanceMeasurement(coitTower, oraclePark)
+        )));
         svg.append(polygonSvg(downtownWindow, viewBox));
-        svg.append(distanceSvg(sample, ferryBuilding, coitTower, viewBox, -10));
-        svg.append(distanceSvg(sample, ferryBuilding, oraclePark, viewBox, 18));
-        svg.append(distanceSvg(sample, ferryBuilding, goldenGateBridge, viewBox, -18));
-        svg.append(distanceSvg(sample, coitTower, oraclePark, viewBox, 22));
+        svg.append(distanceLineSvg(ferryBuilding, coitTower, viewBox));
+        svg.append(distanceLineSvg(ferryBuilding, oraclePark, viewBox));
+        svg.append(distanceLineSvg(ferryBuilding, goldenGateBridge, viewBox));
+        svg.append(distanceLineSvg(coitTower, oraclePark, viewBox));
 
         for (Feature feature : List.of(ferryBuilding, coitTower, oraclePark, goldenGateBridge)) {
             svg.append(pointSvg(feature, viewBox));
@@ -76,7 +82,7 @@ public final class SpatialDiagramGenerator {
 
         svg.append("""
                   <text x="70" y="660" class="legend">Dashed red box: Downtown Window polygon</text>
-                  <text x="360" y="660" class="legend">Dashed blue lines: exact SDO_GEOM.SDO_DISTANCE results</text>
+                  <text x="360" y="660" class="legend">Dashed blue lines: measured feature-to-feature distances</text>
                 </svg>
                 """);
         return svg.toString();
@@ -147,36 +153,67 @@ public final class SpatialDiagramGenerator {
     private static String pointSvg(Feature feature, ViewBox viewBox) {
         double x = scaleX(feature.longitude(), viewBox);
         double y = scaleY(feature.latitude(), viewBox);
+        PointLabelOffset offset = pointLabelOffset(feature.name());
+        double labelX = x + offset.dx();
+        double labelY = y + offset.dy();
+        double labelWidth = 20 + (feature.name().length() * 7.2);
         return """
                   <circle cx="%.2f" cy="%.2f" r="8" class="landmark"/>
+                  <rect x="%.2f" y="%.2f" width="%.2f" height="22" class="point-label-box"/>
                   <text x="%.2f" y="%.2f" class="label">%s</text>
-                """.formatted(x, y, x + 12, y - 12, feature.name());
+                """.formatted(
+                x, y,
+                labelX - 10, labelY - 16, labelWidth,
+                labelX, labelY,
+                feature.name()
+        );
     }
 
     /**
-     * Renders a labeled distance line between two landmarks using the database-computed distance.
+     * Renders a dashed distance line directly on the map.
      */
-    private static String distanceSvg(JdbcSpatialExample sample, Feature from, Feature to, ViewBox viewBox, double labelYOffset) {
+    private static String distanceLineSvg(Feature from, Feature to, ViewBox viewBox) {
         double x1 = scaleX(from.longitude(), viewBox);
         double y1 = scaleY(from.latitude(), viewBox);
         double x2 = scaleX(to.longitude(), viewBox);
         double y2 = scaleY(to.latitude(), viewBox);
-        double labelX = (x1 + x2) / 2.0d;
-        double labelY = (y1 + y2) / 2.0d + labelYOffset;
-        String distanceLabel = "%.0f m".formatted(sample.distanceBetween(from.name(), to.name()));
-        double labelWidth = 12 + (distanceLabel.length() * 7);
-
         return """
                   <line x1="%.2f" y1="%.2f" x2="%.2f" y2="%.2f" class="distance"/>
-                  <rect x="%.2f" y="%.2f" width="%.2f" height="20" class="distance-label-box"/>
-                  <text x="%.2f" y="%.2f" text-anchor="middle" dominant-baseline="middle" class="distance-label">%s</text>
-                """.formatted(
-                x1, y1, x2, y2,
-                labelX - (labelWidth / 2.0d), labelY - 10,
-                labelWidth,
-                labelX, labelY + 1,
-                distanceLabel
-        );
+                """.formatted(x1, y1, x2, y2);
+    }
+
+    /**
+     * Renders a small distance table to the left of the map.
+     */
+    private static String distanceTableSvg(JdbcSpatialExample sample, List<DistanceMeasurement> measurements) {
+        double x = 40;
+        double y = 110;
+        double width = 250;
+        double rowHeight = 46;
+        double height = 46 + (measurements.size() * rowHeight);
+
+        StringBuilder table = new StringBuilder("""
+                  <rect x="%.2f" y="%.2f" width="%.2f" height="%.2f" class="distance-table"/>
+                  <text x="58" y="138" class="distance-table-header">Measured Distances</text>
+                """.formatted(x, y, width, height));
+
+        for (int i = 0; i < measurements.size(); i++) {
+            DistanceMeasurement measurement = measurements.get(i);
+            double rowY = y + 46 + (i * rowHeight);
+            double distance = sample.distanceBetween(measurement.from().name(), measurement.to().name());
+            table.append("""
+                      <text x="58" y="%.2f" class="distance-table-row">%s to %s</text>
+                      <text x="58" y="%.2f" class="distance-table-value">%.0f m</text>
+                    """.formatted(
+                    rowY,
+                    measurement.from().name(),
+                    measurement.to().name(),
+                    rowY + 18,
+                    distance
+            ));
+        }
+
+        return table.toString();
     }
 
     /**
@@ -197,7 +234,26 @@ public final class SpatialDiagramGenerator {
         return HEIGHT - BOTTOM_PADDING - ((latitude - viewBox.minLatitude()) / latRange) * usableHeight;
     }
 
+    /**
+     * Uses fixed offsets so point labels stay clear of the distance callouts.
+     */
+    private static PointLabelOffset pointLabelOffset(String featureName) {
+        return switch (featureName) {
+            case "Ferry Building" -> new PointLabelOffset(14, -18);
+            case "Coit Tower" -> new PointLabelOffset(14, -20);
+            case "Oracle Park" -> new PointLabelOffset(14, 28);
+            case "Golden Gate Bridge" -> new PointLabelOffset(14, -18);
+            default -> new PointLabelOffset(12, -12);
+        };
+    }
+
     private record Feature(String name, JGeometry geometry, double longitude, double latitude, String color) {
+    }
+
+    private record DistanceMeasurement(Feature from, Feature to) {
+    }
+
+    private record PointLabelOffset(double dx, double dy) {
     }
 
     private record ViewBox(double minLongitude, double minLatitude, double maxLongitude, double maxLatitude) {

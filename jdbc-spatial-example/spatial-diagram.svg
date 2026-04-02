@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="700" viewBox="0 0 900 700">
+  <style>
+    text { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; fill: #111827; }
+    .title { font-size: 26px; font-weight: 700; }
+    .subtitle { font-size: 14px; fill: #4b5563; }
+    .landmark { fill: #0f766e; stroke: white; stroke-width: 2; }
+    .polygon { fill: rgba(220,38,38,0.08); stroke: #dc2626; stroke-width: 3; stroke-dasharray: 10 6; }
+    .distance { stroke: #2563eb; stroke-width: 2; stroke-dasharray: 7 5; }
+    .label { font-size: 14px; font-weight: 600; }
+    .distance-label { font-size: 13px; fill: #1d4ed8; }
+    .distance-label-box { fill: #f8fafc; stroke: #bfdbfe; stroke-width: 1; rx: 6; ry: 6; }
+    .legend { font-size: 13px; fill: #374151; }
+  </style>
+  <rect x="0" y="0" width="900" height="700" fill="#f8fafc"/>
+  <text x="70" y="48" class="title">Oracle Spatial Sample Diagram</text>
+  <text x="70" y="72" class="subtitle">Sample landmarks around San Francisco with exact Oracle Spatial distances in meters</text>
+  <rect x="507.24" y="283.81" width="250.21" height="268.96" class="polygon"/>
+  <text x="515.24" y="273.81" class="label">Downtown Window</text>
+  <line x1="671.75" y1="381.30" x2="596.06" y2="334.91" class="distance"/>
+  <rect x="606.91" y="338.10" width="54.00" height="20" class="distance-label-box"/>
+  <text x="633.91" y="349.10" text-anchor="middle" dominant-baseline="middle" class="distance-label">1312 m</text>
+  <line x1="671.75" y1="381.30" x2="699.27" y2="494.94" class="distance"/>
+  <rect x="658.51" y="446.12" width="54.00" height="20" class="distance-label-box"/>
+  <text x="685.51" y="457.12" text-anchor="middle" dominant-baseline="middle" class="distance-label">1915 m</text>
+  <line x1="671.75" y1="381.30" x2="142.55" y2="217.24" class="distance"/>
+  <rect x="380.15" y="271.27" width="54.00" height="20" class="distance-label-box"/>
+  <text x="407.15" y="282.27" text-anchor="middle" dominant-baseline="middle" class="distance-label">7927 m</text>
+  <line x1="596.06" y1="334.91" x2="699.27" y2="494.94" class="distance"/>
+  <rect x="620.67" y="426.92" width="54.00" height="20" class="distance-label-box"/>
+  <text x="647.67" y="437.92" text-anchor="middle" dominant-baseline="middle" class="distance-label">3015 m</text>
+  <circle cx="671.75" cy="381.30" r="8" class="landmark"/>
+  <text x="683.75" y="369.30" class="label">Ferry Building</text>
+  <circle cx="596.06" cy="334.91" r="8" class="landmark"/>
+  <text x="608.06" y="322.91" class="label">Coit Tower</text>
+  <circle cx="699.27" cy="494.94" r="8" class="landmark"/>
+  <text x="711.27" y="482.94" class="label">Oracle Park</text>
+  <circle cx="142.55" cy="217.24" r="8" class="landmark"/>
+  <text x="154.55" y="205.24" class="label">Golden Gate Bridge</text>
+  <text x="70" y="660" class="legend">Dashed red box: Downtown Window polygon</text>
+  <text x="360" y="660" class="legend">Dashed blue lines: exact SDO_GEOM.SDO_DISTANCE results</text>
+</svg>

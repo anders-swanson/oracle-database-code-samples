@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="760" viewBox="0 0 1120 760">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; fill: #111827; }
+    .title { font-size: 28px; font-weight: 700; }
+    .subtitle { font-size: 14px; fill: #475569; }
+    .edge { stroke: #94a3b8; stroke-width: 2.5; marker-end: url(#arrow); }
+    .edge-label-box { fill: rgba(255,255,255,0.94); stroke: #cbd5e1; stroke-width: 1; rx: 8; ry: 8; }
+    .edge-label { font-size: 12px; font-weight: 600; fill: #334155; }
+    .person { fill: #0f766e; stroke: #ffffff; stroke-width: 3; }
+    .person-box { fill: rgba(248,250,252,0.95); stroke: #cbd5e1; stroke-width: 1; rx: 12; ry: 12; }
+    .person-name { font-size: 16px; font-weight: 700; }
+    .person-detail { font-size: 12px; fill: #475569; }
+    .results-box { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1; rx: 14; ry: 14; }
+    .results-header { font-size: 14px; font-weight: 700; fill: #1e3a8a; }
+    .results-row { font-size: 13px; fill: #1f2937; }
+    .legend { font-size: 13px; fill: #475569; }
+  </style>
+  <rect x="0" y="0" width="1120" height="760" fill="#f8fafc"/>
+  <text x="50" y="52" class="title">Oracle Property Graph Sample Diagram</text>
+  <text x="50" y="77" class="subtitle">People are vertices, friendships are directed edges, and the side panel shows the sample GRAPH_TABLE results.</text>
+  <circle cx="350.00" cy="210.00" r="18" class="person"/>
+  <rect x="288.00" y="238.00" width="124" height="52" class="person-box"/>
+  <text x="302.00" y="258.00" class="person-name">Alice</text>
+  <text x="302.00" y="276.00" class="person-detail">Seattle</text>
+  <circle cx="640.00" cy="115.00" r="18" class="person"/>
+  <rect x="578.00" y="143.00" width="124" height="52" class="person-box"/>
+  <text x="592.00" y="163.00" class="person-name">Bob</text>
+  <text x="592.00" y="181.00" class="person-detail">Seattle</text>
+  <circle cx="640.00" cy="365.00" r="18" class="person"/>
+  <rect x="578.00" y="393.00" width="124" height="52" class="person-box"/>
+  <text x="592.00" y="413.00" class="person-name">Cara</text>
+  <text x="592.00" y="431.00" class="person-detail">Portland</text>
+  <circle cx="940.00" cy="160.00" r="18" class="person"/>
+  <rect x="878.00" y="188.00" width="124" height="52" class="person-box"/>
+  <text x="892.00" y="208.00" class="person-name">Diego</text>
+  <text x="892.00" y="226.00" class="person-detail">San Francisco</text>
+  <circle cx="940.00" cy="430.00" r="18" class="person"/>
+  <rect x="878.00" y="458.00" width="124" height="52" class="person-box"/>
+  <text x="892.00" y="478.00" class="person-name">Emma</text>
+  <text x="892.00" y="496.00" class="person-detail">Seattle</text>
+  <path d="M 413.66 218.61 Q 506.73 210.22 586.72 161.92" class="edge" fill="none"/>
+  <path d="M 586.72 161.92 Q 506.73 210.22 413.66 218.61" class="edge" fill="none"/>
+  <path d="M 398.80 267.83 Q 486.06 338.28 593.12 371.69" class="edge" fill="none"/>
+  <path d="M 593.12 371.69 Q 486.06 338.28 398.80 267.83" class="edge" fill="none"/>
+  <path d="M 697.85 151.99 Q 782.73 185.96 873.85 178.39" class="edge" fill="none"/>
+  <path d="M 873.85 178.39 Q 782.73 185.96 697.85 151.99" class="edge" fill="none"/>
+  <path d="M 681.72 199.41 Q 776.95 329.84 902.58 431.31" class="edge" fill="none"/>
+  <path d="M 902.58 431.31 Q 776.95 329.84 681.72 199.41" class="edge" fill="none"/>
+  <path d="M 696.07 405.80 Q 779.62 445.39 872.07 443.93" class="edge" fill="none"/>
+  <path d="M 872.07 443.93 Q 779.62 445.39 696.07 405.80" class="edge" fill="none"/>
+  <rect x="434.51" y="214.98" width="160.00" height="34" class="edge-label-box"/>
+  <text x="442.51" y="228.98" class="edge-label">Alice : Bob</text>
+  <text x="442.51" y="243.98" class="edge-label">since 2021 | strength 9</text>
+  <rect x="394.28" y="341.33" width="160.00" height="34" class="edge-label-box"/>
+  <text x="402.28" y="355.33" class="edge-label">Alice : Cara</text>
+  <text x="402.28" y="370.33" class="edge-label">since 2022 | strength 8</text>
+  <rect x="699.02" y="191.68" width="160.00" height="34" class="edge-label-box"/>
+  <text x="707.02" y="205.68" class="edge-label">Bob : Diego</text>
+  <text x="707.02" y="220.68" class="edge-label">since 2023 | strength 7</text>
+  <rect x="678.84" y="328.08" width="160.00" height="34" class="edge-label-box"/>
+  <text x="686.84" y="342.08" class="edge-label">Bob : Emma</text>
+  <text x="686.84" y="357.08" class="edge-label">since 2020 | strength 10</text>
+  <rect x="694.33" y="450.82" width="160.00" height="34" class="edge-label-box"/>
+  <text x="702.33" y="464.82" class="edge-label">Cara : Emma</text>
+  <text x="702.33" y="479.82" class="edge-label">since 2024 | strength 6</text>
+  <rect x="40" y="110" width="250" height="248" class="results-box"/>
+  <text x="58" y="140" class="results-header">GRAPH_TABLE Results</text>
+  <text x="58" y="172.00" class="results-row">Direct friends of Alice:</text>
+  <text x="58" y="192.00" class="results-row">Bob, Cara</text>
+  <text x="58" y="222.00" class="results-row">Within two hops:</text>
+  <text x="58" y="242.00" class="results-row">Bob, Cara, Diego, Emma</text>
+  <text x="58" y="272.00" class="results-row">Recommended friends:</text>
+  <text x="58" y="292.00" class="results-row">Emma, Diego</text>
+  <text x="50" y="715" class="legend">Arrow direction follows the source and destination keys defined in CREATE PROPERTY GRAPH.</text>
+  <text x="620" y="715" class="legend">Reciprocal rows make each friendship behave like an undirected social connection.</text>
+</svg>

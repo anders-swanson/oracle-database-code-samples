@@ -41,6 +41,7 @@
 
     <modules>
         <module>ai-vector-search</module>
+        <module>jdbc-graphql</module>
         <module>jdbc-hybrid-search</module>
         <module>database-per-service-example</module>
         <module>jdbc-property-graph</module>

@@ -19,6 +19,7 @@ This project uses Java 21+, Maven 3.9+, Spring Boot 4 for Java code. Always use 
 - Keep it simple without superfluous methods or abstractions. Readability is paramount.
 - Java uses 4-space indentation, PascalCase classes, camelCase methods, and package prefixes `com.example` per sample. Favor Spring configuration via `application.yaml` in `src/main/resources`.
 - Align SQL scripts in `sql/` and module `src/main/resources` using uppercase keywords and snake_case table names. Keep TypeScript in ES module format with lint-friendly imports, and organize Go code under package-level directories mirroring sample names.
+- If the files in the working directory have changed since the last pass, re-read to capture relevant information
 
 ## Testing Guidelines
 - Primary framework is JUnit 5 with `@Testcontainers`; write deterministic integration tests that provision Oracle AI Database Free containers and clean up via lifecycle hooks. The `testcontainers` module container idiomatic @Testcontainers tests for Java. New modules should follow these guidelines.

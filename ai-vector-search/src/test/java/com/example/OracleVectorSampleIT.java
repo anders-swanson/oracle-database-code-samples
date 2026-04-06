@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.model.embedding.onnx.allminilml6v2q.AllMiniLmL6V2QuantizedEmbeddingModel;
+import dev.langchain4j.model.embedding.onnx.allminilml6v2.AllMiniLmL6V2EmbeddingModel;
 import javax.sql.DataSource;
 import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
 public class OracleVectorSampleIT {
-    // The local AllMiniLmL6V2QuantizedEmbeddingModel we're using for this test embeds text as 384-dimensional vectors.
+    // The local AllMiniLmL6V2EmbeddingModel we're using for this test embeds text as 384-dimensional vectors.
     private static final int DIMENSIONS = 384;
     private static final String TABLE = "vector_store";
 
@@ -43,7 +43,7 @@ public class OracleVectorSampleIT {
         System.out.println("Initialized Vector Store");
 
         // Create a local embedding model for creating embeddings.
-        EmbeddingModel embeddingModel = new AllMiniLmL6V2QuantizedEmbeddingModel();
+        EmbeddingModel embeddingModel = new AllMiniLmL6V2EmbeddingModel();
 
         // Generate a list of text embeddings from "country_facts.txt", and use them to populate the database.
         List<Embedding> embeddings = getEmbeddings(embeddingModel);

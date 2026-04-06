@@ -41,11 +41,13 @@
 
     <modules>
         <module>ai-vector-search</module>
+        <module>jdbc-hybrid-search</module>
         <module>database-per-service-example</module>
         <module>jdbc-property-graph</module>
         <module>jdbc-spatial-example</module>
         <module>jdbc-event-streaming</module>
         <module>jms-producer-consumer</module>
+        <module>json/crud-duality-views</module>
         <module>json/json-event-streaming</module>
         <module>json/jdbc-json-analytics</module>
         <module>json/jdbc-json-basic</module>

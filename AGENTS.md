@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 This is an umbrella repo that contains developer friendly code samples for Oracle AI Database developers.
-This project uses Java 21+, Maven 3.9+, Spring Boot 4 for Java code.
+This project uses Java 21+, Maven 3.9+, Spring Boot 4 for Java code. Always use "Oracle AI Database" instead of "Oracle Database"
 
 ## Project Structure & Module Organization
 - `pom.xml` is the root pom for a multi-module Maven build. subdirectories with a pom.xml are child modules of this build.
@@ -21,7 +21,7 @@ This project uses Java 21+, Maven 3.9+, Spring Boot 4 for Java code.
 - Align SQL scripts in `sql/` and module `src/main/resources` using uppercase keywords and snake_case table names. Keep TypeScript in ES module format with lint-friendly imports, and organize Go code under package-level directories mirroring sample names.
 
 ## Testing Guidelines
-- Primary framework is JUnit 5 with `@Testcontainers`; write deterministic integration tests that provision Oracle Database Free containers and clean up via lifecycle hooks. The `testcontainers` module container idiomatic @Testcontainers tests for Java. New modules should follow these guidelines.
+- Primary framework is JUnit 5 with `@Testcontainers`; write deterministic integration tests that provision Oracle AI Database Free containers and clean up via lifecycle hooks. The `testcontainers` module container idiomatic @Testcontainers tests for Java. New modules should follow these guidelines.
 - Name new tests `<Feature>Test` and colocate fixtures in `src/test/resources`. For TypeScript, follow Vitest's `*.test.ts` pattern; for Go, use `_test.go` files.
 - Aim to keep tests self-sufficient: avoid shared databases, prefer module-scoped containers or reusable fixtures in `testcontainers/src/test/java/com/example/reusable`.
 

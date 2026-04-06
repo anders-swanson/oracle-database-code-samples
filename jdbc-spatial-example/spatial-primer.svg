@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680">
+  <style>
+    text { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; fill: #14213d; }
+    .title { font-size: 30px; font-weight: 700; }
+    .subtitle { font-size: 15px; fill: #4b5563; }
+    .panel { fill: #ffffff; stroke: #dbe4ee; stroke-width: 1.5; rx: 18; ry: 18; }
+    .panel-title { font-size: 19px; font-weight: 700; }
+    .body { font-size: 15px; fill: #334155; }
+    .callout { font-size: 13px; fill: #64748b; }
+    .point { fill: #0f766e; stroke: #ffffff; stroke-width: 3; }
+    .polygon { fill: rgba(217, 119, 6, 0.14); stroke: #d97706; stroke-width: 3; }
+    .mbr { fill: none; stroke: #2563eb; stroke-width: 3; stroke-dasharray: 10 8; }
+    .axis { stroke: #94a3b8; stroke-width: 2; }
+    .line-point { stroke: #0f766e; stroke-width: 2; }
+    .line-poly { stroke: #d97706; stroke-width: 2; }
+    .line-mbr { stroke: #2563eb; stroke-width: 2; }
+    .badge { font-size: 13px; font-weight: 700; }
+  </style>
+
+  <rect width="1200" height="680" fill="#f8fafc"/>
+  <text x="48" y="58" class="title">Spatial Data Primer</text>
+  <text x="48" y="84" class="subtitle">A visual guide to the shapes and terms used in `jdbc-spatial-example`</text>
+
+  <rect x="42" y="118" width="720" height="500" class="panel"/>
+  <text x="68" y="154" class="panel-title">Geometry in a shared coordinate system</text>
+  <text x="68" y="180" class="callout">The sample stores points and polygons with WGS84 longitude / latitude coordinates.</text>
+
+  <line x1="124" y1="520" x2="620" y2="520" class="axis"/>
+  <line x1="124" y1="520" x2="124" y2="214" class="axis"/>
+  <text x="548" y="550" class="body">Longitude</text>
+  <text x="48" y="224" class="body">Latitude</text>
+
+  <polygon points="256,452 440,398 482,258 292,280" class="polygon"/>
+  <rect x="256" y="258" width="226" height="194" class="mbr"/>
+  <circle cx="288" cy="362" r="10" class="point"/>
+  <circle cx="360" cy="328" r="10" class="point"/>
+  <circle cx="434" cy="420" r="10" class="point"/>
+
+  <line x1="380" y1="300" x2="590" y2="232" class="line-poly"/>
+  <text x="606" y="228" class="body">Polygon geometry</text>
+  <text x="606" y="248" class="callout">A bounded area such as</text>
+  <text x="606" y="266" class="callout">the Downtown Window</text>
+  <text x="606" y="284" class="callout">query region</text>
+
+  <line x1="482" y1="355" x2="590" y2="360" class="line-mbr"/>
+  <text x="606" y="356" class="body">Bounding rectangle</text>
+  <text x="606" y="376" class="callout">Smallest box around</text>
+  <text x="606" y="394" class="callout">the full geometry</text>
+
+  <line x1="434" y1="420" x2="590" y2="452" class="line-point"/>
+  <text x="606" y="450" class="body">Point geometry</text>
+  <text x="606" y="470" class="callout">A single location like</text>
+  <text x="606" y="488" class="callout">Ferry Building or a tower</text>
+
+  <rect x="86" y="570" width="164" height="30" rx="15" ry="15" fill="#e0f2fe"/>
+  <text x="106" y="589" class="badge" fill="#0369a1">SRID 8307 / WGS84</text>
+  <text x="270" y="582" class="callout">All sample geometries share the same reference system,</text>
+  <text x="270" y="600" class="callout">so Oracle can compare and measure them correctly.</text>
+
+  <rect x="790" y="118" width="368" height="234" class="panel"/>
+  <text x="816" y="154" class="panel-title">How to think about the shapes</text>
+  <text x="816" y="192" class="body">Points work well for landmarks, stores,</text>
+  <text x="816" y="214" class="body">addresses, vehicles, and any feature</text>
+  <text x="816" y="236" class="body">represented by one location.</text>
+  <text x="816" y="274" class="body">Polygons work well for districts, delivery</text>
+  <text x="816" y="296" class="body">zones, search windows, boundaries,</text>
+  <text x="816" y="318" class="body">and coverage areas.</text>
+  <text x="816" y="336" class="body">MBRs provide a quick rectangular envelope.</text>
+
+  <rect x="790" y="382" width="368" height="236" class="panel"/>
+  <text x="816" y="418" class="panel-title">Questions the database can answer</text>
+  <text x="816" y="456" class="body">Which landmarks fall inside this area?</text>
+  <text x="816" y="488" class="body">Which features are near this point?</text>
+  <text x="816" y="520" class="body">How far apart are these geometries?</text>
+  <text x="816" y="552" class="body">What rectangle encloses this polygon?</text>
+</svg>

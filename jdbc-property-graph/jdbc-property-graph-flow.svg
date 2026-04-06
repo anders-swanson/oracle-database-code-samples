@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430" role="img" aria-labelledby="title desc">
+  <title id="title">JDBC property graph sample flow</title>
+  <desc id="desc">A four-step flow diagram showing relational tables, property graph creation, graph queries, and SVG output.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fffdf7"/>
+      <stop offset="100%" stop-color="#eff6ff"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="430" fill="url(#bg)"/>
+  <text x="60" y="58" font-family="Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#111827">How the Sample Flows</text>
+  <text x="60" y="90" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#475569">Relational tables become a named graph, JDBC runs graph queries, and our Java program analyzes the results.</text>
+
+  <line x1="290" y1="240" x2="335" y2="240" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="575" y1="240" x2="620" y2="240" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="860" y1="240" x2="905" y2="240" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <rect x="50" y="140" width="240" height="190" rx="22" ry="22" fill="url(#card)" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="78" y="176" font-family="Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#0f766e">1. Relational Tables</text>
+  <text x="78" y="216" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#334155">`PERSONS`</text>
+  <text x="78" y="242" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#334155">`FRIENDSHIPS`</text>
+  <text x="78" y="281" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#64748b">Five people and reciprocal</text>
+  <text x="78" y="303" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#64748b">friendship rows are loaded.</text>
+
+  <rect x="335" y="140" width="240" height="190" rx="22" ry="22" fill="url(#card)" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="363" y="176" font-family="Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#1d4ed8">2. Property Graph</text>
+  <text x="363" y="216" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#334155">CREATE PROPERTY GRAPH</text>
+  <text x="363" y="238" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#334155">SOCIAL_GRAPH</text>
+  <text x="363" y="281" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#64748b">`PERSONS` becomes vertices.</text>
+  <text x="363" y="303" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#64748b">`FRIENDSHIPS` becomes edges.</text>
+
+  <rect x="620" y="140" width="240" height="190" rx="22" ry="22" fill="url(#card)" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="648" y="176" font-family="Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#7c3aed">3. Graph Queries</text>
+  <text x="648" y="216" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#334155">GRAPH_TABLE via JDBC</text>
+  <text x="648" y="251" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#64748b">Direct friends</text>
+  <text x="648" y="273" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#64748b">One or two hops</text>
+  <text x="648" y="295" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#64748b">Recommendations</text>
+
+  <rect x="905" y="140" width="240" height="190" rx="22" ry="22" fill="url(#card)" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="933" y="176" font-family="Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#b45309">4. Output</text>
+  <text x="933" y="216" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#334155">Console results</text>
+  <text x="933" y="242" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#334155">`property-graph-diagram.svg`</text>
+  <text x="933" y="281" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#64748b">A visual check of the graph</text>
+  <text x="933" y="303" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#64748b">and query output.</text>
+
+</svg>

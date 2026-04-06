@@ -14,6 +14,8 @@ The sample shows how to:
 - express direct-friend, two-hop, and recommendation queries with graph pattern matching
 - generate an SVG diagram that shows the people, friendship edges, and query results
 
+![sample flow](./jdbc-property-graph-flow.svg)
+
 The diagram is created solely for the purposes of local visualization. If you are using Graph capabilities in your applications, the use of [Oracle Graph Studio](https://www.oracle.com/database/integrated-graph-database/graph-faq/) is recommended.
 
 ## Run the tests

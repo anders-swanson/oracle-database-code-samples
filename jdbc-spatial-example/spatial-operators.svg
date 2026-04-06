@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="560" viewBox="0 0 1040 560">
+  <style>
+    text { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; fill: #14213d; }
+    .title { font-size: 30px; font-weight: 700; }
+    .subtitle { font-size: 15px; fill: #4b5563; }
+    .panel { fill: #ffffff; stroke: #dbe4ee; stroke-width: 1.5; rx: 18; ry: 18; }
+    .panel-title { font-size: 18px; font-weight: 700; }
+    .body { font-size: 14px; fill: #334155; }
+    .sql { font-size: 13px; fill: #1d4ed8; }
+    .point { fill: #0f766e; stroke: #ffffff; stroke-width: 3; }
+    .match { fill: #16a34a; stroke: #ffffff; stroke-width: 3; }
+    .window { fill: rgba(220, 38, 38, 0.10); stroke: #dc2626; stroke-width: 3; stroke-dasharray: 10 7; }
+    .circle { fill: rgba(37, 99, 235, 0.10); stroke: #2563eb; stroke-width: 3; stroke-dasharray: 8 6; }
+    .line { stroke: #7c3aed; stroke-width: 3; stroke-dasharray: 10 7; }
+  </style>
+  <rect width="1040" height="560" fill="#f8fafc"/>
+  <text x="44" y="56" class="title">How the Spatial Operators Differ</text>
+  <text x="44" y="82" class="subtitle">The sample uses one operator for window filtering, one for proximity, and one for exact distance</text>
+
+  <rect x="36" y="118" width="304" height="386" class="panel"/>
+  <text x="58" y="150" class="panel-title">`SDO_FILTER`</text>
+  <text x="58" y="176" class="sql">Fast indexed overlap test</text>
+  <rect x="88" y="220" width="170" height="128" class="window"/>
+  <circle cx="132" cy="278" r="10" class="match"/>
+  <circle cx="188" cy="250" r="10" class="match"/>
+  <circle cx="230" cy="320" r="10" class="match"/>
+  <circle cx="280" cy="220" r="10" class="point"/>
+  <text x="58" y="388" class="body">Ask: which landmarks overlap this</text>
+  <text x="58" y="408" class="body">query window or polygon?</text>
+  <text x="58" y="444" class="body">Result in the sample:</text>
+  <text x="58" y="466" class="body">Coit Tower, Ferry Building, Oracle Park</text>
+
+  <rect x="368" y="118" width="304" height="386" class="panel"/>
+  <text x="390" y="150" class="panel-title">`SDO_WITHIN_DISTANCE`</text>
+  <text x="390" y="176" class="sql">Nearness search with a distance threshold</text>
+  <circle cx="520" cy="286" r="86" class="circle"/>
+  <circle cx="520" cy="286" r="11" fill="#1d4ed8" stroke="#ffffff" stroke-width="3"/>
+  <circle cx="474" cy="260" r="10" class="match"/>
+  <circle cx="578" cy="306" r="10" class="match"/>
+  <circle cx="524" cy="214" r="10" class="match"/>
+  <circle cx="614" cy="236" r="10" class="point"/>
+  <text x="390" y="388" class="body">Ask: what falls within 2,500 meters</text>
+  <text x="390" y="408" class="body">of this origin point?</text>
+  <text x="390" y="444" class="body">Result in the sample:</text>
+  <text x="390" y="466" class="body">Coit Tower, Ferry Building, Oracle Park</text>
+
+  <rect x="700" y="118" width="304" height="386" class="panel"/>
+  <text x="722" y="150" class="panel-title">`SDO_GEOM.SDO_DISTANCE`</text>
+  <text x="722" y="176" class="sql">Precise measurement between two geometries</text>
+  <circle cx="782" cy="280" r="11" fill="#0f766e" stroke="#ffffff" stroke-width="3"/>
+  <circle cx="924" cy="228" r="11" fill="#d97706" stroke="#ffffff" stroke-width="3"/>
+  <line x1="782" y1="280" x2="924" y2="228" class="line"/>
+  <text x="742" y="314" class="body">Ferry Building</text>
+  <text x="880" y="214" class="body">Coit Tower</text>
+  <text x="826" y="262" class="body">1312 m</text>
+  <text x="722" y="388" class="body">Ask: what is the exact distance</text>
+  <text x="722" y="408" class="body">between these two features?</text>
+  <text x="722" y="444" class="body">Use this after candidate selection when</text>
+  <text x="722" y="464" class="body">you need a precise answer.</text>
+</svg>

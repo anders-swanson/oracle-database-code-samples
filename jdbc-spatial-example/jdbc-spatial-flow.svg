@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520">
+  <style>
+    text { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; fill: #14213d; }
+    .title { font-size: 30px; font-weight: 700; }
+    .subtitle { font-size: 15px; fill: #4b5563; }
+    .box { fill: #ffffff; stroke: #dbe4ee; stroke-width: 1.5; rx: 18; ry: 18; }
+    .box-title { font-size: 18px; font-weight: 700; }
+    .body { font-size: 14px; fill: #334155; }
+    .code { font-size: 13px; fill: #1d4ed8; }
+    .arrow { stroke: #f97316; stroke-width: 4; fill: none; marker-end: url(#arrowhead); }
+    .small { font-size: 12px; fill: #64748b; }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#f97316"/>
+    </marker>
+  </defs>
+  <rect width="1080" height="520" fill="#f8fafc"/>
+  <text x="42" y="54" class="title">End-to-End Flow in `jdbc-spatial-example`</text>
+  <text x="42" y="80" class="subtitle">The sample moves geometry from Java into Oracle, runs indexed spatial SQL, then renders the stored shapes back out</text>
+
+  <rect x="42" y="132" width="218" height="292" class="box"/>
+  <text x="66" y="166" class="box-title">1. Build geometry in Java</text>
+  <text x="66" y="198" class="body">Create points and polygons with</text>
+  <text x="66" y="218" class="code">JGeometry.createPoint(...)</text>
+  <text x="66" y="238" class="code">JGeometry.createLinearPolygon(...)</text>
+  <text x="66" y="280" class="body">Examples:</text>
+  <text x="66" y="302" class="body">Ferry Building point</text>
+  <text x="66" y="324" class="body">Downtown Window polygon</text>
+  <text x="66" y="372" class="small">All sample features share SRID 8307</text>
+
+  <rect x="302" y="132" width="218" height="292" class="box"/>
+  <text x="326" y="166" class="box-title">2. Persist with JDBC</text>
+  <text x="326" y="198" class="body">Convert Java geometry into</text>
+  <text x="326" y="218" class="body">Oracle `SDO_GEOMETRY` values:</text>
+  <text x="326" y="252" class="code">JGeometry.storeJS(geometry, connection)</text>
+  <text x="326" y="294" class="body">Store each feature in</text>
+  <text x="326" y="314" class="code">CITY_LANDMARKS(shape)</text>
+  <text x="326" y="356" class="small">Schema setup also registers metadata</text>
+  <text x="326" y="374" class="small">and creates `SPATIAL_INDEX_V2`</text>
+
+  <rect x="562" y="132" width="218" height="292" class="box"/>
+  <text x="586" y="166" class="box-title">3. Run spatial SQL</text>
+  <text x="586" y="198" class="body">Query the stored geometry with:</text>
+  <text x="586" y="226" class="code">SDO_FILTER</text>
+  <text x="586" y="248" class="code">SDO_WITHIN_DISTANCE</text>
+  <text x="586" y="270" class="code">SDO_GEOM.SDO_DISTANCE</text>
+  <text x="586" y="312" class="body">Read values back with:</text>
+  <text x="586" y="336" class="code">JGeometry.loadJS(struct)</text>
+  <text x="586" y="378" class="small">This is where the sample answers:</text>
+  <text x="586" y="396" class="small">inside, nearby, and exact-distance questions</text>
+
+  <rect x="822" y="132" width="218" height="292" class="box"/>
+  <text x="846" y="166" class="box-title">4. Render an SVG</text>
+  <text x="846" y="198" class="body">Use the stored geometries as the</text>
+  <text x="846" y="218" class="body">source of truth for visualization.</text>
+  <text x="846" y="252" class="code">SpatialDiagramGenerator.writeSvg(...)</text>
+  <text x="846" y="294" class="body">Output includes:</text>
+  <text x="846" y="316" class="body">landmark points</text>
+  <text x="846" y="338" class="body">downtown polygon</text>
+  <text x="846" y="360" class="body">distance lines and labels</text>
+  <text x="846" y="402" class="small">The generated file is `spatial-diagram.svg`</text>
+
+  <path d="M260 278 C278 278, 286 278, 302 278" class="arrow"/>
+  <path d="M520 278 C538 278, 546 278, 562 278" class="arrow"/>
+  <path d="M780 278 C798 278, 806 278, 822 278" class="arrow"/>
+</svg>

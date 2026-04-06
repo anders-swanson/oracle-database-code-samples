@@ -2,6 +2,8 @@
 
 This module demonstrates basic Oracle AI Database Spatial operations over JDBC using `oracle.spatial.geometry.JGeometry`.
 
+![spatial primer](spatial-primer.svg)
+
 The sample shows how to:
 
 - create a table with an `MDSYS.SDO_GEOMETRY` column
@@ -12,6 +14,8 @@ The sample shows how to:
 - run indexed `SDO_FILTER` and `SDO_WITHIN_DISTANCE` queries
 - compute exact distances with `SDO_GEOM.SDO_DISTANCE`
 - generate an SVG diagram that labels the sample objects and their distances
+
+![spatial operators](spatial-operators.svg)
 
 ## Run the tests
 

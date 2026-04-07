@@ -1,0 +1,8 @@
+WHENEVER SQLERROR EXIT SQL.SQLCODE;
+
+ALTER SESSION SET CONTAINER = freepdb1;
+
+CREATE USER ordsuser IDENTIFIED BY ordsuserpwd QUOTA UNLIMITED ON users;
+GRANT connect, pdb_dba TO ordsuser;
+
+EXIT;

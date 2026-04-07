@@ -59,6 +59,7 @@
         <module>migrate-kafka-to-oracle/kafka-app-step-3</module>
         <module>news-event-streaming</module>
         <module>oracle-database-kafka-apis</module>
+        <module>ords-testcontainers</module>
         <module>mcp-agent</module>
         <module>sessionless-transactions</module>
         <module>spring-boot-cdc</module>

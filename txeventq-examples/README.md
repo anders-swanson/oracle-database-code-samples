@@ -42,6 +42,6 @@ Once both the producer and consumer are started, you can
 
 To use PL/SQL with TxEventQ, see the [PL/SQL](./txeventq.sql) example.
 
-### [Oracle REST Data Services (ORDS)](https://docs.oracle.com/en/database/oracle/oracle-rest-data-services/25.1/orrst/api-oracle-transactional-event-queues.html)
+### [Oracle REST Data Services (ORDS)](https://docs.oracle.com/en/database/oracle/oracle-rest-data-services/25.4/orrst/api-oracle-transactional-event-queues.html)
 
 To use ORDS with TxEventQ to produce and consume messages, see the [ORDS](./ords.md) example.

@@ -10,7 +10,6 @@ Note that we exclude the spring boot starter dependency - we aren't using Spring
 <dependency>
     <groupId>com.oracle.database.spring</groupId>
     <artifactId>oracle-spring-boot-starter-json-collections</artifactId>
-    <version>25.2.0</version>
     <exclusions>
         <exclusion>
             <groupId>org.springframework.boot</groupId>

@@ -4,23 +4,43 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.bson.Document;
 import org.testcontainers.containers.Container;
 import org.testcontainers.containers.Network;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -34,56 +54,46 @@ class OrdsContainerIntegrationTest {
     private static final String ADMIN_PASSWORD = "Welcome12345";
     private static final String DATABASE_CONNECTION = "jdbc:oracle:thin:@ordsdb:1521/freepdb1";
     private static final String SCHEMA_CONNECTION = "ordsdb:1521/freepdb1";
+    private static final String ORDS_INIT_SCRIPT = "/tmp/ords_init.sql";
     private static final String DB_API_ADMIN_USERNAME = "ordsuser";
     private static final String DB_API_ADMIN_PASSWORD = "ordsuserpwd";
+    private static final String MONGO_USERNAME = "mongouser";
+    private static final String MONGO_PASSWORD = "mongouserpwd";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final SSLContext INSECURE_TLS_CONTEXT = insecureTlsContext();
 
     private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
             .followRedirects(HttpClient.Redirect.NORMAL)
             .connectTimeout(Duration.ofSeconds(30))
             .build();
 
-    private static Network network;
-    private static OracleContainer oracleContainer;
-    private static OrdsContainer ordsContainer;
+    private static final Network NETWORK = Network.newNetwork();
+
+    private static final OracleContainer oracleContainer = new OracleContainer(DATABASE_IMAGE)
+            .withStartupTimeout(Duration.ofMinutes(5))
+            .withPassword(ADMIN_PASSWORD)
+            .withNetwork(NETWORK)
+            .withNetworkAliases(DATABASE_ALIAS);
+
+    private static final OrdsContainer ordsContainer = new OrdsContainer()
+            .withNetwork(NETWORK)
+            .withDatabaseConnectionString(DATABASE_CONNECTION)
+            .withOraclePassword(ADMIN_PASSWORD)
+            .withSchema(DB_API_ADMIN_USERNAME, DB_API_ADMIN_PASSWORD, SCHEMA_CONNECTION)
+            .withSchema(MONGO_USERNAME, MONGO_PASSWORD, SCHEMA_CONNECTION);
 
     @BeforeAll
-    static void startContainers() throws Exception {
-        network = Network.newNetwork();
-
-        oracleContainer = new OracleContainer(DATABASE_IMAGE)
-                .withStartupTimeout(Duration.ofMinutes(5))
-                .withPassword(ADMIN_PASSWORD)
-                .withNetwork(network)
-                .withNetworkAliases(DATABASE_ALIAS);
-
+    static void startContainers() throws IOException, InterruptedException {
         oracleContainer.start();
-
-        // Initialize the user schema for ORDS
-        oracleContainer.copyFileToContainer(
-                MountableFile.forClasspathResource("ords_init.sql"),
-                "/tmp/ords_init.sql"
-        );
-
-        Container.ExecResult result = oracleContainer.execInContainer(
-                "sqlplus",
-                "sys / as sysdba",
-                "@/tmp/ords_init.sql"
-        );
-
-        if (result.getExitCode() != 0) {
-            throw new IllegalStateException(
-                    "Database initialization failed.\nstdout:\n" + result.getStdout() + "\nstderr:\n" + result.getStderr()
-            );
-        }
-
-        ordsContainer = new OrdsContainer()
-                .withNetwork(network)
-                .withDatabaseConnectionString(DATABASE_CONNECTION)
-                .withOraclePassword(ADMIN_PASSWORD)
-                .withSchema(DB_API_ADMIN_USERNAME, DB_API_ADMIN_PASSWORD, SCHEMA_CONNECTION);
-
+        initializeDatabase();
         ordsContainer.start();
+    }
+
+    @AfterAll
+    static void stopContainers() {
+        ordsContainer.stop();
+        oracleContainer.stop();
+        NETWORK.close();
     }
 
     @Test
@@ -126,8 +136,94 @@ class OrdsContainerIntegrationTest {
         assertNotNull(versionBanner, "Expected version banner in ORDS response");
     }
 
-    private String ordsDatabaseApiUrl(String relativePath) {
+    @Test
+    void supportsMongoClientCrudOperations() {
+        try (MongoClient client = MongoClients.create(mongoClientSettings())) {
+            MongoDatabase database = client.getDatabase(MONGO_USERNAME);
+            String collectionName = "compat_" + UUID.randomUUID().toString().replace("-", "");
+            MongoCollection<Document> collection = database.getCollection(collectionName);
+            String documentId = UUID.randomUUID().toString();
+
+            Document originalDocument = new Document("_id", documentId)
+                    .append("name", "Alice")
+                    .append("credits", 12)
+                    .append("active", true);
+
+            collection.insertOne(originalDocument);
+
+            Document insertedDocument = collection.find(Filters.eq("_id", documentId)).first();
+            assertNotNull(insertedDocument, "Expected inserted document to be present");
+            assertEquals("Alice", insertedDocument.getString("name"));
+            assertEquals(12, insertedDocument.getInteger("credits"));
+            assertTrue(insertedDocument.getBoolean("active"), "Expected boolean field to round trip");
+
+            long updatedCount = collection.updateOne(
+                    Filters.eq("_id", documentId),
+                    Updates.set("credits", 15)
+            ).getModifiedCount();
+            assertEquals(1, updatedCount, "Expected one document to be updated");
+
+            Document updatedDocument = collection.find(Filters.eq("_id", documentId)).first();
+            assertNotNull(updatedDocument, "Expected updated document to be present");
+            assertEquals(15, updatedDocument.getInteger("credits"));
+
+            long deletedCount = collection.deleteOne(Filters.eq("_id", documentId)).getDeletedCount();
+            assertEquals(1, deletedCount, "Expected one document to be deleted");
+            assertNull(collection.find(Filters.eq("_id", documentId)).first(), "Expected document to be deleted");
+        }
+    }
+
+    private static void initializeDatabase() throws IOException, InterruptedException {
+        oracleContainer.copyFileToContainer(
+                MountableFile.forClasspathResource("ords_init.sql"),
+                ORDS_INIT_SCRIPT
+        );
+        execOracleCommandOrThrow(
+                "Database initialization failed",
+                "sqlplus",
+                "sys / as sysdba",
+                "@" + ORDS_INIT_SCRIPT
+        );
+    }
+
+    private static void execOracleCommandOrThrow(String failureMessage, String... command)
+            throws IOException, InterruptedException {
+        Container.ExecResult result = oracleContainer.execInContainer(command);
+        if (result.getExitCode() == 0) {
+            return;
+        }
+
+        throw new IllegalStateException(
+                failureMessage + ".\nstdout:\n" + result.getStdout() + "\nstderr:\n" + result.getStderr()
+        );
+    }
+
+    private static String ordsDatabaseApiUrl(String relativePath) {
         return ordsContainer.getBaseUrl() + "/ords/" + DB_API_ADMIN_USERNAME + "/_/db-api/stable/" + relativePath;
+    }
+
+    private static MongoClientSettings mongoClientSettings() {
+        ConnectionString connectionString = new ConnectionString(
+                "mongodb://%s:%s@%s:%d/%s?authMechanism=PLAIN&authSource=%%24external&tls=true&retryWrites=false&loadBalanced=true"
+                        .formatted(
+                                MONGO_USERNAME,
+                                MONGO_PASSWORD,
+                                ordsContainer.getHost(),
+                                ordsContainer.getMongoDbApiPort(),
+                                MONGO_USERNAME
+                        )
+        );
+
+        // Containerized ORDS uses a self-signed, untrusted certificate by default.
+        // For simplicity in this test, we trust all certificates.
+        // Note that you may supply your own trusted certificate to ORDS, which is recommended in most settings.
+        return MongoClientSettings.builder()
+                .applyConnectionString(connectionString)
+                .applyToSslSettings(builder -> builder
+                        .enabled(true)
+                        .invalidHostNameAllowed(true)
+                        .context(INSECURE_TLS_CONTEXT))
+                .build();
     }
 
     private static String basicAuth(String username, String password) {
@@ -149,5 +245,32 @@ class OrdsContainerIntegrationTest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     private record InstanceVersion(String banner) {
+    }
+
+    private static SSLContext insecureTlsContext() {
+        try {
+            TrustManager[] trustAllManagers = new TrustManager[]{
+                    new X509TrustManager() {
+                        @Override
+                        public void checkClientTrusted(X509Certificate[] chain, String authType) {
+                        }
+
+                        @Override
+                        public void checkServerTrusted(X509Certificate[] chain, String authType) {
+                        }
+
+                        @Override
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return new X509Certificate[0];
+                        }
+                    }
+            };
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustAllManagers, new SecureRandom());
+            return sslContext;
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException("Failed to initialize insecure TLS context for MongoDB client", e);
+        }
     }
 }

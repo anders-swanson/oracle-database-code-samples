@@ -4,6 +4,8 @@ This module demonstrates how to run Oracle REST Data Services (ORDS) with Testco
 
 The sample mirrors the [ords-docker-compose](../ords-docker-compose/README.md) module, but replaces Docker Compose with a custom Java `GenericContainer` implementation that can be reused in integration tests.
 
+![container diagram](test-orchestration.svg)
+
 ## Prerequisites
 
 - Java 21+ 
@@ -24,5 +26,6 @@ mvn test
 - Starting an ORDS container with a custom `OrdsContainer`
 - Waiting for ORDS to become reachable over HTTP
 - Enabling the test schema for ORDS before container startup completes
+- Validating MongoDB Java client CRUD compatibility through the ORDS MongoDB API
 
 The ORDS container exposes HTTP on internal port `8080` and the MongoDB API on internal port `27017`.

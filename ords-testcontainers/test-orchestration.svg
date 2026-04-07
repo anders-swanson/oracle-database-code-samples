@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">ORDS testcontainers system diagram</title>
+  <desc id="desc">A visual diagram showing the integration test and MongoDB client talking to the ORDS container, which connects to Oracle AI Database on a shared Docker network.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5efe3"/>
+      <stop offset="100%" stop-color="#ece2cc"/>
+    </linearGradient>
+    <linearGradient id="networkFill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbfaf6"/>
+      <stop offset="100%" stop-color="#f3ecdc"/>
+    </linearGradient>
+    <linearGradient id="ordsFill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ecf7ff"/>
+      <stop offset="100%" stop-color="#cee6ff"/>
+    </linearGradient>
+    <linearGradient id="dbFill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff2ef"/>
+      <stop offset="100%" stop-color="#ffd8d0"/>
+    </linearGradient>
+    <linearGradient id="clientFill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f4f8ef"/>
+      <stop offset="100%" stop-color="#d8e8c8"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#7d6d4d" flood-opacity="0.18"/>
+    </filter>
+    <marker id="arrowDark" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M 0 0 L 7 3.5 L 0 7 z" fill="#38434d"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M 0 0 L 7 3.5 L 0 7 z" fill="#3272a8"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M 0 0 L 7 3.5 L 0 7 z" fill="#5d7d3d"/>
+    </marker>
+    <style>
+      .title { font: 700 34px Arial, sans-serif; fill: #1c252d; }
+      .label { font: 700 18px Arial, sans-serif; fill: #21303a; }
+      .boxLabel { font: 700 26px Arial, sans-serif; fill: #1c2a33; }
+      .sub { font: 400 16px Arial, sans-serif; fill: #49606f; }
+      .tiny { font: 700 14px Arial, sans-serif; fill: #5a6874; letter-spacing: 0.08em; }
+      .conn { stroke-width: 6; fill: none; stroke-linecap: round; }
+      .ghost { stroke: #c8b898; stroke-width: 2.5; stroke-dasharray: 8 10; fill: none; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="720" fill="url(#bg)"/>
+
+  <text x="70" y="84" class="title">ORDS Testcontainers</text>
+  <text x="70" y="114" class="sub">Clients outside, containers inside.</text>
+
+  <rect x="300" y="150" width="830" height="470" rx="34" fill="url(#networkFill)" stroke="#d3c4a3" stroke-width="3" filter="url(#shadow)"/>
+  <text x="340" y="192" class="tiny">SHARED DOCKER NETWORK</text>
+
+  <g transform="translate(70 248)">
+    <rect x="0" y="0" width="190" height="124" rx="28" fill="url(#clientFill)" stroke="#92ad74" stroke-width="3" filter="url(#shadow)"/>
+    <circle cx="58" cy="62" r="28" fill="#ffffff" opacity="0.85" stroke="#92ad74" stroke-width="2"/>
+    <path d="M 43 54 H 73" stroke="#6c8d48" stroke-width="6" stroke-linecap="round"/>
+    <path d="M 43 66 H 73" stroke="#6c8d48" stroke-width="6" stroke-linecap="round"/>
+    <path d="M 43 78 H 65" stroke="#6c8d48" stroke-width="6" stroke-linecap="round"/>
+    <text x="96" y="68" class="label">HTTP Test</text>
+  </g>
+
+  <g transform="translate(70 430)">
+    <rect x="0" y="0" width="190" height="124" rx="28" fill="url(#clientFill)" stroke="#92ad74" stroke-width="3" filter="url(#shadow)"/>
+    <circle cx="56" cy="62" r="12" fill="#6c8d48"/>
+    <circle cx="96" cy="62" r="12" fill="#6c8d48"/>
+    <circle cx="136" cy="62" r="12" fill="#6c8d48"/>
+    <path d="M 56 62 L 96 62 L 136 62" stroke="#6c8d48" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <text x="30" y="104" class="label">MongoDB Client</text>
+  </g>
+
+  <g transform="translate(480 250)">
+    <rect x="0" y="0" width="250" height="220" rx="28" fill="url(#ordsFill)" stroke="#6b9ecf" stroke-width="3" filter="url(#shadow)"/>
+    <rect x="36" y="54" width="178" height="112" rx="22" fill="#ffffff" opacity="0.78" stroke="#96bee4" stroke-width="2"/>
+    <rect x="52" y="72" width="146" height="16" rx="8" fill="#74a8d9" opacity="0.26"/>
+    <rect x="52" y="98" width="146" height="16" rx="8" fill="#74a8d9" opacity="0.26"/>
+    <rect x="52" y="124" width="146" height="16" rx="8" fill="#74a8d9" opacity="0.26"/>
+    <circle cx="70" cy="182" r="9" fill="#74a8d9"/>
+    <circle cx="125" cy="182" r="9" fill="#74a8d9"/>
+    <circle cx="180" cy="182" r="9" fill="#74a8d9"/>
+    <text x="36" y="212" class="boxLabel">OrdsContainer</text>
+  </g>
+
+  <g transform="translate(825 240)">
+    <rect x="0" y="0" width="230" height="250" rx="30" fill="url(#dbFill)" stroke="#d98c7c" stroke-width="3" filter="url(#shadow)"/>
+    <ellipse cx="115" cy="88" rx="62" ry="22" fill="#ffffff" opacity="0.88" stroke="#e4b1a6" stroke-width="2"/>
+    <rect x="53" y="88" width="124" height="82" fill="#ffffff" opacity="0.88" stroke="#e4b1a6" stroke-width="2"/>
+    <ellipse cx="115" cy="170" rx="62" ry="22" fill="#ffffff" opacity="0.88" stroke="#e4b1a6" stroke-width="2"/>
+    <path d="M 76 108 C 101 122, 129 122, 154 108" stroke="#cf7a67" stroke-width="3" fill="none"/>
+    <path d="M 76 136 C 101 150, 129 150, 154 136" stroke="#cf7a67" stroke-width="3" fill="none"/>
+    <text x="27" y="214" class="boxLabel">Oracle AI</text>
+    <text x="27" y="244" class="boxLabel">Database</text>
+  </g>
+
+  <path d="M 260 310 C 334 310, 388 314, 480 332" class="conn" stroke="#3272a8" marker-end="url(#arrowBlue)"/>
+  <path d="M 260 492 C 344 492, 400 456, 480 398" class="conn" stroke="#5d7d3d" marker-end="url(#arrowGreen)"/>
+  <path d="M 730 360 C 778 360, 790 360, 825 360" class="conn" stroke="#38434d" marker-end="url(#arrowDark)"/>
+
+  <path d="M 600 470 C 638 530, 840 560, 946 510" class="ghost"/>
+</svg>

@@ -2,6 +2,8 @@ package com.example.ords;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import org.testcontainers.containers.ContainerLaunchException;
@@ -15,11 +17,11 @@ public class OrdsContainer extends GenericContainer<OrdsContainer> {
     public static final int HTTPS_PORT = 8443;
     public static final int MONGODB_API_PORT = 27017;
 
+    private static final String CONNECTION_STRING_ENV = "CONN_STRING";
+    private static final String ORACLE_PASSWORD_ENV = "ORACLE_PWD";
     private static final Duration DEFAULT_STARTUP_TIMEOUT = Duration.ofMinutes(5);
 
-    private String schemaUsername;
-    private String schemaPassword;
-    private String schemaConnectDescriptor;
+    private final List<SchemaConfiguration> schemas = new ArrayList<>();
 
     public OrdsContainer() {
         this(DockerImageName.parse(DEFAULT_IMAGE));
@@ -39,26 +41,25 @@ public class OrdsContainer extends GenericContainer<OrdsContainer> {
     }
 
     public OrdsContainer withDatabaseConnectionString(String connectionString) {
-        if (isBlank(connectionString)) {
-            throw new IllegalArgumentException("Database connection string cannot be null or empty");
-        }
-        return this.withEnv("CONN_STRING", connectionString);
+        return withEnv(CONNECTION_STRING_ENV, requireNonBlank(
+                connectionString,
+                "Database connection string cannot be null or empty"
+        ));
     }
 
     public OrdsContainer withOraclePassword(String oraclePassword) {
-        if (isBlank(oraclePassword)) {
-            throw new IllegalArgumentException("Oracle password cannot be null or empty");
-        }
-        return this.withEnv("ORACLE_PWD", oraclePassword);
+        return withEnv(ORACLE_PASSWORD_ENV, requireNonBlank(
+                oraclePassword,
+                "Oracle password cannot be null or empty"
+        ));
     }
 
     public OrdsContainer withSchema(String username, String password, String connectDescriptor) {
-        if (isBlank(username) || isBlank(password) || isBlank(connectDescriptor)) {
-            throw new IllegalArgumentException("Schema username, password, and connect descriptor are required");
-        }
-        schemaUsername = username;
-        schemaPassword = password;
-        schemaConnectDescriptor = connectDescriptor;
+        schemas.add(new SchemaConfiguration(
+                requireNonBlank(username, "Schema username is required"),
+                requireNonBlank(password, "Schema password is required"),
+                requireNonBlank(connectDescriptor, "Schema connect descriptor is required")
+        ));
         return self();
     }
 
@@ -66,46 +67,39 @@ public class OrdsContainer extends GenericContainer<OrdsContainer> {
         return "http://" + getHost() + ":" + getHttpPort();
     }
 
-    public Integer getHttpPort() {
+    public int getHttpPort() {
         return getMappedPort(HTTP_PORT);
     }
 
-    public Integer getHttpsPort() {
+    public int getHttpsPort() {
         return getMappedPort(HTTPS_PORT);
     }
 
-    public Integer getMongoDbApiPort() {
+    public int getMongoDbApiPort() {
         return getMappedPort(MONGODB_API_PORT);
     }
 
     @Override
     public void start() {
-        validateRequiredEnv("CONN_STRING");
-        validateRequiredEnv("ORACLE_PWD");
+        validateRequiredEnv(CONNECTION_STRING_ENV);
+        validateRequiredEnv(ORACLE_PASSWORD_ENV);
         super.start();
     }
 
     @Override
     protected void containerIsStarted(InspectContainerResponse containerInfo) {
         super.containerIsStarted(containerInfo);
-        if (schemaUsername != null) {
-            enableSchema();
-        }
+        schemas.forEach(this::enableSchema);
     }
 
-    private void enableSchema() {
+    private void enableSchema(SchemaConfiguration schema) {
         String command = String.format(
                 "printf 'WHENEVER SQLERROR EXIT SQL.SQLCODE\\nEXECUTE ORDS.ENABLE_SCHEMA;\\nEXIT;\\n' | sql -s %s",
-                shellQuote(schemaUsername + "/" + schemaPassword + "@" + schemaConnectDescriptor)
+                shellQuote(schema.username() + "/" + schema.password() + "@" + schema.connectDescriptor())
         );
 
         try {
-            ExecResult result = execInContainer("bash", "-lc", command);
-            if (result.getExitCode() != 0) {
-                throw new ContainerLaunchException(
-                        "ORDS schema enablement failed.\nstdout:\n" + result.getStdout() + "\nstderr:\n" + result.getStderr()
-                );
-            }
+            execInContainerOrThrow("ORDS schema enablement failed", "bash", "-lc", command);
         } catch (IOException e) {
             throw new ContainerLaunchException("Failed to run ORDS schema enablement command", e);
         } catch (InterruptedException e) {
@@ -114,17 +108,39 @@ public class OrdsContainer extends GenericContainer<OrdsContainer> {
         }
     }
 
+    private void execInContainerOrThrow(String failureMessage, String... command)
+            throws IOException, InterruptedException {
+        ExecResult result = execInContainer(command);
+        if (result.getExitCode() == 0) {
+            return;
+        }
+
+        throw new ContainerLaunchException(
+                failureMessage + ".\nstdout:\n" + result.getStdout() + "\nstderr:\n" + result.getStderr()
+        );
+    }
+
     private void validateRequiredEnv(String envName) {
         if (isBlank(getEnvMap().get(envName))) {
             throw new IllegalStateException(envName + " must be configured before starting ORDS");
         }
     }
 
-    private boolean isBlank(String value) {
+    private static String requireNonBlank(String value, String message) {
+        if (isBlank(value)) {
+            throw new IllegalArgumentException(message);
+        }
+        return value;
+    }
+
+    private static boolean isBlank(String value) {
         return value == null || value.isBlank();
     }
 
-    private String shellQuote(String value) {
+    private static String shellQuote(String value) {
         return "'" + value.replace("'", "'\"'\"'") + "'";
+    }
+
+    private record SchemaConfiguration(String username, String password, String connectDescriptor) {
     }
 }

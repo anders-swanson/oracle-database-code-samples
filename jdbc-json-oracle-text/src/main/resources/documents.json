@@ -1,0 +1,30 @@
+[
+  {
+    "title": "Oracle Text for JSON Search",
+    "summary": "A hands-on lab for building ranked Oracle Text search over JSON knowledge entries.",
+    "body": "The guide walks through loading API notes as JSON, creating a search index, and testing keyword plus NEAR queries for phrase-style retrieval.",
+    "category": "GUIDE",
+    "author": "Ava"
+  },
+  {
+    "title": "Storefront Catalog Migration Notes",
+    "summary": "Merchandising teams moved Oracle product blurbs into JSON documents for seasonal relevance tuning.",
+    "body": "Analysts compared attribute-heavy catalog entries, synonym lists, and faceted descriptions before publishing the new storefront data set.",
+    "category": "REFERENCE",
+    "author": "Ben"
+  },
+  {
+    "title": "Operations Bulletin for Incident Review",
+    "summary": "Weekly notes for the Oracle support desk, covering query latency, alert thresholds, and search cluster maintenance.",
+    "body": "The bulletin captures rollout timing, pager ownership, and runbook changes for overnight indexing checks.",
+    "category": "OPERATIONS",
+    "author": "Cara"
+  },
+  {
+    "title": "Field Guide to Queue Backpressure",
+    "summary": "Architecture notes on consumers, dead-letter queues, and throughput limits during traffic spikes.",
+    "body": "This piece focuses on event delivery behavior, retry budgets, and telemetry rather than document retrieval or text indexing.",
+    "category": "ARCHITECTURE",
+    "author": "Drew"
+  }
+]

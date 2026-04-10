@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; fill: #102033; }
+    .bg { fill: #f7fafc; }
+    .title { font-size: 42px; font-weight: 700; }
+    .subtitle { font-size: 24px; fill: #475569; }
+    .box { stroke-width: 2; rx: 24; ry: 24; }
+    .source { fill: #e0f2fe; stroke: #7dd3fc; }
+    .keyword { fill: #dbeafe; stroke: #60a5fa; }
+    .near { fill: #dcfce7; stroke: #4ade80; }
+    .mixed { fill: #fef3c7; stroke: #f59e0b; }
+    .result { fill: #ffffff; stroke: #cbd5e1; }
+    .label { font-size: 30px; font-weight: 700; }
+    .body { font-size: 24px; fill: #334155; }
+    .match { font-size: 26px; fill: #102033; }
+    .arrow { stroke: #64748b; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+  </style>
+
+  <rect x="0" y="0" width="1600" height="1100" class="bg"/>
+
+  <text x="60" y="72" class="title">Oracle Text JSON Search Diagram</text>
+  <text x="60" y="112" class="subtitle">One JSON document set, three query patterns, three result sets.</text>
+
+  <rect x="520" y="160" width="560" height="150" class="box source"/>
+  <text x="560" y="220" class="label">JSON_DOCUMENTS</text>
+  <text x="560" y="264" class="body">Loaded 4 JSON documents</text>
+
+  <rect x="60" y="410" width="420" height="170" class="box keyword"/>
+  <text x="92" y="470" class="label">Keyword search</text>
+  <text x="92" y="514" class="body">json_textcontains(..., "oracle")</text>
+
+  <rect x="590" y="410" width="420" height="170" class="box near"/>
+  <text x="622" y="470" class="label">Proximity search</text>
+  <text x="622" y="514" class="body">json_textcontains(...,</text>
+  <text x="622" y="548" class="body">"NEAR((json, search), 3)")</text>
+
+  <rect x="1120" y="410" width="420" height="170" class="box mixed"/>
+  <text x="1152" y="470" class="label">Mixed search</text>
+  <text x="1152" y="514" class="body">"oracle" plus</text>
+  <text x="1152" y="548" class="body">category=GUIDE and author=Ava</text>
+
+  <line x1="700" y1="310" x2="270" y2="410" class="arrow"/>
+  <line x1="800" y1="310" x2="800" y2="410" class="arrow"/>
+  <line x1="900" y1="310" x2="1330" y2="410" class="arrow"/>
+
+  <rect x="60" y="700" width="420" height="280" class="box result"/>
+  <text x="92" y="760" class="label">Keyword results</text>
+  <text x="92" y="804" class="match">1. Oracle Text for JSON Search</text>
+  <text x="92" y="842" class="body">GUIDE | Ava | score=7</text>
+  <text x="92" y="886" class="match">2. Storefront Catalog Migration...</text>
+  <text x="92" y="924" class="body">REFERENCE | Ben | score=3</text>
+  <text x="92" y="962" class="match">...</text>
+
+  <rect x="590" y="700" width="420" height="280" class="box result"/>
+  <text x="622" y="760" class="label">Proximity results</text>
+  <text x="622" y="834" class="match">1. Oracle Text for JSON Search</text>
+  <text x="622" y="872" class="body">GUIDE | Ava | score=41</text>
+
+  <rect x="1120" y="700" width="420" height="280" class="box result"/>
+  <text x="1152" y="760" class="label">Mixed results</text>
+  <text x="1152" y="834" class="match">1. Oracle Text for JSON Search</text>
+  <text x="1152" y="872" class="body">GUIDE | Ava | score=7</text>
+
+  <line x1="270" y1="580" x2="270" y2="700" class="arrow"/>
+  <line x1="800" y1="580" x2="800" y2="700" class="arrow"/>
+  <line x1="1330" y1="580" x2="1330" y2="700" class="arrow"/>
+</svg>

@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 This is an umbrella repo that contains developer friendly code samples for Oracle AI Database developers.
-This project uses Java 21+, Maven 3.9+, Spring Boot 4 for Java code. Always use "Oracle AI Database" instead of "Oracle Database"
+This project uses Java 21+, Maven 3.9+, Spring Boot 4 for Java code. Always use "Oracle AI Database" instead of "Oracle Database". Generate any diagrams at 800x600 resolution.
 
 ## Project Structure & Module Organization
 - `pom.xml` is the root pom for a multi-module Maven build. subdirectories with a pom.xml are child modules of this build.

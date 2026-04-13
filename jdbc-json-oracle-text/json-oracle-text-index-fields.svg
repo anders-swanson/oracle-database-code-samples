@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Oracle Text indexed JSON fields</title>
+  <desc id="desc">An 800 by 600 diagram showing which JSON fields are indexed for full-text search and which are used for structured filters.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: Arial, Helvetica, sans-serif; fill: #14213d; }
+    .bg { fill: #fffdf7; }
+    .title { font-size: 24px; font-weight: 700; }
+    .subtitle { font-size: 14px; fill: #475569; }
+    .panel { rx: 18; ry: 18; stroke-width: 2; }
+    .json { fill: #eff6ff; stroke: #60a5fa; }
+    .text-field { fill: #dcfce7; stroke: #22c55e; }
+    .meta-field { fill: #fef3c7; stroke: #f59e0b; }
+    .index { fill: #f8fafc; stroke: #94a3b8; }
+    .note { fill: #ffffff; stroke: #cbd5e1; }
+    .label { font-size: 17px; font-weight: 700; }
+    .body { font-size: 14px; fill: #334155; }
+    .small { font-size: 13px; fill: #475569; }
+    .arrow { stroke: #475569; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="800" height="600"/>
+
+  <text class="title" x="28" y="42">What the JSON search index covers</text>
+  <text class="subtitle" x="28" y="64">Content fields are indexed for text search. Metadata fields stay useful for exact filters.</text>
+
+  <rect class="panel json" x="28" y="110" width="275" height="360"/>
+  <text class="label" x="48" y="140">Example JSON document</text>
+
+  <rect class="panel text-field" x="48" y="165" width="235" height="48"/>
+  <text class="body" x="62" y="193">title: "Oracle Text ..."</text>
+
+  <rect class="panel text-field" x="48" y="228" width="235" height="66"/>
+  <text class="body" x="62" y="256">summary: "A hands-on lab ..."</text>
+  <text class="body" x="62" y="276">"ranked search ..."</text>
+
+  <rect class="panel text-field" x="48" y="309" width="235" height="80"/>
+  <text class="body" x="62" y="337">body: "The guide walks ..."</text>
+  <text class="body" x="62" y="357">"API notes as JSON ..."</text>
+
+  <rect class="panel meta-field" x="48" y="404" width="145" height="42"/>
+  <text class="body" x="61" y="430">category: GUIDE</text>
+  <rect class="panel meta-field" x="203" y="404" width="89" height="42"/>
+  <text class="body" x="217" y="430">author: Ava</text>
+
+  <rect class="panel index" x="350" y="145" width="190" height="145"/>
+  <text class="label" x="368" y="175">Search index</text>
+  <text class="body" x="368" y="205">search_on text</text>
+  <text class="body" x="368" y="232">$.title</text>
+  <text class="body" x="368" y="254">$.summary</text>
+  <text class="body" x="368" y="276">$.body</text>
+
+  <rect class="panel note" x="585" y="145" width="175" height="110"/>
+  <text class="label" x="603" y="175">Full-text search</text>
+  <text class="body" x="603" y="205">json_textcontains</text>
+  <text class="body" x="603" y="227">matches index text</text>
+
+  <rect class="panel note" x="585" y="310" width="175" height="110"/>
+  <text class="label" x="603" y="340">Structured filters</text>
+  <text class="body" x="603" y="370">json_value(category)</text>
+  <text class="body" x="603" y="392">json_value(author)</text>
+
+  <path class="arrow" d="M 283 190 L 350 190"/>
+  <path class="arrow" d="M 540 200 L 585 200"/>
+  <path class="arrow" d="M 293 425 L 480 425 L 480 365 L 585 365"/>
+
+  <text class="small" x="350" y="485">Green fields feed Oracle Text relevance.</text>
+  <text class="small" x="350" y="505">Yellow fields are exact filters in the mixed query.</text>
+</svg>

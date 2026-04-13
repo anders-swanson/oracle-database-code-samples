@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Oracle Text query patterns</title>
+  <desc id="desc">An 800 by 600 comparison of keyword, proximity, and mixed search queries used in the sample.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: Arial, Helvetica, sans-serif; fill: #14213d; }
+    .bg { fill: #f8fafc; }
+    .title { font-size: 24px; font-weight: 700; }
+    .subtitle { font-size: 14px; fill: #475569; }
+    .panel { rx: 18; ry: 18; stroke-width: 2; }
+    .keyword { fill: #e0f2fe; stroke: #38bdf8; }
+    .near { fill: #dcfce7; stroke: #22c55e; }
+    .mixed { fill: #fef3c7; stroke: #f59e0b; }
+    .result { fill: #ffffff; stroke: #cbd5e1; }
+    .label { font-size: 17px; font-weight: 700; }
+    .body { font-size: 14px; fill: #334155; }
+    .small { font-size: 13px; fill: #475569; }
+    .pill { fill: #ffffff; stroke: #cbd5e1; rx: 10; ry: 10; }
+    .arrow { stroke: #475569; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    .score { font-weight: 700; fill: #0f766e; }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="800" height="600"/>
+
+  <text class="title" x="28" y="42">Three query patterns in the sample</text>
+  <text class="subtitle" x="28" y="64">Same table, three search styles: broad, close-match, and filtered relevance.</text>
+
+  <rect class="panel keyword" x="28" y="110" width="225" height="170"/>
+  <text class="label" x="45" y="138">Keyword search</text>
+  <text class="body" x="45" y="164">json_textcontains(...,</text>
+  <text class="body" x="45" y="182">'oracle', 1)</text>
+  <rect class="pill" x="45" y="198" width="120" height="24"/>
+  <text class="body" x="58" y="214">match token</text>
+  <text class="small" x="45" y="248">Broadest match.</text>
+
+  <rect class="panel near" x="287" y="110" width="225" height="170"/>
+  <text class="label" x="304" y="138">Proximity search</text>
+  <text class="body" x="304" y="164">json_textcontains(...,</text>
+  <text class="body" x="304" y="182">'NEAR((json, search), 3)',</text>
+  <text class="body" x="304" y="200">2)</text>
+  <rect class="pill" x="304" y="214" width="130" height="24"/>
+  <text class="body" x="317" y="230">terms stay close</text>
+  <text class="small" x="304" y="260">More selective.</text>
+
+  <rect class="panel mixed" x="546" y="110" width="226" height="170"/>
+  <text class="label" x="563" y="138">Mixed search</text>
+  <text class="body" x="563" y="164">text match: oracle</text>
+  <text class="body" x="563" y="182">plus JSON filters</text>
+  <rect class="pill" x="563" y="198" width="116" height="24"/>
+  <text class="body" x="575" y="214">category</text>
+  <rect class="pill" x="686" y="198" width="68" height="24"/>
+  <text class="body" x="700" y="214">Ava</text>
+  <text class="small" x="563" y="248">Best for app search.</text>
+
+  <rect class="panel result" x="28" y="360" width="225" height="150"/>
+  <text class="label" x="45" y="388">Result shape</text>
+  <text class="body" x="45" y="414">1. Oracle Text ...</text>
+  <text class="body" x="45" y="436">2. Storefront Catalog ...</text>
+  <text class="body" x="45" y="458">3. Operations Bulletin ...</text>
+  <text class="small" x="45" y="486">Ordered by <tspan class="score">SCORE(1)</tspan>.</text>
+
+  <rect class="panel result" x="287" y="360" width="225" height="150"/>
+  <text class="label" x="304" y="388">Result shape</text>
+  <text class="body" x="304" y="424">1. Oracle Text ...</text>
+  <text class="small" x="304" y="456">Only the close match remains.</text>
+  <text class="small" x="304" y="486">Ordered by <tspan class="score">SCORE(2)</tspan>.</text>
+
+  <rect class="panel result" x="546" y="360" width="226" height="150"/>
+  <text class="label" x="563" y="388">Result shape</text>
+  <text class="body" x="563" y="424">1. Oracle Text ...</text>
+  <text class="small" x="563" y="456">Text finds candidates.</text>
+  <text class="small" x="563" y="476">Filters narrow to one row.</text>
+  <text class="small" x="563" y="496">Ordered by <tspan class="score">SCORE(3)</tspan>.</text>
+
+  <path class="arrow" d="M 140 280 L 140 360"/>
+  <path class="arrow" d="M 399 280 L 399 360"/>
+  <path class="arrow" d="M 659 280 L 659 360"/>
+</svg>

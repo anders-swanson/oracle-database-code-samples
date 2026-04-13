@@ -1,72 +1,76 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100">
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">JDBC JSON Oracle Text sample flow</title>
+  <desc id="desc">A compact 800 by 600 overview of the sample flow from JSON file to Oracle Text search results.</desc>
   <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
     </marker>
   </defs>
   <style>
-    text { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; fill: #102033; }
-    .bg { fill: #f7fafc; }
-    .title { font-size: 42px; font-weight: 700; }
-    .subtitle { font-size: 24px; fill: #475569; }
-    .box { stroke-width: 2; rx: 24; ry: 24; }
-    .source { fill: #e0f2fe; stroke: #7dd3fc; }
-    .keyword { fill: #dbeafe; stroke: #60a5fa; }
-    .near { fill: #dcfce7; stroke: #4ade80; }
-    .mixed { fill: #fef3c7; stroke: #f59e0b; }
+    text { font-family: Arial, Helvetica, sans-serif; fill: #14213d; }
+    .bg { fill: #f7f4ea; }
+    .title { font-size: 24px; font-weight: 700; }
+    .subtitle { font-size: 14px; fill: #475569; }
+    .card { rx: 18; ry: 18; stroke-width: 2; }
+    .source { fill: #e0f2fe; stroke: #38bdf8; }
+    .app { fill: #eef2ff; stroke: #818cf8; }
+    .db { fill: #dcfce7; stroke: #22c55e; }
+    .search { fill: #fef3c7; stroke: #f59e0b; }
     .result { fill: #ffffff; stroke: #cbd5e1; }
-    .label { font-size: 30px; font-weight: 700; }
-    .body { font-size: 24px; fill: #334155; }
-    .match { font-size: 26px; fill: #102033; }
-    .arrow { stroke: #64748b; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+    .label { font-size: 17px; font-weight: 700; }
+    .body { font-size: 14px; fill: #334155; }
+    .small { font-size: 13px; fill: #475569; }
+    .arrow { stroke: #475569; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    .pill { fill: #ffffff; stroke: #cbd5e1; rx: 10; ry: 10; }
+    .accent { fill: #b45309; font-weight: 700; }
   </style>
 
-  <rect x="0" y="0" width="1600" height="1100" class="bg"/>
+  <rect class="bg" x="0" y="0" width="800" height="600"/>
 
-  <text x="60" y="72" class="title">Oracle Text JSON Search Diagram</text>
-  <text x="60" y="112" class="subtitle">One JSON document set, three query patterns, three result sets.</text>
+  <text class="title" x="28" y="42">How the sample works</text>
+  <text class="subtitle" x="28" y="64">Load JSON, store it as native JSON, index it, then run ranked search.</text>
 
-  <rect x="520" y="160" width="560" height="150" class="box source"/>
-  <text x="560" y="220" class="label">JSON_DOCUMENTS</text>
-  <text x="560" y="264" class="body">Loaded 4 JSON documents</text>
+  <rect class="card source" x="28" y="105" width="165" height="132"/>
+  <text class="label" x="46" y="135">1. Source file</text>
+  <text class="body" x="46" y="162">load json from source,</text>
+  <text class="body" x="46" y="185">splitting into docs:</text>
+  <text class="small" x="46" y="208">title, summary, body,</text>
+  <text class="small" x="46" y="226">category, author</text>
 
-  <rect x="60" y="410" width="420" height="170" class="box keyword"/>
-  <text x="92" y="470" class="label">Keyword search</text>
-  <text x="92" y="514" class="body">json_textcontains(..., "oracle")</text>
+  <rect class="card app" x="222" y="105" width="172" height="132"/>
+  <text class="label" x="240" y="135">2. JDBC app</text>
+  <text class="body" x="240" y="162">Sample maps docs</text>
+  <text class="body" x="240" y="185">to Java, then serializes</text>
+  <text class="body" x="240" y="208">to OSON.</text>
 
-  <rect x="590" y="410" width="420" height="170" class="box near"/>
-  <text x="622" y="470" class="label">Proximity search</text>
-  <text x="622" y="514" class="body">json_textcontains(...,</text>
-  <text x="622" y="548" class="body">"NEAR((json, search), 3)")</text>
+  <rect class="card db" x="423" y="105" width="150" height="132"/>
+  <text class="label" x="441" y="135">3. JSON table</text>
+  <text class="body" x="441" y="162">docs are saved to</text>
+  <text class="body" x="441" y="185">a table, using a</text>
+  <text class="body" x="441" y="203">JSON column</text>
+  <rect class="pill" x="441" y="212" width="108" height="24"/>
+  <text class="small" x="448" y="228">stored as OSON</text>
 
-  <rect x="1120" y="410" width="420" height="170" class="box mixed"/>
-  <text x="1152" y="470" class="label">Mixed search</text>
-  <text x="1152" y="514" class="body">"oracle" plus</text>
-  <text x="1152" y="548" class="body">category=GUIDE and author=Ava</text>
+  <rect class="card search" x="602" y="105" width="170" height="132"/>
+  <text class="label" x="620" y="135">4. Search index</text>
+  <text class="body" x="620" y="162">CREATE SEARCH</text>
+  <text class="body" x="620" y="185">INDEX FOR JSON</text>
+  <text class="small" x="620" y="208">title, summary, body</text>
 
-  <line x1="700" y1="310" x2="270" y2="410" class="arrow"/>
-  <line x1="800" y1="310" x2="800" y2="410" class="arrow"/>
-  <line x1="900" y1="310" x2="1330" y2="410" class="arrow"/>
+  <path class="arrow" d="M 193 165 L 222 165"/>
+  <path class="arrow" d="M 394 165 L 423 165"/>
+  <path class="arrow" d="M 573 165 L 602 165"/>
 
-  <rect x="60" y="700" width="420" height="280" class="box result"/>
-  <text x="92" y="760" class="label">Keyword results</text>
-  <text x="92" y="804" class="match">1. Oracle Text for JSON Search</text>
-  <text x="92" y="842" class="body">GUIDE | Ava | score=7</text>
-  <text x="92" y="886" class="match">2. Storefront Catalog Migration...</text>
-  <text x="92" y="924" class="body">REFERENCE | Ben | score=3</text>
-  <text x="92" y="962" class="match">...</text>
+  <rect class="card result" x="110" y="305" width="580" height="190"/>
+  <text class="label" x="135" y="338">5. Query and rank results</text>
+  <rect class="pill" x="135" y="360" width="130" height="28"/>
+  <text class="body" x="151" y="378">keyword: oracle</text>
+  <rect class="pill" x="280" y="360" width="185" height="28"/>
+  <text class="body" x="296" y="378">proximity: NEAR(...)</text>
+  <rect class="pill" x="480" y="360" width="180" height="28"/>
+  <text class="body" x="496" y="378">mixed: text + JSON filters</text>
+  <text class="body" x="135" y="422">Oracle Text evaluates indexed fields and assigns a</text>
+  <text class="body" x="135" y="444">query-specific <tspan class="accent">SCORE</tspan> so rows can be sorted by relevance.</text>
 
-  <rect x="590" y="700" width="420" height="280" class="box result"/>
-  <text x="622" y="760" class="label">Proximity results</text>
-  <text x="622" y="834" class="match">1. Oracle Text for JSON Search</text>
-  <text x="622" y="872" class="body">GUIDE | Ava | score=41</text>
-
-  <rect x="1120" y="700" width="420" height="280" class="box result"/>
-  <text x="1152" y="760" class="label">Mixed results</text>
-  <text x="1152" y="834" class="match">1. Oracle Text for JSON Search</text>
-  <text x="1152" y="872" class="body">GUIDE | Ava | score=7</text>
-
-  <line x1="270" y1="580" x2="270" y2="700" class="arrow"/>
-  <line x1="800" y1="580" x2="800" y2="700" class="arrow"/>
-  <line x1="1330" y1="580" x2="1330" y2="700" class="arrow"/>
+  <path class="arrow" d="M 687 225 L 687 270 L 400 270 L 400 305"/>
 </svg>

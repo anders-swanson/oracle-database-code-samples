@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Durable memory writeback flow on Oracle AI Database</title>
+  <desc id="desc">An 800 by 600 diagram showing the assistant turning a remembered handoff into a stored memory document with embeddings in Oracle AI Database.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f7efe2"/>
+      <stop offset="54%" stop-color="#fbfaf7"/>
+      <stop offset="100%" stop-color="#e7f1f8"/>
+    </linearGradient>
+    <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10314a"/>
+      <stop offset="100%" stop-color="#1f6173"/>
+    </linearGradient>
+    <linearGradient id="search" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d7ecf4"/>
+      <stop offset="100%" stop-color="#f1f9fc"/>
+    </linearGradient>
+    <linearGradient id="memory" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8edc8"/>
+      <stop offset="100%" stop-color="#fff8e2"/>
+    </linearGradient>
+    <linearGradient id="log" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ebdef5"/>
+      <stop offset="100%" stop-color="#faf4ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#183246" flood-opacity="0.14"/>
+    </filter>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0V24" fill="none" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0 0L11 5.5L0 11Z" fill="#1b4258"/>
+    </marker>
+    <style>
+      .frame { fill: url(#bg); }
+      .grain { fill: url(#grid); opacity: 0.24; }
+      .eyebrow { font: 700 14px "Avenir Next", "Trebuchet MS", sans-serif; letter-spacing: 1.8px; text-transform: uppercase; fill: #745f4a; }
+      .title { font: 700 38px Georgia, "Times New Roman", serif; fill: #10283c; }
+      .subtitle { font: 400 18px Georgia, "Times New Roman", serif; fill: #39546a; }
+      .mini { font: 700 13px "Avenir Next", "Trebuchet MS", sans-serif; letter-spacing: 1px; text-transform: uppercase; fill: #657c8d; }
+      .card-title { font: 700 24px "Avenir Next", "Trebuchet MS", sans-serif; fill: #12314a; }
+      .card-body { font: 500 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #355267; }
+      .hero-title { font: 700 30px Georgia, "Times New Roman", serif; fill: #ffffff; }
+      .hero-body { font: 500 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #deedf3; }
+      .db-title { font: 700 24px "Avenir Next", "Trebuchet MS", sans-serif; fill: #122c40; }
+      .db-body { font: 500 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #425d6e; }
+      .note-box { fill: #fffdfa; stroke: #cfbfac; stroke-width: 1.5; rx: 18; ry: 18; filter: url(#shadow); }
+      .hero-box { fill: url(#hero); stroke: #163a4f; stroke-width: 2; rx: 24; ry: 24; filter: url(#shadow); }
+      .search-box { fill: url(#search); stroke: #1f5369; stroke-width: 2; rx: 22; ry: 22; filter: url(#shadow); }
+      .memory-box { fill: url(#memory); stroke: #8b6d1d; stroke-width: 2; rx: 22; ry: 22; filter: url(#shadow); }
+      .log-box { fill: url(#log); stroke: #6a4b82; stroke-width: 2; rx: 22; ry: 22; filter: url(#shadow); }
+      .line { stroke: #1b4258; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
+      .soft-line { stroke: #6a7f8c; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow);}
+    </style>
+  </defs>
+
+  <rect class="frame" width="800" height="600"/>
+  <rect class="grain" width="800" height="600"/>
+
+  <text x="56" y="56" class="eyebrow">Oracle AI Database Sample</text>
+  <text x="56" y="98" class="title">Durable Memory Writeback</text>
+  <text x="56" y="128" class="subtitle">New handoffs become durable memories.</text>
+
+  <rect x="56" y="168" width="172" height="110" class="note-box"/>
+  <text x="78" y="194" class="mini">Prompt</text>
+  <text x="78" y="228" class="card-title">Remember</text>
+  <text x="78" y="256" class="card-title">this handoff</text>
+
+  <rect x="260" y="154" width="286" height="176" class="hero-box"/>
+  <text x="286" y="184" class="mini" fill="#d2e6ef">LangChain4j Tool</text>
+  <text x="286" y="230" class="hero-title">storeMemory</text>
+  <text x="286" y="262" class="hero-body">Builds a memory document</text>
+  <text x="286" y="288" class="hero-body">and requests an embedding.</text>
+
+  <rect x="579" y="154" width="210" height="74" class="search-box"/>
+  <text x="601" y="182" class="mini">Payload</text>
+  <text x="601" y="210" class="card-title">JSON Memory</text>
+
+  <rect x="579" y="246" width="210" height="74" class="search-box"/>
+  <text x="601" y="274" class="mini">Embedding</text>
+  <text x="601" y="302" class="card-title">VECTOR</text>
+
+  <rect x="56" y="382" width="322" height="170" class="memory-box"/>
+  <text x="80" y="410" class="mini">Oracle AI Database</text>
+  <text x="80" y="442" class="db-title">agent_memories</text>
+  <text x="80" y="472" class="db-body">Insert JSON memory record</text>
+  <text x="80" y="497" class="db-body">Store VECTOR embedding</text>
+  <text x="80" y="522" class="db-body">Ready for later retrieval</text>
+
+  <rect x="398" y="382" width="346" height="170" class="log-box"/>
+  <text x="422" y="410" class="mini">Writeback Result</text>
+  <text x="422" y="442" class="db-title">Stored as M&lt;id&gt;</text>
+  <text x="422" y="472" class="db-body">Source: agent-writeback</text>
+  <text x="422" y="497" class="db-body">Can be cited in future</text>
+  <text x="422" y="522" class="db-body">searches and answers</text>
+
+  <path d="M228 223H260" class="line"/>
+  <path d="M546 191H579" class="line"/>
+  <path d="M546 283H579" class="line"/>
+  <path d="M674 320V352H571V382" class="soft-line"/>
+</svg>

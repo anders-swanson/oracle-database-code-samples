@@ -18,6 +18,13 @@ At runtime the app initializes two tables if they do not already exist:
 
 ![Sample diagram](src/main/resources/memory-agent-diagram.svg)
 
+Additional diagrams:
+
+![Hybrid search flow](src/main/resources/memory-search-flow.svg)
+
+![Durable memory writeback](src/main/resources/memory-writeback-flow.svg)
+
+
 ## Run the tests
 
 ```bash

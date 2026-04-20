@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">LangChain4j Agent Memory on Oracle AI Database</title>
+  <desc id="desc">An 800 by 600 diagram showing a LangChain4j ops assistant that uses vector search and Oracle Text, writes durable memory, and logs each conversation to a transcript table.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f7efe2"/>
+      <stop offset="54%" stop-color="#fbfaf7"/>
+      <stop offset="100%" stop-color="#e7f1f8"/>
+    </linearGradient>
+    <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10314a"/>
+      <stop offset="100%" stop-color="#1f6173"/>
+    </linearGradient>
+    <linearGradient id="search" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d7ecf4"/>
+      <stop offset="100%" stop-color="#f1f9fc"/>
+    </linearGradient>
+    <linearGradient id="memory" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8edc8"/>
+      <stop offset="100%" stop-color="#fff8e2"/>
+    </linearGradient>
+    <linearGradient id="log" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ebdef5"/>
+      <stop offset="100%" stop-color="#faf4ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#183246" flood-opacity="0.14"/>
+    </filter>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0V24" fill="none" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0 0L11 5.5L0 11Z" fill="#1b4258"/>
+    </marker>
+    <style>
+      .frame { fill: url(#bg); }
+      .grain { fill: url(#grid); opacity: 0.24; }
+      .eyebrow { font: 700 14px "Avenir Next", "Trebuchet MS", sans-serif; letter-spacing: 1.8px; text-transform: uppercase; fill: #745f4a; }
+      .title { font: 700 38px Georgia, "Times New Roman", serif; fill: #10283c; }
+      .subtitle { font: 400 18px Georgia, "Times New Roman", serif; fill: #39546a; }
+      .mini { font: 700 13px "Avenir Next", "Trebuchet MS", sans-serif; letter-spacing: 1px; text-transform: uppercase; fill: #657c8d; }
+      .card-title { font: 700 24px "Avenir Next", "Trebuchet MS", sans-serif; fill: #12314a; }
+      .card-body { font: 500 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #355267; }
+      .hero-title { font: 700 30px Georgia, "Times New Roman", serif; fill: #ffffff; }
+      .db-title { font: 700 24px "Avenir Next", "Trebuchet MS", sans-serif; fill: #122c40; }
+      .db-body { font: 500 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #425d6e; }
+      .code { font: 700 15px "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; fill: #103049; }
+      .hero-code { font: 700 15px "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; fill: #ffffff; }
+      .chip { fill: #ffffff; fill-opacity: 0.18; stroke: #ffffff; stroke-opacity: 0.28; stroke-width: 1; }
+      .hero-box { fill: url(#hero); stroke: #163a4f; stroke-width: 2; rx: 24; ry: 24; filter: url(#shadow); }
+      .search-box { fill: url(#search); stroke: #1f5369; stroke-width: 2; rx: 22; ry: 22; filter: url(#shadow); }
+      .memory-box { fill: url(#memory); stroke: #8b6d1d; stroke-width: 2; rx: 22; ry: 22; filter: url(#shadow); }
+      .log-box { fill: url(#log); stroke: #6a4b82; stroke-width: 2; rx: 22; ry: 22; filter: url(#shadow); }
+      .note-box { fill: #fffdfa; stroke: #cfbfac; stroke-width: 1.5; rx: 18; ry: 18; filter: url(#shadow); }
+      .line { stroke: #1b4258; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
+      .soft-line { stroke: #6a7f8c; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="frame" width="800" height="600"/>
+  <rect class="grain" width="800" height="600"/>
+
+  <text x="56" y="56" class="eyebrow">Oracle AI Database Sample</text>
+  <text x="56" y="98" class="title">LangChain4j Agent Memory</text>
+  <text x="56" y="128" class="subtitle">Hybrid search, durable memory, and async transcripts.</text>
+
+  <rect x="56" y="168" width="170" height="108" class="note-box"/>
+  <text x="78" y="194" class="mini">Prompt</text>
+  <text x="78" y="230" class="card-title">Search</text>
+  <text x="78" y="258" class="card-title">Memory</text>
+
+  <rect x="260" y="154" width="286" height="176" class="hero-box"/>
+  <text x="286" y="184" class="mini" fill="#d2e6ef">LangChain4j Assistant</text>
+  <text x="286" y="242" class="hero-title">Search. Cite.</text>
+  <text x="286" y="280" class="hero-title">Answer.</text>
+
+  <rect x="579" y="154" width="190" height="74" class="search-box"/>
+  <text x="601" y="182" class="mini">Branch 1</text>
+  <text x="601" y="210" class="card-title">Vector Search</text>
+
+  <rect x="579" y="246" width="190" height="74" class="search-box"/>
+  <text x="601" y="274" class="mini">Branch 2</text>
+  <text x="601" y="302" class="card-title">Oracle Text</text>
+
+  <rect x="56" y="382" width="322" height="170" class="memory-box"/>
+  <text x="80" y="410" class="mini">Durable Memory</text>
+  <text x="80" y="442" class="db-title">`agent_memories`</text>
+  <text x="80" y="472" class="db-body">JSON documents</text>
+  <text x="80" y="497" class="db-body">VECTOR embeddings</text>
+  <text x="80" y="522" class="db-body">Runbooks, incidents, handoffs</text>
+
+  <rect x="398" y="382" width="346" height="170" class="log-box"/>
+  <text x="422" y="410" class="mini">Transcript Log</text>
+  <text x="422" y="442" class="db-title">`agent_conversation_log`</text>
+  <text x="422" y="472" class="db-body">conversation_id + role</text>
+  <text x="422" y="497" class="db-body">message text + tool context</text>
+  <text x="422" y="522" class="db-body">Async writes on virtual threads</text>
+
+  <path d="M226 222H260" class="line"/>
+  <path d="M546 191H579" class="line"/>
+  <path d="M546 283H579" class="line"/>
+  <path d="M662 320V352H217V382" class="soft-line"/>
+  <path d="M662 320V352H571V382" class="soft-line"/>
+
+  <circle cx="563" cy="191" r="5.5" fill="#1b4258"/>
+  <circle cx="563" cy="283" r="5.5" fill="#1b4258"/>
+</svg>

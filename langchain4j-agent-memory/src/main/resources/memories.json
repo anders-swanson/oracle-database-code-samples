@@ -1,0 +1,181 @@
+[
+  {
+    "memoryKind": "RUNBOOK",
+    "title": "Checkout timeout rollback runbook",
+    "memoryDoc": {
+      "summary": "Use section 3 when checkout errors spike after an ingress or edge rollout.",
+      "body": "Section 1 validates the current incident scope. Section 2 checks nginx and gateway health. Section 3 rolls back host header normalization, replays five sample checkout requests, and confirms order placement latency recovers below 900ms.",
+      "service": "checkout",
+      "environment": "prod",
+      "severity": "HIGH",
+      "tags": ["checkout", "timeout", "rollback", "runbook"],
+      "timestamp": "2026-02-04T09:00:00Z",
+      "source": "runbook"
+    }
+  },
+  {
+    "memoryKind": "INCIDENT",
+    "title": "Checkout incident after CHG2145",
+    "memoryDoc": {
+      "summary": "Checkout failures rose to 18 percent after change ticket CHG2145 enabled ingress header normalization.",
+      "body": "INC4721 started eight minutes after CHG2145. Customers could browse catalog pages but checkout requests failed at the payment handoff. The fastest mitigation was to roll back host header normalization and drain the retry queue.",
+      "service": "checkout",
+      "environment": "prod",
+      "severity": "SEV1",
+      "incidentId": "INC4721",
+      "changeTicket": "CHG2145",
+      "tags": ["checkout", "incident", "rollback", "payments"],
+      "timestamp": "2026-03-18T03:18:00Z",
+      "source": "incident-review"
+    }
+  },
+  {
+    "memoryKind": "DECISION",
+    "title": "Rollback policy for risky checkout changes",
+    "memoryDoc": {
+      "summary": "For checkout changes tied to request routing, roll back first and investigate later.",
+      "body": "The postmortem recorded a standing decision: when checkout degradation follows a routing or ingress rollout, the operator on call should revert the change within ten minutes instead of attempting live patching.",
+      "service": "checkout",
+      "environment": "prod",
+      "severity": "MEDIUM",
+      "tags": ["decision", "checkout", "rollback", "routing"],
+      "timestamp": "2026-03-19T11:00:00Z",
+      "source": "postmortem"
+    }
+  },
+  {
+    "memoryKind": "HANDOFF",
+    "title": "Night shift handoff for checkout rollback watch",
+    "memoryDoc": {
+      "summary": "Keep an eye on retry queue depth and confirm no replayed orders double charge after the rollback.",
+      "body": "The night shift confirmed checkout recovered after the rollback for CHG2145. They asked the next shift to watch retry queue depth for one hour and verify the payment gateway did not duplicate card captures.",
+      "service": "checkout",
+      "environment": "prod",
+      "severity": "MEDIUM",
+      "incidentId": "INC4721",
+      "changeTicket": "CHG2145",
+      "tags": ["handoff", "checkout", "retry", "payments"],
+      "timestamp": "2026-03-18T08:00:00Z",
+      "source": "shift-handoff"
+    }
+  },
+  {
+    "memoryKind": "INCIDENT",
+    "title": "Payments gateway 502 burst",
+    "memoryDoc": {
+      "summary": "A separate payments incident caused upstream 502 responses after a gateway certificate rotation.",
+      "body": "INC4558 was rooted in the payments service, not checkout. The gateway returned 502 for card authorization requests after CHG2138 rotated certificates on only half of the pool.",
+      "service": "payments",
+      "environment": "prod",
+      "severity": "SEV2",
+      "incidentId": "INC4558",
+      "changeTicket": "CHG2138",
+      "tags": ["payments", "gateway", "502", "certificates"],
+      "timestamp": "2026-03-09T14:22:00Z",
+      "source": "incident-review"
+    }
+  },
+  {
+    "memoryKind": "RUNBOOK",
+    "title": "Payments gateway 502 runbook",
+    "memoryDoc": {
+      "summary": "If the gateway starts returning 502, compare certificate serials, drain the bad pool, then replay one authorization.",
+      "body": "Section 1 checks certificate serials across the gateway pool. Section 2 drains the inconsistent nodes. Section 3 sends one synthetic authorization before reopening traffic.",
+      "service": "payments",
+      "environment": "prod",
+      "severity": "HIGH",
+      "tags": ["payments", "runbook", "gateway", "502"],
+      "timestamp": "2026-02-11T10:30:00Z",
+      "source": "runbook"
+    }
+  },
+  {
+    "memoryKind": "INCIDENT",
+    "title": "Inventory cache stampede during flash sale",
+    "memoryDoc": {
+      "summary": "Inventory slowed down because the cache fill path hammered a hot SKU key.",
+      "body": "INC4309 affected add-to-cart latency but not payment authorization. The fix was to prewarm the inventory cache and add request coalescing around the top SKU lookups.",
+      "service": "inventory",
+      "environment": "prod",
+      "severity": "SEV2",
+      "incidentId": "INC4309",
+      "changeTicket": "CHG2101",
+      "tags": ["inventory", "cache", "stampede", "flash-sale"],
+      "timestamp": "2026-02-27T16:05:00Z",
+      "source": "incident-review"
+    }
+  },
+  {
+    "memoryKind": "DECISION",
+    "title": "Sync Oracle Text search index on commit for ops memory",
+    "memoryDoc": {
+      "summary": "The memory sample keeps Oracle Text synchronized on commit so new handoffs are searchable immediately.",
+      "body": "The platform team chose sync-on-commit for the JSON search index because the agent should find new handoff notes as soon as storeMemory succeeds, even though it is slightly more expensive on writes.",
+      "service": "platform",
+      "environment": "stage",
+      "severity": "LOW",
+      "tags": ["oracle-text", "index", "memory", "search"],
+      "timestamp": "2026-01-30T18:00:00Z",
+      "source": "architecture"
+    }
+  },
+  {
+    "memoryKind": "HANDOFF",
+    "title": "Morning platform handoff after vector index rebuild",
+    "memoryDoc": {
+      "summary": "The vector index rebuild in stage succeeded and search latency returned to normal.",
+      "body": "The platform shift rebuilt the IVF vector index after a bad load test. The next shift was asked to monitor vector search latency and compare semantic recall against the previous day.",
+      "service": "platform",
+      "environment": "stage",
+      "severity": "LOW",
+      "changeTicket": "CHG2055",
+      "tags": ["vector", "index", "handoff", "stage"],
+      "timestamp": "2026-02-02T07:40:00Z",
+      "source": "shift-handoff"
+    }
+  },
+  {
+    "memoryKind": "INCIDENT",
+    "title": "Identity token refresh regression",
+    "memoryDoc": {
+      "summary": "Login failures increased when the identity service refreshed JWT signing keys too aggressively.",
+      "body": "INC4412 hit the identity service and caused sign-in retries. It did not affect payment authorization or checkout routing once users were already logged in.",
+      "service": "identity",
+      "environment": "prod",
+      "severity": "SEV2",
+      "incidentId": "INC4412",
+      "changeTicket": "CHG2118",
+      "tags": ["identity", "auth", "tokens", "login"],
+      "timestamp": "2026-03-04T05:10:00Z",
+      "source": "incident-review"
+    }
+  },
+  {
+    "memoryKind": "RUNBOOK",
+    "title": "Checkout canary verification checklist",
+    "memoryDoc": {
+      "summary": "Before closing a checkout incident, verify order placement, capture flow, and queue drain behavior.",
+      "body": "The canary checklist compares five synthetic orders, one real card capture, retry queue depth, and the payment gateway error rate before declaring checkout healthy.",
+      "service": "checkout",
+      "environment": "stage",
+      "severity": "MEDIUM",
+      "tags": ["checkout", "canary", "verification", "payments"],
+      "timestamp": "2026-02-14T12:15:00Z",
+      "source": "runbook"
+    }
+  },
+  {
+    "memoryKind": "DECISION",
+    "title": "Use Oracle AI Database as long-term ops memory",
+    "memoryDoc": {
+      "summary": "Store runbooks, incident notes, and handoffs in Oracle AI Database so the agent can blend vector and full-text retrieval.",
+      "body": "The team explicitly decided not to keep ops memory only in chat transcripts. Durable JSON memories with vector embeddings and Oracle Text ranking make change tickets and incident IDs much easier to recover during active incidents.",
+      "service": "platform",
+      "environment": "stage",
+      "severity": "LOW",
+      "tags": ["oracle", "database", "vector", "oracle-text", "memory"],
+      "timestamp": "2026-01-15T10:00:00Z",
+      "source": "architecture"
+    }
+  }
+]

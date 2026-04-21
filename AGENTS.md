@@ -10,6 +10,8 @@ This project uses Java 21+, Maven 3.9+, Spring Boot 4 for Java code. Always use 
 - Cross-language samples sit in sibling folders (`golang`, `python-oracle`, `typescript`, `sql`), while shared Docker and infrastructure assets appear in `oracle-ai-database-docker-compose`, `truecache-free`, and `testcontainers`.
 - Keep documentation alongside modules (for example `spring-boot-jms-example/README.md`) and place new samples under a top-level folder with a distinct name (for example `README.md`, `json/README.md`)
 - All module README.md files should have a front matter with name, description, and tags fields
+- When linking to any code within the repo, always use the main blob URL: https://github.com/anders-swanson/oracle-database-code-samples/blob/main
+  - any link to a specific file comes after that. For example, this AGENTS.md file links to https://github.com/anders-swanson/oracle-database-code-samples/blob/main/AGENTS.md
 
 ## Build, Test, and Development Commands
 - Run all Java modules with `mvn test`

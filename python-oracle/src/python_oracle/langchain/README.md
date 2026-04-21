@@ -1,3 +1,14 @@
+---
+name: python-oracle/src/python_oracle/langchain
+description: LangChain-based Python vector search sample for Oracle AI Database.
+tags:
+  - AI
+  - Database
+  - python
+  - Vector Search
+blog_post: "https://andersswanson.dev/2026/02/10/langchain-vs-diy-vector-search-with-oracle-ai-database/"
+---
+
 # LangChain Vector Search Sample
 
 This folder contains a LangChain-based vector-search sample for Oracle AI Database. It uses `langchain-oracledb` with `OpenAIEmbeddings` to persist sample texts into Oracle AI Database and then runs a similarity search with `OracleVS`.

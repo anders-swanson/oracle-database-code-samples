@@ -1,3 +1,15 @@
+---
+name: sql
+description: SQL scripts for Oracle AI Database features such as JSON, vectors, and Select AI.
+tags:
+  - AI
+  - Database
+  - JSON
+  - SQL
+  - Vector Search
+blog_post: ""
+---
+
 # SQL examples for Oracle Database
 
 | Example program                                      | Description                                                                       |

@@ -1,3 +1,13 @@
+---
+name: oracle-ai-database-docker-compose
+description: Docker Compose setup for running Oracle AI Database Free locally.
+tags:
+  - Database
+  - docker
+  - oraclefree
+blog_post: "https://andersswanson.dev/2025/05/22/oracle-database-for-free/"
+---
+
 # Oracle AI Database Docker Compose
 
 This module provides a simple Docker Compose setup for running an Oracle AI Database Free container, suitable for AI vector search and other Oracle AI features demos.

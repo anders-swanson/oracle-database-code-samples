@@ -1,3 +1,15 @@
+---
+name: migrate-kafka-to-oracle/kafka-app-step-2
+description: Migration step that adds OSON serialization to the Kafka-to-TxEventQ sample.
+tags:
+  - Database
+  - Java
+  - JSON
+  - Kafka
+  - TxEventQ
+blog_post: "https://andersswanson.dev/2025/06/06/migrate-apache-kafka-applications-to-oracle-database-part-ii/"
+---
+
 # Kafka App Step 2
 
 This module is step 2 of the [Kafka-to-TxEventQ migration sample](../README.md). It keeps Oracle AI Database Transactional Event Queues as the transport and adds OSON serialization for `WeatherEvent` messages using the Oracle JSON libraries.

@@ -1,3 +1,15 @@
+---
+name: spring-boot-database-client-info
+description: Spring Boot sample that sets MODULE and ACTION client info on Oracle AI Database connections.
+tags:
+  - Database
+  - Java
+  - JDBC
+  - Observability
+  - SpringBoot
+blog_post: "https://andersswanson.dev/2025/11/03/unlocking-session-visibility-with-oracle-client-info/"
+---
+
 # Spring Boot Oracle Database Client Info
 
 This example application demonstrates how to add client information to Oracle Database connections in a Spring Boot application. It sets client identifiers on database connections for better monitoring and tracing. The application includes a simple REST API for managing books, which sets custom client info (MODULE and ACTION) on each connection used in the API operations.

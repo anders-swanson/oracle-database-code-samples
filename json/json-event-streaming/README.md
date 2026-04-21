@@ -1,3 +1,16 @@
+---
+name: json/json-event-streaming
+description: OKafka sample that streams OSON payloads through Oracle AI Database TxEventQ topics.
+tags:
+  - Database
+  - Java
+  - JSON
+  - Kafka
+  - Testcontainers
+  - TxEventQ
+blog_post: ""
+---
+
 # JSON Event Streaming with OKafka and OSON
 
 This sample demonstrates how to stream Oracle AI Database serialized JSON data (OSON) using the kafka-clients compatible OKafka client. The application publishes OSON-serialized events into an Oracle AI Database Transactional Event Queue (TxEventQ) topic and consumes them back into typed Java objects, showcasing an end-to-end JSON pub/sub workflow.

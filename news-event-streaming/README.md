@@ -1,3 +1,16 @@
+---
+name: news-event-streaming
+description: Spring Boot application that ingests news events, stores them in Oracle AI Database, and supports vector search.
+tags:
+  - AI
+  - Database
+  - Java
+  - OCI
+  - SpringBoot
+  - Vector Search
+blog_post: ""
+---
+
 # News Event Streaming Application 
 
 This demo application streams news articles as events from a REST API, processing those articles and storing them in a multimodal database that includes relational, document, event, and vector data types.

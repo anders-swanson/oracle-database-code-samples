@@ -1,3 +1,15 @@
+---
+name: json/jdbc-json-analytics
+description: Plain JDBC sample that analyzes nested JSON documents with advanced SQL/JSON operators.
+tags:
+  - Database
+  - Java
+  - JDBC
+  - JSON
+  - Testcontainers
+blog_post: ""
+---
+
 # JDBC JSON Analytics Sample
 
 This sample explores advanced Oracle SQL/JSON operators with plain JDBC. It stores nested order documents and runs analytical queries using `JSON_TABLE`, `JSON_EXISTS`, and `JSON_ARRAYAGG` to produce insights without shredding JSON data into relational tables.

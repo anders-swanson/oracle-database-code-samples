@@ -1,3 +1,12 @@
+---
+name: migrate-kafka-to-oracle/kafka-app
+description: Starting Apache Kafka application used as the baseline for the migration walkthrough.
+tags:
+  - Java
+  - Kafka
+blog_post: ""
+---
+
 # Kafka App
 
 This module is the starting point for the [Kafka-to-TxEventQ migration sample](../README.md). It uses the standard Apache Kafka Java client to create a topic, produce ten weather events, and consume them back from Apache Kafka.

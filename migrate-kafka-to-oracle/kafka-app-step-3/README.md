@@ -1,3 +1,16 @@
+---
+name: migrate-kafka-to-oracle/kafka-app-step-3
+description: Migration step that adds transactional database writes to the Kafka-to-TxEventQ consumer.
+tags:
+  - Database
+  - Duality Views
+  - Java
+  - JSON
+  - Kafka
+  - TxEventQ
+blog_post: "https://andersswanson.dev/2025/06/09/migrate-apache-kafka-applications-to-oracle-database-part-iii/"
+---
+
 # Kafka App Step 3
 
 This module is step 3 of the [Kafka-to-TxEventQ migration sample](../README.md). It builds on the OSON-based messaging flow from step 2 and adds transactional database writes on the consumer side.

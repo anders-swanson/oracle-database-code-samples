@@ -1,3 +1,13 @@
+---
+name: spring-resource-sample
+description: Spring ResourceLoader sample that reads BLOB-backed resources from Oracle AI Database.
+tags:
+  - Database
+  - Java
+  - SpringBoot
+blog_post: "https://andersswanson.dev/2025/05/29/dynamically-load-spring-properties-from-external-repositories/"
+---
+
 # Spring Resource Loader Example
 
 This example demonstrates how to implement a custom [Spring Resource Loader](https://docs.spring.io/spring-framework/reference/core/resources.html#resources-resourceloader) to idiomatically load blob resources (such as images or files) at application startup from an arbitrary storage backend.

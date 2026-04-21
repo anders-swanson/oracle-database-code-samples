@@ -1,3 +1,14 @@
+---
+name: txeventq-multidb-replication
+description: Multi-database TxEventQ replication sample using JMS and database links.
+tags:
+  - Database
+  - Java
+  - JMS
+  - TxEventQ
+blog_post: "https://andersswanson.dev/2026/01/14/propagating-cross-database-events-with-oracle-ai-database/"
+---
+
 # Transactional Event Queues Multi-Database Replication Example
 
 ## Description

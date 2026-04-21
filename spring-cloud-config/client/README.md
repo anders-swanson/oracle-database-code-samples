@@ -1,3 +1,4 @@
+
 # Spring Cloud Config Client
 
 This module is the client application from the [Spring Cloud Config sample](../README.md). It loads configuration from the config server and exposes a simple HTTP endpoint that returns the resolved value of `config.key`.

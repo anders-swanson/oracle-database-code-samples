@@ -1,3 +1,14 @@
+---
+name: mcp-agent
+description: LangChain4j MCP sample for natural-language SQL queries against Oracle AI Database.
+tags:
+  - AI
+  - Database
+  - Java
+  - MCP
+blog_post: "https://andersswanson.dev/2025/12/02/natural-language-sql-with-oracle-mcp-and-langchain4j/"
+---
+
 # Oracle Database MCP Agent Example
 
 This project demonstrates a natural language SQL agent using Langchain4j, integrated with Oracle Database via SQLcl MCP (Model Context Protocol) for executing queries.

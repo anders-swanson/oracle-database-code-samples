@@ -1,3 +1,15 @@
+---
+name: spring-boot-jdbc-custom-tracer
+description: Spring Boot sample for custom Oracle JDBC tracing with OpenTelemetry.
+tags:
+  - Database
+  - Java
+  - JDBC
+  - Observability
+  - SpringBoot
+blog_post: "https://andersswanson.dev/2025/10/20/how-to-write-a-custom-tracer-for-oracle-database-jdbc/"
+---
+
 # Spring Boot Oracle Database JDBC Custom Tracer
 
 This example application demonstrates how to implement a custom tracing implementation for the Oracle JDBC driver, using a Spring Boot app context and OpenTelemetry, as an alternative to the [OJDBC Trace Event Listener](https://github.com/oracle/ojdbc-extensions/blob/main/ojdbc-provider-opentelemetry/src/main/java/oracle/jdbc/provider/opentelemetry/OpenTelemetryTraceEventListener.java)

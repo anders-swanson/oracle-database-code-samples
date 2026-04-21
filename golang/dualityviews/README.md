@@ -1,3 +1,14 @@
+---
+name: golang/dualityviews
+description: Go sample for creating and querying JSON Relational Duality Views in Oracle AI Database.
+tags:
+  - Database
+  - Duality Views
+  - Go
+  - JSON
+blog_post: ""
+---
+
 # Go JSON Relational Duality Views Sample
 
 This sample demonstrates how to use Go, `godror`, and Oracle AI Database JSON Relational Duality Views together. The program creates a `student` table, creates a `student_dv` duality view, inserts JSON data into the view, and queries the JSON document back.

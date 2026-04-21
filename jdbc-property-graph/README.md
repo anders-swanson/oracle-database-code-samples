@@ -1,3 +1,14 @@
+---
+name: jdbc-property-graph
+description: Plain JDBC sample for building and querying a SQL property graph in Oracle AI Database.
+tags:
+  - Database
+  - Graph
+  - Java
+  - JDBC
+blog_post: "https://andersswanson.dev/2026/04/09/oracle-ai-database-property-graphs-and-jdbc/"
+---
+
 # JDBC Property Graph
 
 This module demonstrates a small Oracle AI Database property graph sample over JDBC:

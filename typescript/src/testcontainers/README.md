@@ -1,3 +1,15 @@
+---
+name: typescript/src/testcontainers
+description: TypeScript helpers for starting Oracle AI Database Free with Testcontainers.
+tags:
+  - Database
+  - NodeJS
+  - Testcontainers
+  - TypeScript
+  - oraclefree
+blog_post: "https://andersswanson.dev/2025/09/17/test-your-typescript-nodejs-apps-with-oracle-database-free/"
+---
+
 # TypeScript Testcontainers Sample
 
 This folder contains the reusable Testcontainers helpers for the TypeScript samples. The classes wrap Oracle AI Database Free startup and return a ready-to-use `oracledb` connection for tests or scripts.

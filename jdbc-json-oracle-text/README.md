@@ -1,3 +1,15 @@
+---
+name: jdbc-json-oracle-text
+description: Plain JDBC sample for JSON full-text search with Oracle Text on Oracle AI Database.
+tags:
+  - Database
+  - Java
+  - JDBC
+  - JSON
+  - Oracle Text
+blog_post: "https://andersswanson.dev/2026/04/13/full-text-json-search-with-oracle-text/"
+---
+
 # JDBC JSON Oracle Text
 
 This module demonstrates Oracle Text JSON full-text search over plain JDBC on Oracle AI Database. The sample shows how to:

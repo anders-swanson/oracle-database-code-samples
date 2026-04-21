@@ -1,3 +1,15 @@
+---
+name: spring-vault-oracle-app
+description: Spring Boot sample that loads OCI Vault secrets into the application context.
+tags:
+  - Database
+  - Java
+  - OCI
+  - security
+  - SpringBoot
+blog_post: ""
+---
+
 # spring-vault-oracle-app
 
 The Spring Vault Oracle App sample demonstrates dynamically loading secrets from [OCI Vault](https://docs.oracle.com/en-us/iaas/Content/KeyManagement/home.htm) into the Spring Boot context during startup. All secrets loaded this way are made available by name as application properties, accessible using `@Value` annotations.

@@ -1,3 +1,15 @@
+---
+name: json/jdbc-json-basic
+description: Plain JDBC sample for inserting, querying, updating, and deleting Oracle JSON data.
+tags:
+  - Database
+  - Java
+  - JDBC
+  - JSON
+  - Testcontainers
+blog_post: "https://andersswanson.dev/2026/02/24/hands-on-crud-with-jdbc-and-json-relational-duality-views/"
+---
+
 # JDBC JSON Data Type Sample
 
 This sample demonstrates how to interact with the Oracle JSON data type using plain JDBC. A console-style program inserts, queries, updates, and deletes JSON documents stored in a relational table while leveraging SQL/JSON operators like `json_value` and `json_transform`.

@@ -1,3 +1,16 @@
+---
+name: langchain4j-agent-memory
+description: LangChain4j sample that stores agent memory, transcripts, and hybrid retrieval data in Oracle AI Database.
+tags:
+  - AI
+  - Database
+  - Java
+  - JSON
+  - Oracle Text
+  - Vector Search
+blog_post: "https://andersswanson.dev/2026/04/20/agent-memory-with-langchain4j-and-oracle-ai-database/"
+---
+
 # LangChain4j Agent Memory
 
 This module demonstrates how Oracle AI Database can serve as both **durable agent memory** and an **append-only conversation transcript store** for a LangChain4j assistant. The sample combines:

@@ -1,3 +1,16 @@
+---
+name: jdbc-graphql
+description: Plain JDBC sample that runs SQL GraphQL queries against Oracle AI Database tables.
+tags:
+  - Database
+  - Graph
+  - GraphQL
+  - Java
+  - JDBC
+  - JSON
+blog_post: ""
+---
+
 # JDBC GraphQL
 
 This module demonstrates GraphQL over relational tables from a plain Java/JDBC application on Oracle AI Database.
@@ -16,25 +29,11 @@ Then it runs SQL `GRAPHQL(...)` queries that return nested JSON documents:
 - keep the GraphQL documents as constants and pass scalar variable values into the SQL `GRAPHQL(...)` call
 - keep all joins server-side while the JDBC client receives shaped JSON
 
-The shape is intentionally close to the January 2026 blog posts about GraphQL over Oracle AI Database relational data and ORDS GraphQL, but this module stays focused on the direct JDBC + SQL path.
-
-## Why this sample fits the repo
-
-This follows the same pattern as the other top-level JDBC samples in this repository:
-
-- one focused Maven module
-- one main entrypoint under `com.example`
-- a small relational schema created at runtime
-- a JUnit test in `src/test/java`
-- a README that explains how to run it locally
-
 ## Run the test
 
 ```bash
 mvn test
 ```
-
-The test follows the same pattern as the other top-level JDBC samples: it starts an Oracle AI Database Free container with Testcontainers and runs the sample end to end by calling `main(...)`. The sample itself validates that Alice returns two enrollments and that `MATH201` returns the expected two-student roster. If the container image resolves to a pre-26ai Oracle Free build, the test skips because SQL `GRAPHQL(...)` is a 26ai feature.
 
 ## Run the sample app
 
@@ -72,8 +71,3 @@ students(first_name: $value) {
     }
 }
 ```
-
-## Notes
-
-- Use Oracle AI Database 26ai or later for this sample.
-- If you want to expose a similar schema over HTTP instead of direct JDBC, the ORDS GraphQL flow is the natural follow-on sample.

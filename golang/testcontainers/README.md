@@ -1,3 +1,14 @@
+---
+name: golang/testcontainers
+description: Go helper and test for starting Oracle AI Database Free with testcontainers-go.
+tags:
+  - Database
+  - Go
+  - Testcontainers
+  - oraclefree
+blog_post: "https://andersswanson.dev/2025/10/01/testing-go-apps-with-oracle-database-using-testcontainers/"
+---
+
 # Go Testcontainers Sample
 
 This folder contains a Go helper for starting Oracle AI Database Free with `testcontainers-go` and a test that verifies the container can be started and queried.

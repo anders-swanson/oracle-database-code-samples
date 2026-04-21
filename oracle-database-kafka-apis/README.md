@@ -1,3 +1,15 @@
+---
+name: oracle-database-kafka-apis
+description: Java integration tests that use the Kafka APIs for Oracle AI Database Transactional Event Queues.
+tags:
+  - Database
+  - Java
+  - Kafka
+  - Testcontainers
+  - TxEventQ
+blog_post: "https://andersswanson.dev/2025/07/09/authenticate-to-your-oracle-database-like-its-a-kafka-cluster/"
+---
+
 # Oracle Database Kafka APIs
 
 The following articles describe using Kafka Java APIs with Oracle Database Transactional Event Queues:

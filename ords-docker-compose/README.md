@@ -1,3 +1,15 @@
+---
+name: ords-docker-compose
+description: Docker Compose setup for running ORDS with Oracle AI Database Free locally.
+tags:
+  - Database
+  - docker
+  - MongoDB
+  - ORDS
+  - oraclefree
+blog_post: "https://andersswanson.dev/2025/12/12/oracle-rest-data-services-ords-with-docker-compose/"
+---
+
 # Oracle REST Data Services (ORDS) + Oracle AI Database with Docker Compose
 
 Simple Docker Compose setup to run Oracle REST Data Services (ORDS) connected to an Oracle AI Database Free container!

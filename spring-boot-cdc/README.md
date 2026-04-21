@@ -1,3 +1,15 @@
+---
+name: spring-boot-cdc
+description: Spring Boot JMS sample that implements CDC with Oracle AI Database Transactional Event Queues.
+tags:
+  - Database
+  - Java
+  - JMS
+  - SpringBoot
+  - TxEventQ
+blog_post: "https://andersswanson.dev/2025/06/26/event-driven-cdc-all-within-the-database/"
+---
+
 # Spring Boot CDC with Transactional Event Queues (TxEventQ) (JMS) Example
 
 This example demonstrates how to implement event-based CDC in Spring Boot  using [Spring JMS](https://spring.io/guides/gs/messaging-jms) and [Oracle Database Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/26/adque/aq-introduction.html). In the example app, a service inserts database records, and a Spring JMS consumer reacts to each insert event.

@@ -9,6 +9,7 @@ This project uses Java 21+, Maven 3.9+, Spring Boot 4 for Java code. Always use 
 - `pom.xml` orchestrates a multi-module Maven build; Java samples live under directories such as `ai-vector-search`, `oracle-database-kafka-apis`, `spring-*`, and `txeventq-*`, each with its own `pom.xml` and `src` tree.
 - Cross-language samples sit in sibling folders (`golang`, `python-oracle`, `typescript`, `sql`), while shared Docker and infrastructure assets appear in `oracle-ai-database-docker-compose`, `truecache-free`, and `testcontainers`.
 - Keep documentation alongside modules (for example `spring-boot-jms-example/README.md`) and place new samples under a top-level folder with a distinct name (for example `README.md`, `json/README.md`)
+- All module README.md files should have a front matter with name, description, and tags fields
 
 ## Build, Test, and Development Commands
 - Run all Java modules with `mvn test`

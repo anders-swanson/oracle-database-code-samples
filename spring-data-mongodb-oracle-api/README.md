@@ -1,3 +1,15 @@
+---
+name: spring-data-mongodb-oracle-api
+description: Spring Data MongoDB sample that uses the Oracle Database API for MongoDB through ORDS.
+tags:
+  - Database
+  - Java
+  - MongoDB
+  - ORDS
+  - SpringBoot
+blog_post: "https://andersswanson.dev/2025/06/17/spring-data-mongodb-with-oracle-databases-mongodb-api/"
+---
+
 # Using Oracle Database's MongoDB API with Spring Data MongoDB
 
 MongoDB is a popular, open-source NoSQL database management program that stores data in a flexible, JSON-like format, making it ideal for handling large, unstructured, or semi-structured data. 

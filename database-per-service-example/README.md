@@ -1,3 +1,16 @@
+---
+name: database-per-service-example
+description: Database-per-service sample that separates students and courses services into independent pluggable databases.
+tags:
+  - Database
+  - Java
+  - microservices
+  - PDB
+  - SpringBoot
+  - Testcontainers
+blog_post: ""
+---
+
 # Database Per Service with Oracle AI Database Pluggable Databases
 
 This sample demonstrates the database-per-service pattern on Oracle AI Database with a realistic cross-service workflow: **registration eligibility**.

@@ -1,3 +1,14 @@
+---
+name: spring-boot-dynamic-property-source
+description: Spring Boot sample that loads application properties dynamically from Oracle AI Database.
+tags:
+  - Database
+  - Java
+  - security
+  - SpringBoot
+blog_post: "https://andersswanson.dev/2025/05/29/dynamically-load-spring-properties-from-external-repositories/"
+---
+
 # Spring Dynamic Property Source Example
 
 This example application demonstrates how to use the Spring Boot EnumerablePropertySource and EnvironmentPostProcessor classes to load properties dynamically at application startup from an external source (in this case an Oracle Database server).

@@ -1,3 +1,14 @@
+---
+name: python-oracle/src/python_oracle/testcontainers_sample
+description: Python Testcontainers sample for starting Oracle AI Database Free programmatically.
+tags:
+  - Database
+  - python
+  - Testcontainers
+  - oraclefree
+blog_post: "https://andersswanson.dev/2025/09/11/test-python-applications-with-oracle-database-free-using-testcontainers/"
+---
+
 # Testcontainers with Oracle Database
 
 This module shows you how to run an Oracle Database Free container image using [Testcontainers (python)](https://github.com/testcontainers/testcontainers-python).

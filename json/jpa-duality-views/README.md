@@ -1,3 +1,17 @@
+---
+name: json/jpa-duality-views
+description: Spring Boot JPA sample for generating and using JSON Relational Duality Views.
+tags:
+  - Database
+  - Duality Views
+  - JPA
+  - Java
+  - JSON
+  - SpringBoot
+  - Testcontainers
+blog_post: "https://andersswanson.dev/2026/02/25/generate-json-relational-duality-views-from-jpa-entities/"
+---
+
 # Spring Boot JSON Relational Duality Views
 
 This sample shows how to generate and interact with JSON Relational Duality Views (JDVs) directly from familiar Spring Data JPA entities. It demonstrates:

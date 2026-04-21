@@ -1,3 +1,15 @@
+---
+name: jdbc-event-streaming
+description: Plain JDBC sample for producing and consuming TxEventQ messages with PL/SQL helpers.
+tags:
+  - Database
+  - Java
+  - JDBC
+  - PL/SQL
+  - TxEventQ
+blog_post: ""
+---
+
 # JDBC Event Streaming
 
 Example of streaming events using a plain JDBC connection for Oracle Database Transactional Event Queues (TxEventQ).

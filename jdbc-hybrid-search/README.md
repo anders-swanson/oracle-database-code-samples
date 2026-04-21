@@ -1,3 +1,17 @@
+---
+name: jdbc-hybrid-search
+description: Plain JDBC hybrid search sample that combines Oracle Text, vectors, JSON, and relational filters.
+tags:
+  - AI
+  - Database
+  - Java
+  - JDBC
+  - JSON
+  - Oracle Text
+  - Vector Search
+blog_post: ""
+---
+
 # JDBC Hybrid Search
 
 This module demonstrates hybrid search with plain JDBC on Oracle AI Database. The sample stores product-style documents with:

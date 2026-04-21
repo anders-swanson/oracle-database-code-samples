@@ -1,3 +1,16 @@
+---
+name: spring-boot-jms-tracing
+description: Spring Boot sample for tracing JMS messaging over Oracle AI Database Transactional Event Queues.
+tags:
+  - Database
+  - Java
+  - JMS
+  - Observability
+  - SpringBoot
+  - TxEventQ
+blog_post: "https://andersswanson.dev/2025/10/07/tracing-a-spring-boot-jms-app-with-oracle-database-free/"
+---
+
 # Spring Boot JMS Tracing
 
 This example demonstrates using [Spring JMS](https://spring.io/guides/gs/messaging-jms) tracing with [Oracle Database Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/23/adque/aq-introduction.html).

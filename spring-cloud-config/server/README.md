@@ -1,3 +1,4 @@
+
 # Spring Cloud Config Server
 
 This module is the server application from the [Spring Cloud Config sample](../README.md). It runs a Spring Cloud Config Server backed by Oracle AI Database over JDBC and includes an optional CRUD API for managing rows in the `PROPERTIES` table.

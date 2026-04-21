@@ -1,3 +1,14 @@
+---
+name: migrate-kafka-to-oracle/kafka-app-step-1
+description: Migration step that swaps Apache Kafka for Oracle AI Database TxEventQ with minimal code changes.
+tags:
+  - Database
+  - Java
+  - Kafka
+  - TxEventQ
+blog_post: "https://andersswanson.dev/2025/05/28/migrate-apache-kafka-applications-to-oracle-database/"
+---
+
 # Kafka App Step 1
 
 This module is step 1 of the [Kafka-to-TxEventQ migration sample](../README.md). It replaces the standard Apache Kafka broker with Oracle AI Database Transactional Event Queues while keeping the producer and consumer flow largely unchanged.

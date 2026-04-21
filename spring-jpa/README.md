@@ -1,3 +1,15 @@
+---
+name: spring-jpa
+description: Spring JPA examples for Oracle AI Database entities, repositories, and relationships.
+tags:
+  - Database
+  - JPA
+  - Java
+  - SpringBoot
+  - Testcontainers
+blog_post: "https://andersswanson.dev/2025/06/10/learn-spring-jpa-by-example-with-oracle-database-free/"
+---
+
 # Learn Spring JPA By Example with Oracle Database Free
 
 Spring JPA (Java Persistence API) provides an abstraction layer over JPA using ORM (Object Relational Mapping). Spring JPA simplifies database interactions by abstracting common operations to simple Java objects and annotations.

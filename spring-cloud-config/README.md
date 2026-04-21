@@ -1,3 +1,14 @@
+---
+name: spring-cloud-config
+description: Spring Cloud Config sample that stores configuration properties in Oracle AI Database.
+tags:
+  - Database
+  - Java
+  - microservices
+  - SpringBoot
+blog_post: "https://andersswanson.dev/2025/11/21/spring-cloud-config-jdbc-backend-oracle-ai-database/"
+---
+
 # Spring Cloud Config with Oracle Database
 
 This module demonstrates how to use Oracle Database as the backend for a Spring Cloud Config Server. It includes a config server that stores configuration properties in an Oracle Database via JDBC, a simple client application that consumes these configurations, and a Docker Compose setup for the database.

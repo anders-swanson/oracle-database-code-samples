@@ -1,3 +1,14 @@
+---
+name: ai-optimizer
+description: Docker Compose setup for running the ai-optimizer service with Oracle AI Database Free locally.
+tags:
+  - AI
+  - Database
+  - docker
+  - oraclefree
+blog_post: "https://andersswanson.dev/2025/10/21/ai-optimizer-toolkit-set-up-a-local-sandbox/"
+---
+
 # AI Optimizer Docker Compose
 
 This folder contains a Docker Compose setup for running the `ai-optimizer` service alongside Oracle AI Database Free.

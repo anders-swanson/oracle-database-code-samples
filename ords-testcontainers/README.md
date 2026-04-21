@@ -1,3 +1,16 @@
+---
+name: ords-testcontainers
+description: Testcontainers sample for running ORDS alongside Oracle AI Database Free in integration tests.
+tags:
+  - Database
+  - Java
+  - MongoDB
+  - ORDS
+  - Testcontainers
+  - oraclefree
+blog_post: "https://andersswanson.dev/2026/04/07/test-ords-locally-with-testcontainers-oracle-ai-database-free-and-mongodb/"
+---
+
 # ORDS Testcontainers
 
 This module demonstrates how to run Oracle REST Data Services (ORDS) with Testcontainers against an Oracle AI Database Free container.

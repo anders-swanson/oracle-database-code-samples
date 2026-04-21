@@ -1,3 +1,16 @@
+---
+name: json/crud-duality-views
+description: JDBC CRUD sample for JSON Relational Duality Views with OSON and Testcontainers.
+tags:
+  - Database
+  - Duality Views
+  - Java
+  - JDBC
+  - JSON
+  - Testcontainers
+blog_post: "https://andersswanson.dev/2026/02/24/hands-on-crud-with-jdbc-and-json-relational-duality-views/"
+---
+
 # CRUD with JSON Relational Duality Views
 
 [Click here for the in-depth blog](https://andersswanson.dev/2026/02/24/hands-on-crud-with-jdbc-and-json-relational-duality-views/)

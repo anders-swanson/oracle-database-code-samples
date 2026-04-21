@@ -1,3 +1,14 @@
+---
+name: jdbc-spatial-example
+description: Plain JDBC sample for creating, indexing, and querying spatial geometries in Oracle AI Database.
+tags:
+  - Database
+  - Java
+  - JDBC
+  - Spatial
+blog_post: "https://andersswanson.dev/2026/04/06/get-started-with-spatial-data-in-oracle-ai-database-using-jdbc/"
+---
+
 # JDBC Spatial Example
 
 This module demonstrates basic Oracle AI Database Spatial operations over JDBC using `oracle.spatial.geometry.JGeometry`.

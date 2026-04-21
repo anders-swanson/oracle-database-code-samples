@@ -1,3 +1,15 @@
+---
+name: spring-boot-jdbc-tracing
+description: Spring Boot sample for Oracle JDBC tracing with OpenTelemetry.
+tags:
+  - Database
+  - Java
+  - JDBC
+  - Observability
+  - SpringBoot
+blog_post: "https://andersswanson.dev/2025/10/10/oracle-jdbc-tracing-with-spring-boot-opentelemetry/"
+---
+
 # Spring Boot Oracle Database JDBC Tracing
 
 This example application demonstrates how to instrument Oracle Database JDBC connections from a Spring Boot app context with OpenTelemetry.

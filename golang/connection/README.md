@@ -1,3 +1,12 @@
+---
+name: golang/connection
+description: Shared Go connection helper for local Oracle AI Database access with godror.
+tags:
+  - Database
+  - Go
+blog_post: ""
+---
+
 # Go Database Connection Sample
 
 This folder contains the shared Go connection helper used by the samples in [`../README.md`](../README.md). The implementation wraps `godror` connection setup, pooling, and optional `TNS_ADMIN` handling for Oracle AI Database.

@@ -1,3 +1,14 @@
+---
+name: python-oracle/src/python_oracle/database
+description: Native Python vector search sample for Oracle AI Database using python-oracledb.
+tags:
+  - AI
+  - Database
+  - python
+  - Vector Search
+blog_post: "https://andersswanson.dev/2026/02/10/langchain-vs-diy-vector-search-with-oracle-ai-database/"
+---
+
 # Native Python Vector Search Sample
 
 This folder contains a native Python vector-search sample for Oracle AI Database using `python-oracledb` and the OpenAI embeddings API. The program creates a `sample_vectors` table, builds a vector index, inserts embeddings, and runs a similarity search query with `vector_distance`.

@@ -1,3 +1,15 @@
+---
+name: spring-boot-jms-example
+description: Spring Boot JMS pub-sub example for Oracle AI Database Transactional Event Queues.
+tags:
+  - Database
+  - Java
+  - JMS
+  - SpringBoot
+  - TxEventQ
+blog_post: "https://andersswanson.dev/2025/06/19/use-jms-for-asynchronous-messaging-in-spring-boot/"
+---
+
 # Spring Java Message Service (JMS) Example
 
 This example demonstrates how to write a pub/sub application using [Spring JMS](https://spring.io/guides/gs/messaging-jms) and [Oracle Database Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/26/adque/aq-introduction.html). If you're unfamiliar with Transactional Event Queues, it is a high-throughput, distributed asynchronous messaging system built into Oracle Database. The integration of Transactional Event Queues with Spring JMS provides a simple interface for rapid development of messaging applications.

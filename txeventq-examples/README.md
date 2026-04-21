@@ -1,3 +1,15 @@
+---
+name: txeventq-examples
+description: Java examples for Oracle AI Database Transactional Event Queues using Kafka APIs and PL/SQL.
+tags:
+  - Database
+  - Java
+  - Kafka
+  - PL/SQL
+  - TxEventQ
+blog_post: "https://andersswanson.dev/2025/09/18/pub-sub-in-your-db-oracle-database-txeventq/"
+---
+
 # Oracle Database Transactional Event Queues Examples
 
 Prerequisites: An Oracle Database instance. The examples are configured to use a local, Oracle Database Free container running on port 1521, but any 23ai instance will work if configured accordingly.

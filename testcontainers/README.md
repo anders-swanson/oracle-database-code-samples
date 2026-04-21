@@ -1,3 +1,14 @@
+---
+name: testcontainers
+description: Java Testcontainers samples for running Oracle AI Database Free in integration tests.
+tags:
+  - Database
+  - Java
+  - Testcontainers
+  - oraclefree
+blog_post: "https://andersswanson.dev/2025/05/29/easily-test-oracle-database-applications-with-testcontainers/"
+---
+
 # Oracle Database Testcontainers
 
 This module provides examples using [Testcontainers](https://java.testcontainers.org/) with [Oracle Database Free](https://www.oracle.com/database/free/) to test your Oracle Database Java applications using dispoable containers.

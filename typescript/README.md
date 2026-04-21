@@ -1,3 +1,15 @@
+---
+name: typescript
+description: TypeScript samples using node-oracledb, Testcontainers, and Transactional Event Queues.
+tags:
+  - Database
+  - NodeJS
+  - Testcontainers
+  - TxEventQ
+  - TypeScript
+blog_post: ""
+---
+
 # Typescript Oracle Database Samples
 
 The following code samples use the open-source [node-oracledb driver](https://node-oracledb.readthedocs.io/en/latest/user_guide/introduction.html) with [Oracle Database Free](https://andersswanson.dev/2025/05/22/oracle-database-for-free/).

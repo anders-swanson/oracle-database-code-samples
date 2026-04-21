@@ -13,7 +13,7 @@
 
     <artifactId>jdbc-hybrid-search</artifactId>
     <name>jdbc-hybrid-search</name>
-    <description>JDBC sample demonstrating hybrid search with Oracle Database vectors, JSON, and relational filters</description>
+    <description>JDBC sample demonstrating hybrid search with Oracle AI Database vectors, JSON, and relational filters</description>
 
     <properties>
         <exec.mainClass>com.example.hybrid.HybridSearchSample</exec.mainClass>

@@ -11,7 +11,7 @@
     <artifactId>testcontainers-example</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>testcontainers-example</name>
-    <description>Sample tests users Testcontainers for Oracle Database</description>
+    <description>Sample tests users Testcontainers for Oracle AI Database</description>
 
     <dependencies>
         <dependency>

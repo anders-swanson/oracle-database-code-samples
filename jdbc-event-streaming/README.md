@@ -12,13 +12,13 @@ blog_post: ""
 
 # JDBC Event Streaming
 
-Example of streaming events using a plain JDBC connection for Oracle Database Transactional Event Queues (TxEventQ).
+Example of streaming events using a plain JDBC connection for Oracle AI Database Transactional Event Queues (TxEventQ).
 
 ## [jdbc.events package](./src/main/java/com/example/jdbc/events)
 
 The [jdbc.events package](./src/main/java/com/example/jdbc/events) package implements the JDBCBatchProducer class to send events, and the JDBCConsumer class to receive. These classes use PL/SQL procedures defined in the [jdbc-events.sql](./src/test/resources/jdbc-events.sql) script, specific the `produce_json_event` and `consume_json_event` procedures, respectively. 
 
-The [JDBCEventStreamingTest](./src/test/java/com/example/jdbc/events/JDBCEventStreamingTest.java) class implements a test scenario using Oracle Database Free to produce and consume events:
+The [JDBCEventStreamingTest](./src/test/java/com/example/jdbc/events/JDBCEventStreamingTest.java) class implements a test scenario using Oracle AI Database Free to produce and consume events:
 
 1. The JDBCBatchProducer writes a series of records to a queue.
 2. Three JDBCConsumer instances run in parallel to consume events.

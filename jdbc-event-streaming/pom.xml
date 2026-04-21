@@ -11,7 +11,7 @@
     <artifactId>jdbc-event-streaming</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>jdbc-event-streaming</name>
-    <description>Example implementation of JDBC Event Streaming with Oracle Database Transactional Event Queues</description>
+    <description>Example implementation of JDBC Event Streaming with Oracle AI Database Transactional Event Queues</description>
 
     <dependencies>
         <dependency>

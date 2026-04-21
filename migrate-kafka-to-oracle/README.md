@@ -9,15 +9,15 @@ tags:
 blog_post: "https://andersswanson.dev/2025/05/28/migrate-apache-kafka-applications-to-oracle-database/"
 ---
 
-# Migrate Apache Kafka to Oracle Database Transactional Event Queues (TxEventQ)
+# Migrate Apache Kafka to Oracle AI Database Transactional Event Queues (TxEventQ)
 
 ![Migrate to TxEventQ](migrate-kafka-to-oracle-txeventq.png)
 
-This module demonstrates progressively migrating an app from Apache Kafka to [TxEventQ](https://oracle.github.io/microservices-datadriven/transactional-event-queues/getting-started/index.html), using the Kafka Java Client for Oracle Database Transactional Event Queues.
+This module demonstrates progressively migrating an app from Apache Kafka to [TxEventQ](https://oracle.github.io/microservices-datadriven/transactional-event-queues/getting-started/index.html), using the Kafka Java Client for Oracle AI Database Transactional Event Queues.
 
 The module is broken into three sections:
 
-- First, in this README we'll demonstrate how to migrate a simple Apache Kafka application ([kafka-app](./kafka-app)) to Oracle Database TxEventQ ([kafka-app-step-1](./kafka-app-step-1))
+- First, in this README we'll demonstrate how to migrate a simple Apache Kafka application ([kafka-app](./kafka-app)) to Oracle AI Database TxEventQ ([kafka-app-step-1](./kafka-app-step-1))
 - Next, in the [Using Oracle JSON (OSON)](./using-oracle-json.md) section we'll add support for Oracle's optimized binary JSON format, OSON, to the app ([kafka-app-step-2](./kafka-app-step-2)).
 - Finally, in the  [Transactional Messaging](./transactional-messaging.md) section, we further enhance the app to add transactional messaging to the consumer, so that database operations are handled using the same connection the consumer uses to receive messages ([kafka-app-step-3](./kafka-app-step-3)).
 
@@ -101,7 +101,7 @@ import org.oracle.okafka.clients.consumer.KafkaConsumer;
 import org.oracle.okafka.clients.producer.KafkaProducer;
 ```
 
-3. Finally, the connection information for the Apache Kafka cluster is updated to use Oracle Database. Note that the `oracle.net.tns_admin` property should point to the directory containing the Oracle Database wallet. If you're not using a wallet, this directory should contain an `ojdbc.properties` file with the `user` and `password` to connect to the database.
+3. Finally, the connection information for the Apache Kafka cluster is updated to use Oracle AI Database. Note that the `oracle.net.tns_admin` property should point to the directory containing the Oracle AI Database wallet. If you're not using a wallet, this directory should contain an `ojdbc.properties` file with the `user` and `password` to connect to the database.
 
 ```java
 private static Properties connectionProperties() {
@@ -127,7 +127,7 @@ password = <my db password>
 
 #### TLS and mTLS Connections?
 
-If you're using SSL instead of PLAINTEXT, use the following connection code for Oracle Database:
+If you're using SSL instead of PLAINTEXT, use the following connection code for Oracle AI Database:
 
 ```java
 private static Properties connectionProperties() {
@@ -136,7 +136,7 @@ private static Properties connectionProperties() {
     // TNS Alias
     props.put("oracle.service.name", "testdb_high");
     props.put("tns.alias", "testdb_high");
-    // If using Oracle Database wallet, pass wallet directory
+    // If using Oracle AI Database wallet, pass wallet directory
     String resourcesDir = new File(KafkaApp.class.getClassLoader().getResource("").getFile())
             .getAbsolutePath();
     props.put("oracle.net.tns_admin", resourcesDir);
@@ -146,7 +146,7 @@ private static Properties connectionProperties() {
 
 ### Running the updated app against a local database container
 
-To run the updated app, start an Oracle Database Free container:
+To run the updated app, start an Oracle AI Database Free container:
 
 ```bash
 docker run --name oracledb -d -p 1521:1521 -e ORACLE_PASSWORD=testpwd gvenzl/oracle-free:23.26.1-slim-faststart

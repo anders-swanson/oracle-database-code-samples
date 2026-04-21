@@ -26,7 +26,7 @@ public class OKafkaProducer {
 
         // Database service name / TNS Alias
         props.put("oracle.service.name", "freepdb1");
-        // If using Oracle Database wallet, pass wallet directory
+        // If using Oracle AI Database wallet, pass wallet directory
         String resourcesDir = new File(OKafkaProducer.class.getClassLoader()
                 .getResource("")
                 .getFile())

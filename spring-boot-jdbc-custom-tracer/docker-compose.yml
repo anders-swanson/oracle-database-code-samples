@@ -7,9 +7,9 @@ services:
       - '3000:3000' # UI
       - '4317:4317'
       - '4318:4318'
-  free23ai:
+  free26ai:
     image: gvenzl/oracle-free:23.26.1-slim-faststart
-    container_name: free23ai
+    container_name: free26ai
     ports:
       - 1522:1521
     environment:

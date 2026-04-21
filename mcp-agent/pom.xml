@@ -11,7 +11,7 @@
 
     <artifactId>oracle-database-mcp-agent</artifactId>
     <name>oracle-database-mcp-agent</name>
-    <description>Oracle Database MCP Agent Example</description>
+    <description>Oracle AI Database MCP Agent Example</description>
 
     <properties>
         <exec.mainClass>com.example.mcp.MCPAgentApplication</exec.mainClass>

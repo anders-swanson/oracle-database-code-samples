@@ -11,8 +11,8 @@
     </parent>
 
     <artifactId>spring-data-mongodb-oracle-api</artifactId>
-    <name>Sample :: Oracle Database MongoDB API with Spring Boot</name>
-    <description>Spring Data MongoDB using Oracle Database's MongoDB API</description>
+    <name>Sample :: Oracle AI Database MongoDB API with Spring Boot</name>
+    <description>Spring Data MongoDB using Oracle AI Database's MongoDB API</description>
     <version>1.0.0-SNAPSHOT</version>
 
     <dependencies>

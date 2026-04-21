@@ -9,27 +9,27 @@ tags:
 blog_post: "https://andersswanson.dev/2025/11/21/spring-cloud-config-jdbc-backend-oracle-ai-database/"
 ---
 
-# Spring Cloud Config with Oracle Database
+# Spring Cloud Config with Oracle AI Database
 
-This module demonstrates how to use Oracle Database as the backend for a Spring Cloud Config Server. It includes a config server that stores configuration properties in an Oracle Database via JDBC, a simple client application that consumes these configurations, and a Docker Compose setup for the database.
+This module demonstrates how to use Oracle AI Database as the backend for a Spring Cloud Config Server. It includes a config server that stores configuration properties in an Oracle AI Database via JDBC, a simple client application that consumes these configurations, and a Docker Compose setup for the database.
 
 ## Prerequisites
 
 - Java 21 or later
 - Maven
-- Docker (for running the Oracle Database container)
+- Docker (for running the Oracle AI Database container)
 
 ## Directory Structure
 
 - **client/**: The Spring Boot client application that fetches configurations from the server.
 - **server/**: The Spring Cloud Config Server application with JDBC backend.
 - **oracle/**: Initialization scripts for the database (e.g., grant_permissions.sql to create user and PROPERTIES table).
-- **docker-compose.yml**: Docker Compose file to spin up an Oracle Database instance.
+- **docker-compose.yml**: Docker Compose file to spin up an Oracle AI Database instance.
 - **crud-properties.md**: Additional documentation on using the CRUD API for managing properties.
 
 ## Setup
 
-1. **Start the Oracle Database**:
+1. **Start the Oracle AI Database**:
    Run the Docker Compose file to start the Oracle Free container:
    ```
    docker-compose up -d

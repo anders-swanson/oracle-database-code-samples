@@ -1,7 +1,7 @@
--- When using Oracle Database Free as a local container, this value may be too low for subscriber jobs.
--- It is not usually necessary to change this value outside of Oracle Database Free container instances.
+-- When using Oracle AI Database Free as a local container, this value may be too low for subscriber jobs.
+-- It is not usually necessary to change this value outside of Oracle AI Database Free container instances.
 alter system set job_queue_processes=10;
--- Set as appropriate for your database. "freepdb1" is the default PDB in Oracle Database Free
+-- Set as appropriate for your database. "freepdb1" is the default PDB in Oracle AI Database Free
 alter session set container = freepdb1;
 
 -- Configure testuser with the necessary privileges to use Transactional Event Queues.

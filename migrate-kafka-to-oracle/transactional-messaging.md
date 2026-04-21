@@ -1,6 +1,6 @@
 # Transactional Messaging
 
-In this section, we'll implement transactional messaging using our consumer - for each message consumed, we'll use the consumer's database connection to insert OSON into a JSON Relational Duality View. This demonstrates both consuming events and running database operations in the same transaction, a feature that's unique to Oracle Database Transactional Event Queues.
+In this section, we'll implement transactional messaging using our consumer - for each message consumed, we'll use the consumer's database connection to insert OSON into a JSON Relational Duality View. This demonstrates both consuming events and running database operations in the same transaction, a feature that's unique to Oracle AI Database Transactional Event Queues.
 
 ### Creating the database resources
 

@@ -14,7 +14,7 @@ import org.testcontainers.utility.MountableFile;
 
 public class SysdbaInitTest {
     /**
-     * Use a containerized Oracle Database instance for testing.
+     * Use a containerized Oracle AI Database instance for testing.
      */
     @Container
     static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.1-slim-faststart")

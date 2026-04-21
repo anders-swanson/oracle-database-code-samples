@@ -18,7 +18,7 @@ import org.testcontainers.oracle.OracleContainer;
 @SpringBootTest
 public class SpringBootDatabaseTest {
     /**
-     * Use a containerized Oracle Database instance for testing.
+     * Use a containerized Oracle AI Database instance for testing.
      */
     @Container
     @ServiceConnection

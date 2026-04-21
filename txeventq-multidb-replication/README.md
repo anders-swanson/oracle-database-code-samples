@@ -13,7 +13,7 @@ blog_post: "https://andersswanson.dev/2026/01/14/propagating-cross-database-even
 
 ## Description
 
-This module demonstrates how to propagate messages between Oracle Database Transactional Event Queues (TXEventQ) in two separate databases using JMS (Jakarta Messaging) APIs. It showcases queue-to-queue replication over a database link, allowing messages published to a topic in a source database to be automatically propagated to a topic in a destination database. The methods used in this module work with JMS or any kind of TxEventQ payload, including JSON, RAW, and ADT.
+This module demonstrates how to propagate messages between Oracle AI Database Transactional Event Queues (TXEventQ) in two separate databases using JMS (Jakarta Messaging) APIs. It showcases queue-to-queue replication over a database link, allowing messages published to a topic in a source database to be automatically propagated to a topic in a destination database. The methods used in this module work with JMS or any kind of TxEventQ payload, including JSON, RAW, and ADT.
 
 The example includes:
 - Setup scripts for source and destination databases to create users, queues, and configure propagation.
@@ -30,7 +30,7 @@ The example includes:
 
 1. **Start the Databases:**
 
-   Use the provided `docker-compose.yml` to start two Oracle Database instances:
+   Use the provided `docker-compose.yml` to start two Oracle AI Database instances:
    ```
    docker-compose up -d
    ```
@@ -97,4 +97,4 @@ When you're done, use Ctrl+C to stop each process.
 - Oracle AQ Jakarta JMS for messaging.
 - Jakarta JMS API.
 
-For more details, refer to the Oracle Database documentation on [Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/26/adque/aq-jms-operational-interface-basic-operations.html) and [Propagation](https://docs.oracle.com/en/database/oracle/oracle-database/26/adque/propagating-messages.html).
+For more details, refer to the Oracle AI Database documentation on [Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/26/adque/aq-jms-operational-interface-basic-operations.html) and [Propagation](https://docs.oracle.com/en/database/oracle/oracle-database/26/adque/propagating-messages.html).

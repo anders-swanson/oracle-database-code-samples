@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class InitializedDatabaseTest {
     /**
-     * Use a containerized Oracle Database instance for testing.
+     * Use a containerized Oracle AI Database instance for testing.
      */
     static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.1-slim-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))

@@ -12,9 +12,9 @@ blog_post: "https://andersswanson.dev/2025/06/19/use-jms-for-asynchronous-messag
 
 # Spring Java Message Service (JMS) Example
 
-This example demonstrates how to write a pub/sub application using [Spring JMS](https://spring.io/guides/gs/messaging-jms) and [Oracle Database Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/26/adque/aq-introduction.html). If you're unfamiliar with Transactional Event Queues, it is a high-throughput, distributed asynchronous messaging system built into Oracle Database. The integration of Transactional Event Queues with Spring JMS provides a simple interface for rapid development of messaging applications.
+This example demonstrates how to write a pub/sub application using [Spring JMS](https://spring.io/guides/gs/messaging-jms) and [Oracle AI Database Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/26/adque/aq-introduction.html). If you're unfamiliar with Transactional Event Queues, it is a high-throughput, distributed asynchronous messaging system built into Oracle AI Database. The integration of Transactional Event Queues with Spring JMS provides a simple interface for rapid development of messaging applications.
 
-The [Spring Boot Starter for AQ/JMS](https://github.com/oracle/spring-cloud-oracle/tree/main/database/starters/oracle-spring-boot-starter-aqjms) used in the example pulls in all necessary dependencies to use Spring JMS with Oracle Database Transactional Event Queues, requiring minimal configuration.
+The [Spring Boot Starter for AQ/JMS](https://github.com/oracle/spring-cloud-oracle/tree/main/database/starters/oracle-spring-boot-starter-aqjms) used in the example pulls in all necessary dependencies to use Spring JMS with Oracle AI Database Transactional Event Queues, requiring minimal configuration.
 
 For an in-depth walkthough of Spring JMS with Transactional Event Queues, see the following guide: [Use JMS for asynchronous messaging in Spring Boot](https://andersswanson.dev/2025/06/19/use-jms-for-asynchronous-messaging-in-spring-boot/).
 
@@ -25,7 +25,7 @@ For an in-depth walkthough of Spring JMS with Transactional Event Queues, see th
 
 ## Run the sample
 
-The sample provides an all-in-one test leveraging Testcontainers and Oracle Database to do the following: 
+The sample provides an all-in-one test leveraging Testcontainers and Oracle AI Database to do the following: 
 
 1. Start and configure a database server using Testcontainers
 2. Produce several messages to a Transactional Event Queue using an autowired JMSTemplate.

@@ -54,7 +54,7 @@ The setup includes pre-configured volumes for ORDS configuration and database in
 
 - **ORDS HTTP Endpoint**: `http://localhost:8888/`. Use `testuser/testpwd` as the login information for services like SQL Developer.
 - **MongoDB API**: Port 27017 (e.g., connect using MongoDB clients to `localhost:27017`).
-- **Oracle Database**: Connect via SQL*Plus or tools like SQLcl to `localhost:1555/freepdb1` with username `testuser` and password `testpwd`.
+- **Oracle AI Database**: Connect via SQL*Plus or tools like SQLcl to `localhost:1555/freepdb1` with username `testuser` and password `testpwd`.
 
 ## Configuration Details
 

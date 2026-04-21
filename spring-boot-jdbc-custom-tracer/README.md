@@ -10,7 +10,7 @@ tags:
 blog_post: "https://andersswanson.dev/2025/10/20/how-to-write-a-custom-tracer-for-oracle-database-jdbc/"
 ---
 
-# Spring Boot Oracle Database JDBC Custom Tracer
+# Spring Boot Oracle AI Database JDBC Custom Tracer
 
 This example application demonstrates how to implement a custom tracing implementation for the Oracle JDBC driver, using a Spring Boot app context and OpenTelemetry, as an alternative to the [OJDBC Trace Event Listener](https://github.com/oracle/ojdbc-extensions/blob/main/ojdbc-provider-opentelemetry/src/main/java/oracle/jdbc/provider/opentelemetry/OpenTelemetryTraceEventListener.java)
 
@@ -33,9 +33,9 @@ Why would you want to implement a custom tracer for the Oracle JDBC Driver? To a
 - Java 21+, Maven
 - Docker compatible environment with docker-compose
 
-## Setup Oracle Database Free and Grafana Tracing with docker-compose
+## Setup Oracle AI Database Free and Grafana Tracing with docker-compose
 
-Start the Oracle Database Free and Grafana LGTM containers with docker-compose:
+Start the Oracle AI Database Free and Grafana LGTM containers with docker-compose:
 
 ```bash
 docker-compose -d

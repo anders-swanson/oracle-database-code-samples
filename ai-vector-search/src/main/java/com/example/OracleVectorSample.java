@@ -15,7 +15,7 @@ import oracle.jdbc.OracleType;
 import oracle.sql.VECTOR;
 
 /**
- * This sample class provides a vector abstraction for Oracle Database 23ai.
+ * This sample class provides a vector abstraction for Oracle AI Database 26ai.
  * The sample class includes capabilities to create a table for embeddings, add embeddings, and execute similarity searches
  * against embeddings stored in the database.
  *
@@ -28,7 +28,7 @@ public class OracleVectorSample {
     private static final int BATCH_SIZE = 50;
 
     /**
-     * DataSource connected to Oracle Database 23ai.
+     * DataSource connected to Oracle AI Database 26ai.
      */
     private final DataSource dataSource;
     /**

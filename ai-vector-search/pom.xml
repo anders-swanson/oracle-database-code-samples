@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>ai-vector-search</artifactId>
-    <name>Sample :: Oracle Database Similarity Search</name>
+    <name>Sample :: Oracle AI Database Similarity Search</name>
     <description>Oracle Vector Search JDBC Implementation</description>
 
     <properties>

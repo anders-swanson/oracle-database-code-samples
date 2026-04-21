@@ -11,7 +11,7 @@
     <artifactId>spring-boot-jms-tracing</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>spring-boot-jms-tracing</name>
-    <description>Tracing with Spring JMS and Oracle Database Transactional Event Queues</description>
+    <description>Tracing with Spring JMS and Oracle AI Database Transactional Event Queues</description>
 
     <dependencies>
         <dependency>
@@ -34,7 +34,7 @@
             <artifactId>spring-boot-starter-opentelemetry</artifactId>
         </dependency>
 
-        <!-- Include if using Oracle Database Wallet -->
+        <!-- Include if using Oracle AI Database Wallet -->
 <!--        <dependency>-->
 <!--            <groupId>com.oracle.database.spring</groupId>-->
 <!--            <artifactId>oracle-spring-boot-starter-wallet</artifactId>-->

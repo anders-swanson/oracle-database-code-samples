@@ -52,7 +52,7 @@ public class JMSMultiConsumerTest {
 
     @BeforeAll
     static void setUp() throws Exception {
-        // Configure the Oracle Database container with the TxEventQ test user.
+        // Configure the Oracle AI Database container with the TxEventQ test user.
         oracleContainer.start();
         oracleContainer.copyFileToContainer(MountableFile.forClasspathResource("testuser-topic.sql"), "/tmp/init.sql");
         oracleContainer.execInContainer("sqlplus", "sys / as sysdba", "@/tmp/init.sql");

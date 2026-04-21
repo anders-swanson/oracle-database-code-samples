@@ -7,7 +7,7 @@ public class OKafkaProperties {
     public static Properties getLocalConnectionProps(String ojdbcPropertiesFile,
                                                      Integer port)  {
         Properties props = new Properties();
-        // We use the default PDB for Oracle Database 23ai.
+        // We use the default PDB for Oracle AI Database 26ai.
         props.put("oracle.service.name", "freepdb1");
         // The localhost connection uses PLAINTEXT.
         props.put("security.protocol", "PLAINTEXT");

@@ -11,7 +11,7 @@
     <artifactId>spring-boot-database-client-info</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>spring-boot-database-client-info</name>
-    <description>Add Oracle Database Client to Spring Boot connections</description>
+    <description>Add Oracle AI Database Client to Spring Boot connections</description>
 
     <dependencies>
         <dependency>
@@ -28,7 +28,7 @@
             <version>${oracle.starters.version}</version>
         </dependency>
 
-        <!-- Include if using Oracle Database Wallet -->
+        <!-- Include if using Oracle AI Database Wallet -->
 <!--        <dependency>-->
 <!--            <groupId>com.oracle.database.spring</groupId>-->
 <!--            <artifactId>oracle-spring-boot-starter-wallet</artifactId>-->

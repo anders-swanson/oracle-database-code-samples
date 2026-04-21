@@ -10,9 +10,9 @@ tags:
 blog_post: "https://andersswanson.dev/2025/11/03/unlocking-session-visibility-with-oracle-client-info/"
 ---
 
-# Spring Boot Oracle Database Client Info
+# Spring Boot Oracle AI Database Client Info
 
-This example application demonstrates how to add client information to Oracle Database connections in a Spring Boot application. It sets client identifiers on database connections for better monitoring and tracing. The application includes a simple REST API for managing books, which sets custom client info (MODULE and ACTION) on each connection used in the API operations.
+This example application demonstrates how to add client information to Oracle AI Database connections in a Spring Boot application. It sets client identifiers on database connections for better monitoring and tracing. The application includes a simple REST API for managing books, which sets custom client info (MODULE and ACTION) on each connection used in the API operations.
 
 #### Important Classes
 
@@ -22,7 +22,7 @@ This example application demonstrates how to add client information to Oracle Da
 
 ## References
 
-- [Oracle Database JDBC Documentation](https://docs.oracle.com/en/database/oracle/oracle-database/23/jjdbc/)
+- [Oracle AI Database JDBC Documentation](https://docs.oracle.com/en/database/oracle/oracle-database/23/jjdbc/)
 - [Spring Boot Data JDBC](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#data.sql.jdbc)
 - Related samples: [Spring Boot with OJDBC Tracing](../spring-boot-jdbc-tracing/README.md)
 
@@ -31,9 +31,9 @@ This example application demonstrates how to add client information to Oracle Da
 - Java 21+, Maven
 - Docker compatible environment with docker compose (note: use `docker compose` instead of `docker-compose` on newer systems)
 
-## Setup Oracle Database Free with docker compose
+## Setup Oracle AI Database Free with docker compose
 
-Start the Oracle Database Free container with docker compose:
+Start the Oracle AI Database Free container with docker compose:
 
 ```bash
 cd spring-boot-database-client-info
@@ -56,7 +56,7 @@ The application will run on `http://localhost:8080`.
 
 The integration test `src/test/java/com/example/clientinfo/ClientInfoApplicationTest.java` verifies that the client info settings are applied when interacting with the database.
 
-- Ensure Docker is running so Testcontainers can start Oracle Database Free.
+- Ensure Docker is running so Testcontainers can start Oracle AI Database Free.
 - From the `spring-boot-database-client-info` directory, run the module tests:
 
   ```bash

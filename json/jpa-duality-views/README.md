@@ -16,10 +16,10 @@ blog_post: "https://andersswanson.dev/2026/02/25/generate-json-relational-dualit
 
 This sample shows how to generate and interact with JSON Relational Duality Views (JDVs) directly from familiar Spring Data JPA entities. It demonstrates:
 
-- Annotating entities with `@JsonRelationalDualityView` to let Oracle Database generate bidirectional JSON documents over relational tables.
+- Annotating entities with `@JsonRelationalDualityView` to let Oracle AI Database generate bidirectional JSON documents over relational tables.
 - Using the Oracle JSON-B binding (`JSONB`) to persist and retrieve strongly typed entities via JDVs.
 - Bootstrapping schema and duality view lifecycle through Spring Boot configuration.
-- Exercising CRUD-style flows with integration tests powered by Testcontainers and Oracle Database Free.
+- Exercising CRUD-style flows with integration tests powered by Testcontainers and Oracle AI Database Free.
 
 ## Prerequisites
 
@@ -32,7 +32,7 @@ This sample shows how to generate and interact with JSON Relational Duality View
 - `src/main/java/com/example/jdv/movie`: JPA aggregate for the movie catalog (`Actor`, `Movie`, `Director`, and `DirectorBio`). Each entity illustrates different relationship mappings (one-to-many, many-to-many, and one-to-one) and how those translate into JDVs.
 - `src/main/java/com/example/jdv/controller/JDVController.java`: Minimal REST controller that persists entities through JDVs using `JSONB` to serialize to Oracle OSON payloads.
 - `src/main/resources/application.yaml`: Enables `spring.jpa.dv.ddl-auto=create-drop` so duality views are managed alongside the schema and configures the Oracle UCP datasource.
-- `src/test/java/com/example/jdv/ApplicationTest.java`: End-to-end test that boots Oracle Database Free inside a Testcontainers-managed container.
+- `src/test/java/com/example/jdv/ApplicationTest.java`: End-to-end test that boots Oracle AI Database Free inside a Testcontainers-managed container.
 
 ## Configure the Database Connection
 
@@ -101,7 +101,7 @@ This returns a nested JSON document that includes the movie metadata as well as 
 
 ## Run the Tests
 
-Pull the Oracle Database Free image ahead of time to prevent timeouts:
+Pull the Oracle AI Database Free image ahead of time to prevent timeouts:
 
 ```bash
 docker pull gvenzl/oracle-free:23.26.1-slim-faststart
@@ -113,7 +113,7 @@ Then execute:
 mvn json/jpa-duality-views test
 ```
 
-`ApplicationTest` spins up Oracle Database Free in a container, boots the Spring context, and exercises the controller methods to verify that JDV inserts and lookups operate bidirectionally.
+`ApplicationTest` spins up Oracle AI Database Free in a container, boots the Spring context, and exercises the controller methods to verify that JDV inserts and lookups operate bidirectionally.
 
 ## Key Concepts Illustrated
 

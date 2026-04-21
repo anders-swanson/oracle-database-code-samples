@@ -1,6 +1,6 @@
 ---
 name: spring-data-mongodb-oracle-api
-description: Spring Data MongoDB sample that uses the Oracle Database API for MongoDB through ORDS.
+description: Spring Data MongoDB sample that uses the Oracle AI Database API for MongoDB through ORDS.
 tags:
   - Database
   - Java
@@ -10,11 +10,11 @@ tags:
 blog_post: "https://andersswanson.dev/2025/06/17/spring-data-mongodb-with-oracle-databases-mongodb-api/"
 ---
 
-# Using Oracle Database's MongoDB API with Spring Data MongoDB
+# Using Oracle AI Database's MongoDB API with Spring Data MongoDB
 
 MongoDB is a popular, open-source NoSQL database management program that stores data in a flexible, JSON-like format, making it ideal for handling large, unstructured, or semi-structured data. 
 
-The [Oracle Database MongoDB API](https://docs.oracle.com/en/database/oracle/mongodb-api/) translates the MongoDB client requests into SQL statements that are run by Oracle Database, allowing developers to easily use MongoDB clients with Oracle Database. The Oracle Database MongoDB API works best with release 22.3 or later of [Oracle REST Data Services (ORDS)](https://www.oracle.com/database/technologies/appdev/rest.html)
+The [Oracle AI Database MongoDB API](https://docs.oracle.com/en/database/oracle/mongodb-api/) translates the MongoDB client requests into SQL statements that are run by Oracle AI Database, allowing developers to easily use MongoDB clients with Oracle AI Database. The Oracle AI Database MongoDB API works best with release 22.3 or later of [Oracle REST Data Services (ORDS)](https://www.oracle.com/database/technologies/appdev/rest.html)
 
 ### What's included in this module?
 
@@ -24,7 +24,7 @@ Example operations for CRUD, querying, and MongoTemplate are included - each bei
 
 ### How can I run the test?
 
-The test requires an Oracle Database instance with ORDS installed. The easiest way to do this is to configure an Oracle Autonomous Database for JSON processing, as described in the [Using Oracle Database API for MongoDB document](https://docs.oracle.com/en/cloud/paas/autonomous-database/serverless/adbsb/mongo-using-oracle-database-api-mongodb.html#GUID-8321D7A6-9DBD-44F8-8C16-1B1FBE66AC56)
+The test requires an Oracle AI Database instance with ORDS installed. The easiest way to do this is to configure an Oracle Autonomous Database for JSON processing, as described in the [Using Oracle AI Database API for MongoDB document](https://docs.oracle.com/en/cloud/paas/autonomous-database/serverless/adbsb/mongo-using-oracle-database-api-mongodb.html#GUID-8321D7A6-9DBD-44F8-8C16-1B1FBE66AC56)
 
 Once you have your database configured, set the following environment variables:
 - `DB_USERNAME` (the database username you'll use to connect)

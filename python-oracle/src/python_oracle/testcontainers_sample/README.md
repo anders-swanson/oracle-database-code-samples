@@ -9,17 +9,17 @@ tags:
 blog_post: "https://andersswanson.dev/2025/09/11/test-python-applications-with-oracle-database-free-using-testcontainers/"
 ---
 
-# Testcontainers with Oracle Database
+# Testcontainers with Oracle AI Database
 
-This module shows you how to run an Oracle Database Free container image using [Testcontainers (python)](https://github.com/testcontainers/testcontainers-python).
+This module shows you how to run an Oracle AI Database Free container image using [Testcontainers (python)](https://github.com/testcontainers/testcontainers-python).
 
-The [OracleDatabaseContainer](oracle_database_container.py) class implements a Testcontainers database container for Oracle Database Free, using the `gvenzl/oracle-free:23.26.1-slim-faststart` image by default.
+The [OracleDatabaseContainer](oracle_database_container.py) class implements a Testcontainers database container for Oracle AI Database Free, using the `gvenzl/oracle-free:23.26.1-slim-faststart` image by default.
 
-The [sample program](testcontainers_sample.py) uses spins up an Oracle Database container, runs a query, and exits.
+The [sample program](testcontainers_sample.py) uses spins up an Oracle AI Database container, runs a query, and exits.
 
 The container exists ephemerally for the runtime of the program, and is cleaned up after.
 
-You can use these scripts to run Oracle Database Free containers in your programs and tests.
+You can use these scripts to run Oracle AI Database Free containers in your programs and tests.
 
 ### Run the program
 

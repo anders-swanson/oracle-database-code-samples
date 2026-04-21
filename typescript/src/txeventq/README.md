@@ -1,6 +1,6 @@
 ---
-name: typescript/src/testcontainers
-description: TypeScript helpers for starting Oracle AI Database Free with Testcontainers.
+name: typescript/src/txeventq
+description: TypeScript sample for producing and consuming TxEventQ messages with node-oracledb.
 tags:
   - Database
   - NodeJS

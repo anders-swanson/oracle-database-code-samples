@@ -1,6 +1,6 @@
-## Reusable Oracle Database Container(s)
+## Reusable Oracle AI Database Container(s)
 
-This package runs two database test classes against the same Oracle Database container by utilizing [Testcontainers reuse](https://java.testcontainers.org/features/reuse/). Reusuable containers are advantageous for faster test startup time, at the cost of potential cross-contamination of test data between disparate suites.
+This package runs two database test classes against the same Oracle AI Database container by utilizing [Testcontainers reuse](https://java.testcontainers.org/features/reuse/). Reusuable containers are advantageous for faster test startup time, at the cost of potential cross-contamination of test data between disparate suites.
 
 The ReusableDatabaseTest statically configures and starts a reusable database container, which is shared by an child test classes.
 

@@ -4,7 +4,7 @@ alter session set container = freepdb1;
 create user testuser identified by testpwd quota unlimited on users;
 grant connect, resource to testuser;
 
--- Grants for the Kafka Java Client for Oracle Database Transactional Event Queues
+-- Grants for the Kafka Java Client for Oracle AI Database Transactional Event Queues
 grant aq_user_role to testuser;
 grant execute on dbms_aq to  testuser;
 grant execute on dbms_aqadm to testuser;

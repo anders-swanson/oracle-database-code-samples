@@ -21,7 +21,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.springframework.stereotype.Component;
 
 /**
- * This sample class provides a vector abstraction for Oracle Database 23ai.
+ * This sample class provides a vector abstraction for Oracle AI Database 26ai.
  * The sample class includes capabilities to create a table for embeddings, add embeddings, and execute similarity searches
  * against embeddings stored in the database.
  *

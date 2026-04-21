@@ -26,7 +26,7 @@ This sample performs create, read, update, and delete (CRUD) operations against 
 ## Prerequisites
 - Java 21+
 - Maven 3.9+
-- Access to an Oracle Database Free instance (local container or remote)
+- Access to an Oracle AI Database Free instance (local container or remote)
 
 ## Provision schema for the JDV
 
@@ -59,7 +59,7 @@ docker pull gvenzl/oracle-free:23.26.1-slim-faststart
 mvn test
 ```
 
-`JDVCrudTest` launches Oracle Database Free inside a container, executes `init.sql`, and invokes `Application.main(...)`. The test performs the same CRUD workflow end-to-end—insert, read, update, and delete—against the `orders_dv` duality view to verify the sample is working.
+`JDVCrudTest` launches Oracle AI Database Free inside a container, executes `init.sql`, and invokes `Application.main(...)`. The test performs the same CRUD workflow end-to-end—insert, read, update, and delete—against the `orders_dv` duality view to verify the sample is working.
 
 ## Related resources
 - [JSON Relational Duality Views overview](https://docs.oracle.com/en/database/oracle/oracle-database/26/jsnvu/overview-json-relational-duality-views.html)

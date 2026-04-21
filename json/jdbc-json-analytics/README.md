@@ -42,7 +42,7 @@ docker pull gvenzl/oracle-free:23.26.1-slim-faststart
 mvn test
 ```
 
-`OrderAnalyticsSampleTest` provisions Oracle Database Free in a container, loads the schema, executes the analytics flow, and cleans up automatically.
+`OrderAnalyticsSampleTest` provisions Oracle AI Database Free in a container, loads the schema, executes the analytics flow, and cleans up automatically.
 
 ## Learn more
 - [SQL/JSON Functions](https://docs.oracle.com/en/database/oracle/oracle-database/26/sqlrf/SQL-JSON.html)

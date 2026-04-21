@@ -9,9 +9,9 @@ tags:
 blog_post: "https://andersswanson.dev/2025/06/23/whats-a-vector-database/"
 ---
 
-# Similarity Search using Oracle Database 26ai
+# Similarity Search using Oracle AI Database 26ai
 
-This code sample demonstrates how to use Oracle Database 26ai as a vector store for similarity search on text embeddings.
+This code sample demonstrates how to use Oracle AI Database 26ai as a vector store for similarity search on text embeddings.
 
 The [OracleVectorSample](src/main/java/com/example/OracleVectorSample.java) implements a vector store abstraction that supports inserting embeddings into the database, and querying embeddings.
 

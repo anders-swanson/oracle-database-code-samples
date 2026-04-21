@@ -15,7 +15,7 @@ public class AuthenticationExample {
     // For PLAINTEXT authentication, provide the HOSTNAME:PORT as the bootstrap.servers property.
     private static final String bootstrapServers = System.getenv("BOOTSTRAP_SERVERS");
 
-    // The TNS Admin alias / Oracle Database Service name.
+    // The TNS Admin alias / Oracle AI Database Service name.
     private static final String tnsAdmin = System.getenv("TNS_ADMIN");
 
     // The directory containing the database wallet. For PLAINTEXT, this directory need only
@@ -28,11 +28,11 @@ public class AuthenticationExample {
 
         // oracle.service.name is a custom property to configure the Database service name.
         props.put("oracle.service.name", tnsAdmin);
-        // oracle.net.tns_admin is a custom property to configure the directory containing Oracle Database connection files.
+        // oracle.net.tns_admin is a custom property to configure the directory containing Oracle AI Database connection files.
         // If you are using mTLS authentication, client certificates must be present in this directory.
         props.put("oracle.net.tns_admin", walletDir);
-        // security.protocol is a standard Kafka property, set to PLAINTEXT or SSL for Oracle Database.
-        // (SASL is not supported with Oracle Database).
+        // security.protocol is a standard Kafka property, set to PLAINTEXT or SSL for Oracle AI Database.
+        // (SASL is not supported with Oracle AI Database).
         props.put("security.protocol", securityProtocol);
         if (securityProtocol.equals("SSL")) {
             // For SSL authentication, pass the TNS alias (such as "mydb_tp") to be used from the tnsnames.ora file
@@ -44,14 +44,14 @@ public class AuthenticationExample {
             props.put("bootstrap.servers", bootstrapServers);
         }
 
-        // Using our connection properties, let's create a Kafka admin client connected to Oracle Database.
+        // Using our connection properties, let's create a Kafka admin client connected to Oracle AI Database.
         // The fully qualified types are provided for illustrative purposes:
         // The org.oracle.okafka.clients.admin.AdminClient.create method creates a KafkaAdminClient for
-        // Oracle Database implementing the org.apache.kafka.clients.admin.Admin interface.
+        // Oracle AI Database implementing the org.apache.kafka.clients.admin.Admin interface.
         try (org.apache.kafka.clients.admin.Admin admin =
                      org.oracle.okafka.clients.admin.AdminClient.create(props)) {
 
-            // Note that the replication factor is 0. Replication of topic data in Oracle Database is handled
+            // Note that the replication factor is 0. Replication of topic data in Oracle AI Database is handled
             // by external database controls, not the message broker.
             NewTopic topic = new NewTopic("authentication_example", 5, (short) 0);
             // Create the topic using standard kafka-clients APIs.

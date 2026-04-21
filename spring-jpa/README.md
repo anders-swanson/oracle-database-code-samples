@@ -10,11 +10,11 @@ tags:
 blog_post: "https://andersswanson.dev/2025/06/10/learn-spring-jpa-by-example-with-oracle-database-free/"
 ---
 
-# Learn Spring JPA By Example with Oracle Database Free
+# Learn Spring JPA By Example with Oracle AI Database Free
 
 Spring JPA (Java Persistence API) provides an abstraction layer over JPA using ORM (Object Relational Mapping). Spring JPA simplifies database interactions by abstracting common operations to simple Java objects and annotations.
 
-This module includes idiomatic examples of [Spring JPA](https://spring.io/projects/spring-data-jpa) with [Oracle Database Free](https://andersswanson.dev/2025/05/22/oracle-database-for-free/).
+This module includes idiomatic examples of [Spring JPA](https://spring.io/projects/spring-data-jpa) with [Oracle AI Database Free](https://andersswanson.dev/2025/05/22/oracle-database-for-free/).
 
 ### Basic JPA Entity Example
 

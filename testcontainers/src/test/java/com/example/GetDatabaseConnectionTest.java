@@ -14,7 +14,7 @@ import org.testcontainers.oracle.OracleContainer;
 @Testcontainers
 public class GetDatabaseConnectionTest {
     /**
-     * Use a containerized Oracle Database instance for testing.
+     * Use a containerized Oracle AI Database instance for testing.
      */
     static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.1-slim-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))

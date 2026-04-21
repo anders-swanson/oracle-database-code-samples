@@ -49,7 +49,7 @@ public class OracleMongoDBTest {
 
     @Test
     void basicCRUDOperations() {
-        // Simple CRUD repository actions work with Oracle Database.
+        // Simple CRUD repository actions work with Oracle AI Database.
         // Create a new student
         Student saved = studentRepository.save(aliceSmith);
 
@@ -73,7 +73,7 @@ public class OracleMongoDBTest {
 
     @Test
     void queryOperations() {
-        // Repository query options also work with Oracle Database.
+        // Repository query options also work with Oracle AI Database.
         studentRepository.save(aliceSmith);
         studentRepository.save(johnDoe);
 
@@ -98,7 +98,7 @@ public class OracleMongoDBTest {
 
     @Test
     void mongoTemplateOperations() {
-        // You may also use MongoTemplate to work with documents in Oracle Database.
+        // You may also use MongoTemplate to work with documents in Oracle AI Database.
         mongoTemplate.save(aliceSmith);
         mongoTemplate.save(johnDoe);
 

@@ -11,7 +11,7 @@
     <artifactId>jms-producer-consumer</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>jms-producer-consumer</name>
-    <description>Example implementation of JMS Producer-Consumer with Oracle Database Transactional Event Queues</description>
+    <description>Example implementation of JMS Producer-Consumer with Oracle AI Database Transactional Event Queues</description>
 
     <dependencies>
         <dependency>

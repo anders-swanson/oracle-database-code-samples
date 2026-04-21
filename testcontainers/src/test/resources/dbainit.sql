@@ -1,4 +1,4 @@
--- Set as appropriate for your database. "freepdb1" is the default PDB in Oracle Database Free
+-- Set as appropriate for your database. "freepdb1" is the default PDB in Oracle AI Database Free
 alter session set container = freepdb1;
 
 -- Configure testuser with the necessary privileges to use Transactional Event Queues.

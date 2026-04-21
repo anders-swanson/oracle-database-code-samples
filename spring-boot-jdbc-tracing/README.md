@@ -10,9 +10,9 @@ tags:
 blog_post: "https://andersswanson.dev/2025/10/10/oracle-jdbc-tracing-with-spring-boot-opentelemetry/"
 ---
 
-# Spring Boot Oracle Database JDBC Tracing
+# Spring Boot Oracle AI Database JDBC Tracing
 
-This example application demonstrates how to instrument Oracle Database JDBC connections from a Spring Boot app context with OpenTelemetry.
+This example application demonstrates how to instrument Oracle AI Database JDBC connections from a Spring Boot app context with OpenTelemetry.
 
 ## References
 
@@ -24,9 +24,9 @@ This example application demonstrates how to instrument Oracle Database JDBC con
 - Java 21+, Maven
 - Docker compatible environment with docker-compose
 
-## Setup Oracle Database Free and Grafana LGTM with docker-compose
+## Setup Oracle AI Database Free and Grafana LGTM with docker-compose
 
-Start the Oracle Database Free and Zipkin containers with docker-compose:
+Start the Oracle AI Database Free and Zipkin containers with docker-compose:
 
 ```bash
 docker-compose -d

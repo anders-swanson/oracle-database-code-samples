@@ -18,7 +18,7 @@ public class ApplicationTest {
 
     @BeforeAll
     static void applyGrants() throws Exception {
-        // Configure the Oracle Database container with the TxEventQ test user for OKafka
+        // Configure the Oracle AI Database container with the TxEventQ test user for OKafka
         // see src/test/resources/init.sql
         oracleContainer.start();
         oracleContainer.copyFileToContainer(MountableFile.forClasspathResource("init.sql"), "/tmp/init.sql");

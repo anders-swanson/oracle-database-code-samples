@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class SpringDatabaseResourceTest {
     /**
-     * Use a containerized Oracle Database instance for testing.
+     * Use a containerized Oracle AI Database instance for testing.
      */
     static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.1-slim-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
@@ -40,7 +40,7 @@ public class SpringDatabaseResourceTest {
         System.setProperty("USERNAME", oracleContainer.getUsername());
         System.setProperty("PASSWORD", oracleContainer.getPassword());
 
-        // Configure a datasource for the Oracle Database container.
+        // Configure a datasource for the Oracle AI Database container.
         OracleDataSource dataSource = new OracleDataSource();
         dataSource.setUser(oracleContainer.getUsername());
         dataSource.setPassword(oracleContainer.getPassword());

@@ -16,7 +16,7 @@ For a detailed walkthrough, see [Fire-and-Forget: The Power of Sessionless Trans
 
 ### Running Example
 
-To run the example, you'll need an Oracle Database instance. The example is configured to use a local database container, or you may alter it to use the database instance of your choice. See my article [Oracle Database for Free?](https://andersswanson.dev/2025/05/22/oracle-database-for-free/) for a list of developer-friendly Oracle Database options.
+To run the example, you'll need an Oracle AI Database instance. The example is configured to use a local database container, or you may alter it to use the database instance of your choice. See my article [Oracle AI Database for Free?](https://andersswanson.dev/2025/05/22/oracle-database-for-free/) for a list of developer-friendly Oracle AI Database options.
 
 Prerequisites:
 - Java 21

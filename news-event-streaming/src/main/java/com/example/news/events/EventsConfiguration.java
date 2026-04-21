@@ -17,7 +17,7 @@ public class EventsConfiguration {
     @Value("${okafka.bootstrapServers:localhost:1521}")
     private String bootstrapServers;
 
-    // We use the default 23ai Free service name
+    // We use the default 26ai Free service name
     @Value("${okafka.serviceName:freepdb1}")
     private String serviceName;
 
@@ -37,7 +37,7 @@ public class EventsConfiguration {
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         // Note the use of the org.oracle.okafka.clients.producer.KafkaProducer class
-        // for producing records to Oracle Database Transactional Event Queues.
+        // for producing records to Oracle AI Database Transactional Event Queues.
         KafkaProducer<String, String> stringProducer = new KafkaProducer<>(props);
         return stringProducer;
     }
@@ -54,7 +54,7 @@ public class EventsConfiguration {
         props.put("oracle.service.name", serviceName);
         props.put("security.protocol", securityProtocol);
         props.put("bootstrap.servers", bootstrapServers);
-        // If using Oracle Database wallet, pass wallet directory
+        // If using Oracle AI Database wallet, pass wallet directory
         props.put("oracle.net.tns_admin", ojdbcPath);
         return props;
     }

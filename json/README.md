@@ -6,7 +6,7 @@ Samples in this directory demonstrate how Oracle AI Database treats JSON as a fi
 
 | Sample                                                 | Description                                                                                                                                                                   |
 |--------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [jpa-duality-views](./jpa-duality-views/README.md)     | Generate JSON Relational Duality Views from Spring Data JPA entities, persist JSONB payloads, and exercise full CRUD flows backed by Oracle Database Free and Testcontainers. |
+| [jpa-duality-views](./jpa-duality-views/README.md)     | Generate JSON Relational Duality Views from Spring Data JPA entities, persist JSONB payloads, and exercise full CRUD flows backed by Oracle AI Database Free and Testcontainers. |
 | [crud-duality-views](./crud-duality-views/README.md)   | Run CRUD operations against a JSON Relational Duality View using Oracle JDBC, OSON serialization, and Testcontainers-powered integration tests.                               |
 | [jdbc-json-basic](./jdbc-json-basic/README.md)         | Work with the Oracle JSON data type via JDBC: bind OracleJsonObject payloads, query with SQL/JSON operators, and validate the flow with Testcontainers.                       |
 | [jdbc-json-analytics](./jdbc-json-analytics/README.md) | Perform advanced SQL/JSON analytics with JSON_TABLE, JSON_EXISTS, and JSON_ARRAYAGG over nested order documents using plain JDBC.                                             |

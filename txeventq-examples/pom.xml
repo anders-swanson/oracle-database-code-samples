@@ -11,7 +11,7 @@
 
     <artifactId>txeventq-examples</artifactId>
     <name>txeventq-examples</name>
-    <description>Collected examples using Oracle Database Transactional Event Queues</description>
+    <description>Collected examples using Oracle AI Database Transactional Event Queues</description>
     <version>1.0.0-SNAPSHOT</version>
 
     <dependencies>

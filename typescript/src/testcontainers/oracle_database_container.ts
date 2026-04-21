@@ -2,7 +2,7 @@ import {GenericContainer, type StartedTestContainer, Wait} from "testcontainers"
 import * as OracleDB from "oracledb";
 import type {Connection} from "oracledb";
 
-// Implements an Oracle Database Free container for Testcontainers.
+// Implements an Oracle AI Database Free container for Testcontainers.
 // Run the sample using "npm run testcontainers-example"
 export class OracleDatabaseContainer {
     private container?: StartedTestContainer | undefined;

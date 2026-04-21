@@ -17,7 +17,7 @@ This sample demonstrates how to interact with the Oracle JSON data type using pl
 ## Highlights
 - Bind JSON payloads as `VARCHAR2`/SQL JSON and hydrate them back into Jakarta JSON `JsonObject` instances.
 - Filter documents by attributes with `json_value` and apply in-place updates via `json_transform`.
-- Exercise the complete insert/read/update/delete lifecycle against a JSON column backed by Oracle Database Free.
+- Exercise the complete insert/read/update/delete lifecycle against a JSON column backed by Oracle AI Database Free.
 - Validate the flow with a Testcontainers-powered integration test that provisions a fresh database for each run.
 
 ## Prerequisites
@@ -42,7 +42,7 @@ docker pull gvenzl/oracle-free:23.26.1-slim-faststart
 mvn test
 ```
 
-`JsonAttributesSampleTest` starts Oracle Database Free in a container, runs the CRUD scenario, and tears down the database afterwards.
+`JsonAttributesSampleTest` starts Oracle AI Database Free in a container, runs the CRUD scenario, and tears down the database afterwards.
 
 ## Learn more
 - [JSON Data Type in Oracle](https://docs.oracle.com/en/database/oracle/oracle-database/26/adjsn/json-data-type.html)

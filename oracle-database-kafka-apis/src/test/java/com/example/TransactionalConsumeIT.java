@@ -26,7 +26,7 @@ import org.testcontainers.utility.MountableFile;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TransactionalConsumeIT {
-    // Oracle Databse 23ai Free container image
+    // Oracle Databse 26ai Free container image
     private static final String oracleImage = "gvenzl/oracle-free:23.26.1-slim-faststart";
     private static final String testUser = "testuser";
     private static final String testPassword = "Welcome123#";
@@ -36,12 +36,12 @@ public class TransactionalConsumeIT {
 
     @BeforeAll
     static void setUp() throws Exception {
-        // Configure the Oracle Database container with the TxEventQ test user.
+        // Configure the Oracle AI Database container with the TxEventQ test user.
         oracleContainer.start();
         oracleContainer.copyFileToContainer(MountableFile.forClasspathResource("okafka.sql"), "/tmp/init.sql");
         oracleContainer.execInContainer("sqlplus", "sys / as sysdba", "@/tmp/init.sql");
 
-        // Configure a datasource for the Oracle Database container.
+        // Configure a datasource for the Oracle AI Database container.
         // The datasource is used to demonstrate TxEventQ table duality.
         dataSource = new OracleDataSource();
         dataSource.setUser(testUser);

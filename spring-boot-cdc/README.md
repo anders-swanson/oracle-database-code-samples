@@ -12,11 +12,11 @@ blog_post: "https://andersswanson.dev/2025/06/26/event-driven-cdc-all-within-the
 
 # Spring Boot CDC with Transactional Event Queues (TxEventQ) (JMS) Example
 
-This example demonstrates how to implement event-based CDC in Spring Boot  using [Spring JMS](https://spring.io/guides/gs/messaging-jms) and [Oracle Database Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/26/adque/aq-introduction.html). In the example app, a service inserts database records, and a Spring JMS consumer reacts to each insert event.
+This example demonstrates how to implement event-based CDC in Spring Boot  using [Spring JMS](https://spring.io/guides/gs/messaging-jms) and [Oracle AI Database Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/26/adque/aq-introduction.html). In the example app, a service inserts database records, and a Spring JMS consumer reacts to each insert event.
 
-If you're unfamiliar with Transactional Event Queues, it is a high-throughput, distributed asynchronous messaging system built into Oracle Database. The integration of Transactional Event Queues with Spring JMS provides a simple interface for rapid development of messaging applications.
+If you're unfamiliar with Transactional Event Queues, it is a high-throughput, distributed asynchronous messaging system built into Oracle AI Database. The integration of Transactional Event Queues with Spring JMS provides a simple interface for rapid development of messaging applications.
 
-The [Spring Boot Starter for AQ/JMS](https://github.com/oracle/spring-cloud-oracle/tree/main/database/starters/oracle-spring-boot-starter-aqjms) used in the example pulls in all necessary dependencies to use Spring JMS with Oracle Database Transactional Event Queues, requiring minimal configuration.
+The [Spring Boot Starter for AQ/JMS](https://github.com/oracle/spring-cloud-oracle/tree/main/database/starters/oracle-spring-boot-starter-aqjms) used in the example pulls in all necessary dependencies to use Spring JMS with Oracle AI Database Transactional Event Queues, requiring minimal configuration.
 
 ## Prerequisites
 
@@ -25,7 +25,7 @@ The [Spring Boot Starter for AQ/JMS](https://github.com/oracle/spring-cloud-orac
 
 ## Run the sample
 
-The sample provides an all-in-one test leveraging Testcontainers and Oracle Database to do the following: 
+The sample provides an all-in-one test leveraging Testcontainers and Oracle AI Database to do the following: 
 
 1. Start and configure a database server using Testcontainers
 2. Create a table, queue, and trigger in the database. The trigger will publish ticket-created events using JMS.

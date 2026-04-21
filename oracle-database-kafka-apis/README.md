@@ -10,16 +10,16 @@ tags:
 blog_post: "https://andersswanson.dev/2025/07/09/authenticate-to-your-oracle-database-like-its-a-kafka-cluster/"
 ---
 
-# Oracle Database Kafka APIs
+# Oracle AI Database Kafka APIs
 
-The following articles describe using Kafka Java APIs with Oracle Database Transactional Event Queues:
+The following articles describe using Kafka Java APIs with Oracle AI Database Transactional Event Queues:
 
-- [Transactional Messaging with the Kafka Java Client for Oracle Database Transactional Event Queues](https://medium.com/@anders.swanson.93/using-transactional-kafka-apis-with-oracle-database-70f58598a176)
-- [Produce and consume messages with the Kafka Java Client for Oracle Database Transactional Event Queues](https://medium.com/@anders.swanson.93/seamlessly-stream-data-with-kafka-apis-for-oracle-79db9ce02dc0)
+- [Transactional Messaging with the Kafka Java Client for Oracle AI Database Transactional Event Queues](https://medium.com/@anders.swanson.93/using-transactional-kafka-apis-with-oracle-database-70f58598a176)
+- [Produce and consume messages with the Kafka Java Client for Oracle AI Database Transactional Event Queues](https://medium.com/@anders.swanson.93/seamlessly-stream-data-with-kafka-apis-for-oracle-79db9ce02dc0)
 
-### Running the Oracle Database Kafka API tests
+### Running the Oracle AI Database Kafka API tests
 
-The tests in this package demonstrate using the Kafka Java Client for Oracle Database Transactional Event Queues to produce and consume messages. The tests use a containerized Oracle Database instance with Testcontainers to run locally on a Docker-compatible environment with Java 21.
+The tests in this package demonstrate using the Kafka Java Client for Oracle AI Database Transactional Event Queues to produce and consume messages. The tests use a containerized Oracle AI Database instance with Testcontainers to run locally on a Docker-compatible environment with Java 21.
 
 Prerequisites:
 - Java 21

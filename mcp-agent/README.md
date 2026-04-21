@@ -9,9 +9,9 @@ tags:
 blog_post: "https://andersswanson.dev/2025/12/02/natural-language-sql-with-oracle-mcp-and-langchain4j/"
 ---
 
-# Oracle Database MCP Agent Example
+# Oracle AI Database MCP Agent Example
 
-This project demonstrates a natural language SQL agent using Langchain4j, integrated with Oracle Database via SQLcl MCP (Model Context Protocol) for executing queries.
+This project demonstrates a natural language SQL agent using Langchain4j, integrated with Oracle AI Database via SQLcl MCP (Model Context Protocol) for executing queries.
 
 ## Prerequisites
 
@@ -22,8 +22,8 @@ This project demonstrates a natural language SQL agent using Langchain4j, integr
 
 ## Setup
 
-### 1. Start the Oracle Database Free container
-Use Docker Compose to start the Oracle Database Free container. This will also run the initialization script (`oracle/grant_permissions.sql`) to create the `testuser` schema, grant permissions, create sample tables (players, games, game_sessions), and insert sample data.
+### 1. Start the Oracle AI Database Free container
+Use Docker Compose to start the Oracle AI Database Free container. This will also run the initialization script (`oracle/grant_permissions.sql`) to create the `testuser` schema, grant permissions, create sample tables (players, games, game_sessions), and insert sample data.
 
 ```bash
 docker compose up -d
@@ -76,7 +76,7 @@ This is handled by the `SQLclMCPToolProvider` class, which configures an MCP cli
 ## General Agent Flow
 1. **User Input**: Enter a natural language query in the terminal.
 2. **Query Interpretation**: The `SQLclMCPAgent` (powered by Langchain4j) analyzes the query and generates valid Oracle SQL.
-3. **SQL Execution**: The agent uses the MCP tool to send the SQL to SQLcl (running in MCP mode), which executes it against the connected Oracle Database.
+3. **SQL Execution**: The agent uses the MCP tool to send the SQL to SQLcl (running in MCP mode), which executes it against the connected Oracle AI Database.
 4. **Result Processing**: Results are retrieved and displayed in a human-readable format.
 
 ## Troubleshooting

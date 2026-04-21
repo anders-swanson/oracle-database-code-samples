@@ -1,6 +1,6 @@
 # Oracle AI Database Samples
 
-> You may also browse [all samples Here](https://anders-swanson.github.io/oracle-database-code-samples/)
+> You may also browse all samples here: https://anders-swanson.github.io/oracle-database-code-samples/
 
 New to Oracle AI Database? [Start Here](https://andersswanson.dev/2026/02/23/brand-new-to-oracle-ai-database-start-here/)
 

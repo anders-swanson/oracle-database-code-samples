@@ -21,7 +21,13 @@ const { sample } = vi.hoisted(() => ({
     blogPost: '',
     readmeExcerpt: 'Example sample.',
     highlights: ['The provisioning script at [create-pdbs.sql](./src/test/resources/create-pdbs.sql)'],
-    featured: false
+    featured: false,
+    urlPath: '/samples/database-per-service-example--sample/',
+    canonicalUrl:
+      'https://anders-swanson.github.io/oracle-database-code-samples/samples/database-per-service-example--sample/',
+    metaTitle: 'Database Per Service Sample | Oracle AI Database Code Samples',
+    metaDescription: 'Example sample.',
+    ogImageUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg'
   } satisfies SampleRecord
 }));
 

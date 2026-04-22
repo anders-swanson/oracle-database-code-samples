@@ -15,6 +15,11 @@ export interface SampleRecord {
   readmeExcerpt: string;
   highlights: string[];
   featured: boolean;
+  urlPath: string;
+  canonicalUrl: string;
+  metaTitle: string;
+  metaDescription: string;
+  ogImageUrl: string;
 }
 
 export interface CatalogFilters {

@@ -15,8 +15,12 @@ const related = computed(() => (sample.value ? findRelatedSamples(sample.value, 
   <AppShell compact>
     <div v-if="sample" class="detail-page">
       <section class="detail-hero">
-        <RouterLink class="detail-hero__back" to="/">← Back to catalog</RouterLink>
         <div class="detail-hero__frame">
+          <nav class="detail-breadcrumbs" aria-label="Breadcrumb">
+            <RouterLink to="/">Catalog</RouterLink>
+            <span>/</span>
+            <span>{{ sample.title }}</span>
+          </nav>
           <div class="detail-hero__topline">
             <span>{{ sample.language }}</span>
             <span>{{ sample.parentCollection }}</span>
@@ -79,6 +83,10 @@ const related = computed(() => (sample.value ? findRelatedSamples(sample.value, 
               <div>
                 <dt>Collection</dt>
                 <dd>{{ sample.parentCollection }}</dd>
+              </div>
+              <div>
+                <dt>Language</dt>
+                <dd>{{ sample.language }}</dd>
               </div>
               <div>
                 <dt>Tags</dt>

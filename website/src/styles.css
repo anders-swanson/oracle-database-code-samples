@@ -739,6 +739,23 @@ code {
   max-width: 54rem;
 }
 
+.detail-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.detail-breadcrumbs a {
+  color: var(--accent);
+}
+
+.detail-breadcrumbs a:hover {
+  color: #bfefff;
+}
+
 .detail-layout {
   grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.9fr);
 }

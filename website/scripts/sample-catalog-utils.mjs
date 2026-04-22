@@ -1,5 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {
+  buildCanonicalUrl,
+  buildSampleMetaDescription,
+  buildSampleMetaTitle,
+  buildSamplePath,
+  DEFAULT_OG_IMAGE_URL
+} from './seo-utils.mjs';
 
 const REPO_BLOB_BASE = 'https://github.com/anders-swanson/oracle-database-code-samples/blob/main';
 const REPO_TREE_BASE = 'https://github.com/anders-swanson/oracle-database-code-samples/tree/main';
@@ -350,6 +357,12 @@ export function deriveSampleRecord(parsed) {
   const language = detectLanguage(relativeDirectory, metadata, `${description} ${body}`);
   const tags = cleanTags(baseTags, language);
   const features = cleanFeatures(detectFeatures(relativeDirectory, description, tags));
+  const urlPath = buildSamplePath(buildId(relativeDirectory));
+  const metaDescription = buildSampleMetaDescription({
+    title,
+    description,
+    readmeExcerpt: excerpt
+  });
 
   return {
     id: buildId(relativeDirectory),
@@ -367,6 +380,11 @@ export function deriveSampleRecord(parsed) {
     blogPost: metadata.blog_post?.trim() || '',
     readmeExcerpt: excerpt || description,
     highlights,
-    featured: FEATURED_PATHS.has(relativeDirectory)
+    featured: FEATURED_PATHS.has(relativeDirectory),
+    urlPath,
+    canonicalUrl: buildCanonicalUrl(urlPath),
+    metaTitle: buildSampleMetaTitle(title),
+    metaDescription,
+    ogImageUrl: DEFAULT_OG_IMAGE_URL
   };
 }

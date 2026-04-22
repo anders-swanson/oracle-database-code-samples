@@ -1,9 +1,9 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import CatalogPage from './pages/CatalogPage.vue';
 import SampleDetailPage from './pages/SampleDetailPage.vue';
 
 export const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
@@ -11,7 +11,7 @@ export const router = createRouter({
       component: CatalogPage
     },
     {
-      path: '/samples/:id',
+      path: '/samples/:id/',
       name: 'sample-detail',
       component: SampleDetailPage
     }

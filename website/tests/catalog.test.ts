@@ -19,7 +19,12 @@ const samples: SampleRecord[] = [
     blogPost: '',
     readmeExcerpt: 'Learn vector search.',
     highlights: [],
-    featured: true
+    featured: true,
+    urlPath: '/samples/vector/',
+    canonicalUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/samples/vector/',
+    metaTitle: 'Vector Sample | Oracle AI Database Code Samples',
+    metaDescription: 'Vector search with JDBC',
+    ogImageUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg'
   },
   {
     id: 'graph',
@@ -37,7 +42,12 @@ const samples: SampleRecord[] = [
     blogPost: '',
     readmeExcerpt: 'Learn property graph.',
     highlights: [],
-    featured: false
+    featured: false,
+    urlPath: '/samples/graph/',
+    canonicalUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/samples/graph/',
+    metaTitle: 'Graph Sample | Oracle AI Database Code Samples',
+    metaDescription: 'Property graph over JDBC',
+    ogImageUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg'
   }
 ];
 

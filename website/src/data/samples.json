@@ -25,7 +25,12 @@
       "Java 21+",
       "A docker environment to support TestContainers"
     ],
-    "featured": true
+    "featured": true,
+    "urlPath": "/samples/ai-vector-search/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/ai-vector-search/",
+    "metaTitle": "Similarity Search using Oracle AI Database 26ai | Oracle AI Database Code Samples",
+    "metaDescription": "Similarity search sample that stores embeddings in Oracle AI Database and queries them with vector search.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "jdbc-hybrid-search",
@@ -57,7 +62,12 @@
       "a VECTOR embedding column for semantic similarity",
       "relational columns such as category and price"
     ],
-    "featured": true
+    "featured": true,
+    "urlPath": "/samples/jdbc-hybrid-search/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-hybrid-search/",
+    "metaTitle": "JDBC Hybrid Search | Oracle AI Database Code Samples",
+    "metaDescription": "Plain JDBC hybrid search sample that combines Oracle Text, vectors, JSON, and relational filters.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "jdbc-property-graph",
@@ -85,7 +95,12 @@
       "SOCIAL_GRAPH is queried with SQL GRAPH_TABLE",
       "create relational tables for a graph-shaped data model"
     ],
-    "featured": true
+    "featured": true,
+    "urlPath": "/samples/jdbc-property-graph/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-property-graph/",
+    "metaTitle": "JDBC Property Graph | Oracle AI Database Code Samples",
+    "metaDescription": "Plain JDBC sample for building and querying a SQL property graph in Oracle AI Database.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "jdbc-spatial-example",
@@ -113,7 +128,12 @@
       "insert point and polygon geometries with JGeometry.storeJS",
       "read geometries back with JGeometry.loadJS"
     ],
-    "featured": true
+    "featured": true,
+    "urlPath": "/samples/jdbc-spatial-example/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-spatial-example/",
+    "metaTitle": "JDBC Spatial Example | Oracle AI Database Code Samples",
+    "metaDescription": "Plain JDBC sample for creating, indexing, and querying spatial geometries in Oracle AI Database.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "json--jpa-duality-views",
@@ -148,7 +168,12 @@
       "Bootstrapping schema and duality view lifecycle through Spring Boot configuration.",
       "Exercising CRUD-style flows with integration tests powered by Testcontainers and Oracle AI Database Free."
     ],
-    "featured": true
+    "featured": true,
+    "urlPath": "/samples/json--jpa-duality-views/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--jpa-duality-views/",
+    "metaTitle": "Spring Boot JSON Relational Duality Views | Oracle AI Database Code Samples",
+    "metaDescription": "Spring Boot JPA sample for generating and using JSON Relational Duality Views.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "langchain4j-agent-memory",
@@ -181,7 +206,12 @@
       "Oracle Text over a native JSON memory document with json_textcontains",
       "hybrid memory retrieval that fuses semantic similarity with exact text relevance"
     ],
-    "featured": true
+    "featured": true,
+    "urlPath": "/samples/langchain4j-agent-memory/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/langchain4j-agent-memory/",
+    "metaTitle": "LangChain4j Agent Memory | Oracle AI Database Code Samples",
+    "metaDescription": "LangChain4j sample that stores agent memory, transcripts, and hybrid retrieval data in Oracle AI Database.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "mcp-agent",
@@ -210,7 +240,12 @@
       "Java 21 or higher",
       "SQLcl (installed and available in PATH for the agent to use internally)"
     ],
-    "featured": true
+    "featured": true,
+    "urlPath": "/samples/mcp-agent/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/mcp-agent/",
+    "metaTitle": "Oracle AI Database MCP Agent Example | Oracle AI Database Code Samples",
+    "metaDescription": "LangChain4j MCP sample for natural-language SQL queries against Oracle AI Database.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "news-event-streaming",
@@ -243,7 +278,12 @@
       "Docker (Optional)",
       "OJDBC_PATH: Path to the directory containing your ojdbc.properties file. I use the ojdbc.properties file in [src/test/resources](./src/test/resources)."
     ],
-    "featured": true
+    "featured": true,
+    "urlPath": "/samples/news-event-streaming/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/news-event-streaming/",
+    "metaTitle": "News Event Streaming Application | Oracle AI Database Code Samples",
+    "metaDescription": "Spring Boot application that ingests news events, stores them in Oracle AI Database, and supports vector search.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "oracle-ai-database-docker-compose",
@@ -268,7 +308,12 @@
     "highlights": [
       "Docker and Docker Compose installed."
     ],
-    "featured": true
+    "featured": true,
+    "urlPath": "/samples/oracle-ai-database-docker-compose/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/oracle-ai-database-docker-compose/",
+    "metaTitle": "Oracle AI Database Docker Compose | Oracle AI Database Code Samples",
+    "metaDescription": "Docker Compose setup for running Oracle AI Database Free locally.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "testcontainers",
@@ -292,7 +337,12 @@
     "blogPost": "https://andersswanson.dev/2025/05/29/easily-test-oracle-database-applications-with-testcontainers/",
     "readmeExcerpt": "This module provides examples using [Testcontainers](https://java.testcontainers.org/) with [Oracle AI Database Free](https://www.oracle.com/database/free/) to test your Oracle AI Database Java applications using dispoable containers.",
     "highlights": [],
-    "featured": true
+    "featured": true,
+    "urlPath": "/samples/testcontainers/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/testcontainers/",
+    "metaTitle": "Oracle AI Database Testcontainers | Oracle AI Database Code Samples",
+    "metaDescription": "Java Testcontainers samples for running Oracle AI Database Free in integration tests.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "txeventq-examples",
@@ -318,7 +368,12 @@
     "blogPost": "https://andersswanson.dev/2025/09/18/pub-sub-in-your-db-oracle-database-txeventq/",
     "readmeExcerpt": "Prerequisites: An Oracle AI Database instance. The examples are configured to use a local, Oracle AI Database Free container running on port 1521, but any 26ai instance will work if configured accordingly.",
     "highlights": [],
-    "featured": true
+    "featured": true,
+    "urlPath": "/samples/txeventq-examples/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/txeventq-examples/",
+    "metaTitle": "Oracle AI Database Transactional Event Queues Examples | Oracle AI Database Code Samples",
+    "metaDescription": "Java examples for Oracle AI Database Transactional Event Queues using Kafka APIs and PL/SQL.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "ai-optimizer",
@@ -347,7 +402,12 @@
       "user testuser",
       "password testpwd"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/ai-optimizer/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/ai-optimizer/",
+    "metaTitle": "AI Optimizer Docker Compose | Oracle AI Database Code Samples",
+    "metaDescription": "Docker Compose setup for running the ai-optimizer service with Oracle AI Database Free locally.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "database-per-service-example",
@@ -378,7 +438,12 @@
       "courses/: course catalog, prerequisites, and term offerings in coursepdb",
       "sample/: command-line runner and end-to-end test that compose data from both services over HTTP"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/database-per-service-example/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/database-per-service-example/",
+    "metaTitle": "Database Per Service with Oracle AI Database Pluggable Databases | Oracle AI Database Code Samples",
+    "metaDescription": "Database-per-service sample that separates students and courses services into independent pluggable databases.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "golang--connection",
@@ -403,7 +468,12 @@
       "DefaultLocalhostConnection() for localhost:1521/freepdb1",
       "NewDatabase(username, password, url) for custom connection details"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/golang--connection/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/golang--connection/",
+    "metaTitle": "Go Database Connection Sample | Oracle AI Database Code Samples",
+    "metaDescription": "Shared Go connection helper for local Oracle AI Database access with godror.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "golang--dualityviews",
@@ -432,7 +502,12 @@
       "Oracle client libraries available through DYLD_LIBRARY_PATH",
       "An Oracle AI Database instance reachable at localhost:1521/freepdb1"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/golang--dualityviews/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/golang--dualityviews/",
+    "metaTitle": "Go JSON Relational Duality Views Sample | Oracle AI Database Code Samples",
+    "metaDescription": "Go sample for creating and querying JSON Relational Duality Views in Oracle AI Database.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "golang--testcontainers",
@@ -459,7 +534,12 @@
       "[oracle_container.go](./oracle_container.go): reusable OracleContainer wrapper",
       "[oracle_container_test.go](./oracle_container_test.go): integration test that starts the container and queries v$version"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/golang--testcontainers/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/golang--testcontainers/",
+    "metaTitle": "Go Testcontainers Sample | Oracle AI Database Code Samples",
+    "metaDescription": "Go helper and test for starting Oracle AI Database Free with testcontainers-go.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "jdbc-event-streaming",
@@ -483,7 +563,12 @@
     "blogPost": "",
     "readmeExcerpt": "Example of streaming events using a plain JDBC connection for Oracle AI Database Transactional Event Queues (TxEventQ).",
     "highlights": [],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/jdbc-event-streaming/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-event-streaming/",
+    "metaTitle": "JDBC Event Streaming | Oracle AI Database Code Samples",
+    "metaDescription": "Plain JDBC sample for producing and consuming TxEventQ messages with PL/SQL helpers.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "jdbc-graphql",
@@ -514,7 +599,12 @@
       "ENROLLMENTS",
       "fetch one student with enrolled courses"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/jdbc-graphql/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-graphql/",
+    "metaTitle": "JDBC GraphQL | Oracle AI Database Code Samples",
+    "metaDescription": "Plain JDBC sample that runs SQL GraphQL queries against Oracle AI Database tables.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "jdbc-json-oracle-text",
@@ -543,7 +633,12 @@
       "create a JSON search index with CREATE SEARCH INDEX ... FOR JSON",
       "run ranked json_textcontains queries with SCORE"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/jdbc-json-oracle-text/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-json-oracle-text/",
+    "metaTitle": "JDBC JSON Oracle Text | Oracle AI Database Code Samples",
+    "metaDescription": "Plain JDBC sample for JSON full-text search with Oracle Text on Oracle AI Database.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "jms-producer-consumer",
@@ -572,7 +667,12 @@
       "Java 21+, Maven",
       "Docker compatible environment"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/jms-producer-consumer/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jms-producer-consumer/",
+    "metaTitle": "Java Message Service (JMS) Producer / Consumer Example | Oracle AI Database Code Samples",
+    "metaDescription": "JMS producer and consumer example for Oracle AI Database Transactional Event Queues.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "json--crud-duality-views",
@@ -604,7 +704,12 @@
       "Read JDV rows with JsonParser, map them back to typed objects, and apply json_transform updates.",
       "Delete documents through the JDV and cascade relational changes automatically."
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/json--crud-duality-views/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--crud-duality-views/",
+    "metaTitle": "CRUD with JSON Relational Duality Views | Oracle AI Database Code Samples",
+    "metaDescription": "JDBC CRUD sample for JSON Relational Duality Views with OSON and Testcontainers.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "json--jdbc-json-analytics",
@@ -634,7 +739,12 @@
       "Filter orders using JSON_EXISTS predicates and compact the result into JSON arrays via JSON_ARRAYAGG.",
       "Package the workflow as a console program and validate it with a Testcontainers-powered integration test."
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/json--jdbc-json-analytics/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--jdbc-json-analytics/",
+    "metaTitle": "JDBC JSON Analytics Sample | Oracle AI Database Code Samples",
+    "metaDescription": "Plain JDBC sample that analyzes nested JSON documents with advanced SQL/JSON operators.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "json--jdbc-json-basic",
@@ -664,7 +774,12 @@
       "Exercise the complete insert/read/update/delete lifecycle against a JSON column backed by Oracle AI Database Free.",
       "Validate the flow with a Testcontainers-powered integration test that provisions a fresh database for each run."
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/json--jdbc-json-basic/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--jdbc-json-basic/",
+    "metaTitle": "JDBC JSON Data Type Sample | Oracle AI Database Code Samples",
+    "metaDescription": "Plain JDBC sample for inserting, querying, updating, and deleting Oracle JSON data.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "json--json-event-streaming",
@@ -697,7 +812,12 @@
       "A reusable OSON serializer/deserializer built on Oracle's JSONB binding so you can work with plain Java POJOs while benefiting from Oracle's binary JSON format.",
       "Integration tests powered by Testcontainers that spin up Oracle AI Database Free, provision the TxEventQ topic, and validate the producer/consumer loop."
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/json--json-event-streaming/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--json-event-streaming/",
+    "metaTitle": "JSON Event Streaming with OKafka and OSON | Oracle AI Database Code Samples",
+    "metaDescription": "OKafka sample that streams OSON payloads through Oracle AI Database TxEventQ topics.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "migrate-kafka-to-oracle",
@@ -727,7 +847,12 @@
       "Finally, in the  [Transactional Messaging](./transactional-messaging.md) section, we further enhance the app to add transactional messaging to the consumer, so that database operations are handled using the same connection the consumer uses to receive messages ([kafka-app-step-3](./kafka-app-step-3)).",
       "kafka-app module -> Plain Apache Kafka App"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/migrate-kafka-to-oracle/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/migrate-kafka-to-oracle/",
+    "metaTitle": "Migrate Apache Kafka to Oracle AI Database Transactional Event Queues (TxEventQ) | Oracle AI Database Code Samples",
+    "metaDescription": "Step-by-step migration sample from Apache Kafka to Oracle AI Database Transactional Event Queues.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "migrate-kafka-to-oracle--kafka-app",
@@ -754,7 +879,12 @@
       "Maven 3.9+",
       "A running Apache Kafka broker on localhost:9092"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/migrate-kafka-to-oracle--kafka-app/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/migrate-kafka-to-oracle--kafka-app/",
+    "metaTitle": "Kafka App | Oracle AI Database Code Samples",
+    "metaDescription": "Starting Apache Kafka application used as the baseline for the migration walkthrough.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "migrate-kafka-to-oracle--kafka-app-step-1",
@@ -784,7 +914,12 @@
       "Docker compatible environment",
       "Oracle AI Database Free running on localhost:1521"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/migrate-kafka-to-oracle--kafka-app-step-1/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/migrate-kafka-to-oracle--kafka-app-step-1/",
+    "metaTitle": "Kafka App Step 1 | Oracle AI Database Code Samples",
+    "metaDescription": "Migration step that swaps Apache Kafka for Oracle AI Database TxEventQ with minimal code changes.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "migrate-kafka-to-oracle--kafka-app-step-2",
@@ -816,7 +951,12 @@
       "Oracle AI Database Free running on localhost:1521",
       "The testuser schema and TxEventQ grants created with [../testuser.sql](../testuser.sql)"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/migrate-kafka-to-oracle--kafka-app-step-2/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/migrate-kafka-to-oracle--kafka-app-step-2/",
+    "metaTitle": "Kafka App Step 2 | Oracle AI Database Code Samples",
+    "metaDescription": "Migration step that adds OSON serialization to the Kafka-to-TxEventQ sample.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "migrate-kafka-to-oracle--kafka-app-step-3",
@@ -850,7 +990,12 @@
       "Oracle AI Database Free running on localhost:1521",
       "The testuser schema and TxEventQ grants created with [../testuser.sql](../testuser.sql)"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/migrate-kafka-to-oracle--kafka-app-step-3/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/migrate-kafka-to-oracle--kafka-app-step-3/",
+    "metaTitle": "Kafka App Step 3 | Oracle AI Database Code Samples",
+    "metaDescription": "Migration step that adds transactional database writes to the Kafka-to-TxEventQ consumer.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "oracle-database-kafka-apis",
@@ -882,7 +1027,12 @@
       "Java 21",
       "Maven"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/oracle-database-kafka-apis/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/oracle-database-kafka-apis/",
+    "metaTitle": "Oracle AI Database Kafka APIs | Oracle AI Database Code Samples",
+    "metaDescription": "Java integration tests that use the Kafka APIs for Oracle AI Database Transactional Event Queues.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "ords-docker-compose",
@@ -910,7 +1060,12 @@
       "**ords**: ORDS container for exposing REST APIs. The ORDS HTTP dashboard is available on http://localhost:8888",
       "**ordsdb**: Oracle AI Database container. The database container externally accessible at testuser/testpwd@localhost:1555/freepdb1"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/ords-docker-compose/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/ords-docker-compose/",
+    "metaTitle": "Oracle REST Data Services (ORDS) + Oracle AI Database with Docker Compose | Oracle AI Database Code Samples",
+    "metaDescription": "Docker Compose setup for running ORDS with Oracle AI Database Free locally.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "ords-testcontainers",
@@ -942,7 +1097,12 @@
       "Docker-compatible container runtime",
       "Access to container-registry.oracle.com/database/ords:latest"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/ords-testcontainers/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/ords-testcontainers/",
+    "metaTitle": "ORDS Testcontainers | Oracle AI Database Code Samples",
+    "metaDescription": "Testcontainers sample for running ORDS alongside Oracle AI Database Free in integration tests.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "python-oracle--src--python_oracle--database",
@@ -971,7 +1131,12 @@
       "Docker compatible environment",
       "OPENAI_API_KEY set in your environment, or available for interactive prompt entry"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/python-oracle--src--python_oracle--database/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--database/",
+    "metaTitle": "Native Python Vector Search Sample | Oracle AI Database Code Samples",
+    "metaDescription": "Native Python vector search sample for Oracle AI Database using python-oracledb.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "python-oracle--src--python_oracle--langchain",
@@ -1001,7 +1166,12 @@
       "Docker compatible environment",
       "OPENAI_API_KEY set in your environment, or available for interactive prompt entry"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/python-oracle--src--python_oracle--langchain/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--langchain/",
+    "metaTitle": "LangChain Vector Search Sample | Oracle AI Database Code Samples",
+    "metaDescription": "LangChain-based Python vector search sample for Oracle AI Database.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "python-oracle--src--python_oracle--testcontainers_sample",
@@ -1025,7 +1195,12 @@
     "blogPost": "https://andersswanson.dev/2025/09/11/test-python-applications-with-oracle-database-free-using-testcontainers/",
     "readmeExcerpt": "This module shows you how to run an Oracle AI Database Free container image using [Testcontainers (python)](https://github.com/testcontainers/testcontainers-python).",
     "highlights": [],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/python-oracle--src--python_oracle--testcontainers_sample/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--testcontainers_sample/",
+    "metaTitle": "Testcontainers with Oracle AI Database | Oracle AI Database Code Samples",
+    "metaDescription": "Python Testcontainers sample for starting Oracle AI Database Free programmatically.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "sessionless-transactions",
@@ -1051,7 +1226,12 @@
       "Maven",
       "Docker"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/sessionless-transactions/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/sessionless-transactions/",
+    "metaTitle": "Sessionless Transactions | Oracle AI Database Code Samples",
+    "metaDescription": "Oracle JDBC sample for sessionless transactions on Oracle AI Database.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "spring-boot-cdc",
@@ -1080,7 +1260,12 @@
       "Java 21+, Maven",
       "Docker compatible environment"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/spring-boot-cdc/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-cdc/",
+    "metaTitle": "Spring Boot CDC with Transactional Event Queues (TxEventQ) (JMS) Example | Oracle AI Database Code Samples",
+    "metaDescription": "Spring Boot JMS sample that implements CDC with Oracle AI Database Transactional Event Queues.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "spring-boot-database-client-info",
@@ -1109,7 +1294,12 @@
       "[ClientInfoDataSource](./src/main/java/com/example/clientinfo/ClientInfoDataSource.java): A wrapper around the DataSource that applies client info properties to connections.",
       "[BooksController](./src/main/java/com/example/clientinfo/BooksController.java): A REST controller providing CRUD operations for books, using low-level JDBC with custom client info settings (OCSID.MODULE = \"Books\", OCSID.ACTION = method name)."
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/spring-boot-database-client-info/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-database-client-info/",
+    "metaTitle": "Spring Boot Oracle AI Database Client Info | Oracle AI Database Code Samples",
+    "metaDescription": "Spring Boot sample that sets MODULE and ACTION client info on Oracle AI Database connections.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "spring-boot-dynamic-property-source",
@@ -1136,7 +1326,12 @@
     "highlights": [
       "Java 21+, Maven"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/spring-boot-dynamic-property-source/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-dynamic-property-source/",
+    "metaTitle": "Spring Dynamic Property Source Example | Oracle AI Database Code Samples",
+    "metaDescription": "Spring Boot sample that loads application properties dynamically from Oracle AI Database.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "spring-boot-jdbc-custom-tracer",
@@ -1165,7 +1360,12 @@
       "[JDBCTraceEventListenerProvider](./src/main/java/com/example/tracing/jdbc/custom/JDBCTraceEventListenerProvider.java) provides an instance of the Trace Event Listener to the Oracle JDBC Driver during application startup.",
       "[TracingConfigurator](./src/main/java/com/example/tracing/jdbc/custom/TracingConfigurator.java) & [TracingProperties](./src/main/java/com/example/tracing/jdbc/custom/TracingProperties.java) provide Spring Boot configuration for the Trace Event Listener."
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/spring-boot-jdbc-custom-tracer/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-jdbc-custom-tracer/",
+    "metaTitle": "Spring Boot Oracle AI Database JDBC Custom Tracer | Oracle AI Database Code Samples",
+    "metaDescription": "Spring Boot sample for custom Oracle JDBC tracing with OpenTelemetry.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "spring-boot-jdbc-tracing",
@@ -1193,7 +1393,12 @@
       "[Spring Boot tracing](https://docs.spring.io/spring-boot/reference/actuator/tracing.html)",
       "[OJDBC OpenTelemetry provider](https://github.com/oracle/ojdbc-extensions/tree/main/ojdbc-provider-opentelemetry)"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/spring-boot-jdbc-tracing/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-jdbc-tracing/",
+    "metaTitle": "Spring Boot Oracle AI Database JDBC Tracing | Oracle AI Database Code Samples",
+    "metaDescription": "Spring Boot sample for Oracle JDBC tracing with OpenTelemetry.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "spring-boot-jms-example",
@@ -1222,7 +1427,12 @@
       "Java 21+, Maven",
       "Docker compatible environment"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/spring-boot-jms-example/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-jms-example/",
+    "metaTitle": "Spring Java Message Service (JMS) Example | Oracle AI Database Code Samples",
+    "metaDescription": "Spring Boot JMS pub-sub example for Oracle AI Database Transactional Event Queues.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "spring-boot-jms-tracing",
@@ -1253,7 +1463,12 @@
       "Java 21+, Maven",
       "Docker compatible environment with docker-compose"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/spring-boot-jms-tracing/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-jms-tracing/",
+    "metaTitle": "Spring Boot JMS Tracing | Oracle AI Database Code Samples",
+    "metaDescription": "Spring Boot sample for tracing JMS messaging over Oracle AI Database Transactional Event Queues.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "spring-cloud-config",
@@ -1281,7 +1496,12 @@
       "Maven",
       "Docker (for running the Oracle AI Database container)"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/spring-cloud-config/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-cloud-config/",
+    "metaTitle": "Spring Cloud Config with Oracle AI Database | Oracle AI Database Code Samples",
+    "metaDescription": "Spring Cloud Config sample that stores configuration properties in Oracle AI Database.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "spring-data-mongodb-oracle-api",
@@ -1311,7 +1531,12 @@
       "DB_PASSWORD (the database password you'll use to connect)",
       "DB_URI (the URI of your database instance, e.g., my-db.adb.my-region.oraclecloudapps.com)"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/spring-data-mongodb-oracle-api/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-data-mongodb-oracle-api/",
+    "metaTitle": "Using Oracle AI Database's MongoDB API with Spring Data MongoDB | Oracle AI Database Code Samples",
+    "metaDescription": "Spring Data MongoDB sample that uses the Oracle AI Database API for MongoDB through ORDS.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "spring-jpa",
@@ -1337,7 +1562,12 @@
     "blogPost": "https://andersswanson.dev/2025/06/10/learn-spring-jpa-by-example-with-oracle-database-free/",
     "readmeExcerpt": "Spring JPA (Java Persistence API) provides an abstraction layer over JPA using ORM (Object Relational Mapping). Spring JPA simplifies database interactions by abstracting common operations to simple Java objects and annotations.",
     "highlights": [],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/spring-jpa/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-jpa/",
+    "metaTitle": "Learn Spring JPA By Example with Oracle AI Database Free | Oracle AI Database Code Samples",
+    "metaDescription": "Spring JPA examples for Oracle AI Database entities, repositories, and relationships.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "spring-resource-sample",
@@ -1364,7 +1594,12 @@
       "DatabaseResourceResolver.java implements the Spring ResourceLoaderAware and ProtocolResolver interfaces to provide a Spring Compnent capable of instantiating DatabaseResorce objects.",
       "DatabaseLocation.java is a data class that maps a Resource location to a BLOB in the database."
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/spring-resource-sample/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-resource-sample/",
+    "metaTitle": "Spring Resource Loader Example | Oracle AI Database Code Samples",
+    "metaDescription": "Spring ResourceLoader sample that reads BLOB-backed resources from Oracle AI Database.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "spring-vault-oracle-app",
@@ -1394,7 +1629,12 @@
       "Java 21+, Maven",
       "[OCI Config file](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm) for authentication"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/spring-vault-oracle-app/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-vault-oracle-app/",
+    "metaTitle": "spring-vault-oracle-app | Oracle AI Database Code Samples",
+    "metaDescription": "Spring Boot sample that loads OCI Vault secrets into the application context.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "sql",
@@ -1420,7 +1660,12 @@
     "blogPost": "",
     "readmeExcerpt": "| Example program                                      | Description                                                                       | |------------------------------------------------------|-----------------------------------------------------------------------------------| | [INSERT INTO ... BY NAME](./insert_into_by_name.sql) | Demonstrate how to use Oracle AI Database 23.26.1 RU INSERT INTO ... BY NAME syntax. | | [JSON_TRANSFORM function](./json_transform.sql)      | Examples using `JSON_TRANSFORM` to modify JSON data.                              | | [Select AI](./select_ai.sql)                         | Get started with Select AI on Autonomous Database.                                | | [Similarity Search](./similarity_search.sql)         | Simple use of Similarity Search with vectors (AI Vector Search)                   |",
     "highlights": [],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/sql/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/sql/",
+    "metaTitle": "SQL examples for Oracle AI Database | Oracle AI Database Code Samples",
+    "metaDescription": "SQL scripts for Oracle AI Database features such as JSON, vectors, and Select AI.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "txeventq-multidb-replication",
@@ -1447,7 +1692,12 @@
       "Setup scripts for source and destination databases to create users, queues, and configure propagation.",
       "Java classes for producing messages (reading from console) to the source topic and consuming messages from the destination topic."
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/txeventq-multidb-replication/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/txeventq-multidb-replication/",
+    "metaTitle": "Transactional Event Queues Multi-Database Replication Example | Oracle AI Database Code Samples",
+    "metaDescription": "Multi-database TxEventQ replication sample using JMS and database links.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "typescript",
@@ -1473,7 +1723,12 @@
     "blogPost": "",
     "readmeExcerpt": "The following code samples use the open-source [node-oracledb driver](https://node-oracledb.readthedocs.io/en/latest/user_guide/introduction.html) with [Oracle AI Database Free](https://andersswanson.dev/2025/05/22/oracle-database-for-free/).",
     "highlights": [],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/typescript/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/typescript/",
+    "metaTitle": "Typescript Oracle AI Database Samples | Oracle AI Database Code Samples",
+    "metaDescription": "TypeScript samples using node-oracledb, Testcontainers, and Transactional Event Queues.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "typescript--src--testcontainers",
@@ -1501,7 +1756,12 @@
       "[oracle_database_container.ts](./oracle_database_container.ts): simple container wrapper",
       "[generic_oracle_database_container.ts](./generic_oracle_database_container.ts): GenericContainer-based implementation with a typed started container"
     ],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/typescript--src--testcontainers/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/typescript--src--testcontainers/",
+    "metaTitle": "TypeScript Testcontainers Sample | Oracle AI Database Code Samples",
+    "metaDescription": "TypeScript helpers for starting Oracle AI Database Free with Testcontainers.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
     "id": "typescript--src--txeventq",
@@ -1527,6 +1787,11 @@
     "blogPost": "https://andersswanson.dev/2025/09/22/pub-sub-with-a-nodejs-oracle-database-app/",
     "readmeExcerpt": "Produce and consume messages with the Oracle AI Database NodeJS driver from a TypeScript app.",
     "highlights": [],
-    "featured": false
+    "featured": false,
+    "urlPath": "/samples/typescript--src--txeventq/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/typescript--src--txeventq/",
+    "metaTitle": "TypeScript TxEventQ Sample | Oracle AI Database Code Samples",
+    "metaDescription": "TypeScript sample for producing and consuming TxEventQ messages with node-oracledb.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   }
 ]

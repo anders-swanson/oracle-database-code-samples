@@ -22,7 +22,12 @@ describe('SampleCard', () => {
           blogPost: '',
           readmeExcerpt: 'Learn MCP.',
           highlights: [],
-          featured: true
+          featured: true,
+          urlPath: '/samples/mcp-agent/',
+          canonicalUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/samples/mcp-agent/',
+          metaTitle: 'MCP Agent | Oracle AI Database Code Samples',
+          metaDescription: 'Natural-language SQL agent sample.',
+          ogImageUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg'
         }
       },
       global: {

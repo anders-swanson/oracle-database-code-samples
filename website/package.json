@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "generate": "node ./scripts/generate-samples.mjs",
-    "build": "npm run generate && vite build",
+    "build": "npm run generate && vite build && node ./scripts/prerender.mjs",
     "preview": "vite preview",
     "test": "vitest run"
   },

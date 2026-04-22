@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Oracle AI Database Code Samples</title>
+  <desc id="desc">A social preview card for the Oracle AI Database code samples website.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#091422" />
+      <stop offset="55%" stop-color="#07111d" />
+      <stop offset="100%" stop-color="#061019" />
+    </linearGradient>
+    <radialGradient id="glowCyan" cx="0%" cy="0%" r="90%">
+      <stop offset="0%" stop-color="#59d4ff" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#59d4ff" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="glowWarm" cx="100%" cy="0%" r="85%">
+      <stop offset="0%" stop-color="#ffb066" stop-opacity="0.26" />
+      <stop offset="100%" stop-color="#ffb066" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="panel" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#13253d" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#091525" stop-opacity="0.94" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#59d4ff" />
+      <stop offset="55%" stop-color="#69c6ff" />
+      <stop offset="100%" stop-color="#5de0a7" />
+    </linearGradient>
+    <linearGradient id="accentWarm" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffb066" />
+      <stop offset="100%" stop-color="#ffd38d" />
+    </linearGradient>
+    <filter id="softBlur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="18" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#glowCyan)" />
+  <rect width="1200" height="630" fill="url(#glowWarm)" />
+
+  <g opacity="0.14">
+    <path d="M0 70H1200" stroke="#d7e6ff" />
+    <path d="M0 142H1200" stroke="#d7e6ff" />
+    <path d="M0 214H1200" stroke="#d7e6ff" />
+    <path d="M0 286H1200" stroke="#d7e6ff" />
+    <path d="M0 358H1200" stroke="#d7e6ff" />
+    <path d="M0 430H1200" stroke="#d7e6ff" />
+    <path d="M0 502H1200" stroke="#d7e6ff" />
+    <path d="M0 574H1200" stroke="#d7e6ff" />
+    <path d="M90 0V630" stroke="#d7e6ff" />
+    <path d="M186 0V630" stroke="#d7e6ff" />
+    <path d="M282 0V630" stroke="#d7e6ff" />
+    <path d="M378 0V630" stroke="#d7e6ff" />
+    <path d="M474 0V630" stroke="#d7e6ff" />
+    <path d="M570 0V630" stroke="#d7e6ff" />
+    <path d="M666 0V630" stroke="#d7e6ff" />
+    <path d="M762 0V630" stroke="#d7e6ff" />
+    <path d="M858 0V630" stroke="#d7e6ff" />
+    <path d="M954 0V630" stroke="#d7e6ff" />
+    <path d="M1050 0V630" stroke="#d7e6ff" />
+    <path d="M1146 0V630" stroke="#d7e6ff" />
+  </g>
+
+  <g transform="translate(72 82)">
+    <rect x="0" y="0" width="1056" height="466" rx="32" fill="url(#panel)" stroke="#a0c5ff" stroke-opacity="0.2" />
+    <rect x="0" y="0" width="1056" height="466" rx="32" fill="none" stroke="#ffffff" stroke-opacity="0.05" />
+
+    <g transform="translate(64 58)">
+      <text x="0" y="0" fill="#59d4ff" font-family="Avenir Next, Segoe UI, Helvetica Neue, Arial, sans-serif" font-size="20" font-weight="700" letter-spacing="6">
+        ORACLE AI DATABASE
+      </text>
+      <text x="0" y="92" fill="#f4f7ff" font-family="Avenir Next, Segoe UI, Helvetica Neue, Arial, sans-serif" font-size="68" font-weight="700">
+        Code Samples
+      </text>
+      <text x="0" y="146" fill="#96a8c4" font-family="Avenir Next, Segoe UI, Helvetica Neue, Arial, sans-serif" font-size="28">
+        Vector search, JSON, graph, spatial, Spring Boot,
+      </text>
+      <text x="0" y="184" fill="#96a8c4" font-family="Avenir Next, Segoe UI, Helvetica Neue, Arial, sans-serif" font-size="28">
+        ORDS, TxEventQ, Java, Go, Python, and TypeScript.
+      </text>
+
+      <g transform="translate(0 246)">
+        <rect x="0" y="0" width="168" height="48" rx="24" fill="#0d2036" stroke="#59d4ff" stroke-opacity="0.35" />
+        <rect x="184" y="0" width="114" height="48" rx="24" fill="#0d2036" stroke="#59d4ff" stroke-opacity="0.35" />
+        <rect x="314" y="0" width="128" height="48" rx="24" fill="#0d2036" stroke="#59d4ff" stroke-opacity="0.35" />
+        <rect x="458" y="0" width="154" height="48" rx="24" fill="#0d2036" stroke="#ffb066" stroke-opacity="0.45" />
+        <text x="84" y="31" text-anchor="middle" fill="#f4f7ff" font-family="Avenir Next, Segoe UI, Helvetica Neue, Arial, sans-serif" font-size="21" font-weight="600">Vector Search</text>
+        <text x="241" y="31" text-anchor="middle" fill="#f4f7ff" font-family="Avenir Next, Segoe UI, Helvetica Neue, Arial, sans-serif" font-size="21" font-weight="600">JSON</text>
+        <text x="378" y="31" text-anchor="middle" fill="#f4f7ff" font-family="Avenir Next, Segoe UI, Helvetica Neue, Arial, sans-serif" font-size="21" font-weight="600">Graph</text>
+        <text x="535" y="31" text-anchor="middle" fill="#f4f7ff" font-family="Avenir Next, Segoe UI, Helvetica Neue, Arial, sans-serif" font-size="21" font-weight="600">Spring Boot</text>
+      </g>
+    </g>
+
+    <g transform="translate(735 64)">
+      <circle cx="198" cy="56" r="86" fill="#59d4ff" fill-opacity="0.14" filter="url(#softBlur)" />
+      <circle cx="222" cy="214" r="88" fill="#ffb066" fill-opacity="0.14" filter="url(#softBlur)" />
+
+      <g transform="translate(36 36)">
+        <ellipse cx="110" cy="42" rx="92" ry="32" fill="none" stroke="url(#accent)" stroke-width="8" />
+        <path d="M18 42v126c0 18 41 32 92 32s92-14 92-32V42" fill="none" stroke="url(#accent)" stroke-width="8" stroke-linecap="round" />
+        <path d="M42 104h32l18-28 22 58 20-34h30" fill="none" stroke="#f4f7ff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+
+      <g transform="translate(168 220)">
+        <rect x="0" y="0" width="196" height="86" rx="22" fill="#0d2036" stroke="#a0c5ff" stroke-opacity="0.28" />
+        <rect x="18" y="18" width="76" height="12" rx="6" fill="#59d4ff" />
+        <rect x="18" y="40" width="146" height="10" rx="5" fill="#dbe8ff" fill-opacity="0.7" />
+        <rect x="18" y="58" width="118" height="10" rx="5" fill="#dbe8ff" fill-opacity="0.38" />
+        <circle cx="160" cy="43" r="20" fill="none" stroke="url(#accentWarm)" stroke-width="6" />
+        <path d="M149 44l9 9 16-18" fill="none" stroke="#ffd38d" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+
+      <g opacity="0.78">
+        <path d="M170 236C142 216 130 181 144 148" fill="none" stroke="#59d4ff" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 12" />
+        <path d="M252 246C283 216 296 177 288 138" fill="none" stroke="#ffb066" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 12" />
+      </g>
+    </g>
+  </g>
+</svg>

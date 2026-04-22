@@ -11,7 +11,6 @@ import {
   getStats,
   samples,
   serializeFilters,
-  topFilterOptions,
   routeQueryToFilters
 } from '../lib/catalog';
 import type { CatalogFilters } from '../types';
@@ -54,7 +53,7 @@ watch(
 const stats = getStats(samples);
 const options = getFilterOptions(samples);
 const visibleSamples = computed(() => filterSamples(samples, filters.value));
-const topTags = computed(() => topFilterOptions(options.tags, 18));
+const allTags = computed(() => [...options.tags].sort((left, right) => right.count - left.count || left.value.localeCompare(right.value)));
 
 function scrollToCatalogTop() {
   nextTick(() => {
@@ -62,7 +61,7 @@ function scrollToCatalogTop() {
   });
 }
 
-function toggle(listName: 'features' | 'languages' | 'tags', value: string) {
+function toggle(listName: 'tags', value: string) {
   const current = filters.value[listName];
   filters.value = {
     ...filters.value,
@@ -128,25 +127,12 @@ function clearFilters() {
             <select v-model="filters.sort">
               <option value="featured">Featured</option>
               <option value="name">Name</option>
-              <option value="path">Path</option>
             </select>
           </label>
 
           <FilterChipGroup
-            title="Feature Tracks"
-            :options="options.features"
-            :selected="filters.features"
-            @toggle="toggle('features', $event)"
-          />
-          <FilterChipGroup
-            title="Languages"
-            :options="options.languages"
-            :selected="filters.languages"
-            @toggle="toggle('languages', $event)"
-          />
-          <FilterChipGroup
-            title="Popular Tags"
-            :options="topTags"
+            title="Tags"
+            :options="allTags"
             :selected="filters.tags"
             @toggle="toggle('tags', $event)"
           />

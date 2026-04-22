@@ -22,7 +22,7 @@ export interface CatalogFilters {
   features: string[];
   languages: string[];
   tags: string[];
-  sort: 'featured' | 'name' | 'path';
+  sort: 'featured' | 'name';
 }
 
 export interface FilterOption {

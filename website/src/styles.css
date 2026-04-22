@@ -385,6 +385,13 @@ code {
   gap: 1.3rem;
 }
 
+.catalog-sidebar,
+.catalog-results,
+.control-panel,
+.sample-card {
+  min-width: 0;
+}
+
 .control-panel,
 .detail-panel {
   border-radius: var(--radius-lg);
@@ -575,6 +582,7 @@ code {
   font-size: 1.35rem;
   font-weight: 700;
   line-height: 1.14;
+  overflow-wrap: anywhere;
   transition: color 160ms ease, transform 160ms ease;
 }
 
@@ -607,6 +615,7 @@ code {
 .sample-card__footer code {
   color: var(--text-muted);
   font-size: 0.85rem;
+  overflow-wrap: anywhere;
 }
 
 .sample-card__actions,
@@ -758,6 +767,25 @@ code {
   color: var(--text-muted);
 }
 
+.inline-markdown-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+  transition: color 160ms ease, text-decoration-color 160ms ease;
+}
+
+.inline-markdown-link:hover {
+  color: #bfefff;
+  text-decoration-color: currentColor;
+}
+
+.inline-markdown-link:focus-visible {
+  outline: none;
+  border-radius: 0.2rem;
+  box-shadow: 0 0 0 4px rgba(89, 212, 255, 0.18);
+}
+
 .metadata-list {
   display: grid;
   gap: 1rem;
@@ -805,6 +833,7 @@ code {
     grid-template-columns: 1fr 1fr;
   }
 
+  .control-panel__topline,
   .catalog-results__header,
   .sample-card__footer,
   .detail-panel__header {

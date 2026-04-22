@@ -64,12 +64,23 @@ describe('catalog filtering', () => {
       sort: 'name'
     });
 
-    expect(routeQueryToFilters(serialized)).toEqual({
-      query: 'graph',
-      features: ['Property Graph'],
-      languages: ['Java'],
-      tags: ['Graph'],
+    expect(serialized).toEqual({
+      q: 'graph',
+      tags: 'Graph',
       sort: 'name'
+    });
+
+    expect(routeQueryToFilters({
+      ...serialized,
+      features: 'Property Graph',
+      languages: 'Java',
+      sort: 'path'
+    })).toEqual({
+      query: 'graph',
+      features: [],
+      languages: [],
+      tags: ['Graph'],
+      sort: 'featured'
     });
   });
 });

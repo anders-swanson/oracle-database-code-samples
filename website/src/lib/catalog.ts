@@ -85,9 +85,6 @@ export function filterSamples(items: SampleRecord[], filters: CatalogFilters) {
     if (filters.sort === 'name') {
       return left.name.localeCompare(right.name);
     }
-    if (filters.sort === 'path') {
-      return left.path.localeCompare(right.path);
-    }
     if (left.featured !== right.featured) {
       return left.featured ? -1 : 1;
     }
@@ -164,12 +161,6 @@ export function serializeFilters(filters: CatalogFilters) {
   if (filters.query) {
     query.q = filters.query;
   }
-  if (filters.features.length > 0) {
-    query.features = filters.features.join(',');
-  }
-  if (filters.languages.length > 0) {
-    query.languages = filters.languages.join(',');
-  }
   if (filters.tags.length > 0) {
     query.tags = filters.tags.join(',');
   }
@@ -181,12 +172,12 @@ export function serializeFilters(filters: CatalogFilters) {
 }
 
 export function routeQueryToFilters(query: Record<string, unknown>): CatalogFilters {
-  const sort = query.sort === 'name' || query.sort === 'path' ? query.sort : 'featured';
+  const sort = query.sort === 'name' ? query.sort : 'featured';
 
   return {
     query: typeof query.q === 'string' ? query.q : '',
-    features: parseQueryList(query.features),
-    languages: parseQueryList(query.languages),
+    features: [],
+    languages: [],
     tags: parseQueryList(query.tags),
     sort
   };

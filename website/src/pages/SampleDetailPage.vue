@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import AppShell from '../components/AppShell.vue';
+import InlineMarkdown from '../components/InlineMarkdown.vue';
 import SampleCard from '../components/SampleCard.vue';
 import { findRelatedSamples, findSampleById, samples } from '../lib/catalog';
 
@@ -58,7 +59,9 @@ const related = computed(() => (sample.value ? findRelatedSamples(sample.value, 
           <div v-if="sample.highlights.length > 0" class="detail-panel__block">
             <h3>Highlights</h3>
             <ul>
-              <li v-for="highlight in sample.highlights" :key="highlight">{{ highlight }}</li>
+              <li v-for="highlight in sample.highlights" :key="highlight">
+                <InlineMarkdown :text="highlight" :base-url="sample.githubReadmeUrl" />
+              </li>
             </ul>
           </div>
         </article>

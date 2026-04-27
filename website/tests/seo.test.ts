@@ -64,4 +64,17 @@ describe('SEO metadata sync', () => {
     expect(document.head.querySelector('meta[property="og:url"]')?.getAttribute('content')).toBe(sample.canonicalUrl);
     expect(document.head.querySelector('#app-structured-data')?.textContent).toContain('SoftwareSourceCode');
   });
+
+  it('applies feature map metadata', () => {
+    applyCurrentRouteMetadata({
+      name: 'feature-map',
+      params: {}
+    } as never);
+
+    expect(document.title).toBe('Feature Map | Oracle AI Database Code Samples');
+    expect(document.head.querySelector('meta[property="og:url"]')?.getAttribute('content')).toBe(
+      'https://anders-swanson.github.io/oracle-database-code-samples/feature-map/'
+    );
+    expect(document.head.querySelector('#app-structured-data')?.textContent).toContain('CollectionPage');
+  });
 });

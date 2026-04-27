@@ -41,3 +41,28 @@ export interface FeatureSummary {
   count: number;
   description: string;
 }
+
+export interface SubfeatureGraphNode {
+  name: string;
+  count: number;
+  x: number;
+  y: number;
+  ring: number;
+  size: number;
+  width: number;
+  height: number;
+}
+
+export interface SubfeatureGraph {
+  centerLabel: string;
+  centerSubtitle: string;
+  totalSamples: number;
+  totalTags: number;
+  hiddenTags: number;
+  width: number;
+  height: number;
+  centerX: number;
+  centerY: number;
+  orbitRadii: number[];
+  nodes: SubfeatureGraphNode[];
+}

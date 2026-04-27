@@ -74,6 +74,8 @@ function renderHeader() {
         <span class="site-header__title">Code Samples</span>
       </a>
       <nav class="site-header__nav">
+        <a href="${toSitePath('/')}">Catalog</a>
+        <a href="${toSitePath('/feature-map/')}">Feature Map</a>
         <a href="https://github.com/anders-swanson/oracle-database-code-samples" target="_blank" rel="noreferrer">
           GitHub
         </a>
@@ -299,6 +301,35 @@ function renderSamplePage(sample) {
   `;
 }
 
+function renderFeatureMapPage() {
+  return `
+    <div class="app-shell">
+      <div class="app-shell__glow app-shell__glow--one"></div>
+      <div class="app-shell__glow app-shell__glow--two"></div>
+      <div class="app-shell__grid"></div>
+      ${renderHeader()}
+      <main class="site-main">
+        <section class="map-hero">
+          <div class="map-hero__copy">
+            <span class="hero__eyebrow">Feature Tag Map</span>
+            <h1>Explore Oracle AI Database samples like a navigable feature map</h1>
+            <p>
+              Open the interactive feature map to browse the strongest feature clusters and jump into matching sample
+              sets across the catalog.
+            </p>
+          </div>
+        </section>
+        <section class="tag-map-panel">
+          <div class="tag-map-panel__toolbar">
+            <p>The full interactive map loads when JavaScript initializes.</p>
+            <a class="button button--ghost tag-map-panel__button" href="${toSitePath('/')}">Browse Full Catalog</a>
+          </div>
+        </section>
+      </main>
+    </div>
+  `;
+}
+
 function upsertMeta(document, attribute, key, content) {
   let element = document.head.querySelector(`meta[${attribute}="${key}"]`);
   if (!element) {
@@ -395,8 +426,31 @@ function renderSampleDocument(sample) {
   });
 }
 
+function renderFeatureMapDocument() {
+  const canonicalUrl = `${SITE_URL}feature-map/`;
+  const description =
+    'Explore a visual tag map of Oracle AI Database code samples, with features sized by the number of related samples.';
+
+  return renderDocument({
+    title: `Feature Map | ${SITE_NAME}`,
+    description,
+    canonicalUrl,
+    ogType: 'website',
+    structuredData: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: 'Oracle AI Database Feature Map',
+        url: canonicalUrl,
+        description
+      }
+    ],
+    appHtml: renderFeatureMapPage()
+  });
+}
+
 function writeSitemap() {
-  const urls = [SITE_URL, ...samples.map((sample) => sample.canonicalUrl)];
+  const urls = [SITE_URL, `${SITE_URL}feature-map/`, ...samples.map((sample) => sample.canonicalUrl)];
   const body = urls
     .map((url) => `  <url><loc>${escapeHtml(url)}</loc><lastmod>${buildDate}</lastmod></url>`)
     .join('\n');
@@ -414,6 +468,7 @@ function writeRobots() {
 }
 
 writePage('index.html', renderCatalogDocument());
+writePage(path.join('feature-map', 'index.html'), renderFeatureMapDocument());
 
 for (const sample of samples) {
   writePage(path.join(sample.urlPath.replace(/^\//, ''), 'index.html'), renderSampleDocument(sample));

@@ -48,6 +48,30 @@ function buildCatalogMetadata(): PageMetadata {
   };
 }
 
+function buildSubfeatureMapMetadata(): PageMetadata {
+  const canonicalUrl = `${SITE_URL}feature-map/`;
+  const description =
+    'Explore a visual tag map of Oracle AI Database code samples, with features sized by the number of related samples.';
+
+  return {
+    title: `Feature Map | ${SITE_NAME}`,
+    description,
+    canonicalUrl,
+    ogType: 'website',
+    ogImageUrl: DEFAULT_OG_IMAGE_URL,
+    ogImageAlt: DEFAULT_OG_IMAGE_ALT,
+    structuredData: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: 'Oracle AI Database Feature Map',
+        url: canonicalUrl,
+        description
+      }
+    ]
+  };
+}
+
 function buildSampleMetadata(sample: SampleRecord): PageMetadata {
   return {
     title: sample.metaTitle,
@@ -107,6 +131,9 @@ function resolveRouteMetadata(route: RouteLocationNormalizedLoaded) {
   if (route.name === 'sample-detail') {
     const sample = findSampleById(String(route.params.id));
     return sample ? buildSampleMetadata(sample) : buildNotFoundMetadata();
+  }
+  if (route.name === 'feature-map') {
+    return buildSubfeatureMapMetadata();
   }
 
   return buildCatalogMetadata();

@@ -196,8 +196,7 @@ onMounted(() => {
 
       <div class="tag-map-panel__footer">
         <p>
-          The map emphasizes the top features first and pushes remaining nodes outward instead of letting labels
-          overlap. Smaller tags still remain available in the full catalog filters.
+          Click on a feature to view all related samples.
         </p>
         <RouterLink class="button button--ghost" to="/">Browse Full Catalog</RouterLink>
       </div>

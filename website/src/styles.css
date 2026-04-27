@@ -392,10 +392,21 @@ code {
   min-width: 0;
 }
 
+.catalog-sidebar {
+  align-self: start;
+}
+
 .control-panel,
 .detail-panel {
   border-radius: var(--radius-lg);
   padding: 1.35rem;
+}
+
+.control-panel {
+  position: sticky;
+  top: 1.25rem;
+  max-height: calc(100vh - 2.5rem);
+  overflow-y: auto;
 }
 
 .control-panel__topline,
@@ -838,6 +849,12 @@ code {
   .sample-grid,
   .sample-grid--compact {
     grid-template-columns: 1fr;
+  }
+
+  .control-panel {
+    position: static;
+    max-height: none;
+    overflow-y: visible;
   }
 }
 

@@ -8,7 +8,7 @@ tags:
   - PDB
   - SpringBoot
   - Testcontainers
-blog_post: ""
+blog_post: "https://andersswanson.dev/2026/04/28/database-per-service-with-oracle-ai-database-pdbs/"
 ---
 
 # Database Per Service with Oracle AI Database Pluggable Databases

@@ -431,12 +431,13 @@
     ],
     "language": "Java",
     "parentCollection": "Standalone",
-    "blogPost": "",
-    "readmeExcerpt": "This sample demonstrates the database-per-service pattern on Oracle AI Database with a realistic cross-service workflow: **registration eligibility**.",
+    "blogPost": "https://andersswanson.dev/2026/04/28/database-per-service-with-oracle-ai-database-pdbs/",
+    "readmeExcerpt": "This sample demonstrates the database-per-service pattern on Oracle AI Database with a simple cross-service workflow: **course registration checks**.",
     "highlights": [
       "students/: student profile and completed-course history in studentpdb",
       "courses/: course catalog, prerequisites, and term offerings in coursepdb",
-      "sample/: command-line runner and end-to-end test that compose data from both services over HTTP"
+      "sample/: command-line runner and end-to-end test that compose data from both services over HTTP",
+      "students: university ID, name, status, and completed course codes"
     ],
     "featured": false,
     "urlPath": "/samples/database-per-service-example/",
@@ -604,6 +605,43 @@
     "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-graphql/",
     "metaTitle": "JDBC GraphQL | Oracle AI Database Code Samples",
     "metaDescription": "Plain JDBC sample that runs SQL GraphQL queries against Oracle AI Database tables.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  },
+  {
+    "id": "jdbc-graphrag",
+    "name": "jdbc-graphrag",
+    "title": "JDBC GraphRAG",
+    "description": "Plain JDBC GraphRAG sample that combines Oracle AI Database vectors, property graphs, and local embeddings.",
+    "path": "jdbc-graphrag",
+    "readmePath": "jdbc-graphrag/README.md",
+    "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-graphrag/README.md",
+    "githubCodeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/tree/main/jdbc-graphrag",
+    "tags": [
+      "AI",
+      "Graph",
+      "GraphRAG",
+      "Java",
+      "Vector Search"
+    ],
+    "features": [
+      "Vector Search",
+      "Property Graph"
+    ],
+    "language": "Java",
+    "parentCollection": "Standalone",
+    "blogPost": "",
+    "readmeExcerpt": "This module demonstrates a first-pass GraphRAG retrieval pipeline with Oracle AI Database and plain JDBC. It stores knowledge-base chunks with local AllMiniLM embeddings, creates a SQL property graph over chunks and concepts, and expands semantic vector matches through graph relationships.",
+    "highlights": [
+      "embed text locally with the same MiniLM model style used in [ai-vector-search](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/ai-vector-search)",
+      "store chunk embeddings in an Oracle AI Database VECTOR column",
+      "model chunks, concepts, mentions, and concept relationships as a SQL property graph",
+      "query semantic seed chunks with VECTOR_DISTANCE"
+    ],
+    "featured": false,
+    "urlPath": "/samples/jdbc-graphrag/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-graphrag/",
+    "metaTitle": "JDBC GraphRAG | Oracle AI Database Code Samples",
+    "metaDescription": "Plain JDBC GraphRAG sample that combines Oracle AI Database vectors, property graphs, and local embeddings.",
     "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {

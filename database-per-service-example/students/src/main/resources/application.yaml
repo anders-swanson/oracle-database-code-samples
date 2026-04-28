@@ -6,7 +6,7 @@ spring:
   application:
     name: students
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: none
   datasource:
@@ -21,3 +21,6 @@ spring:
       max-pool-size: 10
       connection-pool-name: StudentsServicePool
       connection-factory-class-name: oracle.jdbc.pool.OracleDataSource
+logging:
+  level:
+    root: warn

@@ -1,4 +1,14 @@
 
+---
+name: students-service
+description: Student service for the database-per-service example.
+tags:
+  - Database
+  - Java
+  - SpringBoot
+  - PDB
+---
+
 # Students Service
 
 This module is the student-profile service from the [database-per-service sample](../README.md). It runs as an independent Spring Boot application backed by its own Oracle AI Database pluggable database, `studentpdb`.
@@ -26,10 +36,8 @@ The parent sample includes a setup script at [`../sample/src/test/resources/crea
 
 ## Run the service
 
-From the repository root:
-
 ```bash
-mvn -f database-per-service-example/pom.xml -pl students spring-boot:run \
+mvn spring-boot:run \
   -DJDBC_URL=jdbc:oracle:thin:@localhost:1521/studentpdb \
   -DUSERNAME=students_app \
   -DPASSWORD=testpwd \
@@ -37,9 +45,3 @@ mvn -f database-per-service-example/pom.xml -pl students spring-boot:run \
 ```
 
 The default configuration is defined in [`src/main/resources/application.yaml`](./src/main/resources/application.yaml).
-
-## Run tests
-
-```bash
-mvn -f database-per-service-example/pom.xml -pl students test
-```

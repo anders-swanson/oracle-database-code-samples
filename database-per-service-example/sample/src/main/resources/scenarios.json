@@ -1,0 +1,39 @@
+[
+  {
+    "scenarioName": "student-is-eligible",
+    "universityId": "U-ELIGIBLE-1001",
+    "firstName": "Alice",
+    "lastName": "Nguyen",
+    "status": "ACTIVE",
+    "prerequisiteCourseCode": "ELIGIBLE-CS201",
+    "prerequisiteCourseTitle": "Data Structures",
+    "targetCourseCode": "ELIGIBLE-CS404",
+    "targetCourseTitle": "Distributed Systems",
+    "termCode": "2026FALL",
+    "capacity": 30,
+    "enrolledCount": 24,
+    "completedCourseCodes": [
+      "ELIGIBLE-CS201",
+      "ELIGIBLE-MATH101"
+    ],
+    "expectedEligible": true
+  },
+  {
+    "scenarioName": "student-missing-prereq",
+    "universityId": "U-MISSINGPREREQ-1001",
+    "firstName": "Alice",
+    "lastName": "Nguyen",
+    "status": "ACTIVE",
+    "prerequisiteCourseCode": "MISSINGPREREQ-CS201",
+    "prerequisiteCourseTitle": "Data Structures",
+    "targetCourseCode": "MISSINGPREREQ-CS404",
+    "targetCourseTitle": "Distributed Systems",
+    "termCode": "2026FALL",
+    "capacity": 30,
+    "enrolledCount": 24,
+    "completedCourseCodes": [
+      "MISSINGPREREQ-MATH101"
+    ],
+    "expectedEligible": false
+  }
+]

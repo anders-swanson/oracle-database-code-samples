@@ -1,4 +1,14 @@
 
+---
+name: courses-service
+description: Course service for the database-per-service example.
+tags:
+  - Database
+  - Java
+  - SpringBoot
+  - PDB
+---
+
 # Courses Service
 
 This module is the course-catalog service from the [database-per-service sample](../README.md). It runs as an independent Spring Boot application backed by its own Oracle AI Database pluggable database, `coursepdb`.
@@ -6,8 +16,6 @@ This module is the course-catalog service from the [database-per-service sample]
 The service owns:
 
 - `course_catalog`
-- `course_prerequisites`
-- `course_offerings`
 
 The REST API exposes:
 
@@ -40,9 +48,3 @@ mvn -f database-per-service-example/pom.xml -pl courses spring-boot:run \
 ```
 
 The default configuration is defined in [`src/main/resources/application.yaml`](./src/main/resources/application.yaml).
-
-## Run tests
-
-```bash
-mvn -f database-per-service-example/pom.xml -pl courses test
-```

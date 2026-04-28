@@ -1,10 +1,17 @@
 package com.example.courses;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,14 +27,13 @@ public class Course {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private String department;
+    @ElementCollection
+    @CollectionTable(name = "course_prerequisites", joinColumns = @JoinColumn(name = "course_id"))
+    private List<Prerequisite> prerequisites = new ArrayList<>();
 
-    @Column(name = "credit_hours", nullable = false)
-    private Integer creditHours;
-
-    @Column(name = "active_flag", nullable = false)
-    private Integer activeFlag;
+    @ElementCollection
+    @CollectionTable(name = "course_offerings", joinColumns = @JoinColumn(name = "course_id"))
+    private List<Offering> offerings = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -53,27 +59,98 @@ public class Course {
         this.title = title;
     }
 
-    public String getDepartment() {
-        return department;
+    public List<Prerequisite> getPrerequisites() {
+        return prerequisites;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setPrerequisites(List<Prerequisite> prerequisites) {
+        this.prerequisites = prerequisites == null ? new ArrayList<>() : new ArrayList<>(prerequisites);
     }
 
-    public Integer getCreditHours() {
-        return creditHours;
+    public List<Offering> getOfferings() {
+        return offerings;
     }
 
-    public void setCreditHours(Integer creditHours) {
-        this.creditHours = creditHours;
+    public void setOfferings(List<Offering> offerings) {
+        this.offerings = offerings == null ? new ArrayList<>() : new ArrayList<>(offerings);
     }
 
-    public Integer getActiveFlag() {
-        return activeFlag;
+    public void addPrerequisite(String requiredCourseCode) {
+        boolean alreadyPresent = prerequisites.stream()
+                .anyMatch(prerequisite -> prerequisite.getRequiredCourseCode().equals(requiredCourseCode));
+        if (!alreadyPresent) {
+            prerequisites.add(new Prerequisite(requiredCourseCode));
+        }
     }
 
-    public void setActiveFlag(Integer activeFlag) {
-        this.activeFlag = activeFlag;
+    public void addOffering(String termCode, Integer capacity, Integer enrolledCount) {
+        offerings.removeIf(offering -> offering.getTermCode().equals(termCode));
+        offerings.add(new Offering(termCode, capacity, enrolledCount));
+    }
+
+    @Embeddable
+    public static class Prerequisite {
+        @Column(name = "required_course_code", nullable = false)
+        private String requiredCourseCode;
+
+        public Prerequisite() {
+        }
+
+        public Prerequisite(String requiredCourseCode) {
+            this.requiredCourseCode = requiredCourseCode;
+        }
+
+        public String getRequiredCourseCode() {
+            return requiredCourseCode;
+        }
+
+        public void setRequiredCourseCode(String requiredCourseCode) {
+            this.requiredCourseCode = requiredCourseCode;
+        }
+    }
+
+    @Embeddable
+    public static class Offering {
+        @Column(name = "term_code", nullable = false)
+        private String termCode;
+
+        @Column(nullable = false)
+        private Integer capacity;
+
+        @Column(name = "enrolled_count", nullable = false)
+        private Integer enrolledCount;
+
+        public Offering() {
+        }
+
+        public Offering(String termCode, Integer capacity, Integer enrolledCount) {
+            this.termCode = termCode;
+            this.capacity = capacity;
+            this.enrolledCount = enrolledCount;
+        }
+
+        public String getTermCode() {
+            return termCode;
+        }
+
+        public Integer getCapacity() {
+            return capacity;
+        }
+
+        public Integer getEnrolledCount() {
+            return enrolledCount;
+        }
+
+        public void setTermCode(String termCode) {
+            this.termCode = termCode;
+        }
+
+        public void setCapacity(Integer capacity) {
+            this.capacity = capacity;
+        }
+
+        public void setEnrolledCount(Integer enrolledCount) {
+            this.enrolledCount = enrolledCount;
+        }
     }
 }

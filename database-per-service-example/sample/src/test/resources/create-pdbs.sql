@@ -36,23 +36,16 @@ CREATE TABLE students_app.students (
     university_id   VARCHAR2(50) NOT NULL UNIQUE,
     first_name      VARCHAR2(100) NOT NULL,
     last_name       VARCHAR2(100) NOT NULL,
-    email           VARCHAR2(255) NOT NULL UNIQUE,
-    program_code    VARCHAR2(50) NOT NULL,
-    academic_level  VARCHAR2(50) NOT NULL,
-    status          VARCHAR2(50) NOT NULL,
-    holds_flag      NUMBER(1) NOT NULL CHECK (holds_flag IN (0, 1))
+    status          VARCHAR2(50) NOT NULL
 );
 
 CREATE TABLE students_app.student_completed_courses (
-    id           NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     student_id   NUMBER NOT NULL,
     course_code  VARCHAR2(50) NOT NULL,
-    term_code    VARCHAR2(50) NOT NULL,
-    grade        VARCHAR2(10) NOT NULL,
     CONSTRAINT fk_student_completed_courses_student
         FOREIGN KEY (student_id) REFERENCES students_app.students (id),
     CONSTRAINT uq_student_completed_courses
-        UNIQUE (student_id, course_code, term_code)
+        UNIQUE (student_id, course_code)
 );
 
 ALTER SESSION SET CONTAINER = coursepdb;
@@ -63,28 +56,25 @@ GRANT create session, create table, create sequence, create view, unlimited tabl
 CREATE TABLE courses_app.course_catalog (
     id            NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     course_code   VARCHAR2(50) NOT NULL UNIQUE,
-    title         VARCHAR2(200) NOT NULL,
-    department    VARCHAR2(100) NOT NULL,
-    credit_hours  NUMBER(2) NOT NULL,
-    active_flag   NUMBER(1) NOT NULL CHECK (active_flag IN (0, 1))
+    title         VARCHAR2(200) NOT NULL
 );
 
 CREATE TABLE courses_app.course_prerequisites (
-    id                    NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    course_code           VARCHAR2(50) NOT NULL,
+    course_id             NUMBER NOT NULL,
     required_course_code  VARCHAR2(50) NOT NULL,
-    CONSTRAINT uq_course_prerequisites UNIQUE (course_code, required_course_code)
+    CONSTRAINT fk_course_prerequisites_course
+        FOREIGN KEY (course_id) REFERENCES courses_app.course_catalog (id),
+    CONSTRAINT uq_course_prerequisites UNIQUE (course_id, required_course_code)
 );
 
 CREATE TABLE courses_app.course_offerings (
-    id              NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    course_code     VARCHAR2(50) NOT NULL,
+    course_id       NUMBER NOT NULL,
     term_code       VARCHAR2(50) NOT NULL,
-    section_number  NUMBER(4) NOT NULL,
     capacity        NUMBER(4) NOT NULL,
     enrolled_count  NUMBER(4) NOT NULL,
-    delivery_mode   VARCHAR2(50) NOT NULL,
-    CONSTRAINT uq_course_offerings UNIQUE (course_code, term_code, section_number)
+    CONSTRAINT fk_course_offerings_course
+        FOREIGN KEY (course_id) REFERENCES courses_app.course_catalog (id),
+    CONSTRAINT uq_course_offerings UNIQUE (course_id, term_code)
 );
 
 ALTER SESSION SET CONTAINER = CDB$ROOT;

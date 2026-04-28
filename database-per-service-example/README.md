@@ -13,7 +13,7 @@ blog_post: ""
 
 # Database Per Service with Oracle AI Database Pluggable Databases
 
-This sample demonstrates the database-per-service pattern on Oracle AI Database with a realistic cross-service workflow: **registration eligibility**.
+This sample demonstrates the database-per-service pattern on Oracle AI Database with a simple cross-service workflow: **course registration checks**.
 
 Each service owns its own pluggable database (PDB), schema, tables, and datasource:
 
@@ -21,7 +21,20 @@ Each service owns its own pluggable database (PDB), schema, tables, and datasour
 - `courses/`: course catalog, prerequisites, and term offerings in `coursepdb`
 - `sample/`: command-line runner and end-to-end test that compose data from both services over HTTP
 
-The sample intentionally avoids cross-PDB joins, shared schemas, and database links. Eligibility is computed at the application layer after fetching service-owned data from each boundary.
+The sample intentionally avoids cross-PDB joins, shared schemas, and database links. The registration check is computed at the application layer after fetching service-owned data from each boundary.
+
+To keep the tutorial compact, each service uses one main JPA entity plus embedded collections. The model is intentionally small:
+
+- `students`: university ID, name, status, and completed course codes
+- `courses`: course code, title, prerequisite course codes, and one offering per term
+
+## Diagrams
+
+![Database-per-service architecture](database-per-service-architecture.svg)
+
+![Registration scenario flow](registration-scenario-flow.svg)
+
+![Testcontainers PDB setup](testcontainers-pdb-setup.svg)
 
 ## Module structure
 
@@ -70,7 +83,7 @@ Contains:
 
 - Oracle AI Database can isolate service-owned data at the PDB boundary
 - two Spring Boot services can use different PDB service names in the same Oracle AI Database instance
-- a realistic business decision can be composed without violating database ownership
+- a simple business decision can be composed without violating database ownership
 
 The composed workflow is:
 
@@ -78,15 +91,47 @@ The composed workflow is:
 2. Add completed-course history in the `students` service
 3. Create catalog and offering data in the `courses` service
 4. Read both service-owned datasets
-5. Compute registration eligibility in the sample runner
+5. Check whether the student is ready to register in the sample runner
 
-The decision uses:
+The runner keeps the decision small and sample-friendly:
 
 - student status
-- academic hold flag
 - prerequisite completion
-- offering availability
-- seat availability
+- available seat in the requested offering
+
+## Run tests
+
+Run the [tests](./src/test/java/com/example/sample/DatabasePerServiceSampleRunnerTest.java) with Maven:
+
+```bash
+mvn -pl sample test -am
+```
+
+The end-to-end tests provision `studentpdb` and `coursepdb` inside an Oracle AI Database Free container, boot both Spring Boot applications, seed data through the service APIs, and verify ready and not-ready scenarios.
+
+You'll see output similar to the following as the test scenarios run:
+
+```
+Scenario: student-is-eligible
+    Student: Alice Nguyen (ACTIVE)
+    Course: ELIGIBLE-CS404 - Distributed Systems
+    Completed courses: ELIGIBLE-CS201, ELIGIBLE-MATH101
+    Prerequisites satisfied: true
+    Seats available: true
+    Eligible: true
+    Reasons: Registration checks passed
+    Assertions passed
+Scenario: student-missing-prereq
+    Student: Alice Nguyen (ACTIVE)
+    Course: MISSINGPREREQ-CS404 - Distributed Systems
+    Completed courses: MISSINGPREREQ-MATH101
+    Prerequisites satisfied: false
+    Seats available: true
+    Eligible: false
+    Reasons: Student is missing at least one required prerequisite
+    Assertions passed
+```
+
 
 ## Local run flow
 
@@ -135,23 +180,4 @@ mvn -f database-per-service-example/pom.xml -pl sample exec:java \
   -DCOURSES_BASE_URL=http://localhost:8082
 ```
 
-The runner seeds an eligibility scenario, reads both services back, and prints a report showing the decision plus proof that the services are connected to different PDBs.
-
-## Automated tests
-
-Run the module test suite with:
-
-```bash
-mvn -f database-per-service-example/pom.xml clean test
-```
-
-The end-to-end tests in `sample/`:
-
-- start Oracle AI Database Free with Testcontainers
-- provision `studentpdb` and `coursepdb`
-- boot both Spring Boot applications against separate PDBs
-- seed data through service APIs
-- verify eligible and ineligible scenarios
-- assert both the business result and the PDB ownership boundaries
-
-Because the tests create PDBs inside the Oracle container, repeated runs require enough local Docker disk space.
+The runner seeds a registration scenario, reads both services back, and prints a report showing the decision plus proof that the services are connected to different PDBs.

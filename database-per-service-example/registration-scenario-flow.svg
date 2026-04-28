@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Registration scenario flow for the database-per-service sample</title>
+  <desc id="desc">An 800 by 600 diagram showing the sample runner loading scenarios, creating student and course data through service APIs, verifying eligibility from returned objects, and printing assertions.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f7efe2"/>
+      <stop offset="54%" stop-color="#fbfaf7"/>
+      <stop offset="100%" stop-color="#e7f1f8"/>
+    </linearGradient>
+    <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10314a"/>
+      <stop offset="100%" stop-color="#1f6173"/>
+    </linearGradient>
+    <linearGradient id="api" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d7ecf4"/>
+      <stop offset="100%" stop-color="#f1f9fc"/>
+    </linearGradient>
+    <linearGradient id="decision" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8edc8"/>
+      <stop offset="100%" stop-color="#fff8e2"/>
+    </linearGradient>
+    <linearGradient id="print" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ebdef5"/>
+      <stop offset="100%" stop-color="#faf4ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#183246" flood-opacity="0.14"/>
+    </filter>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0V24" fill="none" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0 0L11 5.5L0 11Z" fill="#1b4258"/>
+    </marker>
+    <style>
+      .frame { fill: url(#bg); }
+      .grain { fill: url(#grid); opacity: 0.24; }
+      .eyebrow { font: 700 14px "Avenir Next", "Trebuchet MS", sans-serif; letter-spacing: 1.8px; text-transform: uppercase; fill: #745f4a; }
+      .title { font: 700 35px Georgia, "Times New Roman", serif; fill: #10283c; }
+      .subtitle { font: 400 18px Georgia, "Times New Roman", serif; fill: #39546a; }
+      .mini { font: 700 13px "Avenir Next", "Trebuchet MS", sans-serif; letter-spacing: 1px; text-transform: uppercase; fill: #657c8d; }
+      .card-title { font: 700 23px "Avenir Next", "Trebuchet MS", sans-serif; fill: #12314a; }
+      .card-body { font: 500 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #355267; }
+      .hero-title { font: 700 28px Georgia, "Times New Roman", serif; fill: #ffffff; }
+      .hero-body { font: 600 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9edf4; }
+      .code { font: 700 14px "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; fill: #103049; }
+      .step { fill: #fffdfa; stroke: #cfbfac; stroke-width: 1.5; rx: 18; ry: 18; filter: url(#shadow); }
+      .hero-box { fill: url(#hero); stroke: #163a4f; stroke-width: 2; rx: 24; ry: 24; filter: url(#shadow); }
+      .api-box { fill: url(#api); stroke: #1f5369; stroke-width: 2; rx: 22; ry: 22; filter: url(#shadow); }
+      .decision-box { fill: url(#decision); stroke: #8b6d1d; stroke-width: 2; rx: 22; ry: 22; filter: url(#shadow); }
+      .print-box { fill: url(#print); stroke: #6a4b82; stroke-width: 2; rx: 22; ry: 22; filter: url(#shadow); }
+      .chip { fill: #ffffff; stroke: #d7c59f; stroke-width: 1.2; rx: 16; ry: 16; }
+      .line { stroke: #1b4258; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
+      .soft-line { stroke: #6a7f8c; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="frame" width="800" height="600"/>
+  <rect class="grain" width="800" height="600"/>
+
+  <text x="56" y="56" class="eyebrow">Oracle AI Database Sample</text>
+  <text x="56" y="98" class="title">Registration Scenario Flow</text>
+  <text x="56" y="128" class="subtitle">The runner composes two service APIs and verifies from POST responses.</text>
+
+  <rect x="56" y="162" width="154" height="112" class="step"/>
+  <text x="78" y="190" class="mini">Step 1</text>
+  <text x="78" y="224" class="card-title">Load</text>
+  <text x="78" y="251" class="code">scenarios.json</text>
+
+  <rect x="246" y="162" width="154" height="112" class="api-box"/>
+  <text x="268" y="190" class="mini">Step 2</text>
+  <text x="268" y="224" class="card-title">Create</text>
+  <text x="268" y="251" class="code">Student</text>
+
+  <rect x="436" y="162" width="154" height="112" class="api-box"/>
+  <text x="458" y="190" class="mini">Step 3</text>
+  <text x="458" y="224" class="card-title">Create</text>
+  <text x="458" y="251" class="code">Courses</text>
+
+  <rect x="626" y="162" width="150" height="112" class="hero-box"/>
+  <text x="648" y="190" class="mini" fill="#d2e6ef">Step 4</text>
+  <text x="648" y="234" class="hero-title">Process</text>
+
+  <rect x="92" y="356" width="316" height="180" class="decision-box"/>
+  <text x="116" y="386" class="mini">Step 5</text>
+  <text x="116" y="420" class="card-title">Verify Eligibility</text>
+  <rect x="116" y="442" width="128" height="34" class="chip"/>
+  <text x="132" y="464" class="card-body">ACTIVE status</text>
+  <rect x="260" y="442" width="124" height="34" class="chip"/>
+  <text x="278" y="464" class="card-body">Prereqs met</text>
+  <rect x="116" y="486" width="128" height="34" class="chip"/>
+  <text x="132" y="508" class="card-body">Seats open</text>
+  <rect x="260" y="486" width="124" height="34" class="chip"/>
+  <text x="278" y="508" class="card-body">Reasons list</text>
+
+  <rect x="470" y="356" width="274" height="180" class="print-box"/>
+  <text x="494" y="386" class="mini">Step 6</text>
+  <text x="494" y="420" class="card-title">printScenario</text>
+  <text x="494" y="450" class="card-body">Scenario summary</text>
+  <text x="494" y="476" class="card-body">Eligibility decision</text>
+  <text x="494" y="502" class="card-body">Assertions passed</text>
+
+  <path d="M210 218H246" class="line"/>
+  <path d="M400 218H436" class="line"/>
+  <path d="M590 218H626" class="line"/>
+  <path d="M685 274V324H250V356" class="soft-line"/>
+  <path d="M408 437H470" class="line"/>
+
+  <text x="250" y="314" class="mini">returned Student + Course objects</text>
+  <circle cx="228" cy="218" r="5.5" fill="#1b4258"/>
+  <circle cx="418" cy="218" r="5.5" fill="#1b4258"/>
+  <circle cx="608" cy="218" r="5.5" fill="#1b4258"/>
+</svg>

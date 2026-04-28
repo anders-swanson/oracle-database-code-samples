@@ -42,7 +42,6 @@
     <modules>
         <module>ai-vector-search</module>
         <module>jdbc-graphql</module>
-        <module>jdbc-graphrag</module>
         <module>jdbc-hybrid-search</module>
         <module>jdbc-json-oracle-text</module>
         <module>langchain4j-agent-memory</module>

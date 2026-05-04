@@ -115,6 +115,5 @@
   <path d="M312 392H248" class="line"/>
 
   <rect x="112" y="492" width="576" height="66" fill="#fff8e8" stroke="#c8a855" stroke-width="1.8" rx="17" ry="17"/>
-  <text x="158" y="519" class="guard">System prompt guardrail</text>
-  <text x="158" y="543" class="guard">Inspect metadata when needed; run SELECT statements only</text>
+  <text x="158" y="530" class="guard">Inspect metadata when needed; run SELECT statements only</text>
 </svg>

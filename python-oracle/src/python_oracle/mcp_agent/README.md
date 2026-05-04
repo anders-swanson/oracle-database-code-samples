@@ -7,6 +7,7 @@ tags:
   - python
   - MCP
   - SQLcl
+blog_post: "https://andersswanson.dev/2026/05/04/sqlcl-mcp-for-oracle-ai-database-using-langchain/"
 ---
 
 # SQLcl MCP Agent

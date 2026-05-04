@@ -1194,7 +1194,7 @@
     ],
     "language": "Python",
     "parentCollection": "python-oracle",
-    "blogPost": "",
+    "blogPost": "https://andersswanson.dev/2026/05/04/sqlcl-mcp-for-oracle-ai-database-using-langchain/",
     "readmeExcerpt": "This sample starts [SQLcl](https://www.oracle.com/database/sqldeveloper/technologies/sqlcl/download/) as an MCP server and lets a LangChain Python agent answer natural-language questions against an Oracle AI Database schema.",
     "highlights": [
       "Docker and Docker Compose",

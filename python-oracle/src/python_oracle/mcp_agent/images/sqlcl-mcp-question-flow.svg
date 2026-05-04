@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">SQLcl MCP natural-language question flow</title>
+  <desc id="desc">An 800 by 600 diagram showing the runtime flow from a natural-language question to metadata inspection, a read-only SQL query, rows, and a final answer.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f9f4ec"/>
+      <stop offset="56%" stop-color="#fcfbf8"/>
+      <stop offset="100%" stop-color="#e8f3f0"/>
+    </linearGradient>
+    <linearGradient id="prompt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e1f0f6"/>
+      <stop offset="100%" stop-color="#f6fbfe"/>
+    </linearGradient>
+    <linearGradient id="agent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#123047"/>
+      <stop offset="100%" stop-color="#24646f"/>
+    </linearGradient>
+    <linearGradient id="sql" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff0c9"/>
+      <stop offset="100%" stop-color="#fffaf1"/>
+    </linearGradient>
+    <linearGradient id="answer" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#efe4f5"/>
+      <stop offset="100%" stop-color="#fbf5ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="9" stdDeviation="12" flood-color="#173247" flood-opacity="0.13"/>
+    </filter>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M0 0L11 5.5L0 11Z" fill="#1c4357"/>
+    </marker>
+    <style>
+      .frame { fill: url(#bg); }
+      .title { font: 700 34px Georgia, "Times New Roman", serif; fill: #10283c; }
+      .subtitle { font: 400 18px Georgia, "Times New Roman", serif; fill: #40596d; }
+      .eyebrow { font: 700 14px Arial, sans-serif; letter-spacing: 1.6px; fill: #755d42; }
+      .lane { fill: #fffdfa; stroke: #d3c4ad; stroke-width: 1.5; rx: 20; ry: 20; }
+      .step-blue { fill: url(#prompt); stroke: #2b6777; stroke-width: 2; rx: 18; ry: 18; filter: url(#shadow); }
+      .step-agent { fill: url(#agent); stroke: #16384e; stroke-width: 2; rx: 18; ry: 18; filter: url(#shadow); }
+      .step-sql { fill: url(#sql); stroke: #9a7620; stroke-width: 2; rx: 18; ry: 18; filter: url(#shadow); }
+      .step-answer { fill: url(#answer); stroke: #72528c; stroke-width: 2; rx: 18; ry: 18; filter: url(#shadow); }
+      .num { font: 700 18px Arial, sans-serif; fill: #ffffff; }
+      .num-dark { font: 700 18px Arial, sans-serif; fill: #123047; }
+      .label { font: 700 12px Arial, sans-serif; letter-spacing: 1px; fill: #657b88; }
+      .label-light { font: 700 12px Arial, sans-serif; letter-spacing: 1px; fill: #dceef4; }
+      .step-title { font: 700 21px Arial, sans-serif; fill: #123047; }
+      .step-title-light { font: 700 21px Arial, sans-serif; fill: #ffffff; }
+      .body { font: 500 14px Arial, sans-serif; fill: #365369; }
+      .body-light { font: 500 14px Arial, sans-serif; fill: #dbeef4; }
+      .code { font: 700 13px "SFMono-Regular", Consolas, monospace; fill: #123047; }
+      .guard { font: 700 15px Arial, sans-serif; fill: #7a5d18; }
+      .line { stroke: #1c4357; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
+      .thin { stroke: #7a8f9a; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
+      .circle-blue { fill: #2b6777; }
+      .circle-dark { fill: #123047; }
+      .circle-gold { fill: #9a7620; }
+      .circle-violet { fill: #72528c; }
+    </style>
+  </defs>
+
+  <rect class="frame" width="800" height="600"/>
+
+  <text x="46" y="54" class="eyebrow">ORACLE AI DATABASE SAMPLE</text>
+  <text x="46" y="94" class="title">Question to Answer Flow</text>
+  <text x="46" y="124" class="subtitle">The agent turns a prompt into read-only SQL and a concise result.</text>
+
+  <rect x="44" y="158" width="712" height="306" class="lane"/>
+
+  <rect x="70" y="190" width="178" height="104" class="step-blue"/>
+  <circle cx="96" cy="216" r="17" class="circle-blue"/>
+  <text x="91" y="222" class="num">1</text>
+  <text x="120" y="213" class="label">USER</text>
+  <text x="120" y="245" class="step-title">Ask</text>
+  <text x="120" y="270" class="body">Natural-language</text>
+
+  <rect x="312" y="190" width="178" height="104" class="step-agent"/>
+  <circle cx="338" cy="216" r="17" fill="#ffffff" opacity="0.22"/>
+  <text x="333" y="222" class="num">2</text>
+  <text x="362" y="213" class="label-light">LANGCHAIN</text>
+  <text x="362" y="245" class="step-title-light">Plan</text>
+  <text x="362" y="270" class="body-light">Choose MCP tools</text>
+
+  <rect x="554" y="190" width="178" height="104" class="step-sql"/>
+  <circle cx="580" cy="216" r="17" class="circle-gold"/>
+  <text x="575" y="222" class="num">3</text>
+  <text x="604" y="213" class="label">SQLCL MCP</text>
+  <text x="604" y="245" class="step-title">Inspect</text>
+  <text x="604" y="270" class="body">Tables + columns</text>
+
+  <rect x="554" y="340" width="178" height="104" class="step-sql"/>
+  <circle cx="580" cy="366" r="17" class="circle-gold"/>
+  <text x="575" y="372" class="num">4</text>
+  <text x="604" y="363" class="label">ORACLE SQL</text>
+  <text x="604" y="395" class="step-title">Run SQL</text>
+  <text x="604" y="420" class="code">PLAYERS / GAMES</text>
+
+  <rect x="312" y="340" width="178" height="104" class="step-agent"/>
+  <circle cx="338" cy="366" r="17" fill="#ffffff" opacity="0.22"/>
+  <text x="333" y="372" class="num">5</text>
+  <text x="362" y="363" class="label-light">LANGCHAIN</text>
+  <text x="362" y="395" class="step-title-light">Reason</text>
+  <text x="362" y="420" class="body-light">Use returned rows</text>
+
+  <rect x="70" y="340" width="178" height="104" class="step-answer"/>
+  <circle cx="96" cy="366" r="17" class="circle-violet"/>
+  <text x="91" y="372" class="num">6</text>
+  <text x="120" y="363" class="label">ANSWER</text>
+  <text x="120" y="395" class="step-title">Reply</text>
+  <text x="120" y="420" class="body">Plain result</text>
+
+  <path d="M248 242H312" class="line"/>
+  <path d="M490 242H554" class="line"/>
+  <path d="M643 294V340" class="line"/>
+  <path d="M554 392H490" class="thin"/>
+  <path d="M312 392H248" class="line"/>
+
+  <rect x="112" y="492" width="576" height="66" fill="#fff8e8" stroke="#c8a855" stroke-width="1.8" rx="17" ry="17"/>
+  <text x="158" y="519" class="guard">System prompt guardrail</text>
+  <text x="158" y="543" class="guard">Inspect metadata when needed; run SELECT statements only</text>
+</svg>

@@ -15,9 +15,12 @@ dependencies = [
     "testcontainers (>=4.14.1)",
 
     # LangChain
+    "langchain (==1.2.17)",
     "langchain-oracledb (>=1.2.0,<2.0.0)",
     "langchain-openai (>=1.1.7,<2.0.0)",
-    "langchain-community (>=0.4.1,<0.5.0)"
+    "langchain-community (>=0.4.1,<0.5.0)",
+    "langchain-mcp-adapters (>=0.1.0,<1.0.0)",
+    "langgraph (>=1.0.0,<2.0.0)"
 ]
 
 [tool.poetry]

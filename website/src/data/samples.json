@@ -608,43 +608,6 @@
     "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {
-    "id": "jdbc-graphrag",
-    "name": "jdbc-graphrag",
-    "title": "JDBC GraphRAG",
-    "description": "Plain JDBC GraphRAG sample that combines Oracle AI Database vectors, property graphs, and local embeddings.",
-    "path": "jdbc-graphrag",
-    "readmePath": "jdbc-graphrag/README.md",
-    "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-graphrag/README.md",
-    "githubCodeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/tree/main/jdbc-graphrag",
-    "tags": [
-      "AI",
-      "Graph",
-      "GraphRAG",
-      "Java",
-      "Vector Search"
-    ],
-    "features": [
-      "Vector Search",
-      "Property Graph"
-    ],
-    "language": "Java",
-    "parentCollection": "Standalone",
-    "blogPost": "",
-    "readmeExcerpt": "This module demonstrates a first-pass GraphRAG retrieval pipeline with Oracle AI Database and plain JDBC. It stores knowledge-base chunks with local AllMiniLM embeddings, creates a SQL property graph over chunks and concepts, and expands semantic vector matches through graph relationships.",
-    "highlights": [
-      "embed text locally with the same MiniLM model style used in [ai-vector-search](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/ai-vector-search)",
-      "store chunk embeddings in an Oracle AI Database VECTOR column",
-      "model chunks, concepts, mentions, and concept relationships as a SQL property graph",
-      "query semantic seed chunks with VECTOR_DISTANCE"
-    ],
-    "featured": false,
-    "urlPath": "/samples/jdbc-graphrag/",
-    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-graphrag/",
-    "metaTitle": "JDBC GraphRAG | Oracle AI Database Code Samples",
-    "metaDescription": "Plain JDBC GraphRAG sample that combines Oracle AI Database vectors, property graphs, and local embeddings.",
-    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
-  },
-  {
     "id": "jdbc-json-oracle-text",
     "name": "jdbc-json-oracle-text",
     "title": "JDBC JSON Oracle Text",
@@ -1209,6 +1172,41 @@
     "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--langchain/",
     "metaTitle": "LangChain Vector Search Sample | Oracle AI Database Code Samples",
     "metaDescription": "LangChain-based Python vector search sample for Oracle AI Database.",
+    "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  },
+  {
+    "id": "python-oracle--src--python_oracle--mcp_agent",
+    "name": "python-oracle/src/python_oracle/mcp_agent",
+    "title": "SQLcl MCP Agent",
+    "description": "Python SQLcl MCP agent for natural-language SQL queries against Oracle AI Database.",
+    "path": "python-oracle/src/python_oracle/mcp_agent",
+    "readmePath": "python-oracle/src/python_oracle/mcp_agent/README.md",
+    "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/python-oracle/src/python_oracle/mcp_agent/README.md",
+    "githubCodeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/tree/main/python-oracle/src/python_oracle/mcp_agent",
+    "tags": [
+      "AI",
+      "MCP",
+      "python",
+      "SQLcl"
+    ],
+    "features": [
+      "AI Agents"
+    ],
+    "language": "Python",
+    "parentCollection": "python-oracle",
+    "blogPost": "",
+    "readmeExcerpt": "This sample starts [SQLcl](https://www.oracle.com/database/sqldeveloper/technologies/sqlcl/download/) as an MCP server and lets a LangChain Python agent answer natural-language questions against an Oracle AI Database schema.",
+    "highlights": [
+      "Docker and Docker Compose",
+      "Poetry",
+      "Python 3.13 or higher",
+      "Java runtime for SQLcl"
+    ],
+    "featured": false,
+    "urlPath": "/samples/python-oracle--src--python_oracle--mcp_agent/",
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--mcp_agent/",
+    "metaTitle": "SQLcl MCP Agent | Oracle AI Database Code Samples",
+    "metaDescription": "Python SQLcl MCP agent for natural-language SQL queries against Oracle AI Database.",
     "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
   },
   {

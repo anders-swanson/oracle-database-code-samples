@@ -19,7 +19,8 @@ const route = useRoute();
         <span class="site-header__title">Code Samples</span>
       </RouterLink>
       <nav class="site-header__nav">
-        <RouterLink :class="{ 'is-active': route.name !== 'feature-map' }" :to="{ name: 'catalog' }">Catalog</RouterLink>
+        <RouterLink :class="{ 'is-active': route.name === 'catalog' || route.name === 'sample-detail' }" :to="{ name: 'catalog' }">Catalog</RouterLink>
+        <RouterLink :class="{ 'is-active': route.name === 'patterns' }" :to="{ name: 'patterns' }">Patterns</RouterLink>
         <RouterLink :class="{ 'is-active': route.name === 'feature-map' }" :to="{ name: 'feature-map' }">Feature Map</RouterLink>
         <a href="https://github.com/anders-swanson/oracle-database-code-samples" target="_blank" rel="noreferrer">
           GitHub

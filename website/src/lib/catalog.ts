@@ -1,8 +1,22 @@
 import rawSamples from '../data/samples.json';
+import rawPatternMappings from '../data/patternMappings.json';
 import { featureDescriptions } from '../data/featureDescriptions';
-import type { CatalogFilters, FeatureSummary, FilterOption, SampleRecord, SubfeatureGraph } from '../types';
+import type {
+  CatalogFilters,
+  FeatureSummary,
+  FilterOption,
+  PatternMappingData,
+  PatternMapping,
+  PatternIntent,
+  ResolvedPatternMapping,
+  SampleRecord,
+  SubfeatureGraph
+} from '../types';
 
 export const samples = rawSamples as SampleRecord[];
+const patternMappingData = rawPatternMappings as PatternMappingData;
+export const patternIntents = patternMappingData.intents as PatternIntent[];
+export const patternMappings = patternMappingData.patterns as PatternMapping[];
 
 export const defaultFilters: CatalogFilters = {
   query: '',
@@ -134,6 +148,17 @@ export function summarizeFeatures(items: SampleRecord[]): FeatureSummary[] {
 
 export function findSampleById(id: string) {
   return samples.find((sample) => sample.id === id);
+}
+
+export function resolvePatternMappings(items: SampleRecord[] = samples): ResolvedPatternMapping[] {
+  const sampleById = new Map(items.map((sample) => [sample.id, sample]));
+
+  return patternMappings.map((pattern) => ({
+    ...pattern,
+    samples: pattern.sampleIds
+      .map((sampleId) => sampleById.get(sampleId))
+      .filter((sample): sample is SampleRecord => Boolean(sample))
+  }));
 }
 
 export function findRelatedSamples(target: SampleRecord, items: SampleRecord[], limit = 4) {

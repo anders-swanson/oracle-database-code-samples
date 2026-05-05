@@ -66,3 +66,29 @@ export interface SubfeatureGraph {
   orbitRadii: number[];
   nodes: SubfeatureGraphNode[];
 }
+
+export interface PatternMapping {
+  id: string;
+  intentId: string;
+  title: string;
+  summary: string;
+  useWhen: string;
+  features: string[];
+  sampleIds: string[];
+}
+
+export interface ResolvedPatternMapping extends PatternMapping {
+  samples: SampleRecord[];
+}
+
+export interface PatternIntent {
+  id: string;
+  title: string;
+  summary: string;
+  color: string;
+}
+
+export interface PatternMappingData {
+  intents: PatternIntent[];
+  patterns: PatternMapping[];
+}

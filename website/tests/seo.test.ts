@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 const { sample } = vi.hoisted(() => ({
   sample: {
@@ -30,51 +30,66 @@ vi.mock('../src/lib/catalog', () => ({
   findSampleById: (id: string) => (id === sample.id ? sample : undefined)
 }));
 
-import { applyCurrentRouteMetadata } from '../src/lib/seo';
+import { buildRouteHead, resolveRouteMetadata } from '../src/lib/seo';
 
 describe('SEO metadata sync', () => {
-  beforeEach(() => {
-    document.head.innerHTML = '';
-    document.title = '';
-  });
+  function headFor(route: { name: string; params?: Record<string, string> }) {
+    return buildRouteHead(
+      resolveRouteMetadata({
+        params: {},
+        ...route
+      } as never)
+    );
+  }
+
+  function findMeta(
+    head: ReturnType<typeof buildRouteHead>,
+    key: 'name' | 'property',
+    value: string
+  ) {
+    return head.meta.find((entry) => entry[key] === value);
+  }
 
   it('applies catalog metadata', () => {
-    applyCurrentRouteMetadata({
-      name: 'catalog',
-      params: {}
-    } as never);
+    const head = headFor({ name: 'catalog' });
 
-    expect(document.title).toBe('Oracle AI Database Code Samples');
-    expect(document.head.querySelector('meta[name="description"]')?.getAttribute('content')).toContain('Browse runnable');
-    expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(
-      'https://anders-swanson.github.io/oracle-database-code-samples/'
-    );
+    expect(head.title).toBe('Oracle AI Database Code Samples');
+    expect(findMeta(head, 'name', 'description')?.content).toContain('Browse runnable');
+    expect(head.link[0].href).toBe('https://anders-swanson.github.io/oracle-database-code-samples/');
   });
 
   it('applies sample metadata and structured data', () => {
-    applyCurrentRouteMetadata({
+    const head = headFor({
       name: 'sample-detail',
       params: {
         id: sample.id
       }
-    } as never);
+    });
 
-    expect(document.title).toBe(sample.metaTitle);
-    expect(document.head.querySelector('meta[property="og:type"]')?.getAttribute('content')).toBe('article');
-    expect(document.head.querySelector('meta[property="og:url"]')?.getAttribute('content')).toBe(sample.canonicalUrl);
-    expect(document.head.querySelector('#app-structured-data')?.textContent).toContain('SoftwareSourceCode');
+    expect(head.title).toBe(sample.metaTitle);
+    expect(findMeta(head, 'property', 'og:type')?.content).toBe('article');
+    expect(findMeta(head, 'property', 'og:url')?.content).toBe(sample.canonicalUrl);
+    expect(head.script[0]?.textContent).toContain('SoftwareSourceCode');
   });
 
   it('applies feature map metadata', () => {
-    applyCurrentRouteMetadata({
-      name: 'feature-map',
-      params: {}
-    } as never);
+    const head = headFor({ name: 'feature-map' });
 
-    expect(document.title).toBe('Feature Map | Oracle AI Database Code Samples');
-    expect(document.head.querySelector('meta[property="og:url"]')?.getAttribute('content')).toBe(
+    expect(head.title).toBe('Feature Map | Oracle AI Database Code Samples');
+    expect(findMeta(head, 'property', 'og:url')?.content).toBe(
       'https://anders-swanson.github.io/oracle-database-code-samples/feature-map/'
     );
-    expect(document.head.querySelector('#app-structured-data')?.textContent).toContain('CollectionPage');
+    expect(head.script[0]?.textContent).toContain('CollectionPage');
+  });
+
+  it('applies patterns metadata', () => {
+    const head = headFor({ name: 'patterns' });
+
+    expect(head.title).toBe('Patterns | Oracle AI Database Code Samples');
+    expect(findMeta(head, 'property', 'og:url')?.content).toBe(
+      'https://anders-swanson.github.io/oracle-database-code-samples/patterns/'
+    );
+    expect(findMeta(head, 'name', 'description')?.content).toContain('software engineering patterns');
+    expect(head.script[0]?.textContent).toContain('CollectionPage');
   });
 });

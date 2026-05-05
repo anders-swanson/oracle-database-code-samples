@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "generate": "node ./scripts/generate-samples.mjs",
-    "build": "npm run generate && vite build && node ./scripts/prerender.mjs",
+    "build": "npm run generate && vite-ssg build",
     "preview": "vite preview",
     "test": "vitest run"
   },
@@ -15,11 +15,13 @@
     "vue-router": "^4.6.0"
   },
   "devDependencies": {
+    "@unhead/vue": "^2.1.13",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/test-utils": "^2.4.6",
     "jsdom": "^26.1.0",
     "typescript": "^5.9.3",
     "vite": "^7.1.9",
+    "vite-ssg": "^28.3.0",
     "vitest": "^3.2.4"
   }
 }

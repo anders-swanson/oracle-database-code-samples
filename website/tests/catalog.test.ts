@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { buildSubfeatureGraph, filterSamples, routeQueryToFilters, serializeFilters } from '../src/lib/catalog';
+import {
+  buildSubfeatureGraph,
+  filterSamples,
+  patternMappings,
+  resolvePatternMappings,
+  routeQueryToFilters,
+  samples as catalogSamples,
+  serializeFilters
+} from '../src/lib/catalog';
 import type { SampleRecord } from '../src/types';
 
 const samples: SampleRecord[] = [
@@ -131,5 +139,26 @@ describe('catalog filtering', () => {
       true
     );
     expect(graph.nodes.every((node) => node.width >= 168 && node.height === 96)).toBe(true);
+  });
+
+  it('resolves every curated pattern sample id against the generated catalog', () => {
+    const catalogIds = new Set(catalogSamples.map((sample) => sample.id));
+    const missingIds = patternMappings.flatMap((pattern) =>
+      pattern.sampleIds
+        .filter((sampleId) => !catalogIds.has(sampleId))
+        .map((sampleId) => `${pattern.id}:${sampleId}`)
+    );
+    const mappedSampleIds = new Set(patternMappings.flatMap((pattern) => pattern.sampleIds));
+    const unmappedIds = catalogSamples
+      .filter((sample) => !mappedSampleIds.has(sample.id))
+      .map((sample) => sample.id)
+      .sort();
+    const resolvedPatterns = resolvePatternMappings(catalogSamples);
+
+    expect(missingIds).toEqual([]);
+    expect(unmappedIds).toEqual([]);
+    expect(resolvedPatterns).toHaveLength(patternMappings.length);
+    expect(resolvedPatterns.every((pattern) => pattern.samples.length === pattern.sampleIds.length)).toBe(true);
+    expect(resolvedPatterns[0].id).toBe('event-streaming');
   });
 });

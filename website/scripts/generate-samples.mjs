@@ -5,11 +5,14 @@ import {
   deriveSampleRecord,
   parseReadmeFile
 } from './sample-catalog-utils.mjs';
+import { buildPatternMappings } from './pattern-mapping-utils.mjs';
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 const websiteRoot = path.resolve(currentDir, '..');
 const repoRoot = path.resolve(websiteRoot, '..');
 const outputPath = path.join(websiteRoot, 'src', 'data', 'samples.json');
+const patternDefinitionsPath = path.join(websiteRoot, 'src', 'data', 'patternDefinitions.json');
+const patternMappingsPath = path.join(websiteRoot, 'src', 'data', 'patternMappings.json');
 const skipDirectories = new Set([
   '.git',
   'node_modules',
@@ -52,4 +55,11 @@ const samples = readmeFiles
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, `${JSON.stringify(samples, null, 2)}\n`);
 
+const patternDefinitions = JSON.parse(fs.readFileSync(patternDefinitionsPath, 'utf8'));
+const patternMappings = buildPatternMappings(samples, patternDefinitions);
+fs.writeFileSync(patternMappingsPath, `${JSON.stringify(patternMappings, null, 2)}\n`);
+
 console.log(`Generated ${samples.length} samples into ${path.relative(repoRoot, outputPath)}`);
+console.log(
+  `Generated ${patternMappings.patterns.length} pattern mappings into ${path.relative(repoRoot, patternMappingsPath)}`
+);

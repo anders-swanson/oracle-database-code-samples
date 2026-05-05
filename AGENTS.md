@@ -6,6 +6,7 @@
 
 ## Project Structure & Module Organization
 - `pom.xml` is the root pom for a multi-module Maven build. subdirectories with a pom.xml are child modules of this build.
+- `website/` is the root for the project webpage.
 - All module README.md files should have a front matter with name, description, and tags fields
 - When linking to any code within the repo, always use the main blob URL: https://github.com/anders-swanson/oracle-database-code-samples/blob/main
   - any link to a specific file comes after that. For example, this AGENTS.md file links to https://github.com/anders-swanson/oracle-database-code-samples/blob/main/AGENTS.md

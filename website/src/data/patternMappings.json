@@ -1,0 +1,250 @@
+{
+  "intents": [
+    {
+      "id": "react-to-change",
+      "title": "React to change",
+      "summary": "Events, streams, and migrations",
+      "color": "#ff9f6e"
+    },
+    {
+      "id": "build-ai-experiences",
+      "title": "Build AI experiences",
+      "summary": "Retrieval and agent workflows",
+      "color": "#59d4ff"
+    },
+    {
+      "id": "shape-application-data",
+      "title": "Shape application data",
+      "summary": "Documents, APIs, graph, and spatial",
+      "color": "#5de0a7"
+    },
+    {
+      "id": "ship-and-operate",
+      "title": "Ship and operate",
+      "summary": "Testing, Spring config, and tracing",
+      "color": "#a7f070"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "event-streaming",
+      "intentId": "react-to-change",
+      "title": "Event Streaming",
+      "summary": "Move business events through Oracle AI Database with transactional queues, JMS, OKafka, and durable consumers.",
+      "useWhen": "Use this when the event and the data change need the same transactional boundary, or when a team wants streaming without standing up a separate broker first.",
+      "features": [
+        "TxEventQ",
+        "Kafka",
+        "Spring"
+      ],
+      "sampleIds": [
+        "news-event-streaming",
+        "txeventq-examples",
+        "jdbc-event-streaming",
+        "jms-producer-consumer",
+        "json--json-event-streaming",
+        "spring-boot-cdc",
+        "spring-boot-jms-example",
+        "txeventq-multidb-replication",
+        "typescript",
+        "typescript--src--txeventq"
+      ]
+    },
+    {
+      "id": "kafka-migration",
+      "intentId": "react-to-change",
+      "title": "Kafka Migration",
+      "summary": "Move Kafka-style producers and consumers toward Oracle AI Database queues while preserving event payload and processing shape.",
+      "useWhen": "Use this for staged migration, Kafka API interoperability, or comparing separate-broker designs with database-native eventing.",
+      "features": [
+        "TxEventQ",
+        "Kafka",
+        "JSON"
+      ],
+      "sampleIds": [
+        "migrate-kafka-to-oracle",
+        "migrate-kafka-to-oracle--kafka-app",
+        "migrate-kafka-to-oracle--kafka-app-step-1",
+        "migrate-kafka-to-oracle--kafka-app-step-2",
+        "migrate-kafka-to-oracle--kafka-app-step-3",
+        "oracle-database-kafka-apis"
+      ]
+    },
+    {
+      "id": "semantic-search-rag",
+      "intentId": "build-ai-experiences",
+      "title": "Semantic Search / RAG",
+      "summary": "Combine embeddings, text filters, and SQL access paths for retrieval-augmented application features.",
+      "useWhen": "Use this when users search by meaning, when an AI answer needs grounded records, or when vector and keyword relevance both matter.",
+      "features": [
+        "Vector Search",
+        "JSON"
+      ],
+      "sampleIds": [
+        "ai-vector-search",
+        "jdbc-hybrid-search",
+        "python-oracle--src--python_oracle--database",
+        "python-oracle--src--python_oracle--langchain",
+        "sql"
+      ]
+    },
+    {
+      "id": "ai-agents",
+      "intentId": "build-ai-experiences",
+      "title": "AI Agents",
+      "summary": "Give agents durable memory, SQL tools, and MCP-backed access to Oracle AI Database workflows.",
+      "useWhen": "Use this when the application needs tool calling, persistent memory, or natural-language access to database-backed operations.",
+      "features": [
+        "AI Agents",
+        "Vector Search",
+        "JSON"
+      ],
+      "sampleIds": [
+        "langchain4j-agent-memory",
+        "mcp-agent",
+        "python-oracle--src--python_oracle--langchain",
+        "python-oracle--src--python_oracle--mcp_agent"
+      ]
+    },
+    {
+      "id": "json-documents-duality",
+      "intentId": "shape-application-data",
+      "title": "JSON Documents and Duality",
+      "summary": "Model flexible JSON documents, stream OSON payloads, run SQL/JSON analytics, and expose relational models through JSON Relational Duality Views.",
+      "useWhen": "Use this when records need document flexibility, document-shaped APIs, or JSON views over relational data without giving up indexes, SQL, constraints, and transactions.",
+      "features": [
+        "JSON",
+        "Duality Views",
+        "Spring"
+      ],
+      "sampleIds": [
+        "jdbc-hybrid-search",
+        "json--jpa-duality-views",
+        "golang--dualityviews",
+        "jdbc-json-oracle-text",
+        "json--crud-duality-views",
+        "json--jdbc-json-analytics",
+        "json--jdbc-json-basic",
+        "migrate-kafka-to-oracle--kafka-app-step-3"
+      ]
+    },
+    {
+      "id": "api-facades",
+      "intentId": "shape-application-data",
+      "title": "API Facades",
+      "summary": "Expose Oracle AI Database through REST, MongoDB-compatible, and GraphQL-style interfaces.",
+      "useWhen": "Use this when clients should not own low-level SQL details, or when an existing app expects REST, MongoDB, or GraphQL-style access.",
+      "features": [
+        "ORDS",
+        "SQL GraphQL",
+        "JSON"
+      ],
+      "sampleIds": [
+        "jdbc-graphql",
+        "ords-docker-compose",
+        "ords-testcontainers",
+        "spring-data-mongodb-oracle-api"
+      ]
+    },
+    {
+      "id": "graph-modeling",
+      "intentId": "shape-application-data",
+      "title": "Graph Modeling",
+      "summary": "Represent connected data as property graphs or GraphQL-style query shapes over Oracle AI Database tables.",
+      "useWhen": "Use this when relationships are first-class: recommendations, networks, paths, impact analysis, lineage, or traversal-heavy screens.",
+      "features": [
+        "Property Graph",
+        "SQL GraphQL"
+      ],
+      "sampleIds": [
+        "jdbc-property-graph",
+        "jdbc-graphql"
+      ]
+    },
+    {
+      "id": "spatial-querying",
+      "intentId": "shape-application-data",
+      "title": "Spatial Querying",
+      "summary": "Store, index, and query location-aware data with spatial operators and geometry types.",
+      "useWhen": "Use this when the product asks questions about proximity, containment, routing, zones, or other location-aware behavior.",
+      "features": [
+        "Spatial"
+      ],
+      "sampleIds": [
+        "jdbc-spatial-example"
+      ]
+    },
+    {
+      "id": "local-testing",
+      "intentId": "ship-and-operate",
+      "title": "Local Testing",
+      "summary": "Run deterministic integration tests against disposable Oracle AI Database Free containers.",
+      "useWhen": "Use this when tests need real database behavior without sharing a long-lived development instance.",
+      "features": [
+        "Testcontainers"
+      ],
+      "sampleIds": [
+        "oracle-ai-database-docker-compose",
+        "testcontainers",
+        "ai-optimizer",
+        "golang--testcontainers",
+        "ords-testcontainers",
+        "python-oracle--src--python_oracle--testcontainers_sample",
+        "typescript--src--testcontainers"
+      ]
+    },
+    {
+      "id": "application-foundations",
+      "intentId": "ship-and-operate",
+      "title": "Application Foundations",
+      "summary": "Connect applications to Oracle AI Database with drivers, local sandboxes, and transaction workflows.",
+      "useWhen": "Use this when the work is setting up application access, local tool environments, or transaction behavior before higher-level feature work.",
+      "features": [
+        "Oracle AI Database",
+        "Testcontainers"
+      ],
+      "sampleIds": [
+        "golang--connection",
+        "sessionless-transactions"
+      ]
+    },
+    {
+      "id": "spring-microservice-config",
+      "intentId": "ship-and-operate",
+      "title": "Spring Boot",
+      "summary": "Use Oracle AI Database with Spring Boot for persistence, resource loading, isolated service data, configuration, dynamic properties, and secrets-aware setup.",
+      "useWhen": "Use this when Spring Boot services need database-backed persistence, resource loading, clean service boundaries, runtime configuration, or environment-specific wiring.",
+      "features": [
+        "Spring",
+        "Testcontainers",
+        "Security"
+      ],
+      "sampleIds": [
+        "database-per-service-example",
+        "spring-boot-dynamic-property-source",
+        "spring-cloud-config",
+        "spring-jpa",
+        "spring-resource-sample",
+        "spring-vault-oracle-app"
+      ]
+    },
+    {
+      "id": "observability",
+      "intentId": "ship-and-operate",
+      "title": "Observability",
+      "summary": "Correlate database work with application traces, client metadata, and messaging flows.",
+      "useWhen": "Use this when teams need to follow a request from HTTP or JMS through JDBC calls and into Oracle AI Database sessions.",
+      "features": [
+        "Observability",
+        "Spring",
+        "TxEventQ"
+      ],
+      "sampleIds": [
+        "spring-boot-database-client-info",
+        "spring-boot-jdbc-custom-tracer",
+        "spring-boot-jdbc-tracing",
+        "spring-boot-jms-tracing"
+      ]
+    }
+  ]
+}

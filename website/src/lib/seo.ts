@@ -1,4 +1,4 @@
-import type { Router, RouteLocationNormalizedLoaded } from 'vue-router';
+import type { RouteLocationNormalizedLoaded } from 'vue-router';
 import type { SampleRecord } from '../types';
 import { findSampleById } from './catalog';
 
@@ -72,6 +72,30 @@ function buildSubfeatureMapMetadata(): PageMetadata {
   };
 }
 
+function buildPatternsMetadata(): PageMetadata {
+  const canonicalUrl = `${SITE_URL}patterns/`;
+  const description =
+    'Map common software engineering patterns to Oracle AI Database features and linked code samples.';
+
+  return {
+    title: `Patterns | ${SITE_NAME}`,
+    description,
+    canonicalUrl,
+    ogType: 'website',
+    ogImageUrl: DEFAULT_OG_IMAGE_URL,
+    ogImageAlt: DEFAULT_OG_IMAGE_ALT,
+    structuredData: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: 'Oracle AI Database Pattern Atlas',
+        url: canonicalUrl,
+        description
+      }
+    ]
+  };
+}
+
 function buildSampleMetadata(sample: SampleRecord): PageMetadata {
   return {
     title: sample.metaTitle,
@@ -127,7 +151,7 @@ function buildNotFoundMetadata(): PageMetadata {
   };
 }
 
-function resolveRouteMetadata(route: RouteLocationNormalizedLoaded) {
+export function resolveRouteMetadata(route: RouteLocationNormalizedLoaded) {
   if (route.name === 'sample-detail') {
     const sample = findSampleById(String(route.params.id));
     return sample ? buildSampleMetadata(sample) : buildNotFoundMetadata();
@@ -135,87 +159,43 @@ function resolveRouteMetadata(route: RouteLocationNormalizedLoaded) {
   if (route.name === 'feature-map') {
     return buildSubfeatureMapMetadata();
   }
+  if (route.name === 'patterns') {
+    return buildPatternsMetadata();
+  }
 
   return buildCatalogMetadata();
 }
 
-function upsertMeta(attribute: 'name' | 'property', key: string, content: string) {
-  let element = document.head.querySelector(`meta[${attribute}="${key}"]`);
-  if (!element) {
-    element = document.createElement('meta');
-    element.setAttribute(attribute, key);
-    document.head.append(element);
-  }
-
-  element.setAttribute('content', content);
-}
-
-function upsertLink(rel: string, href: string) {
-  let element = document.head.querySelector(`link[rel="${rel}"]`);
-  if (!element) {
-    element = document.createElement('link');
-    element.setAttribute('rel', rel);
-    document.head.append(element);
-  }
-
-  element.setAttribute('href', href);
-}
-
-function upsertStructuredData(structuredData: object[]) {
-  const existing = document.head.querySelector('#app-structured-data');
-  if (existing) {
-    existing.remove();
-  }
-
-  if (structuredData.length === 0) {
-    return;
-  }
-
-  const script = document.createElement('script');
-  script.id = 'app-structured-data';
-  script.type = 'application/ld+json';
-  script.textContent = JSON.stringify(structuredData.length === 1 ? structuredData[0] : structuredData);
-  document.head.append(script);
-}
-
-function syncDocumentMetadata(metadata: PageMetadata) {
-  document.title = metadata.title;
-  upsertMeta('name', 'description', metadata.description);
-  upsertMeta('property', 'og:type', metadata.ogType);
-  upsertMeta('property', 'og:title', metadata.title);
-  upsertMeta('property', 'og:description', metadata.description);
-  upsertMeta('property', 'og:url', metadata.canonicalUrl);
-  upsertMeta('property', 'og:image', metadata.ogImageUrl);
-  upsertMeta('property', 'og:image:alt', metadata.ogImageAlt);
-  upsertMeta('name', 'twitter:card', 'summary_large_image');
-  upsertMeta('name', 'twitter:title', metadata.title);
-  upsertMeta('name', 'twitter:description', metadata.description);
-  upsertMeta('name', 'twitter:image', metadata.ogImageUrl);
-  upsertMeta('name', 'twitter:image:alt', metadata.ogImageAlt);
-  upsertLink('canonical', metadata.canonicalUrl);
-  upsertStructuredData(metadata.structuredData);
-
-  const robotsMeta = document.head.querySelector('meta[name="robots"]');
-  if (metadata.robots) {
-    if (robotsMeta) {
-      robotsMeta.setAttribute('content', metadata.robots);
-    } else {
-      const element = document.createElement('meta');
-      element.setAttribute('name', 'robots');
-      element.setAttribute('content', metadata.robots);
-      document.head.append(element);
-    }
-  } else {
-    robotsMeta?.remove();
-  }
-}
-
-export function applyCurrentRouteMetadata(route: RouteLocationNormalizedLoaded) {
-  syncDocumentMetadata(resolveRouteMetadata(route));
-}
-
-export function setupSeoSync(router: Router) {
-  router.afterEach((to) => {
-    applyCurrentRouteMetadata(to);
-  });
+export function buildRouteHead(metadata: PageMetadata) {
+  return {
+    title: metadata.title,
+    meta: [
+      { name: 'description', content: metadata.description },
+      { property: 'og:type', content: metadata.ogType },
+      { property: 'og:title', content: metadata.title },
+      { property: 'og:description', content: metadata.description },
+      { property: 'og:url', content: metadata.canonicalUrl },
+      { property: 'og:image', content: metadata.ogImageUrl },
+      { property: 'og:image:alt', content: metadata.ogImageAlt },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: metadata.title },
+      { name: 'twitter:description', content: metadata.description },
+      { name: 'twitter:image', content: metadata.ogImageUrl },
+      { name: 'twitter:image:alt', content: metadata.ogImageAlt },
+      ...(metadata.robots ? [{ name: 'robots', content: metadata.robots }] : [])
+    ],
+    link: [{ rel: 'canonical', href: metadata.canonicalUrl }],
+    script:
+      metadata.structuredData.length > 0
+        ? [
+            {
+              id: 'app-structured-data',
+              type: 'application/ld+json',
+              textContent: JSON.stringify(
+                metadata.structuredData.length === 1 ? metadata.structuredData[0] : metadata.structuredData
+              )
+            }
+          ]
+        : []
+  };
 }

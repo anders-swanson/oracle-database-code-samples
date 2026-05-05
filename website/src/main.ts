@@ -1,13 +1,10 @@
-import { createApp } from 'vue';
+import { ViteSSG } from 'vite-ssg';
 import App from './App.vue';
-import { applyCurrentRouteMetadata, setupSeoSync } from './lib/seo';
-import { router } from './router';
+import { routes, scrollBehavior } from './router';
 import './styles.css';
 
-setupSeoSync(router);
-
-createApp(App).use(router).mount('#app');
-
-router.isReady().then(() => {
-  applyCurrentRouteMetadata(router.currentRoute.value);
+export const createApp = ViteSSG(App, {
+  base: import.meta.env.BASE_URL,
+  routes,
+  scrollBehavior
 });

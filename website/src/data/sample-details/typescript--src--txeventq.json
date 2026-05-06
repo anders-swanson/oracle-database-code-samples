@@ -1,0 +1,15 @@
+{
+  "id": "typescript--src--txeventq",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/typescript/src/txeventq/README.md",
+  "blogPost": "https://andersswanson.dev/2025/09/22/pub-sub-with-a-nodejs-oracle-database-app/",
+  "readmeExcerpt": "Produce and consume messages with the Oracle AI Database NodeJS driver from a TypeScript app.",
+  "highlights": [],
+  "features": [
+    "TxEventQ",
+    "Testcontainers"
+  ],
+  "metaTitle": "TypeScript TxEventQ Sample | Oracle AI Database Code Samples",
+  "metaDescription": "TypeScript sample for producing and consuming TxEventQ messages with node-oracledb.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/typescript--src--txeventq/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

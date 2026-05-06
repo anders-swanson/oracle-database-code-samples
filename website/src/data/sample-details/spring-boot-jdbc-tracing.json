@@ -1,0 +1,18 @@
+{
+  "id": "spring-boot-jdbc-tracing",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-boot-jdbc-tracing/README.md",
+  "blogPost": "https://andersswanson.dev/2025/10/10/oracle-jdbc-tracing-with-spring-boot-opentelemetry/",
+  "readmeExcerpt": "This example application demonstrates how to instrument Oracle AI Database JDBC connections from a Spring Boot app context with OpenTelemetry.",
+  "highlights": [
+    "[Spring Boot tracing](https://docs.spring.io/spring-boot/reference/actuator/tracing.html)",
+    "[OJDBC OpenTelemetry provider](https://github.com/oracle/ojdbc-extensions/tree/main/ojdbc-provider-opentelemetry)"
+  ],
+  "features": [
+    "Spring",
+    "Observability"
+  ],
+  "metaTitle": "Spring Boot Oracle AI Database JDBC Tracing | Oracle AI Database Code Samples",
+  "metaDescription": "Spring Boot sample for Oracle JDBC tracing with OpenTelemetry.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-jdbc-tracing/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

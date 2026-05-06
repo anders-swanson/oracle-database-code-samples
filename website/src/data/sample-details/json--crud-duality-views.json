@@ -1,0 +1,21 @@
+{
+  "id": "json--crud-duality-views",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/json/crud-duality-views/README.md",
+  "blogPost": "https://andersswanson.dev/2026/02/24/hands-on-crud-with-jdbc-and-json-relational-duality-views/",
+  "readmeExcerpt": "[Click here for the in-depth blog](https://andersswanson.dev/2026/02/24/hands-on-crud-with-jdbc-and-json-relational-duality-views/)",
+  "highlights": [
+    "Serialize Java records into Oracle OSON using a reusable OSONMapper.",
+    "Insert JSON payloads into a JDV and retrieve generated keys via JDBC RETURNING.",
+    "Read JDV rows with JsonParser, map them back to typed objects, and apply json_transform updates.",
+    "Delete documents through the JDV and cascade relational changes automatically."
+  ],
+  "features": [
+    "JSON",
+    "Duality Views",
+    "Testcontainers"
+  ],
+  "metaTitle": "CRUD with JSON Relational Duality Views | Oracle AI Database Code Samples",
+  "metaDescription": "JDBC CRUD sample for JSON Relational Duality Views with OSON and Testcontainers.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--crud-duality-views/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

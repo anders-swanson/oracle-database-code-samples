@@ -1,31 +1,32 @@
-export interface SampleRecord {
+export interface SampleSummary {
   id: string;
-  name: string;
   title: string;
   description: string;
   path: string;
-  readmePath: string;
-  githubReadmeUrl: string;
   githubCodeUrl: string;
   tags: string[];
-  features: string[];
   language: string;
   parentCollection: string;
+  featured: boolean;
+}
+
+export interface SampleDetail {
+  id: string;
+  githubReadmeUrl: string;
   blogPost: string;
   readmeExcerpt: string;
   highlights: string[];
-  featured: boolean;
-  urlPath: string;
+  features: string[];
   canonicalUrl: string;
   metaTitle: string;
   metaDescription: string;
   ogImageUrl: string;
 }
 
+export type SampleRecord = SampleSummary & SampleDetail;
+
 export interface CatalogFilters {
   query: string;
-  features: string[];
-  languages: string[];
   tags: string[];
   sort: 'featured' | 'name';
 }
@@ -33,13 +34,6 @@ export interface CatalogFilters {
 export interface FilterOption {
   value: string;
   count: number;
-}
-
-export interface FeatureSummary {
-  name: string;
-  theme: string;
-  count: number;
-  description: string;
 }
 
 export interface SubfeatureGraphNode {
@@ -78,7 +72,7 @@ export interface PatternMapping {
 }
 
 export interface ResolvedPatternMapping extends PatternMapping {
-  samples: SampleRecord[];
+  samples: SampleSummary[];
 }
 
 export interface PatternIntent {
@@ -91,4 +85,22 @@ export interface PatternIntent {
 export interface PatternMappingData {
   intents: PatternIntent[];
   patterns: PatternMapping[];
+}
+
+export type PackedCatalogItem = [
+  id: string,
+  title: string,
+  description: string,
+  tagIds: number[],
+  languageId: number,
+  parentId: number,
+  featuredFlag: 0 | 1
+];
+
+export interface PackedCatalogIndex {
+  t: string[];
+  l: string[];
+  p: string[];
+  f: number;
+  i: PackedCatalogItem[];
 }

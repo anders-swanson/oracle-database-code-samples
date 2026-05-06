@@ -1,0 +1,18 @@
+{
+  "id": "spring-boot-jms-example",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-boot-jms-example/README.md",
+  "blogPost": "https://andersswanson.dev/2025/06/19/use-jms-for-asynchronous-messaging-in-spring-boot/",
+  "readmeExcerpt": "This example demonstrates how to write a pub/sub application using [Spring JMS](https://spring.io/guides/gs/messaging-jms) and [Oracle AI Database Transactional Event Queues](https://docs.oracle.com/en/database/oracle/oracle-database/26/adque/aq-introduction.html). If you're unfamiliar with Transactional Event Queues, it is a high-throughput, distributed asynchronous messaging system built into Oracle AI Database. The integration of Transactional Event Queues with Spring JMS provides a simple interface for rapid development of messaging applications.",
+  "highlights": [
+    "Java 21+, Maven",
+    "Docker compatible environment"
+  ],
+  "features": [
+    "TxEventQ",
+    "Spring"
+  ],
+  "metaTitle": "Spring Java Message Service (JMS) Example | Oracle AI Database Code Samples",
+  "metaDescription": "Spring Boot JMS pub-sub example for Oracle AI Database Transactional Event Queues.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-jms-example/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

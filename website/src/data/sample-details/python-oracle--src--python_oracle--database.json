@@ -1,0 +1,19 @@
+{
+  "id": "python-oracle--src--python_oracle--database",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/python-oracle/src/python_oracle/database/README.md",
+  "blogPost": "https://andersswanson.dev/2026/02/10/langchain-vs-diy-vector-search-with-oracle-ai-database/",
+  "readmeExcerpt": "This folder contains a native Python vector-search sample for Oracle AI Database using `python-oracledb` and the OpenAI embeddings API. The program creates a `sample_vectors` table, builds a vector index, inserts embeddings, and runs a similarity search query with `vector_distance`.",
+  "highlights": [
+    "Python 3.13+",
+    "Poetry",
+    "Docker compatible environment",
+    "OPENAI_API_KEY set in your environment, or available for interactive prompt entry"
+  ],
+  "features": [
+    "Vector Search"
+  ],
+  "metaTitle": "Native Python Vector Search Sample | Oracle AI Database Code Samples",
+  "metaDescription": "Native Python vector search sample for Oracle AI Database using python-oracledb.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--database/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

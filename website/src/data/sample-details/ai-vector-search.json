@@ -1,0 +1,18 @@
+{
+  "id": "ai-vector-search",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/ai-vector-search/README.md",
+  "blogPost": "https://andersswanson.dev/2025/06/23/whats-a-vector-database/",
+  "readmeExcerpt": "This code sample demonstrates how to use Oracle AI Database 26ai as a vector store for similarity search on text embeddings.",
+  "highlights": [
+    "Maven",
+    "Java 21+",
+    "A docker environment to support TestContainers"
+  ],
+  "features": [
+    "Vector Search"
+  ],
+  "metaTitle": "Similarity Search using Oracle AI Database 26ai | Oracle AI Database Code Samples",
+  "metaDescription": "Similarity search sample that stores embeddings in Oracle AI Database and queries them with vector search.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/ai-vector-search/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

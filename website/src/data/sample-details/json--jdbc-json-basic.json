@@ -1,0 +1,20 @@
+{
+  "id": "json--jdbc-json-basic",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/json/jdbc-json-basic/README.md",
+  "blogPost": "https://andersswanson.dev/2026/02/24/hands-on-crud-with-jdbc-and-json-relational-duality-views/",
+  "readmeExcerpt": "This sample demonstrates how to interact with the Oracle JSON data type using plain JDBC. A console-style program inserts, queries, updates, and deletes JSON documents stored in a relational table while leveraging SQL/JSON operators like `json_value` and `json_transform`.",
+  "highlights": [
+    "Bind JSON payloads as VARCHAR2/SQL JSON and hydrate them back into Jakarta JSON JsonObject instances.",
+    "Filter documents by attributes with json_value and apply in-place updates via json_transform.",
+    "Exercise the complete insert/read/update/delete lifecycle against a JSON column backed by Oracle AI Database Free.",
+    "Validate the flow with a Testcontainers-powered integration test that provisions a fresh database for each run."
+  ],
+  "features": [
+    "JSON",
+    "Testcontainers"
+  ],
+  "metaTitle": "JDBC JSON Data Type Sample | Oracle AI Database Code Samples",
+  "metaDescription": "Plain JDBC sample for inserting, querying, updating, and deleting Oracle JSON data.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--jdbc-json-basic/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

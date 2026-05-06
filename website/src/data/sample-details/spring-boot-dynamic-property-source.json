@@ -1,0 +1,17 @@
+{
+  "id": "spring-boot-dynamic-property-source",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-boot-dynamic-property-source/README.md",
+  "blogPost": "https://andersswanson.dev/2025/05/29/dynamically-load-spring-properties-from-external-repositories/",
+  "readmeExcerpt": "This example application demonstrates how to use the Spring Boot EnumerablePropertySource and EnvironmentPostProcessor classes to load properties dynamically at application startup from an external source (in this case an Oracle AI Database server).",
+  "highlights": [
+    "Java 21+, Maven"
+  ],
+  "features": [
+    "Spring",
+    "Security"
+  ],
+  "metaTitle": "Spring Dynamic Property Source Example | Oracle AI Database Code Samples",
+  "metaDescription": "Spring Boot sample that loads application properties dynamically from Oracle AI Database.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-dynamic-property-source/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

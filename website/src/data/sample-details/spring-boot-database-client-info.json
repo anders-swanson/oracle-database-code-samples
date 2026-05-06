@@ -1,0 +1,19 @@
+{
+  "id": "spring-boot-database-client-info",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-boot-database-client-info/README.md",
+  "blogPost": "https://andersswanson.dev/2025/11/03/unlocking-session-visibility-with-oracle-client-info/",
+  "readmeExcerpt": "This example application demonstrates how to add client information to Oracle AI Database connections in a Spring Boot application. It sets client identifiers on database connections for better monitoring and tracing. The application includes a simple REST API for managing books, which sets custom client info (MODULE and ACTION) on each connection used in the API operations.",
+  "highlights": [
+    "[ClientInfoApplication](./src/main/java/com/example/clientinfo/ClientInfoApplication.java): The main Spring Boot application class that configures the DataSource with client info using a BeanPostProcessor.",
+    "[ClientInfoDataSource](./src/main/java/com/example/clientinfo/ClientInfoDataSource.java): A wrapper around the DataSource that applies client info properties to connections.",
+    "[BooksController](./src/main/java/com/example/clientinfo/BooksController.java): A REST controller providing CRUD operations for books, using low-level JDBC with custom client info settings (OCSID.MODULE = \"Books\", OCSID.ACTION = method name)."
+  ],
+  "features": [
+    "Spring",
+    "Observability"
+  ],
+  "metaTitle": "Spring Boot Oracle AI Database Client Info | Oracle AI Database Code Samples",
+  "metaDescription": "Spring Boot sample that sets MODULE and ACTION client info on Oracle AI Database connections.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-database-client-info/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

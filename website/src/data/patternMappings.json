@@ -40,8 +40,8 @@
       "sampleIds": [
         "news-event-streaming",
         "txeventq-examples",
-        "jdbc-event-streaming",
         "jms-producer-consumer",
+        "jdbc-event-streaming",
         "json--json-event-streaming",
         "spring-boot-cdc",
         "spring-boot-jms-example",
@@ -62,11 +62,11 @@
         "JSON"
       ],
       "sampleIds": [
-        "migrate-kafka-to-oracle",
         "migrate-kafka-to-oracle--kafka-app",
         "migrate-kafka-to-oracle--kafka-app-step-1",
         "migrate-kafka-to-oracle--kafka-app-step-2",
         "migrate-kafka-to-oracle--kafka-app-step-3",
+        "migrate-kafka-to-oracle",
         "oracle-database-kafka-apis"
       ]
     },
@@ -81,10 +81,10 @@
         "JSON"
       ],
       "sampleIds": [
-        "ai-vector-search",
         "jdbc-hybrid-search",
-        "python-oracle--src--python_oracle--database",
+        "ai-vector-search",
         "python-oracle--src--python_oracle--langchain",
+        "python-oracle--src--python_oracle--database",
         "sql"
       ]
     },
@@ -120,11 +120,11 @@
       "sampleIds": [
         "jdbc-hybrid-search",
         "json--jpa-duality-views",
-        "golang--dualityviews",
-        "jdbc-json-oracle-text",
         "json--crud-duality-views",
+        "golang--dualityviews",
         "json--jdbc-json-analytics",
         "json--jdbc-json-basic",
+        "jdbc-json-oracle-text",
         "migrate-kafka-to-oracle--kafka-app-step-3"
       ]
     },
@@ -221,9 +221,9 @@
       ],
       "sampleIds": [
         "database-per-service-example",
-        "spring-boot-dynamic-property-source",
-        "spring-cloud-config",
         "spring-jpa",
+        "spring-cloud-config",
+        "spring-boot-dynamic-property-source",
         "spring-resource-sample",
         "spring-vault-oracle-app"
       ]
@@ -240,10 +240,10 @@
         "TxEventQ"
       ],
       "sampleIds": [
+        "spring-boot-jms-tracing",
         "spring-boot-database-client-info",
         "spring-boot-jdbc-custom-tracer",
-        "spring-boot-jdbc-tracing",
-        "spring-boot-jms-tracing"
+        "spring-boot-jdbc-tracing"
       ]
     }
   ]

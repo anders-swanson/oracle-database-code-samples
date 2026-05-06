@@ -1,0 +1,19 @@
+{
+  "id": "jdbc-spatial-example",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-spatial-example/README.md",
+  "blogPost": "https://andersswanson.dev/2026/04/06/get-started-with-spatial-data-in-oracle-ai-database-using-jdbc/",
+  "readmeExcerpt": "This module demonstrates basic Oracle AI Database Spatial operations over JDBC using `oracle.spatial.geometry.JGeometry`.",
+  "highlights": [
+    "create a table with an MDSYS.SDO_GEOMETRY column",
+    "register geometry metadata and build a spatial index",
+    "insert point and polygon geometries with JGeometry.storeJS",
+    "read geometries back with JGeometry.loadJS"
+  ],
+  "features": [
+    "Spatial"
+  ],
+  "metaTitle": "JDBC Spatial Example | Oracle AI Database Code Samples",
+  "metaDescription": "Plain JDBC sample for creating, indexing, and querying spatial geometries in Oracle AI Database.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-spatial-example/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

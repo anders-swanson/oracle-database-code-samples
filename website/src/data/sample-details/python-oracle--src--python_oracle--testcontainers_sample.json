@@ -1,0 +1,14 @@
+{
+  "id": "python-oracle--src--python_oracle--testcontainers_sample",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/python-oracle/src/python_oracle/testcontainers_sample/README.md",
+  "blogPost": "https://andersswanson.dev/2025/09/11/test-python-applications-with-oracle-database-free-using-testcontainers/",
+  "readmeExcerpt": "This module shows you how to run an Oracle AI Database Free container image using [Testcontainers (python)](https://github.com/testcontainers/testcontainers-python).",
+  "highlights": [],
+  "features": [
+    "Testcontainers"
+  ],
+  "metaTitle": "Testcontainers with Oracle AI Database | Oracle AI Database Code Samples",
+  "metaDescription": "Python Testcontainers sample for starting Oracle AI Database Free programmatically.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--testcontainers_sample/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

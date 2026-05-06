@@ -357,7 +357,7 @@ export function deriveSampleRecord(parsed) {
   const language = detectLanguage(relativeDirectory, metadata, `${description} ${body}`);
   const tags = cleanTags(baseTags, language);
   const features = cleanFeatures(detectFeatures(relativeDirectory, description, tags));
-  const urlPath = buildSamplePath(buildId(relativeDirectory));
+  const samplePath = buildSamplePath(buildId(relativeDirectory));
   const metaDescription = buildSampleMetaDescription({
     title,
     description,
@@ -366,11 +366,9 @@ export function deriveSampleRecord(parsed) {
 
   return {
     id: buildId(relativeDirectory),
-    name: metadata.name?.trim() || relativeDirectory,
     title,
     description,
     path: relativeDirectory,
-    readmePath: relativeReadmePath,
     githubReadmeUrl: `${REPO_BLOB_BASE}/${relativeReadmePath}`,
     githubCodeUrl: `${REPO_TREE_BASE}/${relativeDirectory}`,
     tags,
@@ -381,8 +379,7 @@ export function deriveSampleRecord(parsed) {
     readmeExcerpt: excerpt || description,
     highlights,
     featured: FEATURED_PATHS.has(relativeDirectory),
-    urlPath,
-    canonicalUrl: buildCanonicalUrl(urlPath),
+    canonicalUrl: buildCanonicalUrl(samplePath),
     metaTitle: buildSampleMetaTitle(title),
     metaDescription,
     ogImageUrl: DEFAULT_OG_IMAGE_URL

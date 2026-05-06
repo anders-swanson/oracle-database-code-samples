@@ -54,4 +54,43 @@ describe('pattern mapping generation', () => {
 
     expect(mappings.patterns[0].sampleIds).toEqual(['vector-java', 'json-basic']);
   });
+
+  it('fails when a curated pattern matches no samples', () => {
+    expect(() =>
+      buildPatternMappings(
+        [
+          {
+            id: 'vector-java',
+            path: 'vector-java',
+            language: 'Java',
+            tags: ['Vector Search'],
+            features: ['Vector Search']
+          }
+        ],
+        {
+          intents: [
+            {
+              id: 'build-ai-experiences',
+              title: 'Build AI experiences',
+              summary: 'Retrieval and agent workflows',
+              color: '#59d4ff'
+            }
+          ],
+          patterns: [
+            {
+              id: 'property-graph',
+              intentId: 'build-ai-experiences',
+              title: 'Property Graph',
+              summary: 'Graph traversal.',
+              useWhen: 'Use this when relationships matter.',
+              features: ['Property Graph'],
+              sampleCriteria: {
+                include: [{ featuresAll: ['Property Graph'] }]
+              }
+            }
+          ]
+        }
+      )
+    ).toThrow('did not match any samples');
+  });
 });

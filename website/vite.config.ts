@@ -4,19 +4,27 @@ import vue from '@vitejs/plugin-vue';
 
 const siteUrl = 'https://anders-swanson.github.io/oracle-database-code-samples/';
 const distRoot = new URL('./dist/', import.meta.url);
-const samplesPath = new URL('./src/data/samples.json', import.meta.url);
+const catalogIndexPath = new URL('./src/data/catalog-index.json', import.meta.url);
 
-interface StaticSample {
-  canonicalUrl: string;
-  urlPath: string;
+interface PackedCatalogIndex {
+  i: [string, string, string, number[], number, number, 0 | 1][];
 }
 
-function readSamples() {
-  return JSON.parse(fs.readFileSync(samplesPath, 'utf8')) as StaticSample[];
+function readCatalogIndex() {
+  return JSON.parse(fs.readFileSync(catalogIndexPath, 'utf8')) as PackedCatalogIndex;
+}
+
+function buildSamplePath(id: string) {
+  return `/samples/${id}/`;
+}
+
+function buildCanonicalUrl(pathname: string) {
+  const normalized = pathname.startsWith('/') ? pathname.slice(1) : pathname;
+  return new URL(normalized, siteUrl).toString();
 }
 
 function buildRoutes() {
-  return ['/', '/patterns/', '/feature-map/', ...readSamples().map((sample) => sample.urlPath)];
+  return ['/', '/patterns/', '/feature-map/', ...readCatalogIndex().i.map(([id]) => buildSamplePath(id))];
 }
 
 function escapeXml(value: string) {
@@ -30,7 +38,12 @@ function escapeXml(value: string) {
 
 function writeCrawlerFiles() {
   const buildDate = new Date().toISOString();
-  const urls = [siteUrl, `${siteUrl}patterns/`, `${siteUrl}feature-map/`, ...readSamples().map((sample) => sample.canonicalUrl)];
+  const urls = [
+    siteUrl,
+    `${siteUrl}patterns/`,
+    `${siteUrl}feature-map/`,
+    ...readCatalogIndex().i.map(([id]) => buildCanonicalUrl(buildSamplePath(id)))
+  ];
   const sitemapBody = urls
     .map((url) => `  <url><loc>${escapeXml(url)}</loc><lastmod>${buildDate}</lastmod></url>`)
     .join('\n');

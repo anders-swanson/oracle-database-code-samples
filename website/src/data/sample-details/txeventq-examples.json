@@ -1,0 +1,15 @@
+{
+  "id": "txeventq-examples",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/txeventq-examples/README.md",
+  "blogPost": "https://andersswanson.dev/2025/09/18/pub-sub-in-your-db-oracle-database-txeventq/",
+  "readmeExcerpt": "Prerequisites: An Oracle AI Database instance. The examples are configured to use a local, Oracle AI Database Free container running on port 1521, but any 26ai instance will work if configured accordingly.",
+  "highlights": [],
+  "features": [
+    "TxEventQ",
+    "Kafka"
+  ],
+  "metaTitle": "Oracle AI Database Transactional Event Queues Examples | Oracle AI Database Code Samples",
+  "metaDescription": "Java examples for Oracle AI Database Transactional Event Queues using Kafka APIs and PL/SQL.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/txeventq-examples/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

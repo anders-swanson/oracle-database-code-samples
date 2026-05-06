@@ -1,0 +1,21 @@
+{
+  "id": "oracle-database-kafka-apis",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-database-kafka-apis/README.md",
+  "blogPost": "https://andersswanson.dev/2025/07/09/authenticate-to-your-oracle-database-like-its-a-kafka-cluster/",
+  "readmeExcerpt": "The following articles describe using Kafka Java APIs with Oracle AI Database Transactional Event Queues:",
+  "highlights": [
+    "[Transactional Messaging with the Kafka Java Client for Oracle AI Database Transactional Event Queues](https://medium.com/@anders.swanson.93/using-transactional-kafka-apis-with-oracle-database-70f58598a176)",
+    "[Produce and consume messages with the Kafka Java Client for Oracle AI Database Transactional Event Queues](https://medium.com/@anders.swanson.93/seamlessly-stream-data-with-kafka-apis-for-oracle-79db9ce02dc0)",
+    "Java 21",
+    "Maven"
+  ],
+  "features": [
+    "TxEventQ",
+    "Testcontainers",
+    "Kafka"
+  ],
+  "metaTitle": "Oracle AI Database Kafka APIs | Oracle AI Database Code Samples",
+  "metaDescription": "Java integration tests that use the Kafka APIs for Oracle AI Database Transactional Event Queues.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/oracle-database-kafka-apis/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

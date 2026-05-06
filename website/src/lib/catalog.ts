@@ -1,47 +1,31 @@
-import rawSamples from '../data/samples.json';
+import rawCatalogIndex from '../data/catalog-index.json';
 import rawPatternMappings from '../data/patternMappings.json';
-import { featureDescriptions } from '../data/featureDescriptions';
 import type {
   CatalogFilters,
-  FeatureSummary,
   FilterOption,
-  PatternMappingData,
-  PatternMapping,
+  PackedCatalogIndex,
   PatternIntent,
+  PatternMapping,
+  PatternMappingData,
   ResolvedPatternMapping,
-  SampleRecord,
+  SampleSummary,
   SubfeatureGraph
 } from '../types';
 
-export const samples = rawSamples as SampleRecord[];
+const REPO_TREE_BASE = 'https://github.com/anders-swanson/oracle-database-code-samples/tree/main';
+
+const catalogIndex = rawCatalogIndex as PackedCatalogIndex;
 const patternMappingData = rawPatternMappings as PatternMappingData;
+
 export const patternIntents = patternMappingData.intents as PatternIntent[];
 export const patternMappings = patternMappingData.patterns as PatternMapping[];
 
+export const samples = decodeCatalogIndex(catalogIndex);
+
 export const defaultFilters: CatalogFilters = {
   query: '',
-  features: [],
-  languages: [],
   tags: [],
   sort: 'featured'
-};
-
-const featureThemes: Record<string, string> = {
-  'Vector Search': 'vector',
-  JSON: 'json',
-  'Duality Views': 'duality',
-  'Property Graph': 'graph',
-  'SQL GraphQL': 'graphql',
-  Spatial: 'spatial',
-  TxEventQ: 'txeventq',
-  'AI Agents': 'agent',
-  ORDS: 'ords',
-  Testcontainers: 'testcontainers',
-  Spring: 'spring',
-  Observability: 'observability',
-  Kafka: 'kafka',
-  Security: 'security',
-  'Oracle AI Database': 'default'
 };
 
 const subfeatureGraphExcludedTags = new Set(['Java', 'Go', 'NodeJS', 'python', 'TypeScript', 'docker', 'oraclefree']);
@@ -52,6 +36,32 @@ const subfeatureGraphWorldHeight = 1800;
 const subfeatureGraphCenterX = subfeatureGraphWorldWidth / 2;
 const subfeatureGraphCenterY = subfeatureGraphWorldHeight / 2;
 const subfeatureGraphCenterRadius = 188;
+
+export function sampleIdToPath(id: string) {
+  return id.replace(/--/g, '/');
+}
+
+export function buildSamplePath(id: string) {
+  return `/samples/${id}/`;
+}
+
+export function buildGithubCodeUrl(id: string) {
+  return `${REPO_TREE_BASE}/${sampleIdToPath(id)}`;
+}
+
+export function decodeCatalogIndex(index: PackedCatalogIndex): SampleSummary[] {
+  return index.i.map(([id, title, description, tagIds, languageId, parentId, featuredFlag]) => ({
+    id,
+    title,
+    description,
+    path: sampleIdToPath(id),
+    githubCodeUrl: buildGithubCodeUrl(id),
+    tags: tagIds.map((tagId) => index.t[tagId]),
+    language: index.l[languageId],
+    parentCollection: index.p[parentId],
+    featured: featuredFlag === 1
+  }));
+}
 
 function intersects(
   left: { x: number; y: number; width: number; height: number },
@@ -77,10 +87,8 @@ function optionList(values: string[]) {
     .sort((left, right) => left.value.localeCompare(right.value));
 }
 
-export function getFilterOptions(items: SampleRecord[]) {
+export function getFilterOptions(items: SampleSummary[]) {
   return {
-    features: optionList(items.flatMap((sample) => sample.features)),
-    languages: optionList(items.map((sample) => sample.language)),
     tags: optionList(items.flatMap((sample) => sample.tags))
   };
 }
@@ -89,104 +97,77 @@ function matchesEvery(selected: string[], actualValues: string[]) {
   return selected.length === 0 || selected.every((value) => actualValues.includes(value));
 }
 
-export function filterSamples(items: SampleRecord[], filters: CatalogFilters) {
+export function filterSamples(items: SampleSummary[], filters: CatalogFilters) {
   const query = filters.query.trim().toLowerCase();
 
   const filtered = items.filter((sample) => {
     const searchHaystack = [
-      sample.name,
       sample.title,
       sample.description,
       sample.path,
       sample.language,
       sample.parentCollection,
-      ...sample.tags,
-      ...sample.features
+      ...sample.tags
     ]
       .join(' ')
       .toLowerCase();
 
     const queryMatch = query.length === 0 || searchHaystack.includes(query);
 
-    return (
-      queryMatch &&
-      matchesEvery(filters.features, sample.features) &&
-      matchesEvery(filters.languages, [sample.language]) &&
-      matchesEvery(filters.tags, sample.tags)
-    );
+    return queryMatch && matchesEvery(filters.tags, sample.tags);
   });
 
   return filtered.sort((left, right) => {
     if (filters.sort === 'name') {
-      return left.name.localeCompare(right.name);
+      return left.title.localeCompare(right.title);
     }
     if (left.featured !== right.featured) {
       return left.featured ? -1 : 1;
     }
-    return left.name.localeCompare(right.name);
+    return left.title.localeCompare(right.title);
   });
-}
-
-export function summarizeFeatures(items: SampleRecord[]): FeatureSummary[] {
-  const counts = new Map<string, number>();
-
-  for (const sample of items) {
-    for (const feature of sample.features) {
-      counts.set(feature, (counts.get(feature) ?? 0) + 1);
-    }
-  }
-
-  return Array.from(counts.entries())
-    .map(([name, count]) => ({
-      name,
-      count,
-      theme: featureThemes[name] ?? 'default',
-      description: featureDescriptions[name] ?? featureDescriptions['Oracle AI Database']
-    }))
-    .sort((left, right) => right.count - left.count);
 }
 
 export function findSampleById(id: string) {
   return samples.find((sample) => sample.id === id);
 }
 
-export function resolvePatternMappings(items: SampleRecord[] = samples): ResolvedPatternMapping[] {
+export function resolvePatternMappings(items: SampleSummary[] = samples): ResolvedPatternMapping[] {
   const sampleById = new Map(items.map((sample) => [sample.id, sample]));
 
   return patternMappings.map((pattern) => ({
     ...pattern,
     samples: pattern.sampleIds
       .map((sampleId) => sampleById.get(sampleId))
-      .filter((sample): sample is SampleRecord => Boolean(sample))
+      .filter((sample): sample is SampleSummary => Boolean(sample))
   }));
 }
 
-export function findRelatedSamples(target: SampleRecord, items: SampleRecord[], limit = 4) {
+export function findRelatedSamples(target: SampleSummary, items: SampleSummary[], limit = 4) {
   return items
     .filter((candidate) => candidate.id !== target.id)
     .map((candidate) => ({
       sample: candidate,
       score:
-        candidate.features.filter((feature) => target.features.includes(feature)).length * 3 +
         candidate.tags.filter((tag) => target.tags.includes(tag)).length * 2 +
+        Number(candidate.parentCollection === target.parentCollection) +
         Number(candidate.language === target.language)
     }))
     .filter((entry) => entry.score > 0)
-    .sort((left, right) => right.score - left.score || left.sample.name.localeCompare(right.sample.name))
+    .sort((left, right) => right.score - left.score || left.sample.title.localeCompare(right.sample.title))
     .slice(0, limit)
     .map((entry) => entry.sample);
 }
 
-export function getStats(items: SampleRecord[]) {
+export function getStats(items: SampleSummary[]) {
   const featuredCount = items.filter((sample) => sample.featured).length;
   const languageCount = new Set(items.map((sample) => sample.language)).size;
-  const featureCount = new Set(items.flatMap((sample) => sample.features)).size;
 
   return {
     total: items.length,
     featured: featuredCount,
     languages: languageCount,
-    features: featureCount
+    features: catalogIndex.f
   };
 }
 
@@ -222,18 +203,18 @@ export function routeQueryToFilters(query: Record<string, unknown>): CatalogFilt
 
   return {
     query: typeof query.q === 'string' ? query.q : '',
-    features: [],
-    languages: [],
     tags: parseQueryList(query.tags),
     sort
   };
 }
 
 export function topFilterOptions(options: FilterOption[], limit: number) {
-  return [...options].sort((left, right) => right.count - left.count || left.value.localeCompare(right.value)).slice(0, limit);
+  return [...options]
+    .sort((left, right) => right.count - left.count || left.value.localeCompare(right.value))
+    .slice(0, limit);
 }
 
-export function buildSubfeatureGraph(items: SampleRecord[], limit = 24): SubfeatureGraph {
+export function buildSubfeatureGraph(items: SampleSummary[], limit = 24): SubfeatureGraph {
   const allTags = optionList(
     items.flatMap((sample) => sample.tags.filter((tag) => !subfeatureGraphExcludedTags.has(tag)))
   ).sort((left, right) => right.count - left.count || left.value.localeCompare(right.value));
@@ -286,8 +267,14 @@ export function buildSubfeatureGraph(items: SampleRecord[], limit = 24): Subfeat
       const radius = baseRadius + Math.floor(attempt / 8) * 54;
       const candidate = {
         ...placed,
-        x: Math.max(width / 2 + padding, Math.min(subfeatureGraphWorldWidth - width / 2 - padding, subfeatureGraphCenterX + Math.cos(angle) * radius)),
-        y: Math.max(height / 2 + padding, Math.min(subfeatureGraphWorldHeight - height / 2 - padding, subfeatureGraphCenterY + Math.sin(angle) * radius))
+        x: Math.max(
+          width / 2 + padding,
+          Math.min(subfeatureGraphWorldWidth - width / 2 - padding, subfeatureGraphCenterX + Math.cos(angle) * radius)
+        ),
+        y: Math.max(
+          height / 2 + padding,
+          Math.min(subfeatureGraphWorldHeight - height / 2 - padding, subfeatureGraphCenterY + Math.sin(angle) * radius)
+        )
       };
 
       const hasCollision = placedNodes.some((node) =>

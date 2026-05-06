@@ -1,6 +1,7 @@
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
 import type { SampleRecord } from '../types';
 import { findSampleById } from './catalog';
+import { getRouteSampleDetail, hydrateSample } from './sampleDetails';
 
 const SITE_NAME = 'Oracle AI Database Code Samples';
 const SITE_URL = 'https://anders-swanson.github.io/oracle-database-code-samples/';
@@ -153,7 +154,11 @@ function buildNotFoundMetadata(): PageMetadata {
 
 export function resolveRouteMetadata(route: RouteLocationNormalizedLoaded) {
   if (route.name === 'sample-detail') {
-    const sample = findSampleById(String(route.params.id));
+    const sampleId = String(route.params.id);
+    const sample = hydrateSample(sampleId, getRouteSampleDetail(route));
+    if (!sample && findSampleById(sampleId)) {
+      return buildNotFoundMetadata();
+    }
     return sample ? buildSampleMetadata(sample) : buildNotFoundMetadata();
   }
   if (route.name === 'feature-map') {

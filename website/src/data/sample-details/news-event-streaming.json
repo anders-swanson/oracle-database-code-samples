@@ -1,0 +1,21 @@
+{
+  "id": "news-event-streaming",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/news-event-streaming/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This demo application streams news articles as events from a REST API, processing those articles and storing them in a multimodal database that includes relational, document, event, and vector data types.",
+  "highlights": [
+    "Maven",
+    "Java 21+",
+    "Docker (Optional)",
+    "OJDBC_PATH: Path to the directory containing your ojdbc.properties file. I use the ojdbc.properties file in [src/test/resources](./src/test/resources)."
+  ],
+  "features": [
+    "Vector Search",
+    "Spring",
+    "Security"
+  ],
+  "metaTitle": "News Event Streaming Application | Oracle AI Database Code Samples",
+  "metaDescription": "Spring Boot application that ingests news events, stores them in Oracle AI Database, and supports vector search.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/news-event-streaming/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

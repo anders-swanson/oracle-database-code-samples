@@ -1,0 +1,21 @@
+{
+  "id": "langchain4j-agent-memory",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/langchain4j-agent-memory/README.md",
+  "blogPost": "https://andersswanson.dev/2026/04/20/agent-memory-with-langchain4j-and-oracle-ai-database/",
+  "readmeExcerpt": "This module demonstrates how Oracle AI Database can serve as both **durable agent memory** and an **append-only conversation transcript store** for a LangChain4j assistant. The sample combines:",
+  "highlights": [
+    "LangChain4j tools and chat orchestration with gpt-5-nano",
+    "text-embedding-3-small embeddings stored in an Oracle AI Database VECTOR column",
+    "Oracle Text over a native JSON memory document with json_textcontains",
+    "hybrid memory retrieval that fuses semantic similarity with exact text relevance"
+  ],
+  "features": [
+    "Vector Search",
+    "JSON",
+    "AI Agents"
+  ],
+  "metaTitle": "LangChain4j Agent Memory | Oracle AI Database Code Samples",
+  "metaDescription": "LangChain4j sample that stores agent memory, transcripts, and hybrid retrieval data in Oracle AI Database.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/langchain4j-agent-memory/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

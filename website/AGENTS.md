@@ -6,7 +6,7 @@ This directory contains the Vue 3 + Vite website for browsing Oracle AI Database
 - `src/pages/` contains route-level views such as the catalog and sample detail pages.
 - `src/components/` contains reusable UI components.
 - `src/lib/catalog.ts` contains filter, summary, related-sample, and query-string logic.
-- `src/data/samples.json` and `src/data/patternMappings.json` are generated data. Do not hand-edit them unless a task explicitly requires that.
+- `src/data/catalog-index.json`, `src/data/sample-details/*.json`, and `src/data/patternMappings.json` are generated data. Do not hand-edit them unless a task explicitly requires that.
 - `scripts/generate-samples.mjs` and `scripts/sample-catalog-utils.mjs` are the source of truth for catalog generation.
 - `src/data/patternDefinitions.json` is the source of truth for pattern page intent labels, curated pattern copy, and sample matching criteria.
 - `tests/` contains Vitest coverage for catalog logic and core UI rendering.
@@ -20,7 +20,7 @@ This directory contains the Vue 3 + Vite website for browsing Oracle AI Database
 - Sample records use `features`, `language`, and `tags`.
 - Keep `tags` as README-derived metadata, but strip redundant values during generation when required by current conventions.
 - Language normalization is handled in `sample-catalog-utils.mjs`. The fallback label is `Script`.
-- Feature filters come from generated `features`. If a feature should disappear from the website, remove it from generation or normalize it out before writing `samples.json`.
+- Detail-page feature data comes from generated sample detail files. If a feature should disappear from the website, remove it from generation or normalize it before writing generated data.
 
 ## UI Expectations
 - Preserve the current catalog flow: hero, then the filter/results layout. Do not reintroduce the removed feature spotlight section unless explicitly requested.

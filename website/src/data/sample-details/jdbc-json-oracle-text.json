@@ -1,0 +1,19 @@
+{
+  "id": "jdbc-json-oracle-text",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-json-oracle-text/README.md",
+  "blogPost": "https://andersswanson.dev/2026/04/13/full-text-json-search-with-oracle-text/",
+  "readmeExcerpt": "This module demonstrates Oracle Text JSON full-text search over plain JDBC on Oracle AI Database. The sample shows how to:",
+  "highlights": [
+    "load JSON documents from src/main/resources/documents.json",
+    "store those documents in a native JSON column using OSON/JDBC JSON binding",
+    "create a JSON search index with CREATE SEARCH INDEX ... FOR JSON",
+    "run ranked json_textcontains queries with SCORE"
+  ],
+  "features": [
+    "JSON"
+  ],
+  "metaTitle": "JDBC JSON Oracle Text | Oracle AI Database Code Samples",
+  "metaDescription": "Plain JDBC sample for JSON full-text search with Oracle Text on Oracle AI Database.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-json-oracle-text/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

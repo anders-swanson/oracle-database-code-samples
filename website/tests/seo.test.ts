@@ -3,11 +3,9 @@ import { describe, expect, it, vi } from 'vitest';
 const { sample } = vi.hoisted(() => ({
   sample: {
     id: 'vector',
-    name: 'vector',
     title: 'Vector Sample',
     description: 'Vector search with Oracle AI Database.',
     path: 'vector',
-    readmePath: 'vector/README.md',
     githubReadmeUrl: 'https://example.com/readme',
     githubCodeUrl: 'https://example.com/code',
     tags: ['Vector', 'Java'],
@@ -18,7 +16,6 @@ const { sample } = vi.hoisted(() => ({
     readmeExcerpt: 'Vector sample excerpt.',
     highlights: [],
     featured: true,
-    urlPath: '/samples/vector/',
     canonicalUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/samples/vector/',
     metaTitle: 'Vector Sample | Oracle AI Database Code Samples',
     metaDescription: 'Vector search with Oracle AI Database.',
@@ -37,6 +34,7 @@ describe('SEO metadata sync', () => {
     return buildRouteHead(
       resolveRouteMetadata({
         params: {},
+        meta: route.name === 'sample-detail' ? { state: { sampleDetail: sample } } : {},
         ...route
       } as never)
     );

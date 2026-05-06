@@ -1,0 +1,17 @@
+{
+  "id": "golang--connection",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/golang/connection/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This folder contains the shared Go connection helper used by the samples in [`../README.md`](../README.md). The implementation wraps `godror` connection setup, pooling, and optional `TNS_ADMIN` handling for Oracle AI Database.",
+  "highlights": [
+    "DefaultLocalhostConnection() for localhost:1521/freepdb1",
+    "NewDatabase(username, password, url) for custom connection details"
+  ],
+  "features": [
+    "Oracle AI Database"
+  ],
+  "metaTitle": "Go Database Connection Sample | Oracle AI Database Code Samples",
+  "metaDescription": "Shared Go connection helper for local Oracle AI Database access with godror.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/golang--connection/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

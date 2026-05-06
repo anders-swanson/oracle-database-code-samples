@@ -1,0 +1,19 @@
+{
+  "id": "spring-vault-oracle-app",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-vault-oracle-app/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "The Spring Vault Oracle App sample demonstrates dynamically loading secrets from [OCI Vault](https://docs.oracle.com/en-us/iaas/Content/KeyManagement/home.htm) into the Spring Boot context during startup. All secrets loaded this way are made available by name as application properties, accessible using `@Value` annotations.",
+  "highlights": [
+    "Access to an OCI Account. You can use [Free Tier](https://signup.oraclecloud.com/).",
+    "Java 21+, Maven",
+    "[OCI Config file](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm) for authentication"
+  ],
+  "features": [
+    "Spring",
+    "Security"
+  ],
+  "metaTitle": "spring-vault-oracle-app | Oracle AI Database Code Samples",
+  "metaDescription": "Spring Boot sample that loads OCI Vault secrets into the application context.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-vault-oracle-app/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

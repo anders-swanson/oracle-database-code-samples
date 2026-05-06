@@ -1,0 +1,19 @@
+{
+  "id": "mcp-agent",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/mcp-agent/README.md",
+  "blogPost": "https://andersswanson.dev/2025/12/02/natural-language-sql-with-oracle-mcp-and-langchain4j/",
+  "readmeExcerpt": "This project demonstrates a natural language SQL agent using Langchain4j, integrated with Oracle AI Database via SQLcl MCP (Model Context Protocol) for executing queries.",
+  "highlights": [
+    "Docker and Docker Compose",
+    "Maven",
+    "Java 21 or higher",
+    "SQLcl (installed and available in PATH for the agent to use internally)"
+  ],
+  "features": [
+    "AI Agents"
+  ],
+  "metaTitle": "Oracle AI Database MCP Agent Example | Oracle AI Database Code Samples",
+  "metaDescription": "LangChain4j MCP sample for natural-language SQL queries against Oracle AI Database.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/mcp-agent/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

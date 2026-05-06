@@ -1,0 +1,20 @@
+{
+  "id": "database-per-service-example",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/database-per-service-example/README.md",
+  "blogPost": "https://andersswanson.dev/2026/04/28/database-per-service-with-oracle-ai-database-pdbs/",
+  "readmeExcerpt": "This sample demonstrates the database-per-service pattern on Oracle AI Database with a simple cross-service workflow: **course registration checks**.",
+  "highlights": [
+    "students/: student profile and completed-course history in studentpdb",
+    "courses/: course catalog, prerequisites, and term offerings in coursepdb",
+    "sample/: command-line runner and end-to-end test that compose data from both services over HTTP",
+    "students: university ID, name, status, and completed course codes"
+  ],
+  "features": [
+    "Testcontainers",
+    "Spring"
+  ],
+  "metaTitle": "Database Per Service with Oracle AI Database Pluggable Databases | Oracle AI Database Code Samples",
+  "metaDescription": "Database-per-service sample that separates students and courses services into independent pluggable databases.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/database-per-service-example/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

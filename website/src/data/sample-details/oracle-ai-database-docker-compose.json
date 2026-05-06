@@ -1,0 +1,16 @@
+{
+  "id": "oracle-ai-database-docker-compose",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-ai-database-docker-compose/README.md",
+  "blogPost": "https://andersswanson.dev/2025/05/22/oracle-database-for-free/",
+  "readmeExcerpt": "This module provides a simple Docker Compose setup for running an Oracle AI Database Free container, suitable for AI vector search and other Oracle AI features demos.",
+  "highlights": [
+    "Docker and Docker Compose installed."
+  ],
+  "features": [
+    "Oracle AI Database"
+  ],
+  "metaTitle": "Oracle AI Database Docker Compose | Oracle AI Database Code Samples",
+  "metaDescription": "Docker Compose setup for running Oracle AI Database Free locally.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/oracle-ai-database-docker-compose/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

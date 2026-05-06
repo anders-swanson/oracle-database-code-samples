@@ -1,0 +1,17 @@
+{
+  "id": "typescript--src--testcontainers",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/typescript/src/testcontainers/README.md",
+  "blogPost": "https://andersswanson.dev/2025/09/17/test-your-typescript-nodejs-apps-with-oracle-database-free/",
+  "readmeExcerpt": "This folder contains the reusable Testcontainers helpers for the TypeScript samples. The classes wrap Oracle AI Database Free startup and return a ready-to-use `oracledb` connection for tests or scripts.",
+  "highlights": [
+    "[oracle_database_container.ts](./oracle_database_container.ts): simple container wrapper",
+    "[generic_oracle_database_container.ts](./generic_oracle_database_container.ts): GenericContainer-based implementation with a typed started container"
+  ],
+  "features": [
+    "Testcontainers"
+  ],
+  "metaTitle": "TypeScript Testcontainers Sample | Oracle AI Database Code Samples",
+  "metaDescription": "TypeScript helpers for starting Oracle AI Database Free with Testcontainers.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/typescript--src--testcontainers/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "migrate-kafka-to-oracle--kafka-app-step-2",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/migrate-kafka-to-oracle/kafka-app-step-2/README.md",
+  "blogPost": "https://andersswanson.dev/2025/06/06/migrate-apache-kafka-applications-to-oracle-database-part-ii/",
+  "readmeExcerpt": "This module is step 2 of the [Kafka-to-TxEventQ migration sample](../README.md). It keeps Oracle AI Database Transactional Event Queues as the transport and adds OSON serialization for `WeatherEvent` messages using the Oracle JSON libraries.",
+  "highlights": [
+    "Java 21+",
+    "Maven 3.9+",
+    "Oracle AI Database Free running on localhost:1521",
+    "The testuser schema and TxEventQ grants created with [../testuser.sql](../testuser.sql)"
+  ],
+  "features": [
+    "JSON",
+    "TxEventQ",
+    "Kafka"
+  ],
+  "metaTitle": "Kafka App Step 2 | Oracle AI Database Code Samples",
+  "metaDescription": "Migration step that adds OSON serialization to the Kafka-to-TxEventQ sample.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/migrate-kafka-to-oracle--kafka-app-step-2/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

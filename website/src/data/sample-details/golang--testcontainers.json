@@ -1,0 +1,17 @@
+{
+  "id": "golang--testcontainers",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/golang/testcontainers/README.md",
+  "blogPost": "https://andersswanson.dev/2025/10/01/testing-go-apps-with-oracle-database-using-testcontainers/",
+  "readmeExcerpt": "This folder contains a Go helper for starting Oracle AI Database Free with `testcontainers-go` and a test that verifies the container can be started and queried.",
+  "highlights": [
+    "[oracle_container.go](./oracle_container.go): reusable OracleContainer wrapper",
+    "[oracle_container_test.go](./oracle_container_test.go): integration test that starts the container and queries v$version"
+  ],
+  "features": [
+    "Testcontainers"
+  ],
+  "metaTitle": "Go Testcontainers Sample | Oracle AI Database Code Samples",
+  "metaDescription": "Go helper and test for starting Oracle AI Database Free with testcontainers-go.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/golang--testcontainers/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

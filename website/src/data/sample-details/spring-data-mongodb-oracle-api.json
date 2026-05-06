@@ -1,0 +1,19 @@
+{
+  "id": "spring-data-mongodb-oracle-api",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-data-mongodb-oracle-api/README.md",
+  "blogPost": "https://andersswanson.dev/2025/06/17/spring-data-mongodb-with-oracle-databases-mongodb-api/",
+  "readmeExcerpt": "MongoDB is a popular, open-source NoSQL database management program that stores data in a flexible, JSON-like format, making it ideal for handling large, unstructured, or semi-structured data.",
+  "highlights": [
+    "DB_USERNAME (the database username you'll use to connect)",
+    "DB_PASSWORD (the database password you'll use to connect)",
+    "DB_URI (the URI of your database instance, e.g., my-db.adb.my-region.oraclecloudapps.com)"
+  ],
+  "features": [
+    "ORDS",
+    "Spring"
+  ],
+  "metaTitle": "Using Oracle AI Database's MongoDB API with Spring Data MongoDB | Oracle AI Database Code Samples",
+  "metaDescription": "Spring Data MongoDB sample that uses the Oracle AI Database API for MongoDB through ORDS.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-data-mongodb-oracle-api/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

@@ -506,7 +506,6 @@ code {
 }
 
 .filter-chip-list,
-.sample-card__features,
 .sample-card__tags,
 .detail-hero__feature-list {
   display: flex;

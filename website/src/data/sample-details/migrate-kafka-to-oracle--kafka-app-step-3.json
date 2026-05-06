@@ -1,0 +1,22 @@
+{
+  "id": "migrate-kafka-to-oracle--kafka-app-step-3",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/migrate-kafka-to-oracle/kafka-app-step-3/README.md",
+  "blogPost": "https://andersswanson.dev/2025/06/09/migrate-apache-kafka-applications-to-oracle-database-part-iii/",
+  "readmeExcerpt": "This module is step 3 of the [Kafka-to-TxEventQ migration sample](../README.md). It builds on the OSON-based messaging flow from step 2 and adds transactional database writes on the consumer side.",
+  "highlights": [
+    "Java 21+",
+    "Maven 3.9+",
+    "Oracle AI Database Free running on localhost:1521",
+    "The testuser schema and TxEventQ grants created with [../testuser.sql](../testuser.sql)"
+  ],
+  "features": [
+    "JSON",
+    "Duality Views",
+    "TxEventQ",
+    "Kafka"
+  ],
+  "metaTitle": "Kafka App Step 3 | Oracle AI Database Code Samples",
+  "metaDescription": "Migration step that adds transactional database writes to the Kafka-to-TxEventQ consumer.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/migrate-kafka-to-oracle--kafka-app-step-3/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

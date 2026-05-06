@@ -1,0 +1,19 @@
+{
+  "id": "jdbc-property-graph",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-property-graph/README.md",
+  "blogPost": "https://andersswanson.dev/2026/04/09/oracle-ai-database-property-graphs-and-jdbc/",
+  "readmeExcerpt": "This module demonstrates a small Oracle AI Database property graph sample over JDBC:",
+  "highlights": [
+    "PERSONS is the vertex table",
+    "FRIENDSHIPS is the edge table",
+    "SOCIAL_GRAPH is queried with SQL GRAPH_TABLE",
+    "create relational tables for a graph-shaped data model"
+  ],
+  "features": [
+    "Property Graph"
+  ],
+  "metaTitle": "JDBC Property Graph | Oracle AI Database Code Samples",
+  "metaDescription": "Plain JDBC sample for building and querying a SQL property graph in Oracle AI Database.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-property-graph/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

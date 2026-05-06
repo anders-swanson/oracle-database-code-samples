@@ -1,0 +1,22 @@
+{
+  "id": "json--jpa-duality-views",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/json/jpa-duality-views/README.md",
+  "blogPost": "https://andersswanson.dev/2026/02/25/generate-json-relational-duality-views-from-jpa-entities/",
+  "readmeExcerpt": "This sample shows how to generate and interact with JSON Relational Duality Views (JDVs) directly from familiar Spring Data JPA entities. It demonstrates:",
+  "highlights": [
+    "Annotating entities with @JsonRelationalDualityView to let Oracle AI Database generate bidirectional JSON documents over relational tables.",
+    "Using the Oracle JSON-B binding (JSONB) to persist and retrieve strongly typed entities via JDVs.",
+    "Bootstrapping schema and duality view lifecycle through Spring Boot configuration.",
+    "Exercising CRUD-style flows with integration tests powered by Testcontainers and Oracle AI Database Free."
+  ],
+  "features": [
+    "JSON",
+    "Duality Views",
+    "Testcontainers",
+    "Spring"
+  ],
+  "metaTitle": "Spring Boot JSON Relational Duality Views | Oracle AI Database Code Samples",
+  "metaDescription": "Spring Boot JPA sample for generating and using JSON Relational Duality Views.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--jpa-duality-views/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "migrate-kafka-to-oracle--kafka-app",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/migrate-kafka-to-oracle/kafka-app/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This module is the starting point for the [Kafka-to-TxEventQ migration sample](../README.md). It uses the standard Apache Kafka Java client to create a topic, produce ten weather events, and consume them back from Apache Kafka.",
+  "highlights": [
+    "Java 21+",
+    "Maven 3.9+",
+    "A running Apache Kafka broker on localhost:9092"
+  ],
+  "features": [
+    "Kafka"
+  ],
+  "metaTitle": "Kafka App | Oracle AI Database Code Samples",
+  "metaDescription": "Starting Apache Kafka application used as the baseline for the migration walkthrough.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/migrate-kafka-to-oracle--kafka-app/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

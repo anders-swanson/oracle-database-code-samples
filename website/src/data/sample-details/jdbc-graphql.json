@@ -1,0 +1,20 @@
+{
+  "id": "jdbc-graphql",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-graphql/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This module demonstrates GraphQL over relational tables from a plain Java/JDBC application on Oracle AI Database.",
+  "highlights": [
+    "STUDENTS",
+    "COURSES",
+    "ENROLLMENTS",
+    "fetch one student with enrolled courses"
+  ],
+  "features": [
+    "JSON",
+    "SQL GraphQL"
+  ],
+  "metaTitle": "JDBC GraphQL | Oracle AI Database Code Samples",
+  "metaDescription": "Plain JDBC sample that runs SQL GraphQL queries against Oracle AI Database tables.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-graphql/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

@@ -1,70 +1,48 @@
 import { describe, expect, it } from 'vitest';
 import {
+  buildGithubCodeUrl,
+  buildSamplePath,
   buildSubfeatureGraph,
   filterSamples,
+  getStats,
   patternMappings,
   resolvePatternMappings,
   routeQueryToFilters,
+  sampleIdToPath,
   samples as catalogSamples,
   serializeFilters
 } from '../src/lib/catalog';
-import type { SampleRecord } from '../src/types';
+import type { SampleSummary } from '../src/types';
 
-const samples: SampleRecord[] = [
+const samples: SampleSummary[] = [
   {
     id: 'vector',
-    name: 'vector',
     title: 'Vector Sample',
     description: 'Vector search with JDBC',
     path: 'vector',
-    readmePath: 'vector/README.md',
-    githubReadmeUrl: 'https://example.com/readme',
     githubCodeUrl: 'https://example.com/code',
     tags: ['Vector', 'JDBC'],
-    features: ['Vector Search'],
     language: 'Java',
     parentCollection: 'Standalone',
-    blogPost: '',
-    readmeExcerpt: 'Learn vector search.',
-    highlights: [],
-    featured: true,
-    urlPath: '/samples/vector/',
-    canonicalUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/samples/vector/',
-    metaTitle: 'Vector Sample | Oracle AI Database Code Samples',
-    metaDescription: 'Vector search with JDBC',
-    ogImageUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg'
+    featured: true
   },
   {
     id: 'graph',
-    name: 'graph',
     title: 'Graph Sample',
     description: 'Property graph over JDBC',
     path: 'graph',
-    readmePath: 'graph/README.md',
-    githubReadmeUrl: 'https://example.com/readme-graph',
     githubCodeUrl: 'https://example.com/code-graph',
     tags: ['Graph'],
-    features: ['Property Graph'],
     language: 'Java',
     parentCollection: 'Standalone',
-    blogPost: '',
-    readmeExcerpt: 'Learn property graph.',
-    highlights: [],
-    featured: false,
-    urlPath: '/samples/graph/',
-    canonicalUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/samples/graph/',
-    metaTitle: 'Graph Sample | Oracle AI Database Code Samples',
-    metaDescription: 'Property graph over JDBC',
-    ogImageUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg'
+    featured: false
   }
 ];
 
 describe('catalog filtering', () => {
-  it('filters by query and feature', () => {
+  it('filters by query', () => {
     const result = filterSamples(samples, {
       query: 'vector',
-      features: ['Vector Search'],
-      languages: [],
       tags: [],
       sort: 'featured'
     });
@@ -73,11 +51,32 @@ describe('catalog filtering', () => {
     expect(result[0].id).toBe('vector');
   });
 
+  it('filters by tag and sorts by displayed title', () => {
+    const result = filterSamples(samples, {
+      query: '',
+      tags: ['JDBC'],
+      sort: 'name'
+    });
+
+    expect(result.map((sample) => sample.title)).toEqual(['Vector Sample']);
+  });
+
+  it('derives paths, urls, and stats from compact catalog assumptions', () => {
+    expect(sampleIdToPath('database-per-service-example--courses')).toBe('database-per-service-example/courses');
+    expect(buildSamplePath('mcp-agent')).toBe('/samples/mcp-agent/');
+    expect(buildGithubCodeUrl('json--jdbc-json-basic')).toBe(
+      'https://github.com/anders-swanson/oracle-database-code-samples/tree/main/json/jdbc-json-basic'
+    );
+    expect(getStats(samples)).toMatchObject({
+      total: 2,
+      featured: 1,
+      languages: 1
+    });
+  });
+
   it('serializes and parses route query filters', () => {
     const serialized = serializeFilters({
       query: 'graph',
-      features: ['Property Graph'],
-      languages: ['Java'],
       tags: ['Graph'],
       sort: 'name'
     });
@@ -95,8 +94,6 @@ describe('catalog filtering', () => {
       sort: 'path'
     })).toEqual({
       query: 'graph',
-      features: [],
-      languages: [],
       tags: ['Graph'],
       sort: 'featured'
     });
@@ -116,12 +113,9 @@ describe('catalog filtering', () => {
         {
           ...samples[0],
           id: 'json',
-          name: 'json',
           title: 'JSON Sample',
           description: 'JSON features',
           path: 'json',
-          readmePath: 'json/README.md',
-          githubReadmeUrl: 'https://example.com/readme-json',
           githubCodeUrl: 'https://example.com/code-json',
           tags: ['JSON', 'Java']
         }

@@ -46,7 +46,6 @@ Demo body paragraph.
     expect(sample.tags).toEqual(['Vector']);
     expect(sample.githubCodeUrl).toContain('/tree/main/jdbc-demo');
     expect(sample.githubReadmeUrl).toContain('/blob/main/jdbc-demo/README.md');
-    expect(sample.urlPath).toBe('/samples/jdbc-demo/');
     expect(sample.canonicalUrl).toBe('https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-demo/');
     expect(sample.metaTitle).toBe('Demo | Oracle AI Database Code Samples');
     expect(sample.ogImageUrl).toBe('https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg');

@@ -1,0 +1,17 @@
+{
+  "id": "txeventq-multidb-replication",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/txeventq-multidb-replication/README.md",
+  "blogPost": "https://andersswanson.dev/2026/01/14/propagating-cross-database-events-with-oracle-ai-database/",
+  "readmeExcerpt": "This module demonstrates how to propagate messages between Oracle AI Database Transactional Event Queues (TXEventQ) in two separate databases using JMS (Jakarta Messaging) APIs. It showcases queue-to-queue replication over a database link, allowing messages published to a topic in a source database to be automatically propagated to a topic in a destination database. The methods used in this module work with JMS or any kind of TxEventQ payload, including JSON, RAW, and ADT.",
+  "highlights": [
+    "Setup scripts for source and destination databases to create users, queues, and configure propagation.",
+    "Java classes for producing messages (reading from console) to the source topic and consuming messages from the destination topic."
+  ],
+  "features": [
+    "TxEventQ"
+  ],
+  "metaTitle": "Transactional Event Queues Multi-Database Replication Example | Oracle AI Database Code Samples",
+  "metaDescription": "Multi-database TxEventQ replication sample using JMS and database links.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/txeventq-multidb-replication/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

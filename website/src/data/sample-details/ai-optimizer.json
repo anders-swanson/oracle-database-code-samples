@@ -1,0 +1,19 @@
+{
+  "id": "ai-optimizer",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/ai-optimizer/README.md",
+  "blogPost": "https://andersswanson.dev/2025/10/21/ai-optimizer-toolkit-set-up-a-local-sandbox/",
+  "readmeExcerpt": "This folder contains a Docker Compose setup for running the `ai-optimizer` service alongside Oracle AI Database Free.",
+  "highlights": [
+    "ai-optimizer on localhost:8501",
+    "Oracle AI Database Free on localhost:1522",
+    "user testuser",
+    "password testpwd"
+  ],
+  "features": [
+    "Oracle AI Database"
+  ],
+  "metaTitle": "AI Optimizer Docker Compose | Oracle AI Database Code Samples",
+  "metaDescription": "Docker Compose setup for running the ai-optimizer service with Oracle AI Database Free locally.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/ai-optimizer/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

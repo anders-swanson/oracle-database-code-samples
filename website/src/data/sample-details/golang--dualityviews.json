@@ -1,0 +1,19 @@
+{
+  "id": "golang--dualityviews",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/golang/dualityviews/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This sample demonstrates how to use Go, `godror`, and Oracle AI Database JSON Relational Duality Views together. The program creates a `student` table, creates a `student_dv` duality view, inserts JSON data into the view, and queries the JSON document back.",
+  "highlights": [
+    "Go",
+    "Oracle client libraries available through DYLD_LIBRARY_PATH",
+    "An Oracle AI Database instance reachable at localhost:1521/freepdb1"
+  ],
+  "features": [
+    "JSON",
+    "Duality Views"
+  ],
+  "metaTitle": "Go JSON Relational Duality Views Sample | Oracle AI Database Code Samples",
+  "metaDescription": "Go sample for creating and querying JSON Relational Duality Views in Oracle AI Database.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/golang--dualityviews/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

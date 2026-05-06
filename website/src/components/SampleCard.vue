@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { SampleRecord } from '../types';
+import type { SampleSummary } from '../types';
 
 defineProps<{
-  sample: SampleRecord;
+  sample: SampleSummary;
 }>();
 </script>
 

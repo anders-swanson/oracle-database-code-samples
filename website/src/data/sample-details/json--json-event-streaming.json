@@ -1,0 +1,21 @@
+{
+  "id": "json--json-event-streaming",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/json/json-event-streaming/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This sample demonstrates how to stream Oracle AI Database serialized JSON data (OSON) using the kafka-clients compatible OKafka client. The application publishes OSON-serialized events into an Oracle AI Database Transactional Event Queue (TxEventQ) topic and consumes them back into typed Java objects, showcasing an end-to-end JSON pub/sub workflow.",
+  "highlights": [
+    "An Application class that creates an OKafka topic, publishes sample JSON payloads serialized with Oracle OSON, and consumes them back via the OKafka consumer API.",
+    "A reusable OSON serializer/deserializer built on Oracle's JSONB binding so you can work with plain Java POJOs while benefiting from Oracle's binary JSON format.",
+    "Integration tests powered by Testcontainers that spin up Oracle AI Database Free, provision the TxEventQ topic, and validate the producer/consumer loop."
+  ],
+  "features": [
+    "JSON",
+    "TxEventQ",
+    "Testcontainers",
+    "Kafka"
+  ],
+  "metaTitle": "JSON Event Streaming with OKafka and OSON | Oracle AI Database Code Samples",
+  "metaDescription": "OKafka sample that streams OSON payloads through Oracle AI Database TxEventQ topics.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--json-event-streaming/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

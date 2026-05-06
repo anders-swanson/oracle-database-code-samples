@@ -1,0 +1,20 @@
+{
+  "id": "json--jdbc-json-analytics",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/json/jdbc-json-analytics/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This sample explores advanced Oracle SQL/JSON operators with plain JDBC. It stores nested order documents and runs analytical queries using `JSON_TABLE`, `JSON_EXISTS`, and `JSON_ARRAYAGG` to produce insights without shredding JSON data into relational tables.",
+  "highlights": [
+    "Use JSON_TABLE to project order line items into a relational rowset directly from JSON documents.",
+    "Aggregate product demand by combining JSON_TABLE, GROUP BY, and ordering to find the top-selling SKUs.",
+    "Filter orders using JSON_EXISTS predicates and compact the result into JSON arrays via JSON_ARRAYAGG.",
+    "Package the workflow as a console program and validate it with a Testcontainers-powered integration test."
+  ],
+  "features": [
+    "JSON",
+    "Testcontainers"
+  ],
+  "metaTitle": "JDBC JSON Analytics Sample | Oracle AI Database Code Samples",
+  "metaDescription": "Plain JDBC sample that analyzes nested JSON documents with advanced SQL/JSON operators.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--jdbc-json-analytics/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

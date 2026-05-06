@@ -1,0 +1,19 @@
+{
+  "id": "python-oracle--src--python_oracle--mcp_agent",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/python-oracle/src/python_oracle/mcp_agent/README.md",
+  "blogPost": "https://andersswanson.dev/2026/05/04/sqlcl-mcp-for-oracle-ai-database-using-langchain/",
+  "readmeExcerpt": "This sample starts [SQLcl](https://www.oracle.com/database/sqldeveloper/technologies/sqlcl/download/) as an MCP server and lets a LangChain Python agent answer natural-language questions against an Oracle AI Database schema.",
+  "highlights": [
+    "Docker and Docker Compose",
+    "Poetry",
+    "Python 3.13 or higher",
+    "Java runtime for SQLcl"
+  ],
+  "features": [
+    "AI Agents"
+  ],
+  "metaTitle": "SQLcl MCP Agent | Oracle AI Database Code Samples",
+  "metaDescription": "Python SQLcl MCP agent for natural-language SQL queries against Oracle AI Database.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--mcp_agent/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

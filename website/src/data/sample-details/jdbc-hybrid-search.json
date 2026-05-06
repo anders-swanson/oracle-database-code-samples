@@ -1,0 +1,20 @@
+{
+  "id": "jdbc-hybrid-search",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-hybrid-search/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This module demonstrates hybrid search with plain JDBC on Oracle AI Database. The sample stores product-style documents with:",
+  "highlights": [
+    "a text content field that is embedded locally with the same MiniLM model style used in ai-vector-search",
+    "a JSON resource file that seeds a larger sample catalog dynamically at runtime",
+    "a VECTOR embedding column for semantic similarity",
+    "relational columns such as category and price"
+  ],
+  "features": [
+    "Vector Search",
+    "JSON"
+  ],
+  "metaTitle": "JDBC Hybrid Search | Oracle AI Database Code Samples",
+  "metaDescription": "Plain JDBC hybrid search sample that combines Oracle Text, vectors, JSON, and relational filters.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-hybrid-search/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

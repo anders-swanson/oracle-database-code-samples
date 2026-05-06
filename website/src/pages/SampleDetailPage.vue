@@ -5,10 +5,13 @@ import AppShell from '../components/AppShell.vue';
 import InlineMarkdown from '../components/InlineMarkdown.vue';
 import SampleCard from '../components/SampleCard.vue';
 import { findRelatedSamples, findSampleById, samples } from '../lib/catalog';
+import { getRouteSampleDetail, hydrateSample } from '../lib/sampleDetails';
 
 const route = useRoute();
-const sample = computed(() => findSampleById(String(route.params.id)));
-const related = computed(() => (sample.value ? findRelatedSamples(sample.value, samples) : []));
+const sampleId = computed(() => String(route.params.id));
+const summary = computed(() => findSampleById(sampleId.value));
+const sample = computed(() => hydrateSample(sampleId.value, getRouteSampleDetail(route)));
+const related = computed(() => (summary.value ? findRelatedSamples(summary.value, samples) : []));
 </script>
 
 <template>

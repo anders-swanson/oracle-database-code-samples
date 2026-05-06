@@ -1,0 +1,18 @@
+{
+  "id": "spring-cloud-config",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-cloud-config/README.md",
+  "blogPost": "https://andersswanson.dev/2025/11/21/spring-cloud-config-jdbc-backend-oracle-ai-database/",
+  "readmeExcerpt": "This module demonstrates how to use Oracle AI Database as the backend for a Spring Cloud Config Server. It includes a config server that stores configuration properties in an Oracle AI Database via JDBC, a simple client application that consumes these configurations, and a Docker Compose setup for the database.",
+  "highlights": [
+    "Java 21 or later",
+    "Maven",
+    "Docker (for running the Oracle AI Database container)"
+  ],
+  "features": [
+    "Spring"
+  ],
+  "metaTitle": "Spring Cloud Config with Oracle AI Database | Oracle AI Database Code Samples",
+  "metaDescription": "Spring Cloud Config sample that stores configuration properties in Oracle AI Database.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-cloud-config/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

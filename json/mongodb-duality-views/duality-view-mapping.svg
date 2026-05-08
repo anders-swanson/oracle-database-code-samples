@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Projects duality view mapping</title>
+  <desc id="desc">An 800 by 600 diagram showing the projects and project_tasks tables mapped by PROJECTS_DV into a nested MongoDB-style project document.</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="132%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#14202a" flood-opacity="0.13"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#295f63"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 32px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .card { stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .card-title { font: 800 20px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .dark-title { font: 800 19px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .dark-text { font: 600 13.5px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9f4ef; }
+      .field { font: 600 14.5px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .field-strong { font: 800 14.5px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .json { font: 600 13.5px "Menlo", "Consolas", monospace; fill: #21343a; }
+      .json-key { font: 700 13.5px "Menlo", "Consolas", monospace; fill: #295f63; }
+      .arrow { fill: none; stroke: #295f63; stroke-width: 3.5; stroke-linecap: round; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <path d="M0 0H800V132H0Z" fill="#eef7f4"/>
+  <path d="M640 0H800V148C754 120 704 70 640 0Z" fill="#ffb4a2" opacity="0.34"/>
+  <path d="M0 488C124 438 270 450 382 494C500 540 642 532 800 468V600H0Z" fill="#295f63" opacity="0.07"/>
+
+  <text x="44" y="50" class="eyebrow">projects and tasks</text>
+  <text x="44" y="90" class="title">Relational Rows As One Document</text>
+  <text x="44" y="117" class="subtitle">PROJECTS_DV keeps normalized tables and exposes one nested MongoDB collection.</text>
+
+  <rect x="44" y="176" width="208" height="142" rx="6" fill="#f2c94c" class="card"/>
+  <text x="70" y="214" class="card-title">projects</text>
+  <text x="70" y="248" class="field-strong">project_id PK</text>
+  <text x="70" y="274" class="field">name</text>
+  <text x="70" y="300" class="field">status, owner_name</text>
+
+  <rect x="44" y="350" width="208" height="164" rx="6" fill="#9bd7d1" class="card"/>
+  <text x="70" y="388" class="card-title">project_tasks</text>
+  <text x="70" y="422" class="field-strong">task_id PK</text>
+  <text x="70" y="448" class="field">project_id FK</text>
+  <text x="70" y="474" class="field">title, status</text>
+  <text x="70" y="500" class="field">priority</text>
+
+  <rect x="318" y="230" width="170" height="174" rx="6" fill="#152330" class="card"/>
+  <text x="344" y="274" class="dark-title">PROJECTS_DV</text>
+  <text x="344" y="312" class="dark-text">_id = project_id</text>
+  <text x="344" y="337" class="dark-text">owner = owner_name</text>
+  <text x="344" y="362" class="dark-text">tasks[] child rows</text>
+
+  <path d="M252 236C284 246 300 270 318 286" class="arrow"/>
+  <path d="M252 432C286 420 302 374 318 352" class="arrow"/>
+
+  <path d="M488 318H540" class="arrow"/>
+
+  <rect x="540" y="176" width="218" height="338" rx="6" fill="#ffffff" class="card"/>
+  <text x="564" y="214" class="card-title">Project document</text>
+  <text x="564" y="252" class="json">{</text>
+  <text x="582" y="276" class="json-key">"_id"</text>
+  <text x="628" y="276" class="json">: 1001,</text>
+  <text x="582" y="300" class="json-key">"name"</text>
+  <text x="635" y="300" class="json">: "...",</text>
+  <text x="582" y="324" class="json-key">"status"</text>
+  <text x="650" y="324" class="json">: "...",</text>
+  <text x="582" y="348" class="json-key">"owner"</text>
+  <text x="642" y="348" class="json">: "...",</text>
+  <text x="582" y="372" class="json-key">"tasks"</text>
+  <text x="642" y="372" class="json">: [</text>
+  <text x="604" y="396" class="json">{ "_id": 2001,</text>
+  <text x="620" y="420" class="json">"title": "...",</text>
+  <text x="620" y="444" class="json">"priority": 1 }</text>
+  <text x="582" y="468" class="json">]</text>
+  <text x="564" y="492" class="json">}</text>
+</svg>

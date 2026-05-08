@@ -1,0 +1,22 @@
+{
+  "id": "json--mongodb-duality-views",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/json/mongodb-duality-views/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This sample demonstrates using the MongoDB Java driver with Oracle AI Database JSON Relational Duality Views exposed through Oracle REST Data Services (ORDS). The test creates a small relational project-tracking schema, exposes it as the `PROJECTS_DV` duality view, and then performs document operations against that view through the MongoDB API.",
+  "highlights": [
+    "Start Oracle AI Database Free and ORDS together with Testcontainers.",
+    "Create relational tables and a JSON Relational Duality View before ORDS starts.",
+    "Connect with the MongoDB Java driver using the ORDS MongoDB API port.",
+    "Insert, query, update, and delete duality-view documents through the MongoDB API."
+  ],
+  "features": [
+    "JSON",
+    "Duality Views",
+    "ORDS",
+    "Testcontainers"
+  ],
+  "metaTitle": "MongoDB API with JSON Relational Duality Views | Oracle AI Database Code Samples",
+  "metaDescription": "MongoDB Java driver sample for JSON Relational Duality Views exposed through ORDS.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--mongodb-duality-views/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

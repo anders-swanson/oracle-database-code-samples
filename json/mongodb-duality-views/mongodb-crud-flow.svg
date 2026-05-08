@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">MongoDB CRUD flow for PROJECTS_DV</title>
+  <desc id="desc">An 800 by 600 diagram showing setup steps followed by MongoDB insert, find, update, and delete operations against PROJECTS_DV.</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="132%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#14202a" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#2e6f95"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 32px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .step { stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .num { font: 800 19px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .step-title { font: 800 18px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .step-text { font: 600 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .code { font: 700 12px "Menlo", "Consolas", monospace; fill: #295f63; }
+      .arrow { fill: none; stroke: #2e6f95; stroke-width: 3.5; stroke-linecap: round; marker-end: url(#arrow); }
+      .db { font: 800 18px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .db-small { font: 600 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9f4ef; }
+      .lane { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #59686a; text-transform: uppercase; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <path d="M0 0H800V132H0Z" fill="#eef7f4"/>
+  <path d="M646 0H800V146C744 114 698 66 646 0Z" fill="#f2c94c" opacity="0.3"/>
+  <path d="M0 488C126 442 246 452 360 498C502 552 638 524 800 462V600H0Z" fill="#2e6f95" opacity="0.07"/>
+
+  <text x="44" y="50" class="eyebrow">MongoDB API test flow</text>
+  <text x="44" y="90" class="title">Setup Once, Then Use MongoDB</text>
+  <text x="44" y="117" class="subtitle">Setup prepares PROJECTS_DV; operations use MongoDB driver calls.</text>
+
+  <text x="52" y="158" class="lane">setup Tasks</text>
+  <rect x="52" y="174" width="166" height="118" rx="6" fill="#f2c94c" class="step"/>
+  <circle cx="80" cy="202" r="16" fill="#ffffff" stroke="#152330" stroke-width="2"/>
+  <text x="74" y="209" class="num">1</text>
+  <text x="110" y="209" class="step-title">Init SQL</text>
+  <text x="76" y="244" class="step-text">create projectuser</text>
+  <text x="76" y="266" class="step-text">tables and view</text>
+
+
+  <rect x="270" y="174" width="200" height="118" rx="6" fill="#9bd7d1" class="step"/>
+  <circle cx="298" cy="202" r="16" fill="#ffffff" stroke="#152330" stroke-width="2"/>
+  <text x="292" y="209" class="num">2</text>
+  <text x="328" y="209" class="step-title">Enable ORDS</text>
+  <text x="294" y="244" class="code">ORDS.ENABLE_SCHEMA</text>
+  <text x="294" y="266" class="step-text">projectuser route</text>
+
+
+  <rect x="520" y="174" width="218" height="118" rx="6" fill="#ffb4a2" class="step"/>
+  <circle cx="548" cy="202" r="16" fill="#ffffff" stroke="#152330" stroke-width="2"/>
+  <text x="542" y="209" class="num">3</text>
+  <text x="582" y="209" class="step-title">Connect Client</text>
+  <text x="544" y="244" class="code">mongodb://projectuser</text>
+  <text x="544" y="266" class="step-text">Using MongoDB protocol</text>
+
+  <text x="52" y="344" class="lane">collection operations</text>
+  <rect x="52" y="360" width="142" height="112" rx="6" fill="#ffffff" class="step"/>
+  <text x="82" y="400" class="step-title">insert</text>
+  <text x="80" y="429" class="step-text">project with</text>
+  <text x="80" y="450" class="step-text">nested tasks</text>
+
+
+  <rect x="256" y="360" width="142" height="112" rx="6" fill="#ffffff" class="step"/>
+  <text x="308" y="400" class="step-title">find</text>
+  <text x="286" y="429" class="code">_id = 1001</text>
+  <text x="286" y="450" class="step-text">assert tasks</text>
+
+
+  <rect x="460" y="360" width="142" height="112" rx="6" fill="#ffffff" class="step"/>
+  <text x="488" y="400" class="step-title">update</text>
+  <text x="490" y="429" class="code">$set status</text>
+  <text x="490" y="450" class="step-text">complete</text>
+
+
+  <rect x="640" y="360" width="136" height="112" rx="6" fill="#ffffff" class="step"/>
+  <text x="664" y="400" class="step-title">delete</text>
+  <text x="668" y="429" class="step-text">remove</text>
+  <text x="668" y="450" class="step-text">document</text>
+
+  <path d="M123 472V518" class="arrow"/>
+  <path d="M327 472V518" class="arrow"/>
+  <path d="M531 472V518" class="arrow"/>
+  <path d="M708 472V518" class="arrow"/>
+
+  <rect x="52" y="530" width="724" height="54" rx="6" fill="#152330" stroke="#152330" stroke-width="2"/>
+  <text x="82" y="563" class="db">PROJECTS_DV</text>
+  <text x="220" y="563" class="db-small">duality view collection backed by relational tables</text>
+</svg>

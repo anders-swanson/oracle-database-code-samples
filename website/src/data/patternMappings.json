@@ -125,7 +125,8 @@
         "json--jdbc-json-analytics",
         "json--jdbc-json-basic",
         "jdbc-json-oracle-text",
-        "migrate-kafka-to-oracle--kafka-app-step-3"
+        "migrate-kafka-to-oracle--kafka-app-step-3",
+        "json--mongodb-duality-views"
       ]
     },
     {
@@ -141,6 +142,7 @@
       ],
       "sampleIds": [
         "jdbc-graphql",
+        "json--mongodb-duality-views",
         "ords-docker-compose",
         "ords-testcontainers",
         "spring-data-mongodb-oracle-api"

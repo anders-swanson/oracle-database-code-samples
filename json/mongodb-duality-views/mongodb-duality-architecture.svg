@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">MongoDB duality view test architecture</title>
+  <desc id="desc">An 800 by 600 diagram showing a JUnit test initializing Oracle AI Database Free, ORDS exposing the schema through the MongoDB API, and the MongoDB Java driver calling the PROJECTS_DV collection.</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="132%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#14202a" flood-opacity="0.13"/>
+    </filter>
+    <marker id="arrow-gray" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#59686a"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#2e6f95"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#295f63"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 32px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .zone { fill: #ffffff; stroke: #d9d2c3; stroke-width: 2; }
+      .zone-title { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #59686a; text-transform: uppercase; }
+      .box { stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .box-title { font: 800 20px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .box-text { font: 600 14.5px "Avenir Next", "Trebuchet MS", sans-serif; fill: #344b52; }
+      .dark-title { font: 800 20px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .dark-text { font: 600 14.5px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9f4ef; }
+      .line-gray { fill: none; stroke: #59686a; stroke-width: 3.5; stroke-linecap: round; marker-end: url(#arrow-gray); }
+      .line-green { fill: none; stroke: #2e6f95; stroke-width: 3.5; stroke-linecap: round; marker-end: url(#arrow-green); }
+      .line-blue { fill: none; stroke: #295f63; stroke-width: 3.5; stroke-linecap: round; marker-end: url(#arrow-blue); }
+      .label { font: 800 13.5px "Avenir Next", "Trebuchet MS", sans-serif; fill: #263b42; }
+      .label-bg { fill: #fbfcf7; stroke: #d9d2c3; stroke-width: 1.2; }
+      .note { font: 600 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #59686a; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <path d="M0 0H800V132H0Z" fill="#eef7f4"/>
+  <path d="M636 0H800V144C748 116 694 66 636 0Z" fill="#f2c94c" opacity="0.32"/>
+  <path d="M0 468C125 428 240 438 354 486C493 540 630 520 800 460V600H0Z" fill="#2e6f95" opacity="0.07"/>
+
+  <text x="44" y="50" class="eyebrow">json/mongodb-duality-views</text>
+  <text x="44" y="90" class="title">Test Architecture</text>
+  <text x="44" y="117" class="subtitle">The test prepares SQL once, then exercises PROJECTS_DV through the MongoDB API.</text>
+
+  <rect x="282" y="156" width="474" height="350" rx="8" class="zone"/>
+  <text x="308" y="185" class="zone-title">Shared Testcontainers Network</text>
+
+  <rect x="44" y="176" width="178" height="108" rx="6" fill="#f2c94c" class="box"/>
+  <text x="60" y="217" class="box-title">JUnit Test</text>
+  <text x="60" y="247" class="box-text">starts containers</text>
+  <text x="60" y="269" class="box-text">runs init script</text>
+
+  <rect x="44" y="372" width="202" height="116" rx="6" fill="#9bd7d1" class="box"/>
+  <text x="60" y="413" class="box-title">MongoDB</text>
+  <text x="60" y="439" class="box-title">Java Driver</text>
+  <text x="60" y="466" class="box-text">collection PROJECTS_DV</text>
+
+  <rect x="326" y="250" width="174" height="152" rx="6" fill="#ffffff" class="box"/>
+  <text x="354" y="292" class="box-title">ORDS</text>
+  <text x="354" y="318" class="box-title">Container</text>
+  <text x="354" y="352" class="box-text">MongoDB API</text>
+  <text x="354" y="374" class="box-text">TLS on port 27017</text>
+
+  <rect x="568" y="220" width="174" height="210" rx="6" fill="#152330" class="box"/>
+  <text x="580" y="262" class="dark-title">Oracle AI</text>
+  <text x="580" y="288" class="dark-title">Database Free</text>
+  <text x="580" y="326" class="dark-text">projectuser schema</text>
+  <text x="580" y="350" class="dark-text">projects_dv view</text>
+  <text x="580" y="374" class="dark-text">projects tables</text>
+
+  <path d="M222 228C328 214 470 214 568 260" class="line-gray"/>
+
+  <path d="M246 430C286 430 304 374 326 354" class="line-green"/>
+
+  <path d="M500 326H568" class="line-blue"/>
+
+  <rect x="292" y="201" width="146" height="24" rx="4" class="label-bg"/>
+  <text x="304" y="218" class="label">Start and run SQL</text>
+
+  <rect x="265" y="423" width="158" height="24" rx="4" class="label-bg"/>
+  <text x="268" y="440" class="label">MongoDB driver calls</text>
+
+  <rect x="326" y="456" width="416" height="64" rx="6" fill="#f8eee8" stroke="#d5967f" stroke-width="2"/>
+  <text x="348" y="483" class="note">ORDS.ENABLE_SCHEMA exposes projectuser.</text>
+  <text x="348" y="505" class="note">After setup, sample operations use MongoDB APIs.</text>
+</svg>

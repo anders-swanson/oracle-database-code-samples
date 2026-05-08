@@ -9,6 +9,7 @@ tags:
   - MongoDB
   - ORDS
   - Testcontainers
+blog_post: "https://andersswanson.dev/2026/05/08/mongo-over-relational-data-json-relational-duality-views/"
 ---
 
 # MongoDB API with JSON Relational Duality Views

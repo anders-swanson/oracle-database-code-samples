@@ -1,0 +1,18 @@
+{
+  "id": "python-oracle--src--python_oracle--full_text_search",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/python-oracle/src/python_oracle/full_text_search/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This folder contains a native Python full-text search sample for Oracle AI Database using `python-oracledb` and Oracle Text.",
+  "highlights": [
+    "Python 3.13+",
+    "Poetry",
+    "Docker compatible environment"
+  ],
+  "features": [
+    "JSON"
+  ],
+  "metaTitle": "Python Full-Text Search Sample | Oracle AI Database Code Samples",
+  "metaDescription": "Native Python full-text JSON search sample for Oracle AI Database using python-oracledb and Oracle Text.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--full_text_search/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

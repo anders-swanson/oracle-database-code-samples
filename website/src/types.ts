@@ -36,11 +36,18 @@ export interface FilterOption {
   count: number;
 }
 
+export interface FeatureDetail {
+  description: string;
+  useWhen: string;
+}
+
 export interface SubfeatureGraphNode {
   name: string;
   count: number;
   iconPath?: string;
   iconSourceLabel?: string;
+  description?: string;
+  useWhen?: string;
   x: number;
   y: number;
   ring: number;

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { getFeatureDetail } from '../src/data/featureDetails';
 import { getFeatureIcon } from '../src/data/featureIcons';
 import { buildSubfeatureGraph, samples } from '../src/lib/catalog';
 
@@ -33,7 +34,17 @@ describe('feature icon mapping', () => {
     expect(missingIcons).toEqual([]);
   });
 
+  it('covers every default feature-map node with hover details', () => {
+    const graph = buildSubfeatureGraph(samples);
+    const missingDetails = graph.nodes
+      .filter((node) => !getFeatureDetail(node.name) || !node.description || !node.useWhen)
+      .map((node) => node.name);
+
+    expect(missingDetails).toEqual([]);
+  });
+
   it('leaves unmapped tags without an icon', () => {
     expect(getFeatureIcon('not-a-feature')).toBeUndefined();
+    expect(getFeatureDetail('not-a-feature')).toBeUndefined();
   });
 });

@@ -1,4 +1,5 @@
 import rawCatalogIndex from '../data/catalog-index.json';
+import { getFeatureDetail } from '../data/featureDetails';
 import { getFeatureIcon } from '../data/featureIcons';
 import rawPatternMappings from '../data/patternMappings.json';
 import type {
@@ -252,12 +253,15 @@ export function buildSubfeatureGraph(items: SampleSummary[], limit = Number.POSI
     const width = Math.max(168, Math.min(250, 118 + tag.value.length * 8));
     const height = Math.max(158, Math.min(184, Math.round(width * 0.82)));
     const icon = getFeatureIcon(tag.value);
+    const detail = getFeatureDetail(tag.value);
     const padding = 34;
     let placed = {
       name: tag.value,
       count: tag.count,
       iconPath: icon?.iconPath,
       iconSourceLabel: icon?.sourceLabel,
+      description: detail?.description,
+      useWhen: detail?.useWhen,
       x: subfeatureGraphCenterX + Math.cos(baseAngle) * baseRadius,
       y: subfeatureGraphCenterY + Math.sin(baseAngle) * baseRadius,
       ring,

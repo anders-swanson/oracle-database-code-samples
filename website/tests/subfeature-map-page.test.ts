@@ -26,6 +26,8 @@ vi.mock('../src/lib/catalog', () => ({
         count: 7,
         iconPath: '/feature-icons/vector-search.png',
         iconSourceLabel: 'Vector Search',
+        description: 'Store embeddings and search records by semantic similarity.',
+        useWhen: 'Use when users search by meaning or AI answers need grounded records.',
         x: 640,
         y: 480,
         ring: 0,
@@ -38,6 +40,8 @@ vi.mock('../src/lib/catalog', () => ({
         count: 4,
         iconPath: '/feature-icons/json.svg',
         iconSourceLabel: 'Database Badge {}',
+        description: 'Document-shaped data and SQL/JSON querying inside Oracle AI Database.',
+        useWhen: 'Use when records need flexible structure without leaving SQL, indexes, constraints, and transactions.',
         x: 1540,
         y: 780,
         ring: 1,
@@ -52,7 +56,7 @@ vi.mock('../src/lib/catalog', () => ({
 import SubfeatureMapPage from '../src/pages/SubfeatureMapPage.vue';
 
 describe('SubfeatureMapPage', () => {
-  it('renders graph nodes and catalog links', () => {
+  it('renders graph nodes, hover details, and catalog links', async () => {
     const wrapper = mount(SubfeatureMapPage, {
       global: {
         stubs: {
@@ -68,6 +72,14 @@ describe('SubfeatureMapPage', () => {
     expect(wrapper.find('img[src="/feature-icons/vector-search.png"]').exists()).toBe(true);
     expect(wrapper.find('.tag-map-viewport').exists()).toBe(true);
     expect(wrapper.find('button.tag-map-panel__button').text()).toContain('Recenter Map');
+
+    await wrapper.find('.tag-map-node').trigger('focus');
+    expect(wrapper.find('.tag-map-tooltip').attributes('role')).toBe('tooltip');
+    expect(wrapper.find('.tag-map-tooltip').text()).toContain('Vector Search');
+    expect(wrapper.find('.tag-map-tooltip').text()).toContain('Store embeddings and search records by semantic similarity.');
+    expect(wrapper.find('.tag-map-tooltip').text()).toContain(
+      'Use when users search by meaning or AI answers need grounded records.'
+    );
 
     const links = wrapper.findAllComponents(RouterLinkStub);
     expect(links.some((link) => link.props('to') === '/')).toBe(true);

@@ -9,6 +9,17 @@ const viewport = ref<HTMLElement | null>(null);
 const isDragging = ref(false);
 const panPointerId = ref<number | null>(null);
 const dragState = ref({ x: 0, y: 0, left: 0, top: 0 });
+const activeTooltip = ref<{
+  node: SubfeatureGraphNode;
+  left: number;
+  top: number;
+  placement: 'above' | 'below';
+} | null>(null);
+
+const tooltipWidth = 288;
+const tooltipHeight = 150;
+const tooltipGap = 14;
+const tooltipMargin = 16;
 
 function centerViewport() {
   const element = viewport.value;
@@ -45,6 +56,52 @@ function nodeStyle(node: SubfeatureGraphNode) {
   };
 }
 
+function showNodeTooltip(event: PointerEvent | MouseEvent | FocusEvent, node: SubfeatureGraphNode) {
+  if (!node.description || !node.useWhen) {
+    activeTooltip.value = null;
+    return;
+  }
+
+  const element = viewport.value;
+  const target = event.currentTarget as HTMLElement | null;
+  if (!element || !target) {
+    return;
+  }
+
+  const viewportRect = element.getBoundingClientRect();
+  const nodeRect = target.getBoundingClientRect();
+  const nodeCenterX = nodeRect.left + nodeRect.width / 2 - viewportRect.left;
+  const aboveTop = nodeRect.top - viewportRect.top - tooltipHeight - tooltipGap;
+  const belowTop = nodeRect.bottom - viewportRect.top + tooltipGap;
+  const placement = aboveTop >= tooltipMargin ? 'above' : 'below';
+  const rawTop = placement === 'above' ? aboveTop : belowTop;
+  const minLeft = tooltipWidth / 2 + tooltipMargin;
+  const maxLeft = Math.max(minLeft, element.clientWidth - tooltipWidth / 2 - tooltipMargin);
+  const maxTop = Math.max(tooltipMargin, element.clientHeight - tooltipHeight - tooltipMargin);
+
+  activeTooltip.value = {
+    node,
+    left: element.scrollLeft + Math.min(Math.max(nodeCenterX, minLeft), maxLeft),
+    top: element.scrollTop + Math.min(Math.max(rawTop, tooltipMargin), maxTop),
+    placement
+  };
+}
+
+function hideNodeTooltip() {
+  activeTooltip.value = null;
+}
+
+function tooltipStyle() {
+  if (!activeTooltip.value) {
+    return {};
+  }
+
+  return {
+    left: `${activeTooltip.value.left}px`,
+    top: `${activeTooltip.value.top}px`
+  };
+}
+
 function beginPan(event: PointerEvent) {
   const target = event.target as HTMLElement | null;
   if (target?.closest('.tag-map-node, .tag-map-center, .tag-map-panel__button')) {
@@ -57,6 +114,7 @@ function beginPan(event: PointerEvent) {
   }
 
   isDragging.value = true;
+  hideNodeTooltip();
   panPointerId.value = event.pointerId;
   dragState.value = {
     x: event.clientX,
@@ -144,6 +202,7 @@ onMounted(() => {
         @pointerup="endPan"
         @pointercancel="endPan"
         @pointerleave="endPan"
+        @scroll="hideNodeTooltip"
       >
         <div class="tag-map-world" :style="worldStyle()">
           <svg class="tag-map-stage__svg" :viewBox="`0 0 ${graph.width} ${graph.height}`" aria-hidden="true">
@@ -187,6 +246,15 @@ onMounted(() => {
             class="tag-map-node"
             :style="nodeStyle(node)"
             :to="{ name: 'catalog', query: { tags: node.name } }"
+            @pointerover="showNodeTooltip($event, node)"
+            @pointerenter="showNodeTooltip($event, node)"
+            @mouseover="showNodeTooltip($event, node)"
+            @mouseenter="showNodeTooltip($event, node)"
+            @mousemove="showNodeTooltip($event, node)"
+            @focus="showNodeTooltip($event, node)"
+            @pointerleave="hideNodeTooltip"
+            @mouseleave="hideNodeTooltip"
+            @blur="hideNodeTooltip"
           >
             <span v-if="node.iconPath" class="tag-map-node__icon" aria-hidden="true">
               <img :src="node.iconPath" alt="" loading="lazy" />
@@ -196,6 +264,17 @@ onMounted(() => {
               <span class="tag-map-node__label">{{ node.name }}</span>
             </span>
           </RouterLink>
+        </div>
+        <div
+          v-if="activeTooltip"
+          class="tag-map-tooltip"
+          :class="`tag-map-tooltip--${activeTooltip.placement}`"
+          :style="tooltipStyle()"
+          role="tooltip"
+        >
+          <strong>{{ activeTooltip.node.name }}</strong>
+          <span>{{ activeTooltip.node.description }}</span>
+          <em>{{ activeTooltip.node.useWhen }}</em>
         </div>
       </div>
 

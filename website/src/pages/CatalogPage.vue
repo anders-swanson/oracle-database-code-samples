@@ -109,7 +109,7 @@ function clearFilters() {
       </div>
     </section>
 
-    <section ref="catalogSection" class="catalog-layout">
+    <section id="catalog-results" ref="catalogSection" class="catalog-layout">
       <aside class="catalog-sidebar">
         <div class="control-panel">
           <div class="control-panel__topline">

@@ -70,10 +70,10 @@ describe('SEO metadata sync', () => {
     expect(head.script[0]?.textContent).toContain('SoftwareSourceCode');
   });
 
-  it('applies feature map metadata', () => {
+  it('applies topic map metadata', () => {
     const head = headFor({ name: 'feature-map' });
 
-    expect(head.title).toBe('Feature Map | Oracle AI Database Code Samples');
+    expect(head.title).toBe('Topic Map | Oracle AI Database Code Samples');
     expect(findMeta(head, 'property', 'og:url')?.content).toBe(
       'https://anders-swanson.github.io/oracle-database-code-samples/feature-map/'
     );

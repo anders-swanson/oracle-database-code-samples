@@ -52,10 +52,10 @@ function buildCatalogMetadata(): PageMetadata {
 function buildSubfeatureMapMetadata(): PageMetadata {
   const canonicalUrl = `${SITE_URL}feature-map/`;
   const description =
-    'Explore a visual tag map of Oracle AI Database code samples, with features sized by the number of related samples.';
+    'Explore a visual topic map of Oracle AI Database code samples, with topics sized by the number of related samples.';
 
   return {
-    title: `Feature Map | ${SITE_NAME}`,
+    title: `Topic Map | ${SITE_NAME}`,
     description,
     canonicalUrl,
     ogType: 'website',
@@ -65,7 +65,7 @@ function buildSubfeatureMapMetadata(): PageMetadata {
       {
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
-        name: 'Oracle AI Database Feature Map',
+        name: 'Oracle AI Database Topic Map',
         url: canonicalUrl,
         description
       }

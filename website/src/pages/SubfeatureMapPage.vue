@@ -309,10 +309,10 @@ onBeforeUnmount(() => {
   <AppShell>
     <section class="map-hero">
       <div class="map-hero__copy">
-        <span class="hero__eyebrow">Feature Tag Map</span>
-        <h1>Explore Oracle AI Database samples like a navigable feature map</h1>
+        <span class="hero__eyebrow">Sample Topic Map</span>
+        <h1>Explore Oracle AI Database samples like a navigable topic map</h1>
         <p>
-          Drag across the map to explore the strongest feature clusters. Each node is spaced on a larger canvas so
+          Drag across the map to explore the strongest topic clusters. Each node is spaced on a larger canvas so
           the tags stay readable without stacking on top of each other.
         </p>
       </div>
@@ -324,7 +324,7 @@ onBeforeUnmount(() => {
         </div>
         <div class="stat-card stat-card--map">
           <strong>{{ graph.nodes.length }}</strong>
-          <span>Mapped features</span>
+          <span>Mapped topics</span>
         </div>
         <div class="stat-card stat-card--map">
           <strong>{{ graph.totalTags }}</strong>
@@ -335,7 +335,7 @@ onBeforeUnmount(() => {
 
     <section class="tag-map-panel">
       <div class="tag-map-panel__toolbar">
-        <p>Drag the canvas to pan. Select any node to open the matching filtered catalog view.</p>
+        <p>Drag the canvas to pan. Select any topic to open the matching filtered catalog view.</p>
       </div>
 
       <div ref="mapWindow" class="tag-map-window" :class="{ 'is-fullscreen': isFullscreen }">
@@ -494,7 +494,7 @@ onBeforeUnmount(() => {
 
       <div class="tag-map-panel__footer">
         <p>
-          Click on a feature to view all related samples.
+          Click on a topic to view all related samples.
         </p>
         <RouterLink class="button button--ghost" to="/">Browse Full Catalog</RouterLink>
       </div>
@@ -503,7 +503,7 @@ onBeforeUnmount(() => {
     <section class="orbit-list">
       <div class="orbit-list__header">
         <span class="catalog-results__eyebrow">Top Orbits</span>
-        <h2>Browse features by sample count</h2>
+        <h2>Browse topics by sample count</h2>
       </div>
 
       <div class="orbit-list__grid">

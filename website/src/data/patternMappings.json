@@ -126,7 +126,8 @@
         "json--jdbc-json-basic",
         "jdbc-json-oracle-text",
         "migrate-kafka-to-oracle--kafka-app-step-3",
-        "json--mongodb-duality-views"
+        "json--mongodb-duality-views",
+        "python-oracle--src--python_oracle--full_text_search"
       ]
     },
     {

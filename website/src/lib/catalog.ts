@@ -1,4 +1,5 @@
 import rawCatalogIndex from '../data/catalog-index.json';
+import { getFeatureIcon } from '../data/featureIcons';
 import rawPatternMappings from '../data/patternMappings.json';
 import type {
   CatalogFilters,
@@ -214,7 +215,7 @@ export function topFilterOptions(options: FilterOption[], limit: number) {
     .slice(0, limit);
 }
 
-export function buildSubfeatureGraph(items: SampleSummary[], limit = 24): SubfeatureGraph {
+export function buildSubfeatureGraph(items: SampleSummary[], limit = Number.POSITIVE_INFINITY): SubfeatureGraph {
   const allTags = optionList(
     items.flatMap((sample) => sample.tags.filter((tag) => !subfeatureGraphExcludedTags.has(tag)))
   ).sort((left, right) => right.count - left.count || left.value.localeCompare(right.value));
@@ -249,11 +250,14 @@ export function buildSubfeatureGraph(items: SampleSummary[], limit = 24): Subfea
     const baseAngle = -Math.PI / 2 + angleOffset + (Math.PI * 2 * ringIndex) / Math.max(ringCount, 1);
     const baseRadius = subfeatureGraphOrbitRadii[ring] ?? subfeatureGraphOrbitRadii[subfeatureGraphOrbitRadii.length - 1];
     const width = Math.max(168, Math.min(250, 118 + tag.value.length * 8));
-    const height = 96;
+    const height = Math.max(158, Math.min(184, Math.round(width * 0.82)));
+    const icon = getFeatureIcon(tag.value);
     const padding = 34;
     let placed = {
       name: tag.value,
       count: tag.count,
+      iconPath: icon?.iconPath,
+      iconSourceLabel: icon?.sourceLabel,
       x: subfeatureGraphCenterX + Math.cos(baseAngle) * baseRadius,
       y: subfeatureGraphCenterY + Math.sin(baseAngle) * baseRadius,
       ring,

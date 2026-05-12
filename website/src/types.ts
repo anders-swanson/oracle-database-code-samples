@@ -39,6 +39,8 @@ export interface FilterOption {
 export interface SubfeatureGraphNode {
   name: string;
   count: number;
+  iconPath?: string;
+  iconSourceLabel?: string;
   x: number;
   y: number;
   ring: number;

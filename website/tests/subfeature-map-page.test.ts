@@ -24,22 +24,26 @@ vi.mock('../src/lib/catalog', () => ({
       {
         name: 'Vector Search',
         count: 7,
+        iconPath: '/feature-icons/vector-search.png',
+        iconSourceLabel: 'Vector Search',
         x: 640,
         y: 480,
         ring: 0,
         size: 10.2,
         width: 192,
-        height: 96
+        height: 158
       },
       {
         name: 'JSON',
         count: 4,
+        iconPath: '/feature-icons/json.svg',
+        iconSourceLabel: 'Database Badge {}',
         x: 1540,
         y: 780,
         ring: 1,
         size: 9,
         width: 168,
-        height: 96
+        height: 158
       }
     ]
   })
@@ -61,6 +65,7 @@ describe('SubfeatureMapPage', () => {
     expect(wrapper.text()).toContain('Converged Database');
     expect(wrapper.text()).toContain('Vector Search');
     expect(wrapper.text()).toContain('7');
+    expect(wrapper.find('img[src="/feature-icons/vector-search.png"]').exists()).toBe(true);
     expect(wrapper.find('.tag-map-viewport').exists()).toBe(true);
     expect(wrapper.find('button.tag-map-panel__button').text()).toContain('Recenter Map');
 

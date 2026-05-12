@@ -3,10 +3,9 @@ name: python-oracle/src/python_oracle/full_text_search
 description: Native Python full-text JSON search sample for Oracle AI Database using python-oracledb and Oracle Text.
 tags:
   - Database
-  - Python
+  - python
   - JSON
   - Oracle Text
-  - Full Text Search
 blog_post: ""
 ---
 

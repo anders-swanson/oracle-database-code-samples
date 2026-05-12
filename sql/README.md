@@ -5,7 +5,7 @@ tags:
   - AI
   - Database
   - JSON
-  - SQL
+  - PL/SQL
   - Vector Search
 blog_post: ""
 ---

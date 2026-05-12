@@ -39,7 +39,7 @@ function nodeStyle(node: SubfeatureGraphNode) {
     left: `${node.x}px`,
     top: `${node.y}px`,
     width: `${node.width}px`,
-    minHeight: `${node.height}px`,
+    height: `${node.height}px`,
     '--node-size': `${node.size}rem`,
     '--node-delay': `${node.ring * 120}ms`
   };
@@ -188,8 +188,13 @@ onMounted(() => {
             :style="nodeStyle(node)"
             :to="{ name: 'catalog', query: { tags: node.name } }"
           >
-            <span class="tag-map-node__count">{{ node.count }}</span>
-            <span class="tag-map-node__label">{{ node.name }}</span>
+            <span v-if="node.iconPath" class="tag-map-node__icon" aria-hidden="true">
+              <img :src="node.iconPath" alt="" loading="lazy" />
+            </span>
+            <span class="tag-map-node__meta">
+              <span class="tag-map-node__count">{{ node.count }}</span>
+              <span class="tag-map-node__label">{{ node.name }}</span>
+            </span>
           </RouterLink>
         </div>
       </div>
@@ -215,6 +220,9 @@ onMounted(() => {
           class="orbit-list__item"
           :to="{ name: 'catalog', query: { tags: node.name } }"
         >
+          <span v-if="node.iconPath" class="orbit-list__icon" aria-hidden="true">
+            <img :src="node.iconPath" alt="" loading="lazy" />
+          </span>
           <strong>{{ node.name }}</strong>
           <span>{{ node.count }} samples</span>
         </RouterLink>

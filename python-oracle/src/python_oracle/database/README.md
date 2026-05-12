@@ -4,7 +4,7 @@ description: Native Python vector search sample for Oracle AI Database using pyt
 tags:
   - AI
   - Database
-  - Python
+  - python
   - Vector Search
 blog_post: "https://andersswanson.dev/2026/02/10/langchain-vs-diy-vector-search-with-oracle-ai-database/"
 ---

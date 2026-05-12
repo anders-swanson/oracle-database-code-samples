@@ -85,7 +85,7 @@
       "sampleCriteria": {
         "include": [
           { "pathIncludes": ["json/jdbc-json"] },
-          { "ids": ["jdbc-json-oracle-text", "jdbc-hybrid-search"] },
+          { "ids": ["jdbc-json-oracle-text", "jdbc-hybrid-search", "python-oracle--src--python_oracle--full_text_search"] },
           { "featuresAll": ["Duality Views"] }
         ]
       }

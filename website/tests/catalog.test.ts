@@ -132,7 +132,15 @@ describe('catalog filtering', () => {
     expect(graph.nodes.every((node) => node.x > 0 && node.x < graph.width && node.y > 0 && node.y < graph.height)).toBe(
       true
     );
-    expect(graph.nodes.every((node) => node.width >= 168 && node.height === 96)).toBe(true);
+    expect(graph.nodes.every((node) => node.width >= 168 && node.height >= 158 && node.height <= 184)).toBe(true);
+  });
+
+  it('represents every generated non-generic catalog tag in the default feature graph', () => {
+    const graph = buildSubfeatureGraph(catalogSamples);
+
+    expect(graph.hiddenTags).toBe(0);
+    expect(graph.nodes).toHaveLength(graph.totalTags);
+    expect(graph.nodes.map((node) => node.name)).toEqual(expect.arrayContaining(['Spatial', 'SQLcl']));
   });
 
   it('resolves every curated pattern sample id against the generated catalog', () => {

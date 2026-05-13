@@ -1,0 +1,20 @@
+{
+  "id": "json--jdbc-json-multivalue-index",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/json/jdbc-json-multivalue-index/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This sample demonstrates how to use multivalue function-based indexes for JSON array lookups in Oracle AI Database. It stores product documents in a native `JSON` column, creates multiple targeted indexes over array-backed paths, and queries each path with a matching `json_exists` predicate.",
+  "highlights": [
+    "Store inventory products as JSON documents in a native Oracle AI Database JSON column.",
+    "Create a numeric multivalue index over scalar values inside the compatiblePartIds array.",
+    "Create a string multivalue index over region values inside an array of warehouse objects.",
+    "Create a composite multivalue index over type and partId values inside the same component object array."
+  ],
+  "features": [
+    "JSON",
+    "Testcontainers"
+  ],
+  "metaTitle": "JDBC JSON Multivalue Index Sample | Oracle AI Database Code Samples",
+  "metaDescription": "Plain JDBC sample that indexes scalar values inside JSON arrays with multivalue JSON indexes.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--jdbc-json-multivalue-index/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">JDBC JSON multivalue index overview</title>
+  <desc id="desc">An 800 by 600 diagram showing three JSON array paths mapped to three multivalue indexes used by JDBC json_exists lookups.</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="132%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#14202a" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#295f63"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 30px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 15px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .card { stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .source-title { font: 800 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .index-title { font: 800 18px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .index-title-dark { font: 800 18px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .text { font: 600 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .text-dark { font: 600 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9f4ef; }
+      .code { font: 700 12px "Menlo", "Consolas", monospace; fill: #295f63; }
+      .arrow { fill: none; stroke: #295f63; stroke-width: 3.5; stroke-linecap: round; marker-end: url(#arrow); }
+      .note { font: 700 13.5px "Avenir Next", "Trebuchet MS", sans-serif; fill: #59686a; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <path d="M0 0H800V132H0Z" fill="#eef7f4"/>
+  <path d="M642 0H800V146C746 116 700 68 642 0Z" fill="#f2c94c" opacity="0.32"/>
+  <path d="M0 490C124 440 266 452 382 496C512 548 638 526 800 464V600H0Z" fill="#2e6f95" opacity="0.07"/>
+
+  <text x="44" y="50" class="eyebrow">json/jdbc-json-multivalue-index</text>
+  <text x="44" y="90" class="title">JSON Arrays Become Index Keys</text>
+  <text x="44" y="116" class="subtitle">Each indexed array path creates searchable keys for json_exists predicates.</text>
+
+  <rect x="54" y="166" width="236" height="92" rx="6" fill="#ffffff" class="card"/>
+  <text x="76" y="202" class="source-title">compatiblePartIds[]</text>
+  <text x="76" y="232" class="text">part numbers in one array</text>
+
+  <rect x="54" y="282" width="236" height="92" rx="6" fill="#ffffff" class="card"/>
+  <text x="76" y="318" class="source-title">warehouses[].region</text>
+  <text x="76" y="348" class="text">region inside each warehouse</text>
+
+  <rect x="54" y="398" width="236" height="92" rx="6" fill="#ffffff" class="card"/>
+  <text x="76" y="434" class="source-title">components[]</text>
+  <text x="76" y="464" class="text">type and partId together</text>
+
+  <rect x="434" y="166" width="310" height="92" rx="6" fill="#f2c94c" class="card"/>
+  <text x="458" y="202" class="index-title">product_parts_mvi</text>
+  <text x="458" y="232" class="code">numberOnly()</text>
+
+  <rect x="434" y="282" width="310" height="92" rx="6" fill="#9bd7d1" class="card"/>
+  <text x="458" y="318" class="index-title">product_regions_mvi</text>
+  <text x="458" y="348" class="code">stringOnly()</text>
+
+  <rect x="434" y="398" width="310" height="92" rx="6" fill="#152330" class="card"/>
+  <text x="458" y="434" class="index-title-dark">product_components_mvi</text>
+  <text x="458" y="464" class="text-dark">composite json_table entry</text>
+
+  <path d="M290 212H434" class="arrow"/>
+  <path d="M290 328H434" class="arrow"/>
+  <path d="M290 444H434" class="arrow"/>
+
+  <rect x="90" y="522" width="620" height="46" rx="6" fill="#f8eee8" stroke="#d5967f" stroke-width="2"/>
+  <text x="118" y="551" class="note">The sample binds values, then Oracle AI Database evaluates json_exists.</text>
+</svg>

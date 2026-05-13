@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">JSON array values expanded into multivalue index entries</title>
+  <desc id="desc">An 800 by 600 diagram showing each JSON array path expanded into separate multivalue index entries.</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="132%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#14202a" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#2e6f95"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 30px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 15px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .box { stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .row-title { font: 800 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .row-title-dark { font: 800 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .text { font: 600 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .text-dark { font: 600 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9f4ef; }
+      .pill { fill: #ffffff; stroke: #d9d2c3; stroke-width: 1.5; }
+      .pill-text { font: 800 13px "Menlo", "Consolas", monospace; fill: #21343a; }
+      .arrow { fill: none; stroke: #2e6f95; stroke-width: 3.5; stroke-linecap: round; marker-end: url(#arrow); }
+      .label { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #59686a; text-transform: uppercase; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <path d="M0 0H800V132H0Z" fill="#eef7f4"/>
+  <path d="M642 0H800V146C744 114 698 66 642 0Z" fill="#ffb4a2" opacity="0.34"/>
+  <path d="M0 490C126 442 250 454 366 498C504 550 642 524 800 464V600H0Z" fill="#295f63" opacity="0.07"/>
+
+  <text x="44" y="50" class="eyebrow">multivalue index mechanics</text>
+  <text x="44" y="90" class="title">One Row Creates Many Entries</text>
+  <text x="44" y="116" class="subtitle">A single product document can add several keys to each index.</text>
+
+  <text x="58" y="158" class="label">JSON values</text>
+  <text x="492" y="158" class="label">Index entries</text>
+
+  <rect x="54" y="176" width="262" height="92" rx="6" fill="#ffffff" class="box"/>
+  <text x="78" y="212" class="row-title">compatiblePartIds</text>
+  <text x="78" y="242" class="text">102, 203, 401</text>
+
+  <rect x="458" y="176" width="286" height="92" rx="6" fill="#f2c94c" class="box"/>
+  <text x="482" y="212" class="row-title">product_parts_mvi</text>
+  <rect x="482" y="228" width="46" height="28" rx="4" class="pill"/>
+  <text x="493" y="247" class="pill-text">102</text>
+  <rect x="540" y="228" width="46" height="28" rx="4" class="pill"/>
+  <text x="551" y="247" class="pill-text">203</text>
+  <rect x="598" y="228" width="46" height="28" rx="4" class="pill"/>
+  <text x="609" y="247" class="pill-text">401</text>
+
+  <rect x="54" y="300" width="262" height="92" rx="6" fill="#ffffff" class="box"/>
+  <text x="78" y="336" class="row-title">warehouses.region</text>
+  <text x="78" y="366" class="text">US-WEST, EU-CENTRAL</text>
+
+  <rect x="458" y="300" width="286" height="92" rx="6" fill="#9bd7d1" class="box"/>
+  <text x="482" y="336" class="row-title">product_regions_mvi</text>
+  <rect x="482" y="352" width="74" height="28" rx="4" class="pill"/>
+  <text x="490" y="371" class="pill-text">US-WEST</text>
+  <rect x="568" y="352" width="86" height="28" rx="4" class="pill"/>
+  <text x="576" y="371" class="pill-text">EU-CENT</text>
+
+  <rect x="54" y="424" width="262" height="92" rx="6" fill="#ffffff" class="box"/>
+  <text x="78" y="460" class="row-title">components</text>
+  <text x="78" y="490" class="text">adapter 102, port 203</text>
+
+  <rect x="458" y="424" width="286" height="92" rx="6" fill="#152330" class="box"/>
+  <text x="482" y="460" class="row-title-dark">product_components_mvi</text>
+  <text x="482" y="490" class="text-dark">paired values stay together</text>
+
+  <path d="M316 222H458" class="arrow"/>
+  <path d="M316 346H458" class="arrow"/>
+  <path d="M316 470H458" class="arrow"/>
+</svg>

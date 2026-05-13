@@ -124,6 +124,7 @@
         "golang--dualityviews",
         "json--jdbc-json-analytics",
         "json--jdbc-json-basic",
+        "json--jdbc-json-multivalue-index",
         "jdbc-json-oracle-text",
         "migrate-kafka-to-oracle--kafka-app-step-3",
         "json--mongodb-duality-views",

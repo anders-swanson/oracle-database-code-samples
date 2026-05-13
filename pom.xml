@@ -54,6 +54,7 @@
         <module>json/json-event-streaming</module>
         <module>json/jdbc-json-analytics</module>
         <module>json/jdbc-json-basic</module>
+        <module>json/jdbc-json-multivalue-index</module>
         <module>json/jpa-duality-views</module>
         <module>json/mongodb-duality-views</module>
         <module>migrate-kafka-to-oracle/kafka-app</module>

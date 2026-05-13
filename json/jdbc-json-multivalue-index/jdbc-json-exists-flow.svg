@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">JDBC json_exists lookup flow</title>
+  <desc id="desc">An 800 by 600 diagram showing the test loading Oracle AI Database Free and running three JDBC json_exists lookups.</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="132%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#14202a" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#295f63"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 30px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 15px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .box { stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .box-title { font: 800 18px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .text { font: 600 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .code { font: 700 12px "Menlo", "Consolas", monospace; fill: #295f63; }
+      .db { font: 800 18px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .db-small { font: 600 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9f4ef; }
+      .lane { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #59686a; text-transform: uppercase; }
+      .num { font: 800 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .arrow { fill: none; stroke: #295f63; stroke-width: 3.5; stroke-linecap: round; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <path d="M0 0H800V132H0Z" fill="#eef7f4"/>
+  <path d="M646 0H800V146C744 114 698 66 646 0Z" fill="#f2c94c" opacity="0.3"/>
+  <path d="M0 490C126 442 246 452 360 498C502 552 638 524 800 462V600H0Z" fill="#2e6f95" opacity="0.07"/>
+
+  <text x="44" y="50" class="eyebrow">JDBC sample test flow</text>
+  <text x="44" y="90" class="title">Load Data, Run Three Lookups</text>
+  <text x="44" y="116" class="subtitle">The test uses a real container, schema scripts, and prepared statements.</text>
+
+  <text x="54" y="158" class="lane">setup</text>
+  <rect x="54" y="176" width="188" height="104" rx="6" fill="#f2c94c" class="box"/>
+  <circle cx="82" cy="204" r="16" fill="#ffffff" stroke="#152330" stroke-width="2"/>
+  <text x="77" y="210" class="num">1</text>
+  <text x="114" y="210" class="box-title">JUnit</text>
+  <text x="82" y="246" class="text">starts container</text>
+
+  <rect x="306" y="176" width="188" height="104" rx="6" fill="#9bd7d1" class="box"/>
+  <circle cx="334" cy="204" r="16" fill="#ffffff" stroke="#152330" stroke-width="2"/>
+  <text x="329" y="210" class="num">2</text>
+  <text x="366" y="210" class="box-title">SQL setup</text>
+  <text x="334" y="246" class="code">schema + data</text>
+
+  <rect x="558" y="176" width="188" height="104" rx="6" fill="#ffb4a2" class="box"/>
+  <circle cx="586" cy="204" r="16" fill="#ffffff" stroke="#152330" stroke-width="2"/>
+  <text x="581" y="210" class="num">3</text>
+  <text x="618" y="210" class="box-title">JDBC</text>
+  <text x="586" y="246" class="text">binds values</text>
+
+  <path d="M242 228H306" class="arrow"/>
+  <path d="M494 228H558" class="arrow"/>
+
+  <text x="54" y="338" class="lane">json_exists predicates</text>
+  <rect x="54" y="356" width="188" height="104" rx="6" fill="#ffffff" class="box"/>
+  <text x="82" y="394" class="box-title">Part lookup</text>
+  <text x="82" y="426" class="code">partId = 102</text>
+
+  <rect x="306" y="356" width="188" height="104" rx="6" fill="#ffffff" class="box"/>
+  <text x="334" y="394" class="box-title">Region lookup</text>
+  <text x="334" y="426" class="code">US-WEST</text>
+
+  <rect x="558" y="356" width="188" height="104" rx="6" fill="#ffffff" class="box"/>
+  <text x="586" y="394" class="box-title">Component</text>
+  <text x="586" y="426" class="code">port + 203</text>
+
+  <path d="M148 460V520" class="arrow"/>
+  <path d="M400 460V520" class="arrow"/>
+  <path d="M652 460V520" class="arrow"/>
+
+  <rect x="54" y="532" width="692" height="46" rx="6" fill="#152330" stroke="#152330" stroke-width="2"/>
+  <text x="82" y="562" class="db">json_inventory</text>
+  <text x="230" y="562" class="db-small">native JSON column plus multivalue indexes</text>
+</svg>

@@ -1,3 +1,4 @@
 # Placeholder for ORDS volume mount
 databases/
 global/
+logs/

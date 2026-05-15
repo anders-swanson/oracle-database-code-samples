@@ -1,15 +1,33 @@
 services:
+  apex-download: # Download and install APEX from https://download.oracle.com/otn_software/apex/apex-latest.zip
+    image: container-registry.oracle.com/database/ords:latest
+    user: "0"
+    entrypoint: [ "bash", "/scripts/download-apex.sh" ]
+    environment:
+      - APEX_ENABLED=${APEX_ENABLED:-false}
+      - APEX_DOWNLOAD_URL=${APEX_DOWNLOAD_URL:-https://download.oracle.com/otn_software/apex/apex-latest.zip}
+      - APEX_DOWNLOAD_SHA256=${APEX_DOWNLOAD_SHA256:-}
+    volumes:
+      - ./apex:/apex-local:ro
+      - ./scripts/download-apex.sh:/scripts/download-apex.sh:ro
+      - apex_files:/apex-files
   ords: # more info: https://container-registry.oracle.com/ords/ocr/ba/database/ords
     image: container-registry.oracle.com/database/ords:latest
     container_name: ords
+    depends_on:
+      apex-download:
+        condition: service_completed_successfully
     ports:
       - 8888:8080 # HTTP
       - 27017:27017 # MongoDB API
     environment:
       - CONN_STRING=jdbc:oracle:thin:@ordsdb:1521/freepdb1
       - ORACLE_PWD=Welcome12345
+      - APEX_PWD=${APEX_PWD:-Welcome12345}
+      - APEX_ENABLED=${APEX_ENABLED:-false}
     volumes:
       - ./ords_config:/etc/ords/config
+      - apex_files:/opt/oracle/apex:ro
     healthcheck:
       # Hack to enable TESTUSER schema for ORDS on startup
       test: [ "CMD", "bash", "-c", "echo 'EXECUTE ORDS.ENABLE_SCHEMA;' | sql -s testuser/testpwd@ordsdb:1521/freepdb1" ]
@@ -31,3 +49,6 @@ services:
       timeout: 10s
       retries: 5
       start_period: 30s
+
+volumes:
+  apex_files:

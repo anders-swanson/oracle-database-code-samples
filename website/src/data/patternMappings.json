@@ -45,6 +45,7 @@
         "json--json-event-streaming",
         "spring-boot-cdc",
         "spring-boot-jms-example",
+        "support-ticket-intelligence",
         "txeventq-multidb-replication",
         "typescript",
         "typescript--src--txeventq"
@@ -85,7 +86,8 @@
         "ai-vector-search",
         "python-oracle--src--python_oracle--langchain",
         "python-oracle--src--python_oracle--database",
-        "sql"
+        "sql",
+        "support-ticket-intelligence"
       ]
     },
     {
@@ -128,7 +130,8 @@
         "jdbc-json-oracle-text",
         "migrate-kafka-to-oracle--kafka-app-step-3",
         "json--mongodb-duality-views",
-        "python-oracle--src--python_oracle--full_text_search"
+        "python-oracle--src--python_oracle--full_text_search",
+        "support-ticket-intelligence"
       ]
     },
     {
@@ -162,7 +165,8 @@
       ],
       "sampleIds": [
         "jdbc-property-graph",
-        "jdbc-graphql"
+        "jdbc-graphql",
+        "support-ticket-intelligence"
       ]
     },
     {

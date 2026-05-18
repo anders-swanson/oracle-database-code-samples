@@ -79,6 +79,7 @@
         <module>spring-jpa</module>
         <module>spring-resource-sample</module>
         <module>spring-vault-oracle-app</module>
+        <module>support-ticket-intelligence</module>
         <module>testcontainers</module>
         <module>txeventq-examples</module>
         <module>txeventq-multidb-replication</module>

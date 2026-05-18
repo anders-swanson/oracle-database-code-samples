@@ -1,0 +1,25 @@
+{
+  "id": "support-ticket-intelligence",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/support-ticket-intelligence/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This sample is a support-ticket workflow app to learn how relational, JSON documents, event-streaming, full-text search, vector search, graph search can work together within a single database engine.",
+  "highlights": [
+    "Relational tables store customers, orders, products, tickets, runbooks, and ticket-to-product relationships.",
+    "JSON columns store flexible product diagnostics and ticket payloads.",
+    "TxEventQ publishes a durable TicketOpened event in the same transaction as the ticket insert, then the consumer enriches the ticket asynchronously.",
+    "Oracle Text indexes JSON ticket payloads and product specs so similar-incident search can match error codes, SKUs, subjects, and diagnostic text."
+  ],
+  "features": [
+    "Vector Search",
+    "JSON",
+    "Duality Views",
+    "Property Graph",
+    "TxEventQ",
+    "Testcontainers",
+    "Spring"
+  ],
+  "metaTitle": "Support Ticket Intelligence | Oracle AI Database Code Samples",
+  "metaDescription": "Spring Boot support workflow sample combining Oracle AI Database TxEventQ, JSON, Oracle Text, vector search, SQL property graph, and JSON Relational Duality…",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/support-ticket-intelligence/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+}

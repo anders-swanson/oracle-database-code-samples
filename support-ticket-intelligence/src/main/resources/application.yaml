@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: support-ticket-intelligence
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/freepdb1
+    username: testuser
+    password: testpwd
+
+support:
+  topic:
+    ticket-opened: support_ticket_opened
+  okafka:
+    bootstrap-servers: localhost:1521
+    service-name: freepdb1
+    security-protocol: PLAINTEXT
+    tns-admin: ""
+logging:
+  level:
+    org.oracle.okafka: WARN

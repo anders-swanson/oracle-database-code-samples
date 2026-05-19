@@ -19,9 +19,30 @@ const route = useRoute();
         <span class="site-header__title">Code Samples</span>
       </RouterLink>
       <nav class="site-header__nav">
-        <RouterLink :class="{ 'is-active': route.name === 'catalog' || route.name === 'sample-detail' }" :to="{ name: 'catalog' }">Catalog</RouterLink>
-        <RouterLink :class="{ 'is-active': route.name === 'patterns' }" :to="{ name: 'patterns' }">Patterns</RouterLink>
-        <RouterLink :class="{ 'is-active': route.name === 'feature-map' || route.name === 'feature-detail' }" :to="{ name: 'feature-map' }">Topic Map</RouterLink>
+        <RouterLink
+          class="site-header__nav-link site-header__nav-link--catalog"
+          :class="{ 'is-active': route.name === 'catalog' || route.name === 'sample-detail' }"
+          :to="{ name: 'catalog' }"
+        >
+          <span class="site-header__nav-icon" aria-hidden="true"></span>
+          <span>Catalog</span>
+        </RouterLink>
+        <RouterLink
+          class="site-header__nav-link site-header__nav-link--patterns"
+          :class="{ 'is-active': route.name === 'patterns' }"
+          :to="{ name: 'patterns' }"
+        >
+          <span class="site-header__nav-icon" aria-hidden="true"></span>
+          <span>Patterns</span>
+        </RouterLink>
+        <RouterLink
+          class="site-header__nav-link site-header__nav-link--map"
+          :class="{ 'is-active': route.name === 'feature-map' || route.name === 'feature-detail' }"
+          :to="{ name: 'feature-map' }"
+        >
+          <span class="site-header__nav-icon" aria-hidden="true"></span>
+          <span>Topic Map</span>
+        </RouterLink>
         <a
           class="site-header__github"
           href="https://github.com/anders-swanson/oracle-database-code-samples"

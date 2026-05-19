@@ -150,13 +150,119 @@ code {
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.03);
-  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
 .site-header__nav a:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: var(--line-strong);
   transform: translateY(-1px);
+}
+
+.site-header__nav .site-header__nav-link {
+  --nav-accent: var(--accent);
+  --nav-accent-soft: rgba(89, 212, 255, 0.16);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.58rem;
+  min-height: 2.95rem;
+  overflow: hidden;
+  border-color: color-mix(in srgb, var(--nav-accent) 44%, rgba(160, 197, 255, 0.18));
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 36%),
+    linear-gradient(180deg, var(--nav-accent-soft), rgba(255, 255, 255, 0.035));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 26px rgba(1, 10, 22, 0.2);
+  color: #f4f9ff;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.site-header__nav .site-header__nav-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at top left, color-mix(in srgb, var(--nav-accent) 22%, transparent), transparent 56%);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.site-header__nav .site-header__nav-link:hover {
+  border-color: color-mix(in srgb, var(--nav-accent) 66%, rgba(244, 247, 255, 0.2));
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.13), transparent 36%),
+    linear-gradient(180deg, color-mix(in srgb, var(--nav-accent) 24%, rgba(255, 255, 255, 0.05)), rgba(255, 255, 255, 0.05));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 16px 34px color-mix(in srgb, var(--nav-accent) 18%, rgba(1, 10, 22, 0.28));
+}
+
+.site-header__nav .site-header__nav-link span {
+  position: relative;
+  z-index: 1;
+}
+
+.site-header__nav .site-header__nav-link--catalog {
+  --nav-accent: #59d4ff;
+  --nav-accent-soft: rgba(89, 212, 255, 0.18);
+}
+
+.site-header__nav .site-header__nav-link--patterns {
+  --nav-accent: #5de0a7;
+  --nav-accent-soft: rgba(93, 224, 167, 0.17);
+}
+
+.site-header__nav .site-header__nav-link--map {
+  --nav-accent: #ffb066;
+  --nav-accent-soft: rgba(255, 176, 102, 0.17);
+}
+
+.site-header__nav-icon {
+  position: relative;
+  display: inline-block;
+  width: 1.05rem;
+  height: 1.05rem;
+  flex: 0 0 auto;
+  color: var(--nav-accent);
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--nav-accent) 52%, transparent));
+}
+
+.site-header__nav-link--catalog .site-header__nav-icon {
+  background:
+    linear-gradient(currentColor 0 0) 0 0 / 0.42rem 0.42rem no-repeat,
+    linear-gradient(currentColor 0 0) 100% 0 / 0.42rem 0.42rem no-repeat,
+    linear-gradient(currentColor 0 0) 0 100% / 0.42rem 0.42rem no-repeat,
+    linear-gradient(currentColor 0 0) 100% 100% / 0.42rem 0.42rem no-repeat;
+}
+
+.site-header__nav-link--patterns .site-header__nav-icon {
+  border-top: 0.18rem solid currentColor;
+  border-bottom: 0.18rem solid currentColor;
+}
+
+.site-header__nav-link--patterns .site-header__nav-icon::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0.18rem;
+  margin-top: 0.34rem;
+  background: currentColor;
+}
+
+.site-header__nav-link--map .site-header__nav-icon {
+  border: 0.16rem solid currentColor;
+  border-radius: 50%;
+}
+
+.site-header__nav-link--map .site-header__nav-icon::before {
+  content: "";
+  position: absolute;
+  inset: 0.24rem;
+  border: 0.12rem solid currentColor;
+  border-radius: 50%;
 }
 
 .site-header__nav .site-header__github {
@@ -231,9 +337,15 @@ code {
 }
 
 .site-header__nav .is-active {
-  border-color: rgba(89, 212, 255, 0.45);
-  background: linear-gradient(180deg, rgba(89, 212, 255, 0.18), rgba(255, 255, 255, 0.04));
-  color: #ddf6ff;
+  border-color: color-mix(in srgb, var(--nav-accent, #59d4ff) 74%, rgba(244, 247, 255, 0.22));
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.16), transparent 36%),
+    linear-gradient(180deg, color-mix(in srgb, var(--nav-accent, #59d4ff) 28%, rgba(255, 255, 255, 0.06)), rgba(255, 255, 255, 0.045));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 0 1px color-mix(in srgb, var(--nav-accent, #59d4ff) 20%, transparent),
+    0 18px 38px color-mix(in srgb, var(--nav-accent, #59d4ff) 17%, rgba(1, 10, 22, 0.3));
+  color: #ffffff;
 }
 
 .site-header__nav a:focus-visible,

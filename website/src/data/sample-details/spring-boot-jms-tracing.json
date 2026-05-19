@@ -12,8 +12,9 @@
     "Spring",
     "Observability"
   ],
+  "sourceUpdatedAt": "2026-04-21T19:57:02.323Z",
   "metaTitle": "Spring Boot JMS Tracing | Oracle AI Database Code Samples",
   "metaDescription": "Spring Boot sample for tracing JMS messaging over Oracle AI Database Transactional Event Queues.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-jms-tracing/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/spring-boot-jms-tracing.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/spring-boot-jms-tracing.png"
 }

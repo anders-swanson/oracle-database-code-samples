@@ -12,8 +12,9 @@
   "features": [
     "Spatial"
   ],
+  "sourceUpdatedAt": "2026-04-21T18:00:03.027Z",
   "metaTitle": "JDBC Spatial Example | Oracle AI Database Code Samples",
   "metaDescription": "Plain JDBC sample for creating, indexing, and querying spatial geometries in Oracle AI Database.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-spatial-example/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/jdbc-spatial-example.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/jdbc-spatial-example.png"
 }

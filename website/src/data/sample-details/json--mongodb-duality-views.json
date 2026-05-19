@@ -15,8 +15,9 @@
     "ORDS",
     "Testcontainers"
   ],
+  "sourceUpdatedAt": "2026-05-08T17:57:42.506Z",
   "metaTitle": "MongoDB API with JSON Relational Duality Views | Oracle AI Database Code Samples",
   "metaDescription": "MongoDB Java driver sample for JSON Relational Duality Views exposed through ORDS.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--mongodb-duality-views/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/json--mongodb-duality-views.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/json--mongodb-duality-views.png"
 }

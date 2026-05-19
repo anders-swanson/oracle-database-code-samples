@@ -15,6 +15,7 @@
     "vue-router": "^4.6.0"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@unhead/vue": "^2.1.13",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/test-utils": "^2.4.6",

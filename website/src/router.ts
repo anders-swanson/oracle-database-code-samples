@@ -1,5 +1,7 @@
 import type { RouteRecordRaw, RouterScrollBehavior } from 'vue-router';
 import CatalogPage from './pages/CatalogPage.vue';
+import FeaturePage from './pages/FeaturePage.vue';
+import LanguagePage from './pages/LanguagePage.vue';
 import PatternsPage from './pages/PatternsPage.vue';
 import SampleDetailPage from './pages/SampleDetailPage.vue';
 import SubfeatureMapPage from './pages/SubfeatureMapPage.vue';
@@ -19,6 +21,16 @@ export const routes: RouteRecordRaw[] = [
     path: '/patterns/',
     name: 'patterns',
     component: PatternsPage
+  },
+  {
+    path: '/features/:slug/',
+    name: 'feature-detail',
+    component: FeaturePage
+  },
+  {
+    path: '/languages/:slug/',
+    name: 'language-detail',
+    component: LanguagePage
   },
   {
     path: '/subfeature-map/',

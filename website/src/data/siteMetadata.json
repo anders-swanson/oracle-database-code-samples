@@ -1,0 +1,12 @@
+{
+  "siteName": "Oracle AI Database Code Samples",
+  "siteTitle": "Oracle AI Database Samples",
+  "siteUrl": "https://anders-swanson.github.io/oracle-database-code-samples/",
+  "siteBasePath": "/oracle-database-code-samples/",
+  "sampleSocialCardDirectory": "sample-cards",
+  "socialCardExtension": "png",
+  "socialCardWidth": 1200,
+  "socialCardHeight": 630,
+  "defaultDescription": "Browse runnable Oracle AI Database code samples for vector search, JSON, graph, spatial, TxEventQ, ORDS, Spring Boot, Java, Go, Python, and TypeScript.",
+  "defaultOgImageAlt": "Oracle AI Database Code Samples with a stylized database graphic and feature tags for vector search, JSON, graph, spatial, Spring Boot, and TxEventQ."
+}

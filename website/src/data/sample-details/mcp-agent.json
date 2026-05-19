@@ -12,8 +12,9 @@
   "features": [
     "AI Agents"
   ],
+  "sourceUpdatedAt": "2026-04-22T16:13:17.312Z",
   "metaTitle": "Oracle AI Database MCP Agent Example | Oracle AI Database Code Samples",
   "metaDescription": "LangChain4j MCP sample for natural-language SQL queries against Oracle AI Database.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/mcp-agent/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/mcp-agent.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/mcp-agent.png"
 }

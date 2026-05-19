@@ -14,8 +14,9 @@
     "Duality Views",
     "Testcontainers"
   ],
+  "sourceUpdatedAt": "2026-04-21T19:57:02.152Z",
   "metaTitle": "CRUD with JSON Relational Duality Views | Oracle AI Database Code Samples",
   "metaDescription": "JDBC CRUD sample for JSON Relational Duality Views with OSON and Testcontainers.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--crud-duality-views/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/json--crud-duality-views.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/json--crud-duality-views.png"
 }

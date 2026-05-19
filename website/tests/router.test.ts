@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
-import { scrollBehavior } from '../src/router';
+import { routes, scrollBehavior } from '../src/router';
 
 function route(path: string, hash = '') {
   return {
@@ -10,6 +10,11 @@ function route(path: string, hash = '') {
 }
 
 describe('router scroll behavior', () => {
+  it('registers generated landing page route patterns', () => {
+    expect(routes.some((entry) => entry.name === 'feature-detail' && entry.path === '/features/:slug/')).toBe(true);
+    expect(routes.some((entry) => entry.name === 'language-detail' && entry.path === '/languages/:slug/')).toBe(true);
+  });
+
   it('scrolls feature-map filter links to the catalog results anchor', () => {
     expect(scrollBehavior(route('/', '#catalog-results'), route('/feature-map/'), null)).toEqual({
       el: '#catalog-results'

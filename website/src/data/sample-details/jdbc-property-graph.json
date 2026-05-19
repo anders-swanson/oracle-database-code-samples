@@ -12,8 +12,9 @@
   "features": [
     "Property Graph"
   ],
+  "sourceUpdatedAt": "2026-04-21T18:00:24.477Z",
   "metaTitle": "JDBC Property Graph | Oracle AI Database Code Samples",
   "metaDescription": "Plain JDBC sample for building and querying a SQL property graph in Oracle AI Database.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-property-graph/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/jdbc-property-graph.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/jdbc-property-graph.png"
 }

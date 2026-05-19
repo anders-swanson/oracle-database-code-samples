@@ -13,8 +13,9 @@
     "JSON",
     "SQL GraphQL"
   ],
+  "sourceUpdatedAt": "2026-04-21T18:03:19.220Z",
   "metaTitle": "JDBC GraphQL | Oracle AI Database Code Samples",
   "metaDescription": "Plain JDBC sample that runs SQL GraphQL queries against Oracle AI Database tables.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-graphql/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/jdbc-graphql.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/jdbc-graphql.png"
 }

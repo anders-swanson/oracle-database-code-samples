@@ -11,8 +11,9 @@
     "TxEventQ",
     "Spring"
   ],
+  "sourceUpdatedAt": "2026-04-21T19:57:02.316Z",
   "metaTitle": "Spring Boot CDC with Transactional Event Queues (TxEventQ) (JMS) Example | Oracle AI Database Code Samples",
   "metaDescription": "Spring Boot JMS sample that implements CDC with Oracle AI Database Transactional Event Queues.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-cdc/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/spring-boot-cdc.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/spring-boot-cdc.png"
 }

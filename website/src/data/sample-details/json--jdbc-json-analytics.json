@@ -13,8 +13,9 @@
     "JSON",
     "Testcontainers"
   ],
+  "sourceUpdatedAt": "2026-04-21T19:57:02.152Z",
   "metaTitle": "JDBC JSON Analytics Sample | Oracle AI Database Code Samples",
   "metaDescription": "Plain JDBC sample that analyzes nested JSON documents with advanced SQL/JSON operators.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--jdbc-json-analytics/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/json--jdbc-json-analytics.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/json--jdbc-json-analytics.png"
 }

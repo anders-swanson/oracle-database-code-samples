@@ -18,8 +18,9 @@
     "Testcontainers",
     "Spring"
   ],
+  "sourceUpdatedAt": "2026-05-19T16:48:11.061Z",
   "metaTitle": "Support Ticket Intelligence | Oracle AI Database Code Samples",
   "metaDescription": "Spring Boot support workflow sample combining Oracle AI Database TxEventQ, JSON, Oracle Text, vector search, SQL property graph, and JSON Relational Duality…",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/support-ticket-intelligence/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/support-ticket-intelligence.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/support-ticket-intelligence.png"
 }

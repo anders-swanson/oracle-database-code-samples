@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 import AppShell from '../components/AppShell.vue';
-import { buildSubfeatureGraph, samples } from '../lib/catalog';
+import { buildSubfeatureGraph, findFeaturePageByName, samples } from '../lib/catalog';
 import type { SubfeatureGraphNode } from '../types';
 
 const graph = computed(() => buildSubfeatureGraph(samples));
@@ -38,6 +38,17 @@ function filteredCatalogTarget(node: SubfeatureGraphNode) {
     query: { tags: node.name },
     hash: catalogResultsTarget
   };
+}
+
+function topicTarget(node: SubfeatureGraphNode) {
+  const featurePage = findFeaturePageByName(node.name);
+
+  return featurePage
+    ? {
+        name: 'feature-detail',
+        params: { slug: featurePage.slug }
+      }
+    : filteredCatalogTarget(node);
 }
 
 function centerViewport() {
@@ -457,7 +468,7 @@ onBeforeUnmount(() => {
                 :key="node.name"
                 class="tag-map-node"
                 :style="nodeStyle(node)"
-                :to="filteredCatalogTarget(node)"
+                :to="topicTarget(node)"
                 @pointerover="showNodeTooltip($event, node)"
                 @pointerenter="showNodeTooltip($event, node)"
                 @mouseover="showNodeTooltip($event, node)"
@@ -511,7 +522,7 @@ onBeforeUnmount(() => {
           v-for="node in graph.nodes"
           :key="`${node.name}-chip`"
           class="orbit-list__item"
-          :to="filteredCatalogTarget(node)"
+          :to="topicTarget(node)"
         >
           <span v-if="node.iconPath" class="orbit-list__icon" aria-hidden="true">
             <img :src="node.iconPath" alt="" loading="lazy" />

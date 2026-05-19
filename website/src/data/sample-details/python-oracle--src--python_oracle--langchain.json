@@ -13,8 +13,9 @@
     "Vector Search",
     "AI Agents"
   ],
+  "sourceUpdatedAt": "2026-04-21T17:59:03.835Z",
   "metaTitle": "LangChain Vector Search Sample | Oracle AI Database Code Samples",
   "metaDescription": "LangChain-based Python vector search sample for Oracle AI Database.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--langchain/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/python-oracle--src--python_oracle--langchain.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/python-oracle--src--python_oracle--langchain.png"
 }

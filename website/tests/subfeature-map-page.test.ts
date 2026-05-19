@@ -9,6 +9,13 @@ vi.mock('vue-router', () => ({
 
 vi.mock('../src/lib/catalog', () => ({
   samples: [],
+  findFeaturePageByName: (name: string) =>
+    name === 'Vector Search'
+      ? {
+          slug: 'vector-search',
+          name: 'Vector Search'
+        }
+      : undefined,
   buildSubfeatureGraph: () => ({
     centerLabel: 'Oracle AI Database',
     centerSubtitle: 'Converged Database',
@@ -135,7 +142,7 @@ describe('SubfeatureMapPage', () => {
       links.some(
         (link) =>
           JSON.stringify(link.props('to')) ===
-          JSON.stringify({ name: 'catalog', query: { tags: 'Vector Search' }, hash: '#catalog-results' })
+          JSON.stringify({ name: 'feature-detail', params: { slug: 'vector-search' } })
       )
     ).toBe(true);
   });

@@ -1,0 +1,154 @@
+[
+  {
+    "slug": "java",
+    "name": "Java",
+    "title": "Java Samples for Oracle AI Database",
+    "description": "Java samples for JDBC, Spring Boot, messaging, search, JSON, graph, spatial, and test workflows on Oracle AI Database. Browse 42 runnable samples with linked source code.",
+    "useWhen": "Use when JVM applications need real Oracle AI Database examples instead of pseudocode.",
+    "sampleIds": [
+      "json--crud-duality-views",
+      "database-per-service-example",
+      "jms-producer-consumer",
+      "jdbc-event-streaming",
+      "jdbc-graphql",
+      "jdbc-hybrid-search",
+      "json--jdbc-json-analytics",
+      "json--jdbc-json-basic",
+      "json--jdbc-json-multivalue-index",
+      "jdbc-json-oracle-text",
+      "jdbc-property-graph",
+      "jdbc-spatial-example",
+      "json--json-event-streaming",
+      "migrate-kafka-to-oracle--kafka-app",
+      "migrate-kafka-to-oracle--kafka-app-step-1",
+      "migrate-kafka-to-oracle--kafka-app-step-2",
+      "migrate-kafka-to-oracle--kafka-app-step-3",
+      "langchain4j-agent-memory",
+      "spring-jpa",
+      "json--mongodb-duality-views",
+      "news-event-streaming",
+      "oracle-database-kafka-apis",
+      "mcp-agent",
+      "testcontainers",
+      "txeventq-examples",
+      "ords-testcontainers",
+      "sessionless-transactions",
+      "ai-vector-search",
+      "spring-boot-cdc",
+      "spring-boot-jms-tracing",
+      "json--jpa-duality-views",
+      "spring-boot-database-client-info",
+      "spring-boot-jdbc-custom-tracer",
+      "spring-boot-jdbc-tracing",
+      "spring-cloud-config",
+      "spring-boot-dynamic-property-source",
+      "spring-boot-jms-example",
+      "spring-resource-sample",
+      "spring-vault-oracle-app",
+      "support-ticket-intelligence",
+      "txeventq-multidb-replication",
+      "spring-data-mongodb-oracle-api"
+    ],
+    "relatedFeatureSlugs": [
+      "spring",
+      "json",
+      "testcontainers",
+      "txeventq",
+      "kafka",
+      "duality-views",
+      "vector-search",
+      "observability"
+    ],
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/java/",
+    "metaTitle": "Java Samples for Oracle AI Database | Oracle AI Database Code Samples",
+    "metaDescription": "Java samples for JDBC, Spring Boot, messaging, search, JSON, graph, spatial, and test workflows on Oracle AI Database. Browse 42 runnable samples with linked…",
+    "updatedAt": "2026-05-19T16:48:11.061Z"
+  },
+  {
+    "slug": "python",
+    "name": "Python",
+    "title": "Python Samples for Oracle AI Database",
+    "description": "Python samples for database connectivity, full-text search, LangChain, MCP agents, and Testcontainers with Oracle AI Database. Browse 5 runnable samples with linked source code.",
+    "useWhen": "Use when Python tools or AI workflows need runnable database-backed examples.",
+    "sampleIds": [
+      "python-oracle--src--python_oracle--langchain",
+      "python-oracle--src--python_oracle--database",
+      "python-oracle--src--python_oracle--full_text_search",
+      "python-oracle--src--python_oracle--mcp_agent",
+      "python-oracle--src--python_oracle--testcontainers_sample"
+    ],
+    "relatedFeatureSlugs": [
+      "ai-agents",
+      "vector-search",
+      "json",
+      "testcontainers"
+    ],
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/python/",
+    "metaTitle": "Python Samples for Oracle AI Database | Oracle AI Database Code Samples",
+    "metaDescription": "Python samples for database connectivity, full-text search, LangChain, MCP agents, and Testcontainers with Oracle AI Database. Browse 5 runnable samples with…",
+    "updatedAt": "2026-05-12T16:33:16.698Z"
+  },
+  {
+    "slug": "go",
+    "name": "Go",
+    "title": "Go Samples for Oracle AI Database",
+    "description": "Go samples for connecting services, tests, and database-backed workflows to Oracle AI Database. Browse 4 runnable samples with linked source code.",
+    "useWhen": "Use when Go services need runnable database access patterns, local containers, or integration-test setup.",
+    "sampleIds": [
+      "golang--connection",
+      "golang--dualityviews",
+      "golang--testcontainers",
+      "migrate-kafka-to-oracle"
+    ],
+    "relatedFeatureSlugs": [
+      "duality-views",
+      "json",
+      "kafka",
+      "testcontainers",
+      "txeventq"
+    ],
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/go/",
+    "metaTitle": "Go Samples for Oracle AI Database | Oracle AI Database Code Samples",
+    "metaDescription": "Go samples for connecting services, tests, and database-backed workflows to Oracle AI Database. Browse 4 runnable samples with linked source code.",
+    "updatedAt": "2026-04-21T19:57:02.156Z"
+  },
+  {
+    "slug": "script",
+    "name": "Script",
+    "title": "Script Samples for Oracle AI Database",
+    "description": "Script-oriented samples for local Oracle AI Database setup and command-line workflows. Browse 3 runnable samples with linked source code.",
+    "useWhen": "Use when setup, orchestration, or one-command local environments are the main concern.",
+    "sampleIds": [
+      "ai-optimizer",
+      "oracle-ai-database-docker-compose",
+      "ords-docker-compose"
+    ],
+    "relatedFeatureSlugs": [
+      "ords"
+    ],
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/script/",
+    "metaTitle": "Script Samples for Oracle AI Database | Oracle AI Database Code Samples",
+    "metaDescription": "Script-oriented samples for local Oracle AI Database setup and command-line workflows. Browse 3 runnable samples with linked source code.",
+    "updatedAt": "2026-05-15T15:20:01.272Z"
+  },
+  {
+    "slug": "typescript",
+    "name": "TypeScript",
+    "title": "TypeScript Samples for Oracle AI Database",
+    "description": "TypeScript samples for Node.js applications, eventing, and test workflows backed by Oracle AI Database. Browse 3 runnable samples with linked source code.",
+    "useWhen": "Use when JavaScript or TypeScript services need runnable database-backed examples.",
+    "sampleIds": [
+      "typescript",
+      "typescript--src--testcontainers",
+      "typescript--src--txeventq"
+    ],
+    "relatedFeatureSlugs": [
+      "testcontainers",
+      "txeventq"
+    ],
+    "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/typescript/",
+    "metaTitle": "TypeScript Samples for Oracle AI Database | Oracle AI Database Code Samples",
+    "metaDescription": "TypeScript samples for Node.js applications, eventing, and test workflows backed by Oracle AI Database. Browse 3 runnable samples with linked source code.",
+    "updatedAt": "2026-04-21T19:57:02.333Z"
+  }
+]

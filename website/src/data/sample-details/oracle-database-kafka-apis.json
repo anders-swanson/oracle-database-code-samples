@@ -14,8 +14,9 @@
     "Testcontainers",
     "Kafka"
   ],
+  "sourceUpdatedAt": "2026-04-21T19:57:02.310Z",
   "metaTitle": "Oracle AI Database Kafka APIs | Oracle AI Database Code Samples",
   "metaDescription": "Java integration tests that use the Kafka APIs for Oracle AI Database Transactional Event Queues.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/oracle-database-kafka-apis/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/oracle-database-kafka-apis.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/oracle-database-kafka-apis.png"
 }

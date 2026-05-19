@@ -1,0 +1,106 @@
+{
+  "AI": {
+    "description": "AI-oriented samples that combine model calls, search, and database-backed application workflows.",
+    "useWhen": "Use when an application needs grounded AI features close to operational data."
+  },
+  "APEX": {
+    "description": "Browser-based application development and workspace setup served through ORDS.",
+    "useWhen": "Use when local Oracle AI Database stacks need low-code app screens or SQL workspace access."
+  },
+  "Duality Views": {
+    "description": "Document-shaped access over relational tables using JSON Relational Duality Views.",
+    "useWhen": "Use when APIs need JSON documents without giving up relational storage, SQL, constraints, and transactions."
+  },
+  "Graph": {
+    "description": "Connected-data modeling and querying for relationships, paths, and networks.",
+    "useWhen": "Use when recommendations, lineage, impact analysis, or traversal-heavy screens matter."
+  },
+  "GraphQL": {
+    "description": "GraphQL-style query access for clients that need shaped responses from database data.",
+    "useWhen": "Use when API consumers should ask for exactly the fields and relationships they need."
+  },
+  "JMS": {
+    "description": "Java Message Service samples backed by Oracle AI Database transactional event queues.",
+    "useWhen": "Use when Java services need durable messaging with familiar JMS APIs."
+  },
+  "JPA": {
+    "description": "Java persistence samples for mapping application entities to Oracle AI Database tables.",
+    "useWhen": "Use when Spring or Jakarta applications need ORM-based relational persistence."
+  },
+  "Indexing": {
+    "description": "Index examples that make JSON, text, vector, and spatial queries practical at application scale.",
+    "useWhen": "Use when a query pattern is correct but needs a database-native access path before it is production-shaped."
+  },
+  "JSON": {
+    "description": "Document-shaped data and SQL/JSON querying inside Oracle AI Database.",
+    "useWhen": "Use when records need flexible structure without leaving SQL, indexes, constraints, and transactions."
+  },
+  "Kafka": {
+    "description": "Kafka-compatible eventing and migration paths backed by Oracle AI Database queues.",
+    "useWhen": "Use when comparing separate-broker designs or moving Kafka-shaped workloads toward database-native eventing."
+  },
+  "MCP": {
+    "description": "Model Context Protocol samples that connect agents and tools to Oracle AI Database workflows.",
+    "useWhen": "Use when AI tools need controlled access to SQL, metadata, or database-backed operations."
+  },
+  "MongoDB": {
+    "description": "MongoDB-compatible API access over Oracle AI Database data through ORDS.",
+    "useWhen": "Use when an existing document app expects MongoDB-style APIs but the data should stay in Oracle AI Database."
+  },
+  "Observability": {
+    "description": "Tracing and client metadata samples for following application work into database sessions.",
+    "useWhen": "Use when teams need to correlate HTTP, JDBC, JMS, and database activity during operations."
+  },
+  "OCI": {
+    "description": "Cloud integration samples that connect Oracle AI Database applications with OCI services.",
+    "useWhen": "Use when local samples need to reflect deployment, secrets, or service integration patterns on OCI."
+  },
+  "ORDS": {
+    "description": "Oracle REST Data Services samples for exposing database-backed APIs.",
+    "useWhen": "Use when clients need REST, MongoDB-compatible, or service-style access without owning low-level SQL."
+  },
+  "Oracle Text": {
+    "description": "Full-text indexing and search over relational and JSON data.",
+    "useWhen": "Use when keyword search, text filters, and document relevance need to run beside transactional data."
+  },
+  "PDB": {
+    "description": "Pluggable database samples for isolating services or workloads inside Oracle AI Database.",
+    "useWhen": "Use when each service needs a stronger database boundary without running separate database servers."
+  },
+  "PL/SQL": {
+    "description": "Database-side procedural logic for transactions, queues, and operational workflows.",
+    "useWhen": "Use when business logic benefits from running close to the data and inside the transaction."
+  },
+  "SpringBoot": {
+    "description": "Spring Boot samples for persistence, configuration, messaging, tracing, and service integration.",
+    "useWhen": "Use when Java services need common Spring patterns backed by Oracle AI Database."
+  },
+  "SQLcl": {
+    "description": "Command-line and agent workflows built around SQLcl access to Oracle AI Database.",
+    "useWhen": "Use when developers or tools need scriptable SQL access, local automation, or MCP-backed database work."
+  },
+  "Testcontainers": {
+    "description": "Disposable Oracle AI Database Free containers for repeatable local and integration tests.",
+    "useWhen": "Use when tests need real database behavior without sharing a long-lived development instance."
+  },
+  "TxEventQ": {
+    "description": "Transactional queues for database-backed events and messaging.",
+    "useWhen": "Use when event delivery and data changes need the same transaction boundary."
+  },
+  "Vector Search": {
+    "description": "Store embeddings and search records by semantic similarity.",
+    "useWhen": "Use when users search by meaning or AI answers need grounded records."
+  },
+  "microservices": {
+    "description": "Service-boundary samples that keep application ownership and database access explicit.",
+    "useWhen": "Use when teams are splitting responsibilities across services without losing transactional clarity."
+  },
+  "security": {
+    "description": "Security-related samples for secrets, access boundaries, and safer application configuration.",
+    "useWhen": "Use when database-backed applications need environment-aware secrets or tighter operational controls."
+  },
+  "Spatial": {
+    "description": "Location-aware storage, indexing, and spatial queries over geometry data.",
+    "useWhen": "Use when products ask about proximity, containment, routing, zones, or other location behavior."
+  }
+}

@@ -10,8 +10,9 @@
   "features": [
     "Oracle AI Database"
   ],
+  "sourceUpdatedAt": "2026-04-21T17:09:33.912Z",
   "metaTitle": "Go Database Connection Sample | Oracle AI Database Code Samples",
   "metaDescription": "Shared Go connection helper for local Oracle AI Database access with godror.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/golang--connection/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/golang--connection.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/golang--connection.png"
 }

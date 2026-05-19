@@ -15,8 +15,9 @@
     "TxEventQ",
     "Kafka"
   ],
+  "sourceUpdatedAt": "2026-04-21T17:23:28.972Z",
   "metaTitle": "Kafka App Step 3 | Oracle AI Database Code Samples",
   "metaDescription": "Migration step that adds transactional database writes to the Kafka-to-TxEventQ consumer.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/migrate-kafka-to-oracle--kafka-app-step-3/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/migrate-kafka-to-oracle--kafka-app-step-3.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/migrate-kafka-to-oracle--kafka-app-step-3.png"
 }

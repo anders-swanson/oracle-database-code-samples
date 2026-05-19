@@ -12,8 +12,9 @@
     "Spring",
     "Observability"
   ],
+  "sourceUpdatedAt": "2026-04-21T19:57:02.317Z",
   "metaTitle": "Spring Boot Oracle AI Database Client Info | Oracle AI Database Code Samples",
   "metaDescription": "Spring Boot sample that sets MODULE and ACTION client info on Oracle AI Database connections.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-database-client-info/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/spring-boot-database-client-info.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/spring-boot-database-client-info.png"
 }

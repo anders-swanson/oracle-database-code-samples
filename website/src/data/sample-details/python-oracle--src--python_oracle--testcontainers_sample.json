@@ -7,8 +7,9 @@
   "features": [
     "Testcontainers"
   ],
+  "sourceUpdatedAt": "2026-04-21T19:57:02.314Z",
   "metaTitle": "Testcontainers with Oracle AI Database | Oracle AI Database Code Samples",
   "metaDescription": "Python Testcontainers sample for starting Oracle AI Database Free programmatically.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--testcontainers_sample/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/python-oracle--src--python_oracle--testcontainers_sample.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/python-oracle--src--python_oracle--testcontainers_sample.png"
 }

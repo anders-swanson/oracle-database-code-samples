@@ -4,7 +4,14 @@ import { useRoute } from 'vue-router';
 import AppShell from '../components/AppShell.vue';
 import InlineMarkdown from '../components/InlineMarkdown.vue';
 import SampleCard from '../components/SampleCard.vue';
-import { findRelatedSamples, findSampleById, samples } from '../lib/catalog';
+import {
+  findFeaturePageByName,
+  findLanguagePageByName,
+  findRelatedSamples,
+  findSampleById,
+  samples
+} from '../lib/catalog';
+import { getFeatureDetail } from '../data/featureDetails';
 import { getRouteSampleDetail, hydrateSample } from '../lib/sampleDetails';
 
 const route = useRoute();
@@ -12,6 +19,16 @@ const sampleId = computed(() => String(route.params.id));
 const summary = computed(() => findSampleById(sampleId.value));
 const sample = computed(() => hydrateSample(sampleId.value, getRouteSampleDetail(route)));
 const related = computed(() => (summary.value ? findRelatedSamples(summary.value, samples) : []));
+const languagePage = computed(() => (sample.value ? findLanguagePageByName(sample.value.language) : undefined));
+const featureContext = computed(() =>
+  sample.value
+    ? sample.value.features.map((feature) => ({
+        name: feature,
+        detail: getFeatureDetail(feature),
+        page: findFeaturePageByName(feature)
+      }))
+    : []
+);
 </script>
 
 <template>
@@ -50,9 +67,16 @@ const related = computed(() => (summary.value ? findRelatedSamples(summary.value
           </div>
 
           <div class="detail-hero__feature-list">
-            <span v-for="tag in sample.tags" :key="tag" class="sample-card__tag">
-              #{{ tag }}
-            </span>
+            <template v-for="feature in featureContext" :key="feature.name">
+              <RouterLink
+                v-if="feature.page"
+                class="sample-card__feature"
+                :to="{ name: 'feature-detail', params: { slug: feature.page.slug } }"
+              >
+                {{ feature.name }}
+              </RouterLink>
+            </template>
+            <span v-for="tag in sample.tags" :key="tag" class="sample-card__tag">#{{ tag }}</span>
           </div>
         </div>
       </section>
@@ -63,6 +87,24 @@ const related = computed(() => (summary.value ? findRelatedSamples(summary.value
             <span class="catalog-results__eyebrow">What this sample helps you learn</span>
           </div>
           <p class="detail-panel__excerpt">{{ sample.readmeExcerpt }}</p>
+          <div v-if="featureContext.length > 0" class="detail-panel__block">
+            <h2>What this sample demonstrates</h2>
+            <div class="feature-context-list">
+              <section v-for="feature in featureContext" :key="feature.name">
+                <h3>
+                  <RouterLink
+                    v-if="feature.page"
+                    :to="{ name: 'feature-detail', params: { slug: feature.page.slug } }"
+                  >
+                    {{ feature.name }}
+                  </RouterLink>
+                  <span v-else>{{ feature.name }}</span>
+                </h3>
+                <p>{{ feature.detail?.description ?? `Runnable ${feature.name} behavior on Oracle AI Database.` }}</p>
+                <p>{{ feature.detail?.useWhen ?? `Use when ${feature.name} needs to be tested against real database behavior.` }}</p>
+              </section>
+            </div>
+          </div>
           <div v-if="sample.highlights.length > 0" class="detail-panel__block">
             <h3>Highlights</h3>
             <ul>
@@ -89,7 +131,16 @@ const related = computed(() => (summary.value ? findRelatedSamples(summary.value
               </div>
               <div>
                 <dt>Language</dt>
-                <dd>{{ sample.language }}</dd>
+                <dd>
+                  <RouterLink
+                    v-if="languagePage"
+                    class="metadata-list__link"
+                    :to="{ name: 'language-detail', params: { slug: languagePage.slug } }"
+                  >
+                    {{ sample.language }}
+                  </RouterLink>
+                  <span v-else>{{ sample.language }}</span>
+                </dd>
               </div>
               <div>
                 <dt>Tags</dt>

@@ -10,8 +10,9 @@
   "features": [
     "Testcontainers"
   ],
+  "sourceUpdatedAt": "2026-04-21T17:53:16.467Z",
   "metaTitle": "TypeScript Testcontainers Sample | Oracle AI Database Code Samples",
   "metaDescription": "TypeScript helpers for starting Oracle AI Database Free with Testcontainers.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/typescript--src--testcontainers/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/typescript--src--testcontainers.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/typescript--src--testcontainers.png"
 }

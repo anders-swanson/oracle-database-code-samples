@@ -11,8 +11,9 @@
   "features": [
     "Spring"
   ],
+  "sourceUpdatedAt": "2026-04-21T19:57:02.327Z",
   "metaTitle": "Spring Resource Loader Example | Oracle AI Database Code Samples",
   "metaDescription": "Spring ResourceLoader sample that reads BLOB-backed resources from Oracle AI Database.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-resource-sample/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/spring-resource-sample.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/spring-resource-sample.png"
 }

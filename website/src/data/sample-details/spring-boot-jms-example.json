@@ -11,8 +11,9 @@
     "TxEventQ",
     "Spring"
   ],
+  "sourceUpdatedAt": "2026-04-21T19:57:02.321Z",
   "metaTitle": "Spring Java Message Service (JMS) Example | Oracle AI Database Code Samples",
   "metaDescription": "Spring Boot JMS pub-sub example for Oracle AI Database Transactional Event Queues.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-jms-example/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/spring-boot-jms-example.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/spring-boot-jms-example.png"
 }

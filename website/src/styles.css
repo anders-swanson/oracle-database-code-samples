@@ -159,6 +159,77 @@ code {
   transform: translateY(-1px);
 }
 
+.site-header__nav .site-header__github {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  overflow: hidden;
+  border-color: rgba(255, 176, 102, 0.62);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.16), transparent 30%),
+    linear-gradient(180deg, rgba(255, 176, 102, 0.28), rgba(149, 79, 28, 0.74));
+  box-shadow:
+    0 0 0 1px rgba(255, 176, 102, 0.12),
+    0 14px 34px rgba(255, 176, 102, 0.16);
+  color: #fff3dc;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.site-header__nav .site-header__github::before {
+  content: "";
+  position: absolute;
+  inset: -80% auto -80% -42%;
+  width: 2.5rem;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+  transform: rotate(18deg);
+  transition: left 320ms ease;
+}
+
+.site-header__nav .site-header__github:hover {
+  border-color: rgba(255, 213, 135, 0.78);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent 30%),
+    linear-gradient(180deg, rgba(255, 190, 112, 0.36), rgba(154, 82, 28, 0.82));
+  box-shadow:
+    0 0 0 1px rgba(255, 213, 135, 0.2),
+    0 18px 42px rgba(255, 176, 102, 0.24);
+}
+
+.site-header__nav .site-header__github:hover::before {
+  left: 118%;
+}
+
+.site-header__github-icon {
+  position: relative;
+  width: 1.45rem;
+  height: 1.45rem;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 0 12px rgba(255, 176, 102, 0.46));
+}
+
+.site-header__github-star-glow {
+  fill: rgba(255, 210, 111, 0.2);
+  stroke: rgba(255, 247, 213, 0.34);
+  stroke-linejoin: round;
+  stroke-width: 1.2;
+}
+
+.site-header__github-star {
+  fill: #ffd26f;
+  stroke: #fff7d5;
+  stroke-linejoin: round;
+  stroke-width: 1.25;
+}
+
+.site-header__github-spark {
+  fill: none;
+  stroke: #fff7d5;
+  stroke-linecap: round;
+  stroke-width: 1.45;
+}
+
 .site-header__nav .is-active {
   border-color: rgba(89, 212, 255, 0.45);
   background: linear-gradient(180deg, rgba(89, 212, 255, 0.18), rgba(255, 255, 255, 0.04));
@@ -169,7 +240,10 @@ code {
 .button:focus-visible,
 .filter-chip:focus-visible,
 .sample-card__title:focus-visible,
+.sample-card__feature:focus-visible,
 .detail-hero__back:focus-visible,
+.metadata-list__link:focus-visible,
+.landing-link-list a:focus-visible,
 .feature-card__button:focus-visible {
   outline: none;
   box-shadow: 0 0 0 4px rgba(89, 212, 255, 0.18);
@@ -800,6 +874,16 @@ code {
   margin: 0 0 0.75rem;
 }
 
+.detail-panel__block h2 {
+  margin: 0 0 0.9rem;
+  font-size: 1.15rem;
+}
+
+.detail-panel__block p {
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
 .detail-panel__block ul {
   display: grid;
   gap: 0.6rem;
@@ -844,6 +928,73 @@ code {
 
 .metadata-list dd {
   margin: 0;
+}
+
+.metadata-list__link,
+.feature-context-list a {
+  color: var(--accent);
+}
+
+.metadata-list__link:hover,
+.feature-context-list a:hover {
+  color: #bfefff;
+}
+
+.feature-context-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.feature-context-list section {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.feature-context-list h3,
+.feature-context-list p {
+  margin: 0;
+}
+
+.landing-page {
+  display: grid;
+  gap: 1.4rem;
+}
+
+.landing-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.75fr);
+  gap: 1.3rem;
+}
+
+.landing-link-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.landing-link-list a {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.landing-link-list a:hover {
+  transform: translateY(-2px);
+  border-color: var(--line-strong);
+  background: var(--bg-soft-hover);
+}
+
+.landing-link-list span {
+  color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .related-section {
@@ -1619,6 +1770,7 @@ code {
   .hero,
   .catalog-layout,
   .detail-layout,
+  .landing-layout,
   .map-hero,
   .patterns-layout {
     grid-template-columns: 1fr;

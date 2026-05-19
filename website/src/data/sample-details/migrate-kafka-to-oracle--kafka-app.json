@@ -11,8 +11,9 @@
   "features": [
     "Kafka"
   ],
+  "sourceUpdatedAt": "2026-04-21T17:09:34.357Z",
   "metaTitle": "Kafka App | Oracle AI Database Code Samples",
   "metaDescription": "Starting Apache Kafka application used as the baseline for the migration walkthrough.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/migrate-kafka-to-oracle--kafka-app/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/migrate-kafka-to-oracle--kafka-app.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/migrate-kafka-to-oracle--kafka-app.png"
 }

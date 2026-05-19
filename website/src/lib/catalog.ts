@@ -1,10 +1,14 @@
 import rawCatalogIndex from '../data/catalog-index.json';
+import rawFeaturePages from '../data/feature-pages.json';
 import { getFeatureDetail } from '../data/featureDetails';
 import { getFeatureIcon } from '../data/featureIcons';
+import rawLanguagePages from '../data/language-pages.json';
 import rawPatternMappings from '../data/patternMappings.json';
 import type {
   CatalogFilters,
+  FeatureLandingPage,
   FilterOption,
+  LanguageLandingPage,
   PackedCatalogIndex,
   PatternIntent,
   PatternMapping,
@@ -17,10 +21,14 @@ import type {
 const REPO_TREE_BASE = 'https://github.com/anders-swanson/oracle-database-code-samples/tree/main';
 
 const catalogIndex = rawCatalogIndex as PackedCatalogIndex;
+const featurePageData = rawFeaturePages as FeatureLandingPage[];
+const languagePageData = rawLanguagePages as LanguageLandingPage[];
 const patternMappingData = rawPatternMappings as PatternMappingData;
 
 export const patternIntents = patternMappingData.intents as PatternIntent[];
 export const patternMappings = patternMappingData.patterns as PatternMapping[];
+export const featurePages = featurePageData;
+export const languagePages = languagePageData;
 
 export const samples = decodeCatalogIndex(catalogIndex);
 
@@ -132,6 +140,27 @@ export function filterSamples(items: SampleSummary[], filters: CatalogFilters) {
 
 export function findSampleById(id: string) {
   return samples.find((sample) => sample.id === id);
+}
+
+export function findFeaturePageBySlug(slug: string) {
+  return featurePages.find((page) => page.slug === slug);
+}
+
+export function findFeaturePageByName(name: string) {
+  return featurePages.find((page) => page.name === name);
+}
+
+export function findLanguagePageBySlug(slug: string) {
+  return languagePages.find((page) => page.slug === slug);
+}
+
+export function findLanguagePageByName(name: string) {
+  return languagePages.find((page) => page.name === name);
+}
+
+export function samplesForIds(sampleIds: string[], items: SampleSummary[] = samples) {
+  const sampleById = new Map(items.map((sample) => [sample.id, sample]));
+  return sampleIds.map((sampleId) => sampleById.get(sampleId)).filter((sample): sample is SampleSummary => Boolean(sample));
 }
 
 export function resolvePatternMappings(items: SampleSummary[] = samples): ResolvedPatternMapping[] {

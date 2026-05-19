@@ -12,8 +12,9 @@
     "JSON",
     "Duality Views"
   ],
+  "sourceUpdatedAt": "2026-04-21T17:09:33.932Z",
   "metaTitle": "Go JSON Relational Duality Views Sample | Oracle AI Database Code Samples",
   "metaDescription": "Go sample for creating and querying JSON Relational Duality Views in Oracle AI Database.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/golang--dualityviews/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/golang--dualityviews.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/golang--dualityviews.png"
 }

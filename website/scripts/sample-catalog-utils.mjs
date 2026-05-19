@@ -230,11 +230,11 @@ function detectLanguage(relativeDirectory, metadata, content) {
   if (relativeDirectory.startsWith('golang/') || relativeDirectory === 'golang' || haystack.includes(' go ')) {
     return 'Go';
   }
-  if (relativeDirectory.startsWith('python-oracle/') || relativeDirectory === 'python-oracle' || haystack.includes('python')) {
-    return 'Python';
-  }
   if (relativeDirectory.startsWith('typescript/') || relativeDirectory === 'typescript' || haystack.includes('typescript') || haystack.includes('nodejs')) {
     return 'TypeScript';
+  }
+  if (relativeDirectory.startsWith('python-oracle/') || relativeDirectory === 'python-oracle' || haystack.includes('python')) {
+    return 'Python';
   }
   if (relativeDirectory === 'sql' || relativeDirectory.startsWith('sql/')) {
     return 'SQL';
@@ -312,7 +312,8 @@ export function parseReadmeFile(repoRoot, fullPath) {
     body,
     title: extractTitle(body, metadata.name || relativeDirectory),
     excerpt: extractExcerpt(body),
-    highlights: extractHighlights(body)
+    highlights: extractHighlights(body),
+    sourceUpdatedAt: fs.statSync(fullPath).mtime.toISOString()
   };
 }
 
@@ -332,7 +333,8 @@ export function parseReadmeSource(relativeReadmePath, source) {
     body,
     title: extractTitle(body, metadata.name || relativeDirectory),
     excerpt: extractExcerpt(body),
-    highlights: extractHighlights(body)
+    highlights: extractHighlights(body),
+    sourceUpdatedAt: '1970-01-01T00:00:00.000Z'
   };
 }
 
@@ -344,7 +346,8 @@ export function deriveSampleRecord(parsed) {
     body,
     title,
     excerpt,
-    highlights
+    highlights,
+    sourceUpdatedAt
   } = parsed;
 
   const baseTags = unique(
@@ -378,6 +381,7 @@ export function deriveSampleRecord(parsed) {
     blogPost: metadata.blog_post?.trim() || '',
     readmeExcerpt: excerpt || description,
     highlights,
+    sourceUpdatedAt,
     featured: FEATURED_PATHS.has(relativeDirectory),
     canonicalUrl: buildCanonicalUrl(samplePath),
     metaTitle: buildSampleMetaTitle(title),

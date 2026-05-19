@@ -15,8 +15,9 @@
     "Testcontainers",
     "Spring"
   ],
+  "sourceUpdatedAt": "2026-04-21T19:57:02.153Z",
   "metaTitle": "Spring Boot JSON Relational Duality Views | Oracle AI Database Code Samples",
   "metaDescription": "Spring Boot JPA sample for generating and using JSON Relational Duality Views.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--jpa-duality-views/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/json--jpa-duality-views.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/json--jpa-duality-views.png"
 }

@@ -1,15 +1,16 @@
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
-import type { SampleRecord } from '../types';
-import { findSampleById } from './catalog';
+import type { FeatureLandingPage, LanguageLandingPage, SampleRecord } from '../types';
+import { findFeaturePageBySlug, findLanguagePageBySlug, findSampleById, samplesForIds } from './catalog';
 import { getRouteSampleDetail, hydrateSample } from './sampleDetails';
-
-const SITE_NAME = 'Oracle AI Database Code Samples';
-const SITE_URL = 'https://anders-swanson.github.io/oracle-database-code-samples/';
-const DEFAULT_DESCRIPTION =
-  'Browse runnable Oracle AI Database code samples for vector search, JSON, graph, spatial, TxEventQ, ORDS, Spring Boot, Java, Go, Python, and TypeScript.';
-const DEFAULT_OG_IMAGE_URL = `${SITE_URL}social-card.svg`;
-const DEFAULT_OG_IMAGE_ALT =
-  'Oracle AI Database Code Samples with a stylized database graphic and feature tags for vector search, JSON, graph, spatial, Spring Boot, and TxEventQ.';
+import {
+  DEFAULT_DESCRIPTION,
+  DEFAULT_OG_IMAGE_ALT,
+  DEFAULT_OG_IMAGE_URL,
+  SITE_NAME,
+  SITE_URL,
+  SOCIAL_CARD_HEIGHT,
+  SOCIAL_CARD_WIDTH
+} from './site';
 
 interface PageMetadata {
   title: string;
@@ -20,6 +21,47 @@ interface PageMetadata {
   ogImageAlt: string;
   robots?: string;
   structuredData: object[];
+}
+
+function buildBreadcrumbStructuredData(items: { name: string; item: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.item
+    }))
+  };
+}
+
+function buildCollectionStructuredData(
+  name: string,
+  description: string,
+  canonicalUrl: string,
+  sampleIds: string[],
+  about: string
+) {
+  const pageSamples = samplesForIds(sampleIds);
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name,
+    url: canonicalUrl,
+    description,
+    about,
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: pageSamples.map((sample, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: sample.title,
+        url: `${SITE_URL}samples/${sample.id}/`
+      }))
+    }
+  };
 }
 
 function buildCatalogMetadata(): PageMetadata {
@@ -118,31 +160,69 @@ function buildSampleMetadata(sample: SampleRecord): PageMetadata {
         about: sample.features
       },
       {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          {
-            '@type': 'ListItem',
-            position: 1,
-            name: 'Code Samples',
-            item: SITE_URL
-          },
-          {
-            '@type': 'ListItem',
-            position: 2,
-            name: sample.title,
-            item: sample.canonicalUrl
-          }
-        ]
+        ...buildBreadcrumbStructuredData([
+          { name: 'Code Samples', item: SITE_URL },
+          { name: sample.title, item: sample.canonicalUrl }
+        ])
       }
     ]
   };
 }
 
-function buildNotFoundMetadata(): PageMetadata {
+function buildFeatureMetadata(featurePage: FeatureLandingPage): PageMetadata {
   return {
-    title: `Sample Not Found | ${SITE_NAME}`,
-    description: 'The requested Oracle AI Database sample page could not be found.',
+    title: featurePage.metaTitle,
+    description: featurePage.metaDescription,
+    canonicalUrl: featurePage.canonicalUrl,
+    ogType: 'website',
+    ogImageUrl: DEFAULT_OG_IMAGE_URL,
+    ogImageAlt: DEFAULT_OG_IMAGE_ALT,
+    structuredData: [
+      buildCollectionStructuredData(
+        featurePage.title,
+        featurePage.description,
+        featurePage.canonicalUrl,
+        featurePage.sampleIds,
+        featurePage.name
+      ),
+      buildBreadcrumbStructuredData([
+        { name: 'Code Samples', item: SITE_URL },
+        { name: 'Features', item: `${SITE_URL}feature-map/` },
+        { name: featurePage.name, item: featurePage.canonicalUrl }
+      ])
+    ]
+  };
+}
+
+function buildLanguageMetadata(languagePage: LanguageLandingPage): PageMetadata {
+  return {
+    title: languagePage.metaTitle,
+    description: languagePage.metaDescription,
+    canonicalUrl: languagePage.canonicalUrl,
+    ogType: 'website',
+    ogImageUrl: DEFAULT_OG_IMAGE_URL,
+    ogImageAlt: DEFAULT_OG_IMAGE_ALT,
+    structuredData: [
+      buildCollectionStructuredData(
+        languagePage.title,
+        languagePage.description,
+        languagePage.canonicalUrl,
+        languagePage.sampleIds,
+        languagePage.name
+      ),
+      buildBreadcrumbStructuredData([
+        { name: 'Code Samples', item: SITE_URL },
+        { name: 'Languages', item: SITE_URL },
+        { name: languagePage.name, item: languagePage.canonicalUrl }
+      ])
+    ]
+  };
+}
+
+function buildNotFoundMetadata(label = 'Sample'): PageMetadata {
+  return {
+    title: `${label} Not Found | ${SITE_NAME}`,
+    description: `The requested Oracle AI Database ${label.toLowerCase()} page could not be found.`,
     canonicalUrl: SITE_URL,
     ogType: 'website',
     ogImageUrl: DEFAULT_OG_IMAGE_URL,
@@ -167,6 +247,14 @@ export function resolveRouteMetadata(route: RouteLocationNormalizedLoaded) {
   if (route.name === 'patterns') {
     return buildPatternsMetadata();
   }
+  if (route.name === 'feature-detail') {
+    const featurePage = findFeaturePageBySlug(String(route.params.slug));
+    return featurePage ? buildFeatureMetadata(featurePage) : buildNotFoundMetadata('Feature');
+  }
+  if (route.name === 'language-detail') {
+    const languagePage = findLanguagePageBySlug(String(route.params.slug));
+    return languagePage ? buildLanguageMetadata(languagePage) : buildNotFoundMetadata('Language');
+  }
 
   return buildCatalogMetadata();
 }
@@ -181,6 +269,9 @@ export function buildRouteHead(metadata: PageMetadata) {
       { property: 'og:description', content: metadata.description },
       { property: 'og:url', content: metadata.canonicalUrl },
       { property: 'og:image', content: metadata.ogImageUrl },
+      { property: 'og:image:type', content: 'image/png' },
+      { property: 'og:image:width', content: String(SOCIAL_CARD_WIDTH) },
+      { property: 'og:image:height', content: String(SOCIAL_CARD_HEIGHT) },
       { property: 'og:image:alt', content: metadata.ogImageAlt },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: metadata.title },

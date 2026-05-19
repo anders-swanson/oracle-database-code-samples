@@ -7,8 +7,9 @@
   "features": [
     "TxEventQ"
   ],
+  "sourceUpdatedAt": "2026-04-21T19:57:02.146Z",
   "metaTitle": "JDBC Event Streaming | Oracle AI Database Code Samples",
   "metaDescription": "Plain JDBC sample for producing and consuming TxEventQ messages with PL/SQL helpers.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-event-streaming/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/jdbc-event-streaming.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/jdbc-event-streaming.png"
 }

@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url';
 import zlib from 'node:zlib';
 import { describe, expect, it } from 'vitest';
 import catalogIndex from '../src/data/catalog-index.json';
+import featurePages from '../src/data/feature-pages.json';
+import languagePages from '../src/data/language-pages.json';
 import patternMappings from '../src/data/patternMappings.json';
 import { decodeCatalogIndex } from '../src/lib/catalog';
 import type { PackedCatalogIndex, SampleDetail, SampleRecord, SampleSummary } from '../src/types';
@@ -20,6 +22,15 @@ function gzipSize(value: unknown) {
 
 function readSampleDetail(id: string) {
   return JSON.parse(fs.readFileSync(path.join(detailDirectory, `${id}.json`), 'utf8')) as SampleDetail;
+}
+
+function readPngDimensions(filePath: string) {
+  const data = fs.readFileSync(filePath);
+  return {
+    signature: data.subarray(0, 8).toString('hex'),
+    width: data.readUInt32BE(16),
+    height: data.readUInt32BE(20)
+  };
 }
 
 function reconstructFullSample(summary: SampleSummary): SampleRecord {
@@ -64,10 +75,37 @@ describe('generated runtime data', () => {
       expect(detail.id).toBe(summary.id);
       expect(detail.readmeExcerpt.length).toBeGreaterThan(0);
       expect(Array.isArray(detail.features)).toBe(true);
+      expect(Date.parse(detail.sourceUpdatedAt)).not.toBeNaN();
       expect(detail.ogImageUrl).toBe(
-        `https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/${summary.id}.svg`
+        `https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/${summary.id}.png`
       );
-      expect(fs.existsSync(path.join(socialCardDirectory, `${summary.id}.svg`))).toBe(true);
+      const cardPath = path.join(socialCardDirectory, `${summary.id}.png`);
+      expect(fs.existsSync(cardPath)).toBe(true);
+      expect(readPngDimensions(cardPath)).toEqual({
+        signature: '89504e470d0a1a0a',
+        width: 1200,
+        height: 630
+      });
+    }
+  });
+
+  it('writes feature and language landing page data for indexed topic pages', () => {
+    const indexIds = new Set(typedCatalogIndex.i.map(([id]) => id));
+    const vectorPage = featurePages.find((page) => page.slug === 'vector-search');
+    const javaPage = languagePages.find((page) => page.slug === 'java');
+
+    expect(featurePages.length).toBeGreaterThan(0);
+    expect(languagePages.length).toBeGreaterThan(0);
+    expect(vectorPage?.canonicalUrl).toBe(
+      'https://anders-swanson.github.io/oracle-database-code-samples/features/vector-search/'
+    );
+    expect(vectorPage?.metaTitle).toContain('Oracle AI Database Vector Search Samples');
+    expect(javaPage?.canonicalUrl).toBe('https://anders-swanson.github.io/oracle-database-code-samples/languages/java/');
+
+    for (const page of [...featurePages, ...languagePages]) {
+      expect(page.sampleIds.length).toBeGreaterThan(0);
+      expect(Date.parse(page.updatedAt)).not.toBeNaN();
+      expect(page.sampleIds.every((sampleId) => indexIds.has(sampleId))).toBe(true);
     }
   });
 

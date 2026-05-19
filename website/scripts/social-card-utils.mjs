@@ -1,9 +1,15 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { SAMPLE_SOCIAL_CARD_DIRECTORY, SITE_NAME, trimDescription } from './seo-utils.mjs';
+import { Resvg } from '@resvg/resvg-js';
+import {
+  SAMPLE_SOCIAL_CARD_DIRECTORY,
+  SITE_NAME,
+  SOCIAL_CARD_EXTENSION,
+  SOCIAL_CARD_HEIGHT,
+  SOCIAL_CARD_WIDTH,
+  trimDescription
+} from './seo-utils.mjs';
 
-const CARD_WIDTH = 1200;
-const CARD_HEIGHT = 630;
 const FONT_FAMILY = 'Avenir Next, Segoe UI, Helvetica Neue, Arial, sans-serif';
 
 function escapeXml(value) {
@@ -195,14 +201,14 @@ function renderFeatureChips(features) {
 }
 
 export function renderSampleSocialCard(sample, { featureIconDefinitions, publicDirectory }) {
-  const titleLines = wrapText(sample.title, 25, 2);
+  const titleLines = wrapText(sample.title, 19, 3);
   const descriptionLines = wrapText(trimDescription(sample.metaDescription || sample.description, 118), 54, 2);
   const icons = selectCardIcons(sample, featureIconDefinitions);
   const features = sample.features.length > 0 ? sample.features : ['Oracle AI Database'];
   const title = normalizeOracleName(sample.title);
   const pathLabel = normalizeOracleName(sample.path);
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CARD_WIDTH} ${CARD_HEIGHT}" role="img" aria-labelledby="title desc">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SOCIAL_CARD_WIDTH} ${SOCIAL_CARD_HEIGHT}" role="img" aria-labelledby="title desc">
   <title id="title">${escapeXml(`${title} | ${SITE_NAME}`)}</title>
   <desc id="desc">${escapeXml(`A sample social preview card for ${title}.`)}</desc>
   <defs>
@@ -229,9 +235,9 @@ export function renderSampleSocialCard(sample, { featureIconDefinitions, publicD
     </linearGradient>
   </defs>
 
-  <rect width="${CARD_WIDTH}" height="${CARD_HEIGHT}" fill="url(#bg)" />
-  <rect width="${CARD_WIDTH}" height="${CARD_HEIGHT}" fill="url(#glowCyan)" />
-  <rect width="${CARD_WIDTH}" height="${CARD_HEIGHT}" fill="url(#glowWarm)" />
+  <rect width="${SOCIAL_CARD_WIDTH}" height="${SOCIAL_CARD_HEIGHT}" fill="url(#bg)" />
+  <rect width="${SOCIAL_CARD_WIDTH}" height="${SOCIAL_CARD_HEIGHT}" fill="url(#glowCyan)" />
+  <rect width="${SOCIAL_CARD_WIDTH}" height="${SOCIAL_CARD_HEIGHT}" fill="url(#glowWarm)" />
   <g opacity="0.13">
     <path d="M0 86H1200M0 172H1200M0 258H1200M0 344H1200M0 430H1200M0 516H1200" stroke="#d7e6ff" />
     <path d="M110 0V630M220 0V630M330 0V630M440 0V630M550 0V630M660 0V630M770 0V630M880 0V630M990 0V630M1100 0V630" stroke="#d7e6ff" />
@@ -244,11 +250,11 @@ export function renderSampleSocialCard(sample, { featureIconDefinitions, publicD
     <text x="0" y="0" fill="#59d4ff" font-family="${FONT_FAMILY}" font-size="19" font-weight="800">ORACLE AI DATABASE CODE SAMPLE</text>
     ${renderTextLines(titleLines, {
       x: 0,
-      y: 90,
+      y: 78,
       fill: '#f4f7ff',
-      fontSize: 58,
+      fontSize: 46,
       fontWeight: 800,
-      lineHeight: 66
+      lineHeight: 54
     })}
     ${renderTextLines(descriptionLines, {
       x: 0,
@@ -269,6 +275,25 @@ export function renderSampleSocialCard(sample, { featureIconDefinitions, publicD
 `;
 }
 
+function renderPng(svg) {
+  return new Resvg(svg, {
+    fitTo: {
+      mode: 'width',
+      value: SOCIAL_CARD_WIDTH
+    }
+  })
+    .render()
+    .asPng();
+}
+
+export function writeDefaultSocialCard({ websiteRoot }) {
+  const publicDirectory = path.join(websiteRoot, 'public');
+  const sourcePath = path.join(publicDirectory, 'social-card.svg');
+  const outputPath = path.join(publicDirectory, `social-card.${SOCIAL_CARD_EXTENSION}`);
+
+  fs.writeFileSync(outputPath, renderPng(fs.readFileSync(sourcePath, 'utf8')));
+}
+
 export function writeSampleSocialCards(samples, { websiteRoot }) {
   const publicDirectory = path.join(websiteRoot, 'public');
   const outputDirectory = path.join(publicDirectory, SAMPLE_SOCIAL_CARD_DIRECTORY);
@@ -279,11 +304,13 @@ export function writeSampleSocialCards(samples, { websiteRoot }) {
 
   for (const sample of samples) {
     fs.writeFileSync(
-      path.join(outputDirectory, `${sample.id}.svg`),
-      renderSampleSocialCard(sample, {
-        featureIconDefinitions,
-        publicDirectory
-      })
+      path.join(outputDirectory, `${sample.id}.${SOCIAL_CARD_EXTENSION}`),
+      renderPng(
+        renderSampleSocialCard(sample, {
+          featureIconDefinitions,
+          publicDirectory
+        })
+      )
     );
   }
 }

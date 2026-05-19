@@ -11,8 +11,9 @@
   "features": [
     "JSON"
   ],
+  "sourceUpdatedAt": "2026-05-12T16:15:01.380Z",
   "metaTitle": "Python Full-Text Search Sample | Oracle AI Database Code Samples",
   "metaDescription": "Native Python full-text JSON search sample for Oracle AI Database using python-oracledb and Oracle Text.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--full_text_search/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/python-oracle--src--python_oracle--full_text_search.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/python-oracle--src--python_oracle--full_text_search.png"
 }

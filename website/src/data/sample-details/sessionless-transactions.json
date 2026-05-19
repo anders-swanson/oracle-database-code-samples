@@ -11,8 +11,9 @@
   "features": [
     "Oracle AI Database"
   ],
+  "sourceUpdatedAt": "2026-04-21T19:57:02.315Z",
   "metaTitle": "Sessionless Transactions | Oracle AI Database Code Samples",
   "metaDescription": "Oracle JDBC sample for sessionless transactions on Oracle AI Database.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/sessionless-transactions/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/sessionless-transactions.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/sessionless-transactions.png"
 }

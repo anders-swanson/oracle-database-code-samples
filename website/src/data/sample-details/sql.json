@@ -8,8 +8,9 @@
     "Vector Search",
     "JSON"
   ],
+  "sourceUpdatedAt": "2026-05-12T15:10:05.663Z",
   "metaTitle": "SQL examples for Oracle AI Database | Oracle AI Database Code Samples",
   "metaDescription": "SQL scripts for Oracle AI Database features such as JSON, vectors, and Select AI.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/sql/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/sql.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/sql.png"
 }

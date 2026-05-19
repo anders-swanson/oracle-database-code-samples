@@ -19,13 +19,14 @@ const { sample } = vi.hoisted(() => ({
     blogPost: '',
     readmeExcerpt: 'Example sample.',
     highlights: ['The provisioning script at [create-pdbs.sql](./src/test/resources/create-pdbs.sql)'],
+    sourceUpdatedAt: '2026-05-01T00:00:00.000Z',
     featured: false,
     canonicalUrl:
       'https://anders-swanson.github.io/oracle-database-code-samples/samples/database-per-service-example--sample/',
     metaTitle: 'Database Per Service Sample | Oracle AI Database Code Samples',
     metaDescription: 'Example sample.',
     ogImageUrl:
-      'https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/database-per-service-example--sample.svg'
+      'https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/database-per-service-example--sample.png'
   } satisfies SampleRecord
 }));
 
@@ -44,6 +45,21 @@ vi.mock('vue-router', () => ({
 
 vi.mock('../src/lib/catalog', () => ({
   samples: [sample],
+  findFeaturePageByName: (name: string) =>
+    name === 'Security'
+      ? {
+          slug: 'security',
+          name: 'Security',
+          sampleIds: [sample.id]
+        }
+      : undefined,
+  findLanguagePageByName: (name: string) =>
+    name === 'Java'
+      ? {
+          slug: 'java',
+          name: 'Java'
+        }
+      : undefined,
   findSampleById: () => sample,
   findRelatedSamples: () => []
 }));
@@ -65,5 +81,7 @@ describe('SampleDetailPage', () => {
     );
 
     expect(link.text()).toBe('create-pdbs.sql');
+    expect(wrapper.text()).toContain('What this sample demonstrates');
+    expect(wrapper.findComponent(RouterLinkStub).exists()).toBe(true);
   });
 });

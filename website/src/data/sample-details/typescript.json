@@ -8,8 +8,9 @@
     "TxEventQ",
     "Testcontainers"
   ],
+  "sourceUpdatedAt": "2026-04-21T19:57:02.333Z",
   "metaTitle": "Typescript Oracle AI Database Samples | Oracle AI Database Code Samples",
   "metaDescription": "TypeScript samples using node-oracledb, Testcontainers, and Transactional Event Queues.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/typescript/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/typescript.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/typescript.png"
 }

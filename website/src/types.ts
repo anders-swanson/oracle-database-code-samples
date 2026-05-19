@@ -17,6 +17,7 @@ export interface SampleDetail {
   readmeExcerpt: string;
   highlights: string[];
   features: string[];
+  sourceUpdatedAt: string;
   canonicalUrl: string;
   metaTitle: string;
   metaDescription: string;
@@ -39,6 +40,34 @@ export interface FilterOption {
 export interface FeatureDetail {
   description: string;
   useWhen: string;
+}
+
+export interface FeatureLandingPage {
+  slug: string;
+  name: string;
+  title: string;
+  description: string;
+  useWhen: string;
+  sampleIds: string[];
+  relatedFeatureSlugs: string[];
+  canonicalUrl: string;
+  metaTitle: string;
+  metaDescription: string;
+  updatedAt: string;
+}
+
+export interface LanguageLandingPage {
+  slug: string;
+  name: string;
+  title: string;
+  description: string;
+  useWhen: string;
+  sampleIds: string[];
+  relatedFeatureSlugs: string[];
+  canonicalUrl: string;
+  metaTitle: string;
+  metaDescription: string;
+  updatedAt: string;
 }
 
 export interface SubfeatureGraphNode {

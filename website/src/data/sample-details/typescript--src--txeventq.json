@@ -8,8 +8,9 @@
     "TxEventQ",
     "Testcontainers"
   ],
+  "sourceUpdatedAt": "2026-04-21T18:47:52.336Z",
   "metaTitle": "TypeScript TxEventQ Sample | Oracle AI Database Code Samples",
   "metaDescription": "TypeScript sample for producing and consuming TxEventQ messages with node-oracledb.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/typescript--src--txeventq/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/typescript--src--txeventq.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/typescript--src--txeventq.png"
 }

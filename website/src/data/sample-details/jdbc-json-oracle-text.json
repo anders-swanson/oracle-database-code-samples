@@ -12,8 +12,9 @@
   "features": [
     "JSON"
   ],
+  "sourceUpdatedAt": "2026-04-21T18:00:38.758Z",
   "metaTitle": "JDBC JSON Oracle Text | Oracle AI Database Code Samples",
   "metaDescription": "Plain JDBC sample for JSON full-text search with Oracle Text on Oracle AI Database.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-json-oracle-text/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/jdbc-json-oracle-text.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/jdbc-json-oracle-text.png"
 }

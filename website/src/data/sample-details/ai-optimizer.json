@@ -12,8 +12,9 @@
   "features": [
     "Oracle AI Database"
   ],
+  "sourceUpdatedAt": "2026-04-21T17:55:14.354Z",
   "metaTitle": "AI Optimizer Docker Compose | Oracle AI Database Code Samples",
   "metaDescription": "Docker Compose setup for running the ai-optimizer service with Oracle AI Database Free locally.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/ai-optimizer/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/ai-optimizer.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/ai-optimizer.png"
 }

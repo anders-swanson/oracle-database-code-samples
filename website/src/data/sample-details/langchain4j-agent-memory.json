@@ -14,8 +14,9 @@
     "JSON",
     "AI Agents"
   ],
+  "sourceUpdatedAt": "2026-04-22T16:13:17.312Z",
   "metaTitle": "LangChain4j Agent Memory | Oracle AI Database Code Samples",
   "metaDescription": "LangChain4j sample that stores agent memory, transcripts, and hybrid retrieval data in Oracle AI Database.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/langchain4j-agent-memory/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/langchain4j-agent-memory.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/langchain4j-agent-memory.png"
 }

@@ -168,3 +168,76 @@ const featureContext = computed(() =>
     </section>
   </AppShell>
 </template>
+
+<style scoped>
+.detail-page {
+  display: grid;
+  gap: 1.4rem;
+}
+
+.detail-hero__feature-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.9fr);
+  gap: 1.3rem;
+}
+
+.metadata-list {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+}
+
+.metadata-list div {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.metadata-list dt {
+  color: var(--text-muted);
+}
+
+.metadata-list dd {
+  margin: 0;
+}
+
+.metadata-list__link,
+.feature-context-list a {
+  color: var(--accent);
+}
+
+.metadata-list__link:hover,
+.feature-context-list a:hover {
+  color: #bfefff;
+}
+
+.feature-context-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.feature-context-list section {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.feature-context-list h3,
+.feature-context-list p {
+  margin: 0;
+}
+
+@media (max-width: 1080px) {
+  .detail-layout {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

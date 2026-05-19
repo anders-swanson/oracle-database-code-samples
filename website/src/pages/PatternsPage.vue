@@ -138,3 +138,301 @@ function truncateDescription(description: string) {
     </section>
   </AppShell>
 </template>
+
+<style scoped>
+.patterns-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.82fr);
+  gap: 1.4rem;
+  align-items: stretch;
+  padding: 1.35rem 0 1rem;
+}
+
+.patterns-hero__copy {
+  padding: clamp(1.35rem, 2.6vw, 2.3rem);
+}
+
+.patterns-hero__copy h1 {
+  max-width: 18ch;
+  font-size: clamp(2.35rem, 5vw, 4.2rem);
+}
+
+.patterns-legend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: center;
+  gap: 0.55rem;
+  padding: 0.85rem;
+}
+
+.patterns-legend__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 4.4rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(160, 197, 255, 0.18);
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-muted);
+  text-align: left;
+}
+
+.patterns-legend__item span {
+  grid-row: span 2;
+  width: 1.65rem;
+  height: 0.32rem;
+  border-radius: 999px;
+  background: var(--line-color);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--line-color) 42%, transparent);
+}
+
+.patterns-legend__item strong,
+.patterns-legend__item em {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.patterns-legend__item strong {
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.patterns-legend__item em {
+  font-size: 0.8rem;
+  font-style: normal;
+  line-height: 1.3;
+}
+
+.patterns-legend__item.is-active {
+  border-color: color-mix(in srgb, var(--line-color) 62%, transparent);
+  background: color-mix(in srgb, var(--line-color) 16%, rgba(255, 255, 255, 0.04));
+  color: var(--text);
+}
+
+.patterns-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.68fr);
+  gap: 1.3rem;
+  align-items: start;
+}
+
+.patterns-node-shell {
+  min-width: 0;
+  padding: 1rem;
+}
+
+.patterns-node-toolbar,
+.patterns-inspector__topline {
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.patterns-node-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+
+.patterns-node {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 5rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(160, 197, 255, 0.14);
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--text);
+  text-align: left;
+  transition: border-color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+}
+
+.patterns-node:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--node-color, #59d4ff) 46%, rgba(244, 247, 255, 0.16));
+  background: color-mix(in srgb, var(--node-color, #59d4ff) 12%, rgba(255, 255, 255, 0.04));
+}
+
+.patterns-node.is-selected {
+  border-color: color-mix(in srgb, var(--node-color, #59d4ff) 72%, rgba(244, 247, 255, 0.2));
+  background: color-mix(in srgb, var(--node-color, #59d4ff) 18%, rgba(255, 255, 255, 0.05));
+}
+
+.patterns-node__marker {
+  width: 0.95rem;
+  height: 0.95rem;
+  border: 3px solid rgba(244, 247, 255, 0.9);
+  border-radius: 50%;
+  background: var(--node-color, #59d4ff);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--node-color, #59d4ff) 44%, transparent);
+}
+
+.patterns-node__count {
+  justify-self: end;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.patterns-inspector {
+  position: sticky;
+  top: 1.25rem;
+  display: grid;
+  gap: 1rem;
+  padding: 1.35rem;
+}
+
+.patterns-inspector__topline strong {
+  color: var(--accent);
+}
+
+.patterns-inspector h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.55rem);
+  line-height: 1;
+}
+
+.patterns-inspector p {
+  margin: 0;
+}
+
+.patterns-inspector__block {
+  padding-block: 0.95rem;
+  border-block: 1px solid rgba(160, 197, 255, 0.16);
+}
+
+.patterns-inspector__block h3 {
+  margin: 0 0 0.55rem;
+  color: var(--accent-warm);
+  font-size: 0.9rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.patterns-inspector__features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.patterns-sample-stop-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.patterns-sample-stop {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(160, 197, 255, 0.12);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.patterns-sample-stop:hover {
+  transform: translateX(0.2rem);
+  color: var(--accent);
+}
+
+.patterns-node:focus-visible,
+.patterns-sample-stop:focus-visible,
+.patterns-legend__item:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.patterns-sample-stop__dot {
+  width: 0.9rem;
+  height: 0.9rem;
+  border: 3px solid rgba(244, 247, 255, 0.9);
+  border-radius: 50%;
+  background: #081423;
+  box-shadow: 0 0 16px rgba(89, 212, 255, 0.22);
+}
+
+.patterns-sample-stop strong,
+.patterns-node strong {
+  display: block;
+  line-height: 1.25;
+}
+
+.patterns-sample-stop em,
+.patterns-node em {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-style: normal;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1080px) {
+  .patterns-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .patterns-inspector {
+    position: static;
+  }
+
+  .patterns-hero__copy h1 {
+    max-width: 100%;
+    font-size: clamp(2.15rem, 7vw, 3.55rem);
+    line-height: 0.98;
+  }
+
+  .patterns-legend {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .patterns-legend__item {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 820px) {
+  .patterns-hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .patterns-legend {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .patterns-legend__item {
+    flex: 0 0 10.5rem;
+  }
+
+  .patterns-hero__copy {
+    padding: 1.25rem;
+  }
+
+  .patterns-hero__copy h1 {
+    font-size: clamp(2rem, 10vw, 2.55rem);
+    line-height: 1.02;
+  }
+
+  .patterns-node-list {
+    grid-template-columns: 1fr;
+  }
+
+  .patterns-node {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .patterns-node__count {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+</style>

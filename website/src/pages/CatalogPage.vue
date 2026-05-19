@@ -159,3 +159,120 @@ function clearFilters() {
     </section>
   </AppShell>
 </template>
+
+<style scoped>
+.hero {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 1.5rem;
+  padding: 2rem 0 1.5rem;
+}
+
+.hero__copy {
+  padding: clamp(1.5rem, 3vw, 2.75rem);
+}
+
+.hero__copy h1 {
+  font-size: clamp(2.4rem, 6vw, 4.9rem);
+}
+
+.hero__copy p {
+  font-size: 1.02rem;
+}
+
+.hero__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.catalog-layout {
+  display: grid;
+  grid-template-columns: minmax(290px, 340px) minmax(0, 1fr);
+  gap: 1.3rem;
+}
+
+.catalog-sidebar,
+.catalog-results,
+.control-panel {
+  min-width: 0;
+}
+
+.catalog-sidebar {
+  align-self: start;
+  position: sticky;
+  top: 1.25rem;
+}
+
+.control-panel {
+  position: static;
+  max-height: none;
+  padding: 1.35rem;
+  overflow: visible;
+}
+
+.control-panel__topline {
+  align-items: center;
+}
+
+.control-panel h2,
+.catalog-results__header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.catalog-results__header {
+  align-items: end;
+  margin-bottom: 1.25rem;
+  padding: 0 0.15rem;
+}
+
+.search-field {
+  display: grid;
+  gap: 0.55rem;
+  margin: 1rem 0;
+  color: var(--text-muted);
+}
+
+.search-field input,
+.search-field select {
+  width: 100%;
+  padding: 0.92rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.search-field input:focus,
+.search-field select:focus {
+  outline: none;
+  border-color: rgba(89, 212, 255, 0.62);
+  box-shadow: 0 0 0 4px rgba(89, 212, 255, 0.16);
+}
+
+@media (max-width: 1080px) {
+  .hero,
+  .catalog-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .control-panel,
+  .catalog-sidebar {
+    position: static;
+  }
+
+  .control-panel {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero__stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
+</style>

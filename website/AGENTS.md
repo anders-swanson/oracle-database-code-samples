@@ -28,6 +28,5 @@ This directory contains the Vue 3 + Vite website for browsing Oracle AI Database
 - On the sample detail page, action buttons should stay grouped on the left and visually separated from the feature chips above or below them.
 
 ## Editing Notes
-- Prefer fixing data issues in the generator instead of patching generated JSON by hand.
+- Fix data issues in the generator instead of patching generated JSON by hand.
 - Avoid editing `dist/` or `node_modules/`.
-- Keep styles in `src/styles.css` unless there is already a clear local component style pattern to follow.

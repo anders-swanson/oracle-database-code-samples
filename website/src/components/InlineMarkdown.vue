@@ -26,3 +26,24 @@ const segments = computed(() => parseInlineMarkdown(props.text, props.baseUrl));
     </template>
   </span>
 </template>
+
+<style scoped>
+.inline-markdown-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+  transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
+}
+
+.inline-markdown-link:hover {
+  color: #bfefff;
+  text-decoration-color: currentColor;
+}
+
+.inline-markdown-link:focus-visible {
+  outline: none;
+  border-radius: 0.2rem;
+  box-shadow: var(--focus-ring);
+}
+</style>

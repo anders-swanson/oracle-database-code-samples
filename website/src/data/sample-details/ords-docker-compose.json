@@ -13,5 +13,5 @@
   "metaTitle": "Oracle REST Data Services (ORDS) + Oracle AI Database with Docker Compose | Oracle AI Database Code Samples",
   "metaDescription": "Docker Compose setup for running ORDS with Oracle AI Database Free locally.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/ords-docker-compose/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/ords-docker-compose.svg"
 }

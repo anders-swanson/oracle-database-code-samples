@@ -13,5 +13,5 @@
   "metaTitle": "Transactional Event Queues Multi-Database Replication Example | Oracle AI Database Code Samples",
   "metaDescription": "Multi-database TxEventQ replication sample using JMS and database links.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/txeventq-multidb-replication/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/txeventq-multidb-replication.svg"
 }

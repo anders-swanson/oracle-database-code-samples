@@ -17,5 +17,5 @@
   "metaTitle": "News Event Streaming Application | Oracle AI Database Code Samples",
   "metaDescription": "Spring Boot application that ingests news events, stores them in Oracle AI Database, and supports vector search.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/news-event-streaming/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/news-event-streaming.svg"
 }

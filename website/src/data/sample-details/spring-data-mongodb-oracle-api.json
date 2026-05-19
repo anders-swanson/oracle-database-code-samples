@@ -15,5 +15,5 @@
   "metaTitle": "Using Oracle AI Database's MongoDB API with Spring Data MongoDB | Oracle AI Database Code Samples",
   "metaDescription": "Spring Data MongoDB sample that uses the Oracle AI Database API for MongoDB through ORDS.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-data-mongodb-oracle-api/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/spring-data-mongodb-oracle-api.svg"
 }

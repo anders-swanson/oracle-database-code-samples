@@ -17,5 +17,5 @@
   "metaTitle": "Kafka App Step 2 | Oracle AI Database Code Samples",
   "metaDescription": "Migration step that adds OSON serialization to the Kafka-to-TxEventQ sample.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/migrate-kafka-to-oracle--kafka-app-step-2/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/migrate-kafka-to-oracle--kafka-app-step-2.svg"
 }

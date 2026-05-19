@@ -19,7 +19,7 @@ const { sample } = vi.hoisted(() => ({
     canonicalUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/samples/vector/',
     metaTitle: 'Vector Sample | Oracle AI Database Code Samples',
     metaDescription: 'Vector search with Oracle AI Database.',
-    ogImageUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg'
+    ogImageUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/vector.svg'
   }
 }));
 
@@ -67,6 +67,7 @@ describe('SEO metadata sync', () => {
     expect(head.title).toBe(sample.metaTitle);
     expect(findMeta(head, 'property', 'og:type')?.content).toBe('article');
     expect(findMeta(head, 'property', 'og:url')?.content).toBe(sample.canonicalUrl);
+    expect(findMeta(head, 'property', 'og:image')?.content).toBe(sample.ogImageUrl);
     expect(head.script[0]?.textContent).toContain('SoftwareSourceCode');
   });
 

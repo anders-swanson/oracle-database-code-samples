@@ -48,6 +48,8 @@ Demo body paragraph.
     expect(sample.githubReadmeUrl).toContain('/blob/main/jdbc-demo/README.md');
     expect(sample.canonicalUrl).toBe('https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-demo/');
     expect(sample.metaTitle).toBe('Demo | Oracle AI Database Code Samples');
-    expect(sample.ogImageUrl).toBe('https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg');
+    expect(sample.ogImageUrl).toBe(
+      'https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/jdbc-demo.svg'
+    );
   });
 });

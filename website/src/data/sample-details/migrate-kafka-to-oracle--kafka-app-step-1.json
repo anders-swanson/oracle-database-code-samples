@@ -16,5 +16,5 @@
   "metaTitle": "Kafka App Step 1 | Oracle AI Database Code Samples",
   "metaDescription": "Migration step that swaps Apache Kafka for Oracle AI Database TxEventQ with minimal code changes.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/migrate-kafka-to-oracle--kafka-app-step-1/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/migrate-kafka-to-oracle--kafka-app-step-1.svg"
 }

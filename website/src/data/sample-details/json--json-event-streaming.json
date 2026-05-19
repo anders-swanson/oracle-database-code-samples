@@ -17,5 +17,5 @@
   "metaTitle": "JSON Event Streaming with OKafka and OSON | Oracle AI Database Code Samples",
   "metaDescription": "OKafka sample that streams OSON payloads through Oracle AI Database TxEventQ topics.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--json-event-streaming/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/json--json-event-streaming.svg"
 }

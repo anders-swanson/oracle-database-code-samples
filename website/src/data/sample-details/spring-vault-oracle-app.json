@@ -15,5 +15,5 @@
   "metaTitle": "spring-vault-oracle-app | Oracle AI Database Code Samples",
   "metaDescription": "Spring Boot sample that loads OCI Vault secrets into the application context.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-vault-oracle-app/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/spring-vault-oracle-app.svg"
 }

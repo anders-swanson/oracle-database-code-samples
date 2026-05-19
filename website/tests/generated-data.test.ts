@@ -11,6 +11,7 @@ import type { PackedCatalogIndex, SampleDetail, SampleRecord, SampleSummary } fr
 const typedCatalogIndex = catalogIndex as PackedCatalogIndex;
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const detailDirectory = path.resolve(currentDirectory, '../src/data/sample-details');
+const socialCardDirectory = path.resolve(currentDirectory, '../public/sample-cards');
 const summaries = decodeCatalogIndex(typedCatalogIndex);
 
 function gzipSize(value: unknown) {
@@ -63,6 +64,10 @@ describe('generated runtime data', () => {
       expect(detail.id).toBe(summary.id);
       expect(detail.readmeExcerpt.length).toBeGreaterThan(0);
       expect(Array.isArray(detail.features)).toBe(true);
+      expect(detail.ogImageUrl).toBe(
+        `https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/${summary.id}.svg`
+      );
+      expect(fs.existsSync(path.join(socialCardDirectory, `${summary.id}.svg`))).toBe(true);
     }
   });
 

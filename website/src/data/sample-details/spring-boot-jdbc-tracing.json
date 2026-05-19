@@ -14,5 +14,5 @@
   "metaTitle": "Spring Boot Oracle AI Database JDBC Tracing | Oracle AI Database Code Samples",
   "metaDescription": "Spring Boot sample for Oracle JDBC tracing with OpenTelemetry.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-jdbc-tracing/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/spring-boot-jdbc-tracing.svg"
 }

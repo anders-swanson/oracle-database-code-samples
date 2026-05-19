@@ -16,5 +16,5 @@
   "metaTitle": "JDBC Hybrid Search | Oracle AI Database Code Samples",
   "metaDescription": "Plain JDBC hybrid search sample that combines Oracle Text, vectors, JSON, and relational filters.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-hybrid-search/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/jdbc-hybrid-search.svg"
 }

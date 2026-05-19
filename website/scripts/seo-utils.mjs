@@ -2,6 +2,7 @@ export const SITE_NAME = 'Oracle AI Database Code Samples';
 export const SITE_TITLE = 'Oracle AI Database Samples';
 export const SITE_URL = 'https://anders-swanson.github.io/oracle-database-code-samples/';
 export const SITE_BASE_PATH = '/oracle-database-code-samples/';
+export const SAMPLE_SOCIAL_CARD_DIRECTORY = 'sample-cards';
 export const DEFAULT_DESCRIPTION =
   'Browse runnable Oracle AI Database code samples for vector search, JSON, graph, spatial, TxEventQ, ORDS, Spring Boot, Java, Go, Python, and TypeScript.';
 export const DEFAULT_OG_IMAGE_URL = `${SITE_URL}social-card.svg`;
@@ -29,6 +30,10 @@ export function buildSamplePath(id) {
 export function buildCanonicalUrl(pathname = '/') {
   const normalized = pathname.startsWith('/') ? pathname.slice(1) : pathname;
   return new URL(normalized, SITE_URL).toString();
+}
+
+export function buildSampleSocialCardUrl(id) {
+  return new URL(`${SAMPLE_SOCIAL_CARD_DIRECTORY}/${id}.svg`, SITE_URL).toString();
 }
 
 export function buildSampleMetaTitle(title) {

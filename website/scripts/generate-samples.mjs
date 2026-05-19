@@ -6,6 +6,8 @@ import {
   parseReadmeFile
 } from './sample-catalog-utils.mjs';
 import { buildPatternMappings } from './pattern-mapping-utils.mjs';
+import { SAMPLE_SOCIAL_CARD_DIRECTORY } from './seo-utils.mjs';
+import { writeSampleSocialCards } from './social-card-utils.mjs';
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 const websiteRoot = path.resolve(currentDir, '..');
@@ -157,10 +159,17 @@ const catalogIndex = buildCatalogIndex(samples);
 validateGeneratedOutputs(samples, catalogIndex, patternMappings);
 fs.writeFileSync(catalogIndexPath, `${JSON.stringify(catalogIndex)}\n`);
 writeSampleDetails(samples);
+writeSampleSocialCards(samples, { websiteRoot });
 fs.writeFileSync(patternMappingsPath, `${JSON.stringify(patternMappings, null, 2)}\n`);
 
 console.log(`Generated packed catalog index into ${path.relative(repoRoot, catalogIndexPath)}`);
 console.log(`Generated ${samples.length} sample detail files into ${path.relative(repoRoot, sampleDetailsDirectory)}`);
+console.log(
+  `Generated ${samples.length} sample social cards into ${path.relative(
+    repoRoot,
+    path.join(websiteRoot, 'public', SAMPLE_SOCIAL_CARD_DIRECTORY)
+  )}`
+);
 console.log(
   `Generated ${patternMappings.patterns.length} pattern mappings into ${path.relative(repoRoot, patternMappingsPath)}`
 );

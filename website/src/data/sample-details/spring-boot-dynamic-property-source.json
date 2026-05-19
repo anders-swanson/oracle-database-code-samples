@@ -13,5 +13,5 @@
   "metaTitle": "Spring Dynamic Property Source Example | Oracle AI Database Code Samples",
   "metaDescription": "Spring Boot sample that loads application properties dynamically from Oracle AI Database.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-dynamic-property-source/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/spring-boot-dynamic-property-source.svg"
 }

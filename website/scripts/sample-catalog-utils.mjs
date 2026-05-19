@@ -4,8 +4,8 @@ import {
   buildCanonicalUrl,
   buildSampleMetaDescription,
   buildSampleMetaTitle,
-  buildSamplePath,
-  DEFAULT_OG_IMAGE_URL
+  buildSampleSocialCardUrl,
+  buildSamplePath
 } from './seo-utils.mjs';
 
 const REPO_BLOB_BASE = 'https://github.com/anders-swanson/oracle-database-code-samples/blob/main';
@@ -382,6 +382,6 @@ export function deriveSampleRecord(parsed) {
     canonicalUrl: buildCanonicalUrl(samplePath),
     metaTitle: buildSampleMetaTitle(title),
     metaDescription,
-    ogImageUrl: DEFAULT_OG_IMAGE_URL
+    ogImageUrl: buildSampleSocialCardUrl(buildId(relativeDirectory))
   };
 }

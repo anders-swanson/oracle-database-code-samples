@@ -5,6 +5,10 @@ const featureDetails: Record<string, FeatureDetail> = {
     description: 'AI-oriented samples that combine model calls, search, and database-backed application workflows.',
     useWhen: 'Use when an application needs grounded AI features close to operational data.'
   },
+  APEX: {
+    description: 'Browser-based application development and workspace setup served through ORDS.',
+    useWhen: 'Use when local Oracle AI Database stacks need low-code app screens or SQL workspace access.'
+  },
   'Duality Views': {
     description: 'Document-shaped access over relational tables using JSON Relational Duality Views.',
     useWhen: 'Use when APIs need JSON documents without giving up relational storage, SQL, constraints, and transactions.'
@@ -24,6 +28,10 @@ const featureDetails: Record<string, FeatureDetail> = {
   JPA: {
     description: 'Java persistence samples for mapping application entities to Oracle AI Database tables.',
     useWhen: 'Use when Spring or Jakarta applications need ORM-based relational persistence.'
+  },
+  Indexing: {
+    description: 'Index examples that make JSON, text, vector, and spatial queries practical at application scale.',
+    useWhen: 'Use when a query pattern is correct but needs a database-native access path before it is production-shaped.'
   },
   JSON: {
     description: 'Document-shaped data and SQL/JSON querying inside Oracle AI Database.',
@@ -102,4 +110,3 @@ const featureDetails: Record<string, FeatureDetail> = {
 export function getFeatureDetail(feature: string): FeatureDetail | undefined {
   return featureDetails[feature];
 }
-

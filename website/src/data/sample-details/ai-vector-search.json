@@ -14,5 +14,5 @@
   "metaTitle": "Similarity Search using Oracle AI Database 26ai | Oracle AI Database Code Samples",
   "metaDescription": "Similarity search sample that stores embeddings in Oracle AI Database and queries them with vector search.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/ai-vector-search/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/ai-vector-search.svg"
 }

@@ -16,5 +16,5 @@
   "metaTitle": "JDBC JSON Data Type Sample | Oracle AI Database Code Samples",
   "metaDescription": "Plain JDBC sample for inserting, querying, updating, and deleting Oracle JSON data.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--jdbc-json-basic/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/json--jdbc-json-basic.svg"
 }

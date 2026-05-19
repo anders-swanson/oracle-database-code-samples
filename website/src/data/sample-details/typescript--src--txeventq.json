@@ -11,5 +11,5 @@
   "metaTitle": "TypeScript TxEventQ Sample | Oracle AI Database Code Samples",
   "metaDescription": "TypeScript sample for producing and consuming TxEventQ messages with node-oracledb.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/typescript--src--txeventq/",
-  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg"
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/typescript--src--txeventq.svg"
 }

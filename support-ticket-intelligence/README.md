@@ -13,7 +13,7 @@ tags:
   - Vector Search
   - Graph
   - Duality Views
-blog_post: ""
+blog_post: "https://andersswanson.dev/2026/05/19/an-app-that-keeps-its-data-in-one-place-multi-model-database-pattern/"
 ---
 
 # Support Ticket Intelligence

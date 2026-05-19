@@ -24,7 +24,8 @@ const { sample } = vi.hoisted(() => ({
       'https://anders-swanson.github.io/oracle-database-code-samples/samples/database-per-service-example--sample/',
     metaTitle: 'Database Per Service Sample | Oracle AI Database Code Samples',
     metaDescription: 'Example sample.',
-    ogImageUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/social-card.svg'
+    ogImageUrl:
+      'https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/database-per-service-example--sample.svg'
   } satisfies SampleRecord
 }));
 

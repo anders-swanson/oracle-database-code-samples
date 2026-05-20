@@ -1,0 +1,15 @@
+{
+  "id": "skills",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/skills/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This directory contains reusable Codex skills for repeatable Oracle AI Database sample workflows. Each skill packages project-specific instructions, references, and validation expectations so future work can start from the same operating model.",
+  "highlights": [],
+  "features": [
+    "JSON"
+  ],
+  "sourceUpdatedAt": "2026-05-20T18:10:29.900Z",
+  "metaTitle": "Skills | Oracle AI Database Code Samples",
+  "metaDescription": "Reusable Codex skills for building, validating, and documenting Oracle AI Database samples.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/skills/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/skills.png"
+}

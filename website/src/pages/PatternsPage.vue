@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import AppShell from '../components/AppShell.vue';
-import { patternIntents, resolvePatternMappings } from '../lib/catalog';
+import { patternIntents, resolvedPatternMappings } from '../lib/catalog';
 
-const patterns = resolvePatternMappings();
+const patterns = resolvedPatternMappings;
 const selectedId = ref('event-streaming');
 const sampleDescriptionMaxLength = 110;
 

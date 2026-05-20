@@ -42,20 +42,6 @@ export interface FeatureDetail {
   useWhen: string;
 }
 
-export interface FeatureLandingPage {
-  slug: string;
-  name: string;
-  title: string;
-  description: string;
-  useWhen: string;
-  sampleIds: string[];
-  relatedFeatureSlugs: string[];
-  canonicalUrl: string;
-  metaTitle: string;
-  metaDescription: string;
-  updatedAt: string;
-}
-
 export interface LanguageLandingPage {
   slug: string;
   name: string;
@@ -63,7 +49,7 @@ export interface LanguageLandingPage {
   description: string;
   useWhen: string;
   sampleIds: string[];
-  relatedFeatureSlugs: string[];
+  relatedPatternIds: string[];
   canonicalUrl: string;
   metaTitle: string;
   metaDescription: string;
@@ -106,6 +92,7 @@ export interface PatternMapping {
   summary: string;
   useWhen: string;
   features: string[];
+  topics: string[];
   sampleIds: string[];
 }
 

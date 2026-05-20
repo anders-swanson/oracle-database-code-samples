@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 import AppShell from '../components/AppShell.vue';
-import { buildSubfeatureGraph, findFeaturePageByName, samples } from '../lib/catalog';
+import { buildSubfeatureGraph, findPatternMappingByTopic, samples } from '../lib/catalog';
 import type { SubfeatureGraphNode } from '../types';
 
 const graph = computed(() => buildSubfeatureGraph(samples));
@@ -41,12 +41,12 @@ function filteredCatalogTarget(node: SubfeatureGraphNode) {
 }
 
 function topicTarget(node: SubfeatureGraphNode) {
-  const featurePage = findFeaturePageByName(node.name);
+  const pattern = findPatternMappingByTopic(node.name);
 
-  return featurePage
+  return pattern
     ? {
-        name: 'feature-detail',
-        params: { slug: featurePage.slug }
+        name: 'pattern-detail',
+        params: { slug: pattern.id }
       }
     : filteredCatalogTarget(node);
 }
@@ -346,7 +346,7 @@ onBeforeUnmount(() => {
 
     <section class="tag-map-panel">
       <div class="tag-map-panel__toolbar">
-        <p>Drag the canvas to pan. Select any topic to open the matching filtered catalog view.</p>
+        <p>Drag the canvas to pan. Select any topic to open the matching engineering pattern.</p>
       </div>
 
       <div ref="mapWindow" class="tag-map-window" :class="{ 'is-fullscreen': isFullscreen }">
@@ -505,7 +505,7 @@ onBeforeUnmount(() => {
 
       <div class="tag-map-panel__footer">
         <p>
-          Click on a topic to view all related samples.
+          Click on a topic to view the related engineering pattern.
         </p>
         <RouterLink class="button button--ghost" to="/">Browse Full Catalog</RouterLink>
       </div>

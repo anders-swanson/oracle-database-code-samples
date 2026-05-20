@@ -45,11 +45,11 @@ vi.mock('vue-router', () => ({
 
 vi.mock('../src/lib/catalog', () => ({
   samples: [sample],
-  findFeaturePageByName: (name: string) =>
+  findPatternMappingByTopic: (name: string) =>
     name === 'Security'
       ? {
-          slug: 'security',
-          name: 'Security',
+          id: 'spring-microservice-config',
+          title: 'Spring Boot',
           sampleIds: [sample.id]
         }
       : undefined,

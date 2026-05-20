@@ -49,15 +49,15 @@
       "txeventq-multidb-replication",
       "spring-data-mongodb-oracle-api"
     ],
-    "relatedFeatureSlugs": [
-      "spring",
-      "json",
-      "testcontainers",
-      "txeventq",
-      "kafka",
-      "duality-views",
-      "vector-search",
-      "observability"
+    "relatedPatternIds": [
+      "json-documents-duality",
+      "event-streaming",
+      "spring-microservice-config",
+      "kafka-migration",
+      "api-facades",
+      "observability",
+      "graph-modeling",
+      "semantic-search-rag"
     ],
     "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/java/",
     "metaTitle": "Java Samples for Oracle AI Database | Oracle AI Database Code Samples",
@@ -77,11 +77,11 @@
       "python-oracle--src--python_oracle--mcp_agent",
       "python-oracle--src--python_oracle--testcontainers_sample"
     ],
-    "relatedFeatureSlugs": [
+    "relatedPatternIds": [
       "ai-agents",
-      "vector-search",
-      "json",
-      "testcontainers"
+      "semantic-search-rag",
+      "json-documents-duality",
+      "local-testing"
     ],
     "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/python/",
     "metaTitle": "Python Samples for Oracle AI Database | Oracle AI Database Code Samples",
@@ -100,12 +100,11 @@
       "golang--testcontainers",
       "migrate-kafka-to-oracle"
     ],
-    "relatedFeatureSlugs": [
-      "duality-views",
-      "json",
-      "kafka",
-      "testcontainers",
-      "txeventq"
+    "relatedPatternIds": [
+      "application-foundations",
+      "json-documents-duality",
+      "kafka-migration",
+      "local-testing"
     ],
     "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/go/",
     "metaTitle": "Go Samples for Oracle AI Database | Oracle AI Database Code Samples",
@@ -123,8 +122,9 @@
       "oracle-ai-database-docker-compose",
       "ords-docker-compose"
     ],
-    "relatedFeatureSlugs": [
-      "ords"
+    "relatedPatternIds": [
+      "local-testing",
+      "api-facades"
     ],
     "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/script/",
     "metaTitle": "Script Samples for Oracle AI Database | Oracle AI Database Code Samples",
@@ -142,9 +142,9 @@
       "typescript--src--testcontainers",
       "typescript--src--txeventq"
     ],
-    "relatedFeatureSlugs": [
-      "testcontainers",
-      "txeventq"
+    "relatedPatternIds": [
+      "event-streaming",
+      "local-testing"
     ],
     "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/typescript/",
     "metaTitle": "TypeScript Samples for Oracle AI Database | Oracle AI Database Code Samples",

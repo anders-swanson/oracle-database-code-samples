@@ -30,10 +30,6 @@ export function buildSamplePath(id) {
   return `/samples/${id}/`;
 }
 
-export function buildFeaturePath(slug) {
-  return `/features/${slug}/`;
-}
-
 export function buildLanguagePath(slug) {
   return `/languages/${slug}/`;
 }

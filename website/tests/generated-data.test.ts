@@ -4,7 +4,6 @@ import { fileURLToPath } from 'node:url';
 import zlib from 'node:zlib';
 import { describe, expect, it } from 'vitest';
 import catalogIndex from '../src/data/catalog-index.json';
-import featurePages from '../src/data/feature-pages.json';
 import languagePages from '../src/data/language-pages.json';
 import patternMappings from '../src/data/patternMappings.json';
 import { decodeCatalogIndex } from '../src/lib/catalog';
@@ -12,6 +11,7 @@ import type { PackedCatalogIndex, SampleDetail, SampleRecord, SampleSummary } fr
 
 const typedCatalogIndex = catalogIndex as PackedCatalogIndex;
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
+const dataDirectory = path.resolve(currentDirectory, '../src/data');
 const detailDirectory = path.resolve(currentDirectory, '../src/data/sample-details');
 const socialCardDirectory = path.resolve(currentDirectory, '../public/sample-cards');
 const summaries = decodeCatalogIndex(typedCatalogIndex);
@@ -89,24 +89,29 @@ describe('generated runtime data', () => {
     }
   });
 
-  it('writes feature and language landing page data for indexed topic pages', () => {
+  it('writes language landing page data and curated pattern slugs for indexed topic pages', () => {
     const indexIds = new Set(typedCatalogIndex.i.map(([id]) => id));
-    const vectorPage = featurePages.find((page) => page.slug === 'vector-search');
+    const semanticSearchPattern = patternMappings.patterns.find((pattern) => pattern.id === 'semantic-search-rag');
+    const localTestingPattern = patternMappings.patterns.find((pattern) => pattern.id === 'local-testing');
+    const jsonPattern = patternMappings.patterns.find((pattern) => pattern.id === 'json-documents-duality');
     const javaPage = languagePages.find((page) => page.slug === 'java');
 
-    expect(featurePages.length).toBeGreaterThan(0);
     expect(languagePages.length).toBeGreaterThan(0);
-    expect(vectorPage?.canonicalUrl).toBe(
-      'https://anders-swanson.github.io/oracle-database-code-samples/features/vector-search/'
-    );
-    expect(vectorPage?.metaTitle).toContain('Oracle AI Database Vector Search Samples');
+    expect(semanticSearchPattern?.topics).toContain('Vector Search');
+    expect(localTestingPattern?.topics).toContain('Testcontainers');
+    expect(jsonPattern?.topics).toEqual(expect.arrayContaining(['JSON', 'Duality Views']));
     expect(javaPage?.canonicalUrl).toBe('https://anders-swanson.github.io/oracle-database-code-samples/languages/java/');
+    expect(javaPage?.relatedPatternIds.length).toBeGreaterThan(0);
 
-    for (const page of [...featurePages, ...languagePages]) {
+    for (const page of languagePages) {
       expect(page.sampleIds.length).toBeGreaterThan(0);
       expect(Date.parse(page.updatedAt)).not.toBeNaN();
       expect(page.sampleIds.every((sampleId) => indexIds.has(sampleId))).toBe(true);
     }
+  });
+
+  it('does not write the obsolete generated feature-page artifact', () => {
+    expect(fs.existsSync(path.join(dataDirectory, 'feature-pages.json'))).toBe(false);
   });
 
   it('keeps pattern mappings aligned with the packed catalog index', () => {

@@ -6,9 +6,9 @@ This directory contains the Vue 3 + Vite website for browsing Oracle AI Database
 - `src/pages/` contains route-level views such as the catalog and sample detail pages.
 - `src/components/` contains reusable UI components.
 - `src/lib/catalog.ts` contains filter, summary, related-sample, and query-string logic.
-- `src/data/catalog-index.json`, `src/data/sample-details/*.json`, and `src/data/patternMappings.json` are generated data. Do not hand-edit them unless a task explicitly requires that.
+- `src/data/catalog-index.json`, `src/data/sample-details/*.json`, `src/data/language-pages.json`, and `src/data/patternMappings.json` are generated data. Do not hand-edit them unless a task explicitly requires that.
 - `scripts/generate-samples.mjs` and `scripts/sample-catalog-utils.mjs` are the source of truth for catalog generation.
-- `src/data/patternDefinitions.json` is the source of truth for pattern page intent labels, curated pattern copy, and sample matching criteria.
+- `src/data/patternDefinitions.json` is the source of truth for pattern page intent labels, curated pattern copy, topic-map routing, and sample matching criteria.
 - `tests/` contains Vitest coverage for catalog logic and core UI rendering.
 
 ## Commands

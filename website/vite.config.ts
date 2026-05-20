@@ -5,11 +5,11 @@ import vue from '@vitejs/plugin-vue';
 const distRoot = new URL('./dist/', import.meta.url);
 const siteMetadataPath = new URL('./src/data/siteMetadata.json', import.meta.url);
 const catalogIndexPath = new URL('./src/data/catalog-index.json', import.meta.url);
-const featurePagesPath = new URL('./src/data/feature-pages.json', import.meta.url);
 const languagePagesPath = new URL('./src/data/language-pages.json', import.meta.url);
 const sampleDetailsRoot = new URL('./src/data/sample-details/', import.meta.url);
 const featureDetailsPath = new URL('./src/data/featureDetails.json', import.meta.url);
 const patternDefinitionsPath = new URL('./src/data/patternDefinitions.json', import.meta.url);
+const patternMappingsPath = new URL('./src/data/patternMappings.json', import.meta.url);
 
 interface PackedCatalogIndex {
   i: [string, string, string, number[], number, number, 0 | 1][];
@@ -29,6 +29,13 @@ interface LandingPage {
   updatedAt: string;
 }
 
+interface PatternMappingData {
+  patterns: {
+    id: string;
+    sampleIds: string[];
+  }[];
+}
+
 interface SitemapRoute {
   pathname: string;
   lastmod: string;
@@ -38,20 +45,18 @@ function readJson<T>(url: URL) {
   return JSON.parse(fs.readFileSync(url, 'utf8')) as T;
 }
 
-function readSiteMetadata() {
-  return readJson<SiteMetadata>(siteMetadataPath);
-}
+const siteMetadata = readJson<SiteMetadata>(siteMetadataPath);
 
 function readCatalogIndex() {
   return readJson<PackedCatalogIndex>(catalogIndexPath);
 }
 
-function readFeaturePages() {
-  return readJson<LandingPage[]>(featurePagesPath);
-}
-
 function readLanguagePages() {
   return readJson<LandingPage[]>(languagePagesPath);
+}
+
+function readPatternMappings() {
+  return readJson<PatternMappingData>(patternMappingsPath);
 }
 
 function readSampleDetail(id: string) {
@@ -62,8 +67,8 @@ function buildSamplePath(id: string) {
   return `/samples/${id}/`;
 }
 
-function buildFeaturePath(slug: string) {
-  return `/features/${slug}/`;
+function buildPatternPath(slug: string) {
+  return `/patterns/${slug}/`;
 }
 
 function buildLanguagePath(slug: string) {
@@ -71,9 +76,8 @@ function buildLanguagePath(slug: string) {
 }
 
 function buildCanonicalUrl(pathname: string) {
-  const siteUrl = readSiteMetadata().siteUrl;
   const normalized = pathname.startsWith('/') ? pathname.slice(1) : pathname;
-  return new URL(normalized, siteUrl).toString();
+  return new URL(normalized, siteMetadata.siteUrl).toString();
 }
 
 function maxLastmod(values: string[]) {
@@ -84,15 +88,29 @@ function fileLastmod(url: URL) {
   return fs.statSync(url).mtime.toISOString();
 }
 
+function sampleLastmod(sampleLastmods: Map<string, string>, sampleId: string) {
+  const lastmod = sampleLastmods.get(sampleId);
+
+  if (!lastmod) {
+    throw new Error(`Pattern route references missing sample detail ${sampleId}`);
+  }
+
+  return lastmod;
+}
+
 function buildRoutes() {
   const catalog = readCatalogIndex();
-  const sampleRoutes = catalog.i.map(([id]) => ({
+  const sampleLastmods = new Map(catalog.i.map(([id]) => [id, readSampleDetail(id).sourceUpdatedAt]));
+  const sampleRoutes = Array.from(sampleLastmods.entries()).map(([id, lastmod]) => ({
     pathname: buildSamplePath(id),
-    lastmod: readSampleDetail(id).sourceUpdatedAt
+    lastmod
   }));
-  const featureRoutes = readFeaturePages().map((page) => ({
-    pathname: buildFeaturePath(page.slug),
-    lastmod: page.updatedAt
+  const patternRoutes = readPatternMappings().patterns.map((pattern) => ({
+    pathname: buildPatternPath(pattern.id),
+    lastmod: maxLastmod([
+      fileLastmod(patternDefinitionsPath),
+      ...pattern.sampleIds.map((sampleId) => sampleLastmod(sampleLastmods, sampleId))
+    ])
   }));
   const languageRoutes = readLanguagePages().map((page) => ({
     pathname: buildLanguagePath(page.slug),
@@ -102,15 +120,15 @@ function buildRoutes() {
     fileLastmod(featureDetailsPath),
     fileLastmod(patternDefinitionsPath),
     ...sampleRoutes.map((route) => route.lastmod),
-    ...featureRoutes.map((route) => route.lastmod),
+    ...patternRoutes.map((route) => route.lastmod),
     ...languageRoutes.map((route) => route.lastmod)
   ]);
 
   return [
     { pathname: '/', lastmod: contentLastmod },
-    { pathname: '/patterns/', lastmod: maxLastmod([contentLastmod, fileLastmod(patternDefinitionsPath)]) },
+    { pathname: '/patterns/', lastmod: contentLastmod },
     { pathname: '/feature-map/', lastmod: contentLastmod },
-    ...featureRoutes,
+    ...patternRoutes,
     ...languageRoutes,
     ...sampleRoutes
   ] satisfies SitemapRoute[];
@@ -126,7 +144,6 @@ function escapeXml(value: string) {
 }
 
 function writeCrawlerFiles() {
-  const siteUrl = readSiteMetadata().siteUrl;
   const sitemapBody = buildRoutes()
     .map(
       ({ pathname, lastmod }) =>
@@ -138,7 +155,7 @@ function writeCrawlerFiles() {
     new URL('sitemap.xml', distRoot),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapBody}\n</urlset>\n`
   );
-  fs.writeFileSync(new URL('robots.txt', distRoot), `User-agent: *\nAllow: /\nSitemap: ${siteUrl}sitemap.xml\n`);
+  fs.writeFileSync(new URL('robots.txt', distRoot), `User-agent: *\nAllow: /\nSitemap: ${siteMetadata.siteUrl}sitemap.xml\n`);
 }
 
 export default defineConfig(({ command }) => ({

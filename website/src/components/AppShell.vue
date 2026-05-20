@@ -16,13 +16,13 @@ const navigationLinks = [
     label: 'Patterns',
     routeName: 'patterns',
     variant: 'patterns',
-    activeRoutes: ['patterns']
+    activeRoutes: ['patterns', 'pattern-detail']
   },
   {
     label: 'Topic Map',
     routeName: 'feature-map',
     variant: 'map',
-    activeRoutes: ['feature-map', 'feature-detail']
+    activeRoutes: ['feature-map']
   }
 ] as const;
 

@@ -37,6 +37,11 @@
         "Kafka",
         "Spring"
       ],
+      "topics": [
+        "TxEventQ",
+        "JMS",
+        "PL/SQL"
+      ],
       "sampleIds": [
         "news-event-streaming",
         "txeventq-examples",
@@ -62,6 +67,9 @@
         "Kafka",
         "JSON"
       ],
+      "topics": [
+        "Kafka"
+      ],
       "sampleIds": [
         "migrate-kafka-to-oracle--kafka-app",
         "migrate-kafka-to-oracle--kafka-app-step-1",
@@ -80,6 +88,11 @@
       "features": [
         "Vector Search",
         "JSON"
+      ],
+      "topics": [
+        "AI",
+        "Vector Search",
+        "Oracle Text"
       ],
       "sampleIds": [
         "jdbc-hybrid-search",
@@ -101,6 +114,11 @@
         "Vector Search",
         "JSON"
       ],
+      "topics": [
+        "AI Agents",
+        "MCP",
+        "SQLcl"
+      ],
       "sampleIds": [
         "langchain4j-agent-memory",
         "mcp-agent",
@@ -118,6 +136,11 @@
         "JSON",
         "Duality Views",
         "Spring"
+      ],
+      "topics": [
+        "JSON",
+        "Duality Views",
+        "Indexing"
       ],
       "sampleIds": [
         "jdbc-hybrid-search",
@@ -145,6 +168,12 @@
         "SQL GraphQL",
         "JSON"
       ],
+      "topics": [
+        "APEX",
+        "GraphQL",
+        "MongoDB",
+        "ORDS"
+      ],
       "sampleIds": [
         "jdbc-graphql",
         "json--mongodb-duality-views",
@@ -163,6 +192,11 @@
         "Property Graph",
         "SQL GraphQL"
       ],
+      "topics": [
+        "Graph",
+        "Property Graph",
+        "SQL GraphQL"
+      ],
       "sampleIds": [
         "jdbc-property-graph",
         "jdbc-graphql",
@@ -178,6 +212,9 @@
       "features": [
         "Spatial"
       ],
+      "topics": [
+        "Spatial"
+      ],
       "sampleIds": [
         "jdbc-spatial-example"
       ]
@@ -189,6 +226,9 @@
       "summary": "Run deterministic integration tests against disposable Oracle AI Database Free containers.",
       "useWhen": "Use this when tests need real database behavior without sharing a long-lived development instance.",
       "features": [
+        "Testcontainers"
+      ],
+      "topics": [
         "Testcontainers"
       ],
       "sampleIds": [
@@ -211,6 +251,9 @@
         "Oracle AI Database",
         "Testcontainers"
       ],
+      "topics": [
+        "Oracle AI Database"
+      ],
       "sampleIds": [
         "golang--connection",
         "sessionless-transactions"
@@ -226,6 +269,15 @@
         "Spring",
         "Testcontainers",
         "Security"
+      ],
+      "topics": [
+        "JPA",
+        "OCI",
+        "PDB",
+        "Spring",
+        "SpringBoot",
+        "microservices",
+        "security"
       ],
       "sampleIds": [
         "database-per-service-example",
@@ -246,6 +298,9 @@
         "Observability",
         "Spring",
         "TxEventQ"
+      ],
+      "topics": [
+        "Observability"
       ],
       "sampleIds": [
         "spring-boot-jms-tracing",

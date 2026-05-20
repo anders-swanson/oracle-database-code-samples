@@ -33,6 +33,7 @@
       "summary": "Move business events through Oracle AI Database with transactional queues, JMS, OKafka, and durable consumers.",
       "useWhen": "Use this when the event and the data change need the same transactional boundary, or when a team wants streaming without standing up a separate broker first.",
       "features": ["TxEventQ", "Kafka", "Spring"],
+      "topics": ["TxEventQ", "JMS", "PL/SQL"],
       "sampleCriteria": {
         "include": [{ "featuresAll": ["TxEventQ"] }, { "ids": ["news-event-streaming"] }],
         "exclude": [
@@ -48,6 +49,7 @@
       "summary": "Move Kafka-style producers and consumers toward Oracle AI Database queues while preserving event payload and processing shape.",
       "useWhen": "Use this for staged migration, Kafka API interoperability, or comparing separate-broker designs with database-native eventing.",
       "features": ["TxEventQ", "Kafka", "JSON"],
+      "topics": ["Kafka"],
       "sampleCriteria": {
         "include": [{ "pathPrefixes": ["migrate-kafka-to-oracle"] }, { "ids": ["oracle-database-kafka-apis"] }]
       }
@@ -59,6 +61,7 @@
       "summary": "Combine embeddings, text filters, and SQL access paths for retrieval-augmented application features.",
       "useWhen": "Use this when users search by meaning, when an AI answer needs grounded records, or when vector and keyword relevance both matter.",
       "features": ["Vector Search", "JSON"],
+      "topics": ["AI", "Vector Search", "Oracle Text"],
       "sampleCriteria": {
         "include": [{ "featuresAll": ["Vector Search"] }],
         "exclude": [{ "ids": ["langchain4j-agent-memory", "news-event-streaming"] }]
@@ -71,6 +74,7 @@
       "summary": "Give agents durable memory, SQL tools, and MCP-backed access to Oracle AI Database workflows.",
       "useWhen": "Use this when the application needs tool calling, persistent memory, or natural-language access to database-backed operations.",
       "features": ["AI Agents", "Vector Search", "JSON"],
+      "topics": ["AI Agents", "MCP", "SQLcl"],
       "sampleCriteria": {
         "include": [{ "featuresAll": ["AI Agents"] }]
       }
@@ -82,6 +86,7 @@
       "summary": "Model flexible JSON documents, stream OSON payloads, run SQL/JSON analytics, and expose relational models through JSON Relational Duality Views.",
       "useWhen": "Use this when records need document flexibility, document-shaped APIs, or JSON views over relational data without giving up indexes, SQL, constraints, and transactions.",
       "features": ["JSON", "Duality Views", "Spring"],
+      "topics": ["JSON", "Duality Views", "Indexing"],
       "sampleCriteria": {
         "include": [
           { "pathIncludes": ["json/jdbc-json"] },
@@ -97,6 +102,7 @@
       "summary": "Expose Oracle AI Database through REST, MongoDB-compatible, and GraphQL-style interfaces.",
       "useWhen": "Use this when clients should not own low-level SQL details, or when an existing app expects REST, MongoDB, or GraphQL-style access.",
       "features": ["ORDS", "SQL GraphQL", "JSON"],
+      "topics": ["APEX", "GraphQL", "MongoDB", "ORDS"],
       "sampleCriteria": {
         "include": [{ "featuresAny": ["ORDS", "SQL GraphQL"] }]
       }
@@ -108,6 +114,7 @@
       "summary": "Represent connected data as property graphs or GraphQL-style query shapes over Oracle AI Database tables.",
       "useWhen": "Use this when relationships are first-class: recommendations, networks, paths, impact analysis, lineage, or traversal-heavy screens.",
       "features": ["Property Graph", "SQL GraphQL"],
+      "topics": ["Graph", "Property Graph", "SQL GraphQL"],
       "sampleCriteria": {
         "include": [{ "featuresAny": ["Property Graph", "SQL GraphQL"] }]
       }
@@ -119,6 +126,7 @@
       "summary": "Store, index, and query location-aware data with spatial operators and geometry types.",
       "useWhen": "Use this when the product asks questions about proximity, containment, routing, zones, or other location-aware behavior.",
       "features": ["Spatial"],
+      "topics": ["Spatial"],
       "sampleCriteria": {
         "include": [{ "featuresAll": ["Spatial"] }]
       }
@@ -130,6 +138,7 @@
       "summary": "Run deterministic integration tests against disposable Oracle AI Database Free containers.",
       "useWhen": "Use this when tests need real database behavior without sharing a long-lived development instance.",
       "features": ["Testcontainers"],
+      "topics": ["Testcontainers"],
       "sampleCriteria": {
         "include": [
           { "ids": ["ai-optimizer", "oracle-ai-database-docker-compose"] },
@@ -144,6 +153,7 @@
       "summary": "Connect applications to Oracle AI Database with drivers, local sandboxes, and transaction workflows.",
       "useWhen": "Use this when the work is setting up application access, local tool environments, or transaction behavior before higher-level feature work.",
       "features": ["Oracle AI Database", "Testcontainers"],
+      "topics": ["Oracle AI Database"],
       "sampleCriteria": {
         "include": [
           {
@@ -162,6 +172,7 @@
       "summary": "Use Oracle AI Database with Spring Boot for persistence, resource loading, isolated service data, configuration, dynamic properties, and secrets-aware setup.",
       "useWhen": "Use this when Spring Boot services need database-backed persistence, resource loading, clean service boundaries, runtime configuration, or environment-specific wiring.",
       "features": ["Spring", "Testcontainers", "Security"],
+      "topics": ["JPA", "OCI", "PDB", "Spring", "SpringBoot", "microservices", "security"],
       "sampleCriteria": {
         "include": [
           {
@@ -184,6 +195,7 @@
       "summary": "Correlate database work with application traces, client metadata, and messaging flows.",
       "useWhen": "Use this when teams need to follow a request from HTTP or JMS through JDBC calls and into Oracle AI Database sessions.",
       "features": ["Observability", "Spring", "TxEventQ"],
+      "topics": ["Observability"],
       "sampleCriteria": {
         "include": [{ "featuresAll": ["Observability"] }]
       }

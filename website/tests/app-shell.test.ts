@@ -40,8 +40,8 @@ describe('AppShell', () => {
     ['catalog', 'Catalog'],
     ['sample-detail', 'Catalog'],
     ['patterns', 'Patterns'],
-    ['feature-map', 'Topic Map'],
-    ['feature-detail', 'Topic Map']
+    ['pattern-detail', 'Patterns'],
+    ['feature-map', 'Topic Map']
   ])('marks %s routes under %s', (routeName, activeLabel) => {
     const wrapper = mountAppShell(routeName);
 

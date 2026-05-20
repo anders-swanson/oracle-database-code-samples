@@ -11,7 +11,8 @@ function route(path: string, hash = '') {
 
 describe('router scroll behavior', () => {
   it('registers generated landing page route patterns', () => {
-    expect(routes.some((entry) => entry.name === 'feature-detail' && entry.path === '/features/:slug/')).toBe(true);
+    expect(routes.some((entry) => entry.name === 'pattern-detail' && entry.path === '/patterns/:slug/')).toBe(true);
+    expect(routes.some((entry) => entry.path === '/features/:slug/')).toBe(false);
     expect(routes.some((entry) => entry.name === 'language-detail' && entry.path === '/languages/:slug/')).toBe(true);
   });
 

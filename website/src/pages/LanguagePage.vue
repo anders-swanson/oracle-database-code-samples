@@ -3,15 +3,13 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import AppShell from '../components/AppShell.vue';
 import SampleCard from '../components/SampleCard.vue';
-import { findFeaturePageBySlug, findLanguagePageBySlug, samplesForIds } from '../lib/catalog';
+import { findLanguagePageBySlug, patternMappingsForIds, samplesForIds } from '../lib/catalog';
 
 const route = useRoute();
 const languagePage = computed(() => findLanguagePageBySlug(String(route.params.slug ?? '')));
 const languageSamples = computed(() => (languagePage.value ? samplesForIds(languagePage.value.sampleIds) : []));
-const relatedFeatures = computed(() =>
-  languagePage.value
-    ? languagePage.value.relatedFeatureSlugs.map((slug) => findFeaturePageBySlug(slug)).filter(Boolean)
-    : []
+const relatedPatterns = computed(() =>
+  languagePage.value ? patternMappingsForIds(languagePage.value.relatedPatternIds) : []
 );
 </script>
 
@@ -52,18 +50,18 @@ const relatedFeatures = computed(() =>
           <p class="detail-panel__excerpt">{{ languagePage.useWhen }}</p>
         </article>
 
-        <aside v-if="relatedFeatures.length > 0" class="detail-panel">
+        <aside v-if="relatedPatterns.length > 0" class="detail-panel">
           <div class="detail-panel__header">
-            <span class="catalog-results__eyebrow">Common features</span>
+            <span class="catalog-results__eyebrow">Common patterns</span>
           </div>
           <div class="landing-link-list">
             <RouterLink
-              v-for="feature in relatedFeatures"
-              :key="feature.slug"
-              :to="{ name: 'feature-detail', params: { slug: feature.slug } }"
+              v-for="pattern in relatedPatterns"
+              :key="pattern.id"
+              :to="{ name: 'pattern-detail', params: { slug: pattern.id } }"
             >
-              <strong>{{ feature.name }}</strong>
-              <span>{{ feature.sampleIds.length }} samples</span>
+              <strong>{{ pattern.title }}</strong>
+              <span>{{ pattern.samples.length }} samples</span>
             </RouterLink>
           </div>
         </aside>

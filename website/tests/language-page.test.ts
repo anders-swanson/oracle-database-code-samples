@@ -13,7 +13,7 @@ vi.mock('vue-router', () => ({
 import LanguagePage from '../src/pages/LanguagePage.vue';
 
 describe('LanguagePage', () => {
-  it('renders crawlable language copy and feature cross-links', () => {
+  it('renders crawlable language copy and pattern cross-links', () => {
     const wrapper = mount(LanguagePage, {
       global: {
         stubs: {
@@ -26,7 +26,7 @@ describe('LanguagePage', () => {
     expect(wrapper.text()).toContain('JVM applications need real Oracle AI Database examples');
     expect(wrapper.findAll('.sample-card').length).toBeGreaterThan(0);
     expect(
-      wrapper.findAllComponents(RouterLinkStub).some((link) => JSON.stringify(link.props('to')).includes('feature-detail'))
+      wrapper.findAllComponents(RouterLinkStub).some((link) => JSON.stringify(link.props('to')).includes('pattern-detail'))
     ).toBe(true);
   });
 });

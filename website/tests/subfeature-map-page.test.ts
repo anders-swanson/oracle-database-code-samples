@@ -9,13 +9,23 @@ vi.mock('vue-router', () => ({
 
 vi.mock('../src/lib/catalog', () => ({
   samples: [],
-  findFeaturePageByName: (name: string) =>
+  findPatternMappingByTopic: (name: string) =>
     name === 'Vector Search'
       ? {
-          slug: 'vector-search',
-          name: 'Vector Search'
+          id: 'semantic-search-rag',
+          title: 'Semantic Search / RAG'
         }
-      : undefined,
+      : name === 'JSON'
+        ? {
+            id: 'json-documents-duality',
+            title: 'JSON Documents and Duality'
+          }
+        : name === 'Testcontainers'
+          ? {
+              id: 'local-testing',
+              title: 'Local Testing'
+            }
+          : undefined,
   buildSubfeatureGraph: () => ({
     centerLabel: 'Oracle AI Database',
     centerSubtitle: 'Converged Database',
@@ -142,7 +152,7 @@ describe('SubfeatureMapPage', () => {
       links.some(
         (link) =>
           JSON.stringify(link.props('to')) ===
-          JSON.stringify({ name: 'feature-detail', params: { slug: 'vector-search' } })
+          JSON.stringify({ name: 'pattern-detail', params: { slug: 'semantic-search-rag' } })
       )
     ).toBe(true);
   });

@@ -1,6 +1,6 @@
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
-import type { FeatureLandingPage, LanguageLandingPage, SampleRecord } from '../types';
-import { findFeaturePageBySlug, findLanguagePageBySlug, findSampleById, samplesForIds } from './catalog';
+import type { LanguageLandingPage, ResolvedPatternMapping, SampleRecord } from '../types';
+import { findLanguagePageBySlug, findPatternMappingBySlug, findSampleById, samplesForIds } from './catalog';
 import { getRouteSampleDetail, hydrateSample } from './sampleDetails';
 import {
   DEFAULT_DESCRIPTION,
@@ -169,26 +169,29 @@ function buildSampleMetadata(sample: SampleRecord): PageMetadata {
   };
 }
 
-function buildFeatureMetadata(featurePage: FeatureLandingPage): PageMetadata {
+function buildPatternMetadata(pattern: ResolvedPatternMapping): PageMetadata {
+  const canonicalUrl = `${SITE_URL}patterns/${pattern.id}/`;
+  const title = `${pattern.title} Pattern`;
+
   return {
-    title: featurePage.metaTitle,
-    description: featurePage.metaDescription,
-    canonicalUrl: featurePage.canonicalUrl,
+    title: `${title} | ${SITE_NAME}`,
+    description: pattern.summary,
+    canonicalUrl,
     ogType: 'website',
     ogImageUrl: DEFAULT_OG_IMAGE_URL,
     ogImageAlt: DEFAULT_OG_IMAGE_ALT,
     structuredData: [
       buildCollectionStructuredData(
-        featurePage.title,
-        featurePage.description,
-        featurePage.canonicalUrl,
-        featurePage.sampleIds,
-        featurePage.name
+        title,
+        pattern.summary,
+        canonicalUrl,
+        pattern.sampleIds,
+        pattern.title
       ),
       buildBreadcrumbStructuredData([
         { name: 'Code Samples', item: SITE_URL },
-        { name: 'Features', item: `${SITE_URL}feature-map/` },
-        { name: featurePage.name, item: featurePage.canonicalUrl }
+        { name: 'Patterns', item: `${SITE_URL}patterns/` },
+        { name: pattern.title, item: canonicalUrl }
       ])
     ]
   };
@@ -247,9 +250,9 @@ export function resolveRouteMetadata(route: RouteLocationNormalizedLoaded) {
   if (route.name === 'patterns') {
     return buildPatternsMetadata();
   }
-  if (route.name === 'feature-detail') {
-    const featurePage = findFeaturePageBySlug(String(route.params.slug));
-    return featurePage ? buildFeatureMetadata(featurePage) : buildNotFoundMetadata('Feature');
+  if (route.name === 'pattern-detail') {
+    const pattern = findPatternMappingBySlug(String(route.params.slug));
+    return pattern ? buildPatternMetadata(pattern) : buildNotFoundMetadata('Pattern');
   }
   if (route.name === 'language-detail') {
     const languagePage = findLanguagePageBySlug(String(route.params.slug));

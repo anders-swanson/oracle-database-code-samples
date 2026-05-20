@@ -19,10 +19,6 @@ export function buildCanonicalUrl(pathname = '/') {
   return new URL(normalized, SITE_URL).toString();
 }
 
-export function buildFeaturePath(slug: string) {
-  return `/features/${slug}/`;
-}
-
 export function buildLanguagePath(slug: string) {
   return `/languages/${slug}/`;
 }

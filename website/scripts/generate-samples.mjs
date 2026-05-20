@@ -8,7 +8,6 @@ import {
 import { buildPatternMappings } from './pattern-mapping-utils.mjs';
 import {
   buildCanonicalUrl,
-  buildFeaturePath,
   buildLanguagePath,
   DEFAULT_DESCRIPTION,
   SAMPLE_SOCIAL_CARD_DIRECTORY,
@@ -22,8 +21,6 @@ const websiteRoot = path.resolve(currentDir, '..');
 const repoRoot = path.resolve(websiteRoot, '..');
 const catalogIndexPath = path.join(websiteRoot, 'src', 'data', 'catalog-index.json');
 const sampleDetailsDirectory = path.join(websiteRoot, 'src', 'data', 'sample-details');
-const featureDetailsPath = path.join(websiteRoot, 'src', 'data', 'featureDetails.json');
-const featurePagesPath = path.join(websiteRoot, 'src', 'data', 'feature-pages.json');
 const languagePagesPath = path.join(websiteRoot, 'src', 'data', 'language-pages.json');
 const patternDefinitionsPath = path.join(websiteRoot, 'src', 'data', 'patternDefinitions.json');
 const patternMappingsPath = path.join(websiteRoot, 'src', 'data', 'patternMappings.json');
@@ -141,67 +138,22 @@ function maxUpdatedAt(samples) {
     .at(-1) ?? '1970-01-01T00:00:00.000Z';
 }
 
-function buildRelatedFeatureSlugs(featureName, samples, featureSlugs, limit = 6) {
-  const counts = new Map();
+function buildRelatedPatternIds(languageSamples, patternMappings) {
+  const languageSampleIds = new Set(languageSamples.map((sample) => sample.id));
 
-  for (const sample of samples) {
-    if (!sample.features.includes(featureName)) {
-      continue;
-    }
-
-    for (const feature of sample.features) {
-      if (feature === featureName || !featureSlugs.has(feature)) {
-        continue;
-      }
-      counts.set(feature, (counts.get(feature) ?? 0) + 1);
-    }
-  }
-
-  return Array.from(counts.entries())
-    .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
-    .slice(0, limit)
-    .map(([feature]) => featureSlugs.get(feature));
+  return patternMappings.patterns
+    .map((pattern) => ({
+      id: pattern.id,
+      title: pattern.title,
+      count: pattern.sampleIds.filter((sampleId) => languageSampleIds.has(sampleId)).length
+    }))
+    .filter((pattern) => pattern.count > 0)
+    .sort((left, right) => right.count - left.count || left.title.localeCompare(right.title))
+    .slice(0, 8)
+    .map((pattern) => pattern.id);
 }
 
-function buildFeaturePages(samples, featureDetails) {
-  const featureNames = Array.from(new Set(samples.flatMap((sample) => sample.features)))
-    .filter((feature) => feature !== 'Oracle AI Database')
-    .sort((left, right) => left.localeCompare(right));
-  const featureSlugs = new Map(featureNames.map((feature) => [feature, slugify(feature)]));
-
-  return featureNames
-    .map((feature) => {
-      const featureSamples = samples
-        .filter((sample) => sample.features.includes(feature))
-        .sort((left, right) => left.title.localeCompare(right.title));
-      const detail = featureDetails[feature] ?? {
-        description: `Runnable samples for ${feature} in Oracle AI Database.`,
-        useWhen: `Use when applications need ${feature} behavior backed by Oracle AI Database.`
-      };
-      const slug = featureSlugs.get(feature);
-      const sampleWord = featureSamples.length === 1 ? 'sample' : 'samples';
-      const title = `Oracle AI Database ${feature} Samples`;
-      const description = `${detail.description} Browse ${featureSamples.length} runnable ${sampleWord} with linked source code.`;
-
-      return {
-        slug,
-        name: feature,
-        title,
-        description,
-        useWhen: detail.useWhen,
-        sampleIds: featureSamples.map((sample) => sample.id),
-        relatedFeatureSlugs: buildRelatedFeatureSlugs(feature, samples, featureSlugs),
-        canonicalUrl: buildCanonicalUrl(buildFeaturePath(slug)),
-        metaTitle: `${title} | ${SITE_NAME}`,
-        metaDescription: trimDescription(description || DEFAULT_DESCRIPTION),
-        updatedAt: maxUpdatedAt(featureSamples)
-      };
-    })
-    .sort((left, right) => right.sampleIds.length - left.sampleIds.length || left.name.localeCompare(right.name));
-}
-
-function buildLanguagePages(samples, featurePages) {
-  const featureByName = new Map(featurePages.map((feature) => [feature.name, feature]));
+function buildLanguagePages(samples, patternMappings) {
   const languageNames = Array.from(new Set(samples.map((sample) => sample.language))).sort((left, right) =>
     left.localeCompare(right)
   );
@@ -220,18 +172,6 @@ function buildLanguagePages(samples, featurePages) {
         description: `${language} samples for Oracle AI Database.`,
         useWhen: `Use when ${language} applications need runnable Oracle AI Database examples.`
       };
-      const featureCounts = new Map();
-      for (const sample of languageSamples) {
-        for (const feature of sample.features) {
-          if (featureByName.has(feature)) {
-            featureCounts.set(feature, (featureCounts.get(feature) ?? 0) + 1);
-          }
-        }
-      }
-      const relatedFeatureSlugs = Array.from(featureCounts.entries())
-        .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
-        .slice(0, 8)
-        .map(([feature]) => featureByName.get(feature).slug);
       const slug = slugify(language);
       const title = `${language} Samples for Oracle AI Database`;
       const description = `${copy.description} Browse ${languageSamples.length} runnable samples with linked source code.`;
@@ -243,7 +183,7 @@ function buildLanguagePages(samples, featurePages) {
         description,
         useWhen: copy.useWhen,
         sampleIds: languageSamples.map((sample) => sample.id),
-        relatedFeatureSlugs,
+        relatedPatternIds: buildRelatedPatternIds(languageSamples, patternMappings),
         canonicalUrl: buildCanonicalUrl(buildLanguagePath(slug)),
         metaTitle: `${title} | ${SITE_NAME}`,
         metaDescription: trimDescription(description || DEFAULT_DESCRIPTION),
@@ -282,7 +222,7 @@ function writeSampleDetails(samples) {
   }
 }
 
-function validateGeneratedOutputs(samples, catalogIndex, patternMappings, featurePages, languagePages) {
+function validateGeneratedOutputs(samples, catalogIndex, patternMappings, languagePages) {
   const sampleIds = new Set(samples.map((sample) => sample.id));
   const indexIds = new Set(catalogIndex.i.map((item) => item[0]));
   const missingIndexIds = samples.map((sample) => sample.id).filter((id) => !indexIds.has(id));
@@ -291,6 +231,7 @@ function validateGeneratedOutputs(samples, catalogIndex, patternMappings, featur
     .flatMap((pattern) => pattern.sampleIds.map((sampleId) => ({ patternId: pattern.id, sampleId })))
     .filter(({ sampleId }) => !indexIds.has(sampleId))
     .map(({ patternId, sampleId }) => `${patternId}:${sampleId}`);
+  const patternIds = new Set(patternMappings.patterns.map((pattern) => pattern.id));
 
   if (missingIndexIds.length > 0 || extraIndexIds.length > 0) {
     throw new Error(
@@ -304,20 +245,20 @@ function validateGeneratedOutputs(samples, catalogIndex, patternMappings, featur
     throw new Error(`Pattern mappings reference samples missing from the catalog index: ${missingPatternIds.join(', ')}`);
   }
 
-  const missingFeaturePageIds = featurePages
-    .flatMap((page) => page.sampleIds.map((sampleId) => ({ page: page.slug, sampleId })))
-    .filter(({ sampleId }) => !indexIds.has(sampleId))
-    .map(({ page, sampleId }) => `${page}:${sampleId}`);
   const missingLanguagePageIds = languagePages
     .flatMap((page) => page.sampleIds.map((sampleId) => ({ page: page.slug, sampleId })))
     .filter(({ sampleId }) => !indexIds.has(sampleId))
     .map(({ page, sampleId }) => `${page}:${sampleId}`);
+  const missingLanguagePatternIds = languagePages
+    .flatMap((page) => page.relatedPatternIds.map((patternId) => ({ page: page.slug, patternId })))
+    .filter(({ patternId }) => !patternIds.has(patternId))
+    .map(({ page, patternId }) => `${page}:${patternId}`);
 
-  if (missingFeaturePageIds.length > 0 || missingLanguagePageIds.length > 0) {
+  if (missingLanguagePageIds.length > 0 || missingLanguagePatternIds.length > 0) {
     throw new Error(
-      `Landing pages reference samples missing from the catalog index. Feature pages: ${
-        missingFeaturePageIds.join(', ') || 'none'
-      }. Language pages: ${missingLanguagePageIds.join(', ') || 'none'}.`
+      `Landing pages reference samples missing from the catalog index. Language pages: ${
+        missingLanguagePageIds.join(', ') || 'none'
+      }. Related patterns: ${missingLanguagePatternIds.join(', ') || 'none'}.`
     );
   }
 }
@@ -338,15 +279,12 @@ const samples = readmeFiles
 validateReversibleSampleIds(samples);
 
 const patternDefinitions = JSON.parse(fs.readFileSync(patternDefinitionsPath, 'utf8'));
-const featureDetails = JSON.parse(fs.readFileSync(featureDetailsPath, 'utf8'));
 const patternMappings = buildPatternMappings(samples, patternDefinitions);
 const catalogIndex = buildCatalogIndex(samples);
-const featurePages = buildFeaturePages(samples, featureDetails);
-const languagePages = buildLanguagePages(samples, featurePages);
-validateGeneratedOutputs(samples, catalogIndex, patternMappings, featurePages, languagePages);
+const languagePages = buildLanguagePages(samples, patternMappings);
+validateGeneratedOutputs(samples, catalogIndex, patternMappings, languagePages);
 fs.writeFileSync(catalogIndexPath, `${JSON.stringify(catalogIndex)}\n`);
 writeSampleDetails(samples);
-fs.writeFileSync(featurePagesPath, `${JSON.stringify(featurePages, null, 2)}\n`);
 fs.writeFileSync(languagePagesPath, `${JSON.stringify(languagePages, null, 2)}\n`);
 writeDefaultSocialCard({ websiteRoot });
 writeSampleSocialCards(samples, { websiteRoot });
@@ -354,7 +292,6 @@ fs.writeFileSync(patternMappingsPath, `${JSON.stringify(patternMappings, null, 2
 
 console.log(`Generated packed catalog index into ${path.relative(repoRoot, catalogIndexPath)}`);
 console.log(`Generated ${samples.length} sample detail files into ${path.relative(repoRoot, sampleDetailsDirectory)}`);
-console.log(`Generated ${featurePages.length} feature landing pages into ${path.relative(repoRoot, featurePagesPath)}`);
 console.log(`Generated ${languagePages.length} language landing pages into ${path.relative(repoRoot, languagePagesPath)}`);
 console.log(
   `Generated ${samples.length} sample social cards into ${path.relative(

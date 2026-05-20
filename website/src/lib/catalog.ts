@@ -1,12 +1,10 @@
 import rawCatalogIndex from '../data/catalog-index.json';
-import rawFeaturePages from '../data/feature-pages.json';
 import { getFeatureDetail } from '../data/featureDetails';
 import { getFeatureIcon } from '../data/featureIcons';
 import rawLanguagePages from '../data/language-pages.json';
 import rawPatternMappings from '../data/patternMappings.json';
 import type {
   CatalogFilters,
-  FeatureLandingPage,
   FilterOption,
   LanguageLandingPage,
   PackedCatalogIndex,
@@ -21,16 +19,17 @@ import type {
 const REPO_TREE_BASE = 'https://github.com/anders-swanson/oracle-database-code-samples/tree/main';
 
 const catalogIndex = rawCatalogIndex as PackedCatalogIndex;
-const featurePageData = rawFeaturePages as FeatureLandingPage[];
 const languagePageData = rawLanguagePages as LanguageLandingPage[];
 const patternMappingData = rawPatternMappings as PatternMappingData;
 
 export const patternIntents = patternMappingData.intents as PatternIntent[];
 export const patternMappings = patternMappingData.patterns as PatternMapping[];
-export const featurePages = featurePageData;
 export const languagePages = languagePageData;
 
 export const samples = decodeCatalogIndex(catalogIndex);
+const sampleById = new Map(samples.map((sample) => [sample.id, sample]));
+const languagePageBySlug = new Map(languagePages.map((page) => [page.slug, page]));
+const languagePageByName = new Map(languagePages.map((page) => [page.name, page]));
 
 export const defaultFilters: CatalogFilters = {
   query: '',
@@ -139,39 +138,140 @@ export function filterSamples(items: SampleSummary[], filters: CatalogFilters) {
 }
 
 export function findSampleById(id: string) {
-  return samples.find((sample) => sample.id === id);
-}
-
-export function findFeaturePageBySlug(slug: string) {
-  return featurePages.find((page) => page.slug === slug);
-}
-
-export function findFeaturePageByName(name: string) {
-  return featurePages.find((page) => page.name === name);
+  return sampleById.get(id);
 }
 
 export function findLanguagePageBySlug(slug: string) {
-  return languagePages.find((page) => page.slug === slug);
+  return languagePageBySlug.get(slug);
 }
 
 export function findLanguagePageByName(name: string) {
-  return languagePages.find((page) => page.name === name);
+  return languagePageByName.get(name);
 }
 
 export function samplesForIds(sampleIds: string[], items: SampleSummary[] = samples) {
-  const sampleById = new Map(items.map((sample) => [sample.id, sample]));
-  return sampleIds.map((sampleId) => sampleById.get(sampleId)).filter((sample): sample is SampleSummary => Boolean(sample));
+  const sampleLookup = items === samples ? sampleById : new Map(items.map((sample) => [sample.id, sample]));
+  return sampleIds
+    .map((sampleId) => sampleLookup.get(sampleId))
+    .filter((sample): sample is SampleSummary => Boolean(sample));
 }
 
 export function resolvePatternMappings(items: SampleSummary[] = samples): ResolvedPatternMapping[] {
-  const sampleById = new Map(items.map((sample) => [sample.id, sample]));
+  const sampleLookup = items === samples ? sampleById : new Map(items.map((sample) => [sample.id, sample]));
 
   return patternMappings.map((pattern) => ({
     ...pattern,
     samples: pattern.sampleIds
-      .map((sampleId) => sampleById.get(sampleId))
+      .map((sampleId) => sampleLookup.get(sampleId))
       .filter((sample): sample is SampleSummary => Boolean(sample))
   }));
+}
+
+export const resolvedPatternMappings = resolvePatternMappings();
+
+const patternMappingById = new Map(resolvedPatternMappings.map((pattern) => [pattern.id, pattern]));
+
+function patternMappingsForItems(items: SampleSummary[]) {
+  return items === samples ? resolvedPatternMappings : resolvePatternMappings(items);
+}
+
+function normalizeTopic(value: string) {
+  return value.trim().toLowerCase();
+}
+
+function uniqueValues(values: string[]) {
+  return Array.from(new Set(values));
+}
+
+function patternTopicValues(pattern: PatternMapping) {
+  return uniqueValues([pattern.title, ...pattern.features, ...pattern.topics]);
+}
+
+function patternTitleAndFeatureValues(pattern: PatternMapping) {
+  return uniqueValues([pattern.title, ...pattern.features]);
+}
+
+export function findPatternMappingBySlug(slug: string, items: SampleSummary[] = samples) {
+  return items === samples
+    ? patternMappingById.get(slug)
+    : resolvePatternMappings(items).find((pattern) => pattern.id === slug);
+}
+
+export function patternMappingsForIds(patternIds: string[], items: SampleSummary[] = samples) {
+  const patternLookup =
+    items === samples
+      ? patternMappingById
+      : new Map(resolvePatternMappings(items).map((pattern) => [pattern.id, pattern]));
+
+  return patternIds
+    .map((patternId) => patternLookup.get(patternId))
+    .filter((pattern): pattern is ResolvedPatternMapping => Boolean(pattern));
+}
+
+export function findPatternMappingByTopic(topic: string, items: SampleSummary[] = samples) {
+  const normalizedTopic = normalizeTopic(topic);
+  const resolvedPatterns = patternMappingsForItems(items);
+  const explicitTopicMatch = resolvedPatterns.find((pattern) =>
+    pattern.topics.some((patternTopic) => normalizeTopic(patternTopic) === normalizedTopic)
+  );
+
+  if (explicitTopicMatch) {
+    return explicitTopicMatch;
+  }
+
+  const directPatternMatch = resolvedPatterns.find((pattern) =>
+    patternTitleAndFeatureValues(pattern).some((patternTopic) => normalizeTopic(patternTopic) === normalizedTopic)
+  );
+
+  if (directPatternMatch) {
+    return directPatternMatch;
+  }
+
+  const topicSampleIds = new Set(
+    items
+      .filter((sample) => sample.tags.some((tag) => normalizeTopic(tag) === normalizedTopic))
+      .map((sample) => sample.id)
+  );
+
+  if (topicSampleIds.size === 0) {
+    return undefined;
+  }
+
+  return resolvedPatterns
+    .map((pattern) => ({
+      pattern,
+      overlap: pattern.sampleIds.filter((sampleId) => topicSampleIds.has(sampleId)).length
+    }))
+    .filter((entry) => entry.overlap > 0)
+    .sort(
+      (left, right) =>
+        right.overlap - left.overlap ||
+        left.pattern.sampleIds.length - right.pattern.sampleIds.length ||
+        left.pattern.title.localeCompare(right.pattern.title)
+    )[0]?.pattern;
+}
+
+export function findRelatedPatternMappings(pattern: PatternMapping, limit = 6, items: SampleSummary[] = samples) {
+  const patternTopics = new Set(patternTopicValues(pattern).map(normalizeTopic));
+  const patternSamples = new Set(pattern.sampleIds);
+
+  return patternMappingsForItems(items)
+    .filter((candidate) => candidate.id !== pattern.id)
+    .map((candidate) => {
+      const sharedTopics = patternTopicValues(candidate).filter((topic) => patternTopics.has(normalizeTopic(topic)))
+        .length;
+      const sharedSamples = candidate.sampleIds.filter((sampleId) => patternSamples.has(sampleId)).length;
+      const sameIntent = candidate.intentId === pattern.intentId ? 1 : 0;
+
+      return {
+        pattern: candidate,
+        score: sameIntent * 4 + sharedTopics * 2 + sharedSamples
+      };
+    })
+    .filter((entry) => entry.score > 0)
+    .sort((left, right) => right.score - left.score || left.pattern.title.localeCompare(right.pattern.title))
+    .slice(0, limit)
+    .map((entry) => entry.pattern);
 }
 
 export function findRelatedSamples(target: SampleSummary, items: SampleSummary[], limit = 4) {

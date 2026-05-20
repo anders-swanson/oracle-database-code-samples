@@ -3,6 +3,7 @@ import {
   buildGithubCodeUrl,
   buildSamplePath,
   buildSubfeatureGraph,
+  findPatternMappingByTopic,
   filterSamples,
   getStats,
   patternMappings,
@@ -141,6 +142,12 @@ describe('catalog filtering', () => {
     expect(graph.hiddenTags).toBe(0);
     expect(graph.nodes).toHaveLength(graph.totalTags);
     expect(graph.nodes.map((node) => node.name)).toEqual(expect.arrayContaining(['Spatial', 'SQLcl']));
+  });
+
+  it('routes topic-map tags to curated engineering pattern pages', () => {
+    expect(findPatternMappingByTopic('Testcontainers')?.id).toBe('local-testing');
+    expect(findPatternMappingByTopic('JSON')?.id).toBe('json-documents-duality');
+    expect(findPatternMappingByTopic('Duality Views')?.id).toBe('json-documents-duality');
   });
 
   it('resolves every curated pattern sample id against the generated catalog', () => {

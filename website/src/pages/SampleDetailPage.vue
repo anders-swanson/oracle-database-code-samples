@@ -5,8 +5,8 @@ import AppShell from '../components/AppShell.vue';
 import InlineMarkdown from '../components/InlineMarkdown.vue';
 import SampleCard from '../components/SampleCard.vue';
 import {
-  findFeaturePageByName,
   findLanguagePageByName,
+  findPatternMappingByTopic,
   findRelatedSamples,
   findSampleById,
   samples
@@ -25,7 +25,7 @@ const featureContext = computed(() =>
     ? sample.value.features.map((feature) => ({
         name: feature,
         detail: getFeatureDetail(feature),
-        page: findFeaturePageByName(feature)
+        pattern: findPatternMappingByTopic(feature)
       }))
     : []
 );
@@ -69,9 +69,9 @@ const featureContext = computed(() =>
           <div class="detail-hero__feature-list">
             <template v-for="feature in featureContext" :key="feature.name">
               <RouterLink
-                v-if="feature.page"
+                v-if="feature.pattern"
                 class="sample-card__feature"
-                :to="{ name: 'feature-detail', params: { slug: feature.page.slug } }"
+                :to="{ name: 'pattern-detail', params: { slug: feature.pattern.id } }"
               >
                 {{ feature.name }}
               </RouterLink>
@@ -93,8 +93,8 @@ const featureContext = computed(() =>
               <section v-for="feature in featureContext" :key="feature.name">
                 <h3>
                   <RouterLink
-                    v-if="feature.page"
-                    :to="{ name: 'feature-detail', params: { slug: feature.page.slug } }"
+                    v-if="feature.pattern"
+                    :to="{ name: 'pattern-detail', params: { slug: feature.pattern.id } }"
                   >
                     {{ feature.name }}
                   </RouterLink>

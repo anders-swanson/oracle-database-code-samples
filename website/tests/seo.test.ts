@@ -1,18 +1,16 @@
 import { describe, expect, it, vi } from 'vitest';
 
-const { featurePage, languagePage, sample } = vi.hoisted(() => ({
-  featurePage: {
-    slug: 'vector-search',
-    name: 'Vector Search',
-    title: 'Oracle AI Database Vector Search Samples',
-    description: 'Store embeddings and search records by semantic similarity. Browse 3 runnable samples with linked source code.',
+const { patternPage, languagePage, sample } = vi.hoisted(() => ({
+  patternPage: {
+    id: 'semantic-search-rag',
+    intentId: 'build-ai-experiences',
+    title: 'Semantic Search / RAG',
+    summary: 'Store embeddings and search records by semantic similarity.',
     useWhen: 'Use when users search by meaning or AI answers need grounded records.',
+    features: ['Vector Search', 'JSON'],
+    topics: ['AI', 'Vector Search', 'Oracle Text'],
     sampleIds: ['vector'],
-    relatedFeatureSlugs: [],
-    canonicalUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/features/vector-search/',
-    metaTitle: 'Oracle AI Database Vector Search Samples | Oracle AI Database Code Samples',
-    metaDescription: 'Store embeddings and search records by semantic similarity.',
-    updatedAt: '2026-05-01T00:00:00.000Z'
+    samples: [] as never[]
   },
   languagePage: {
     slug: 'java',
@@ -21,7 +19,7 @@ const { featurePage, languagePage, sample } = vi.hoisted(() => ({
     description: 'Java samples for Oracle AI Database. Browse 3 runnable samples with linked source code.',
     useWhen: 'Use when JVM applications need real Oracle AI Database examples instead of pseudocode.',
     sampleIds: ['vector'],
-    relatedFeatureSlugs: ['vector-search'],
+    relatedPatternIds: ['semantic-search-rag'],
     canonicalUrl: 'https://anders-swanson.github.io/oracle-database-code-samples/languages/java/',
     metaTitle: 'Java Samples for Oracle AI Database | Oracle AI Database Code Samples',
     metaDescription: 'Java samples for Oracle AI Database.',
@@ -51,7 +49,7 @@ const { featurePage, languagePage, sample } = vi.hoisted(() => ({
 }));
 
 vi.mock('../src/lib/catalog', () => ({
-  findFeaturePageBySlug: (slug: string) => (slug === featurePage.slug ? featurePage : undefined),
+  findPatternMappingBySlug: (slug: string) => (slug === patternPage.id ? patternPage : undefined),
   findLanguagePageBySlug: (slug: string) => (slug === languagePage.slug ? languagePage : undefined),
   findSampleById: (id: string) => (id === sample.id ? sample : undefined),
   samplesForIds: (sampleIds: string[]) => sampleIds.includes(sample.id) ? [sample] : []
@@ -104,17 +102,19 @@ describe('SEO metadata sync', () => {
     expect(head.script[0]?.textContent).toContain('SoftwareSourceCode');
   });
 
-  it('applies feature landing page metadata and structured data', () => {
+  it('applies pattern detail metadata and structured data', () => {
     const head = headFor({
-      name: 'feature-detail',
+      name: 'pattern-detail',
       params: {
-        slug: featurePage.slug
+        slug: patternPage.id
       }
     });
 
-    expect(head.title).toBe(featurePage.metaTitle);
+    expect(head.title).toBe('Semantic Search / RAG Pattern | Oracle AI Database Code Samples');
     expect(findMeta(head, 'property', 'og:type')?.content).toBe('website');
-    expect(findMeta(head, 'property', 'og:url')?.content).toBe(featurePage.canonicalUrl);
+    expect(findMeta(head, 'property', 'og:url')?.content).toBe(
+      'https://anders-swanson.github.io/oracle-database-code-samples/patterns/semantic-search-rag/'
+    );
     expect(findMeta(head, 'name', 'description')?.content).toContain('Store embeddings');
     expect(head.script[0]?.textContent).toContain('CollectionPage');
     expect(head.script[0]?.textContent).toContain('BreadcrumbList');

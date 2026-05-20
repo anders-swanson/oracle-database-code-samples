@@ -1,0 +1,4 @@
+interface:
+  display_name: "OKafka Java Code"
+  short_description: "Build Oracle AI Database Kafka API code"
+  default_prompt: "Use $okafka-java-code to implement Oracle AI Database Kafka API topic, authentication, OSON serialization, producer, consumer, and transaction code."

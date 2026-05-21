@@ -11,6 +11,7 @@ vi.mock('vue-router', () => ({
 }));
 
 import PatternDetailPage from '../src/pages/PatternDetailPage.vue';
+import { resolvedPatternMappings } from '../src/lib/catalog';
 
 describe('PatternDetailPage', () => {
   it('renders crawlable pattern copy, sample links, and related pattern links', () => {
@@ -24,10 +25,15 @@ describe('PatternDetailPage', () => {
 
     expect(wrapper.text()).toContain('Semantic Search / RAG Pattern');
     expect(wrapper.text()).toContain('Combine embeddings, text filters, and SQL access paths');
+    expect(wrapper.text()).toContain('Feature coverage');
+    expect(wrapper.text()).toContain('Implementation topics');
+    expect(wrapper.text()).toContain('Sample breadth');
     expect(wrapper.findAll('.sample-card').length).toBeGreaterThan(0);
     expect(wrapper.find('.pattern-hero__icon').attributes('alt')).toBe('Semantic Search / RAG pattern icon');
     expect(wrapper.find('.pattern-link-list').exists()).toBe(true);
-    expect(wrapper.findAll('.pattern-link-card').length).toBeGreaterThan(0);
+    expect(wrapper.findAll('.pattern-link-card')).toHaveLength(resolvedPatternMappings.length);
+    expect(wrapper.find('.pattern-link-card.is-current').attributes('aria-current')).toBe('page');
+    expect(wrapper.find('.pattern-link-card.is-current').text()).toContain('Semantic Search / RAG');
     expect(
       wrapper.findAllComponents(RouterLinkStub).some((link) => JSON.stringify(link.props('to')).includes('sample-detail'))
     ).toBe(true);

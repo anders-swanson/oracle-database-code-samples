@@ -4,19 +4,50 @@ import { useRoute } from 'vue-router';
 import AppShell from '../components/AppShell.vue';
 import SampleCard from '../components/SampleCard.vue';
 import { getPatternVisual } from '../data/patternVisuals';
-import { findPatternMappingBySlug, findRelatedPatternMappings } from '../lib/catalog';
+import { findPatternMappingBySlug, resolvedPatternMappings } from '../lib/catalog';
 import type { PatternMapping } from '../types';
 
 const route = useRoute();
 const patternPage = computed(() => findPatternMappingBySlug(String(route.params.slug ?? '')));
 const patternSamples = computed(() => patternPage.value?.samples ?? []);
-const relatedPatterns = computed(() => (patternPage.value ? findRelatedPatternMappings(patternPage.value) : []));
 const patternVisual = computed(() =>
   getPatternVisual(patternPage.value ? visualTopicForPattern(patternPage.value) : 'Oracle AI Database')
 );
-const relatedPatternCards = computed(() =>
-  relatedPatterns.value.map((pattern) => ({
+const sampleEvidenceText = computed(() => {
+  if (patternSamples.value.length === 0) {
+    return 'No matched samples yet.';
+  }
+
+  const sampleNames = patternSamples.value.slice(0, 3).map((sample) => sample.title);
+  const remainingCount = patternSamples.value.length - sampleNames.length;
+  const sampleList = sampleNames.join(', ');
+
+  return remainingCount > 0
+    ? `${patternSamples.value.length} runnable examples, including ${sampleList}, and ${remainingCount} more.`
+    : `${patternSamples.value.length} runnable examples: ${sampleList}.`;
+});
+const patternEvidenceItems = computed(() =>
+  patternPage.value
+    ? [
+        {
+          label: 'Feature coverage',
+          value: patternPage.value.features.join(', ')
+        },
+        {
+          label: 'Implementation topics',
+          value: patternPage.value.topics.join(', ')
+        },
+        {
+          label: 'Sample breadth',
+          value: sampleEvidenceText.value
+        }
+      ]
+    : []
+);
+const patternCards = computed(() =>
+  resolvedPatternMappings.map((pattern) => ({
     pattern,
+    isCurrent: pattern.id === patternPage.value?.id,
     visual: getPatternVisual(visualTopicForPattern(pattern))
   }))
 );
@@ -107,30 +138,40 @@ function patternInitials(name: string) {
           <div class="detail-panel__block">
             <h2>What these samples show</h2>
             <p>
-              These Oracle AI Database samples map the engineering pattern to runnable source code, README
-              context, and related implementation paths in the catalog.
+              {{ patternPage.summary }}
             </p>
+            <dl class="pattern-evidence-list">
+              <div v-for="item in patternEvidenceItems" :key="item.label" class="pattern-evidence-list__item">
+                <dt>{{ item.label }}</dt>
+                <dd>{{ item.value }}</dd>
+              </div>
+            </dl>
           </div>
         </article>
 
-        <aside v-if="relatedPatterns.length > 0" class="detail-panel">
+        <aside class="detail-panel">
           <div class="detail-panel__header">
-            <span class="catalog-results__eyebrow">Related patterns</span>
+            <span class="catalog-results__eyebrow">All patterns</span>
           </div>
           <div class="pattern-link-list">
             <RouterLink
-              v-for="{ pattern, visual } in relatedPatternCards"
+              v-for="{ pattern, visual, isCurrent } in patternCards"
               :key="pattern.id"
               class="pattern-link-card"
+              :class="{ 'is-current': isCurrent }"
               :to="{ name: 'pattern-detail', params: { slug: pattern.id } }"
               :style="visual.styleVars"
+              :aria-current="isCurrent ? 'page' : undefined"
             >
               <span class="pattern-link-card__icon">
                 <img v-if="visual.iconPath" :src="visual.iconPath" alt="" aria-hidden="true" />
                 <span v-else>{{ patternInitials(pattern.title) }}</span>
               </span>
               <span class="pattern-link-card__copy">
-                <strong>{{ pattern.title }}</strong>
+                <span class="pattern-link-card__title-row">
+                  <strong>{{ pattern.title }}</strong>
+                  <em v-if="isCurrent">Current</em>
+                </span>
                 <span>{{ pattern.samples.length }} samples</span>
               </span>
             </RouterLink>
@@ -302,9 +343,44 @@ function patternInitials(name: string) {
   line-height: 0.9;
 }
 
+.pattern-evidence-list {
+  display: grid;
+  gap: 0.8rem;
+  margin: 1rem 0 0;
+}
+
+.pattern-evidence-list__item {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0 0 0.8rem;
+  border-bottom: 1px solid rgba(var(--pattern-accent-rgb), 0.18);
+}
+
+.pattern-evidence-list__item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.pattern-evidence-list dt {
+  color: var(--pattern-accent);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.pattern-evidence-list dd {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
 .pattern-link-list {
   display: grid;
   gap: 0.8rem;
+  max-height: 37rem;
+  overflow: auto;
+  padding-right: 0.2rem;
 }
 
 .pattern-link-card {
@@ -328,6 +404,13 @@ function patternInitials(name: string) {
   background:
     linear-gradient(90deg, rgba(var(--pattern-accent-rgb), 0.18), transparent 56%),
     var(--bg-soft-hover);
+}
+
+.pattern-link-card.is-current {
+  border-color: rgba(var(--pattern-accent-rgb), 0.58);
+  background:
+    linear-gradient(90deg, rgba(var(--pattern-accent-rgb), 0.2), transparent 58%),
+    rgba(var(--pattern-accent-rgb), 0.06);
 }
 
 .pattern-link-card:focus-visible {
@@ -362,10 +445,31 @@ function patternInitials(name: string) {
 }
 
 .pattern-link-card__copy strong {
+  color: var(--text);
   overflow-wrap: anywhere;
 }
 
-.pattern-link-card__copy span {
+.pattern-link-card__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.pattern-link-card__title-row em {
+  flex: 0 0 auto;
+  padding: 0.18rem 0.45rem;
+  border: 1px solid rgba(var(--pattern-accent-rgb), 0.24);
+  border-radius: 999px;
+  color: var(--pattern-accent);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pattern-link-card__copy > span:not(.pattern-link-card__title-row) {
   color: var(--text-muted);
   font-size: 0.9rem;
 }

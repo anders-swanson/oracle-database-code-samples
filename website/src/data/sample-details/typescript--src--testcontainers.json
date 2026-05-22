@@ -5,12 +5,13 @@
   "readmeExcerpt": "This folder contains the reusable Testcontainers helpers for the TypeScript samples. The classes wrap Oracle AI Database Free startup and return a ready-to-use `oracledb` connection for tests or scripts.",
   "highlights": [
     "[oracle_database_container.ts](./oracle_database_container.ts): simple container wrapper",
-    "[generic_oracle_database_container.ts](./generic_oracle_database_container.ts): GenericContainer-based implementation with a typed started container"
+    "[generic_oracle_database_container.ts](./generic_oracle_database_container.ts): GenericContainer-based implementation with a typed started container",
+    "[ords_container.ts](./ords_container.ts): ORDS container wrapper with HTTP, HTTPS, MongoDB API ports, and schema enablement"
   ],
   "features": [
     "Testcontainers"
   ],
-  "sourceUpdatedAt": "2026-04-21T17:53:16.467Z",
+  "sourceUpdatedAt": "2026-05-21T21:24:49.310Z",
   "metaTitle": "TypeScript Testcontainers Sample | Oracle AI Database Code Samples",
   "metaDescription": "TypeScript helpers for starting Oracle AI Database Free with Testcontainers.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/typescript--src--testcontainers/",

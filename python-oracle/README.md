@@ -15,6 +15,14 @@ poetry env activate
 
 `poetry env activate` prints the command to activate the virtual environment. You can also run samples directly with `poetry run`.
 
+## Testing
+
+Run the ORDS Testcontainers integration test with:
+
+```bash
+poetry run python -m unittest tests.test_ords_container -v
+```
+
 ## Samples
 
 | Example program                                                                                                                                                                      | Description                                                                                                                                     | Command                                                                                                      |

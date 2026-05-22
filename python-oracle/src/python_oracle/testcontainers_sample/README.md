@@ -15,6 +15,8 @@ This module shows you how to run an Oracle AI Database Free container image usin
 
 The [OracleDatabaseContainer](oracle_database_container.py) class implements a Testcontainers database container for Oracle AI Database Free, using the `gvenzl/oracle-free:23.26.1-slim-faststart` image by default.
 
+The [OrdsContainer](ords_container.py) class implements a reusable ORDS Testcontainers helper. It configures the ORDS image with an Oracle AI Database connection string and admin password, exposes HTTP, HTTPS, and MongoDB API ports, and can enable one or more schemas after ORDS starts.
+
 The [sample program](testcontainers_sample.py) uses spins up an Oracle AI Database container, runs a query, and exits.
 
 The container exists ephemerally for the runtime of the program, and is cleaned up after.

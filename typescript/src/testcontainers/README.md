@@ -18,6 +18,7 @@ Key files:
 
 - [`oracle_database_container.ts`](./oracle_database_container.ts): simple container wrapper
 - [`generic_oracle_database_container.ts`](./generic_oracle_database_container.ts): `GenericContainer`-based implementation with a typed started container
+- [`ords_container.ts`](./ords_container.ts): ORDS container wrapper with HTTP, HTTPS, MongoDB API ports, and schema enablement
 
 ## Prerequisites
 

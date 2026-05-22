@@ -12,6 +12,7 @@ class OracleDatabaseContainer(DockerContainer):
     def __init__(self,
                  app_user=APP_USER,
                  app_user_password=APP_USER_PASSWORD,
+                 oracle_password=None,
                  image="gvenzl/oracle-free:23.26.1-slim-faststart",
                  db_name="freepdb1",
                  container_port=1521,
@@ -25,7 +26,10 @@ class OracleDatabaseContainer(DockerContainer):
         self.host = host
 
         # Configure the container via environment variables
-        self.with_env("ORACLE_RANDOM_PASSWORD", "y")
+        if oracle_password is None:
+            self.with_env("ORACLE_RANDOM_PASSWORD", "y")
+        else:
+            self.with_env("ORACLE_PASSWORD", oracle_password)
         self.with_env("APP_USER", app_user)
         self.with_env("APP_USER_PASSWORD", app_user_password)
         # Database listens on 1521 by default

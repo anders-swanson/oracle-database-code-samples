@@ -5,8 +5,8 @@
   "scripts": {
     "build": "tsc",
     "test": "vitest",
-
     "testcontainers-example": "vitest test/testcontainers/oracle_database.test.ts",
+    "testcontainers-ords-example": "vitest test/testcontainers/ords_container.test.ts",
     "sql-producer-consumer": "vitest run test/txeventq/txeventq.test.ts -t 'plsql pub-sub'"
   },
   "keywords": [],
@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@types/oracledb": "^6.9.1",
+    "mongodb": "^7.2.0",
     "oracledb": "^6.9.0",
     "testcontainers": "^11.5.1"
   }

@@ -16,7 +16,9 @@ This folder contains a Go helper for starting Oracle AI Database Free with `test
 Key files:
 
 - [`oracle_container.go`](./oracle_container.go): reusable `OracleContainer` wrapper
+- [`ords_container.go`](./ords_container.go): reusable ORDS wrapper with HTTP, HTTPS, MongoDB API ports, and schema enablement
 - [`oracle_container_test.go`](./oracle_container_test.go): integration test that starts the container and queries `v$version`
+- [`ords_container_test.go`](./ords_container_test.go): integration test that starts Oracle AI Database and ORDS as containers, and verifies connectivity by using the ORDS MongoDB API. 
 
 ## Prerequisites
 

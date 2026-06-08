@@ -123,6 +123,7 @@
         "langchain4j-agent-memory",
         "mcp-agent",
         "python-oracle--src--python_oracle--langchain",
+        "python-oracle--src--python_oracle--langgraph_persistence",
         "python-oracle--src--python_oracle--mcp_agent"
       ]
     },
@@ -256,7 +257,9 @@
       ],
       "sampleIds": [
         "golang--connection",
-        "sessionless-transactions"
+        "jdbc-uuid",
+        "sessionless-transactions",
+        "skills"
       ]
     },
     {

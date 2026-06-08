@@ -38,7 +38,7 @@ The program applies the schema from `schema.sql`, seeds sample orders, prints to
 ## Run the tests
 
 ```bash
-docker pull gvenzl/oracle-free:23.26.1-slim-faststart
+docker pull gvenzl/oracle-free:23.26.2-slim-faststart
 mvn test
 ```
 

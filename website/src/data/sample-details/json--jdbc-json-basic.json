@@ -13,7 +13,7 @@
     "JSON",
     "Testcontainers"
   ],
-  "sourceUpdatedAt": "2026-04-21T19:57:02.152Z",
+  "sourceUpdatedAt": "2026-06-08T16:14:36.707Z",
   "metaTitle": "JDBC JSON Data Type Sample | Oracle AI Database Code Samples",
   "metaDescription": "Plain JDBC sample for inserting, querying, updating, and deleting Oracle JSON data.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--jdbc-json-basic/",

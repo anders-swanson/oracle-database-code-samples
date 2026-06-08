@@ -20,7 +20,7 @@ import org.testcontainers.utility.MountableFile;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JdbcPropertyGraphSampleTest {
-    private static final OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.1-full-faststart")
+    private static final OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.2-full-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
             .withUsername("testuser")
             .withPassword("testpwd");

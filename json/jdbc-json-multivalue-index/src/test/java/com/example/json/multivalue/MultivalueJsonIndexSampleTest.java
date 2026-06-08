@@ -9,7 +9,7 @@ import org.testcontainers.oracle.OracleContainer;
 class MultivalueJsonIndexSampleTest {
 
     @Container
-    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.1-slim-faststart")
+    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.2-slim-faststart")
             .withInitScripts("schema.sql", "data.sql")
             .withUsername("testuser")
             .withPassword("testpwd");

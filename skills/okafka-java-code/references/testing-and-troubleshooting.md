@@ -6,7 +6,7 @@ The reference integration tests use:
 
 - Java 21
 - Maven Failsafe for `*IT.java`
-- `gvenzl/oracle-free:23.26.1-slim-faststart`
+- `gvenzl/oracle-free:23.26.2-slim-faststart`
 - Test user `testuser` / `Welcome123#`
 - `src/test/resources/ojdbc.properties`
 - `src/test/resources/okafka.sql`

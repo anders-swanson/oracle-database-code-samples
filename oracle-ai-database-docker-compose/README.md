@@ -25,7 +25,7 @@ The container will be available on `localhost:1521`.
 
 ## Database Details
 
-- **Image**: gvenzl/oracle-free:23.26.1-slim-faststart
+- **Image**: gvenzl/oracle-free:23.26.2-slim-faststart
 - **SYS Password**: Welcome12345
 - **Default PDB**: freepdb1 (init script switches to this container)
 - **Init Scripts**: Place SQL scripts in the `oracle/` directory to run on startup.

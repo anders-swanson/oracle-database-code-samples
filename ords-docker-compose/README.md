@@ -94,7 +94,7 @@ The setup includes pre-configured volumes for ORDS configuration and database in
 
 ## Notes
 
-- The database uses the `gvenzl/oracle-free:23.26.1-slim-faststart` image.
+- The database uses the `gvenzl/oracle-free:23.26.2-slim-faststart` image.
 - ORDS uses `container-registry.oracle.com/database/ords:latest`.
 - Volumes persist configuration and downloaded APEX files; remove them with `docker-compose down -v` if needed.
 - If you first started the database without APEX and later enable APEX, use `docker-compose down -v` before restarting so the Oracle AI Database container initializes cleanly with APEX.

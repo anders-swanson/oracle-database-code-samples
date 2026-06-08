@@ -1,6 +1,6 @@
 services:
   destdb:
-    image: gvenzl/oracle-free:23.26.1-slim-faststart
+    image: gvenzl/oracle-free:23.26.2-slim-faststart
     container_name: destdb
     ports:
       - 1523:1521
@@ -15,7 +15,7 @@ services:
       retries: 5
       start_period: 30s
   sourcedb:
-    image: gvenzl/oracle-free:23.26.1-slim-faststart
+    image: gvenzl/oracle-free:23.26.2-slim-faststart
     container_name: sourcedb
     ports:
       - 1522:1521

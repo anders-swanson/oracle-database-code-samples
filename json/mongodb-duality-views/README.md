@@ -42,7 +42,7 @@ This sample demonstrates using the MongoDB Java driver with Oracle AI Database J
 Pull the Oracle AI Database Free image ahead of time to prevent timeouts:
 
 ```bash
-docker pull gvenzl/oracle-free:23.26.1-slim-faststart
+docker pull gvenzl/oracle-free:23.26.2-slim-faststart
 ```
 
 Then run the module test from the repository root:

@@ -104,7 +104,7 @@ This returns a nested JSON document that includes the movie metadata as well as 
 Pull the Oracle AI Database Free image ahead of time to prevent timeouts:
 
 ```bash
-docker pull gvenzl/oracle-free:23.26.1-slim-faststart
+docker pull gvenzl/oracle-free:23.26.2-slim-faststart
 ```
 
 Then execute:

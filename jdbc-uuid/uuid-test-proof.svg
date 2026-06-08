@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Testcontainers proof for UUID RAW(16)</title>
+  <desc id="desc">An 800 by 600 diagram showing the Maven test starting Oracle AI Database Free with Testcontainers, running the JDBC UUID sample, and asserting byte length, byte order, and UUID lookup behavior.</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#14202a" flood-opacity="0.13"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#295f63"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .header { fill: #eef7f4; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 33px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .card { fill: #ffffff; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .gold { fill: #f2c94c; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .mint { fill: #9bd7d1; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .navy { fill: #152330; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .label { font: 800 18px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .text { font: 600 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .code { font: 800 12px "Menlo", "Consolas", monospace; fill: #152330; }
+      .dark-label { font: 800 18px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .dark-text { font: 700 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9f4ef; }
+      .arrow { fill: none; stroke: #295f63; stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <rect class="header" width="800" height="132"/>
+  <path d="M0 492C128 452 254 456 382 498C514 542 646 528 800 466V600H0Z" fill="#2e6f95" opacity="0.08"/>
+
+  <text x="44" y="50" class="eyebrow">validation</text>
+  <text x="44" y="90" class="title">The Test Checks the Storage Contract</text>
+  <text x="44" y="116" class="subtitle">A real Oracle AI Database Free container proves the JDBC path.</text>
+
+  <rect x="52" y="172" width="214" height="96" rx="6" class="card"/>
+  <text x="76" y="208" class="label">Maven test</text>
+  <text x="76" y="236" class="code">mvn test</text>
+  <text x="76" y="256" class="text">module: jdbc-uuid</text>
+
+  <rect x="294" y="172" width="212" height="96" rx="6" class="gold"/>
+  <text x="318" y="208" class="label">Testcontainers</text>
+  <text x="318" y="238" class="text">Oracle AI Database Free</text>
+
+  <rect x="534" y="172" width="214" height="96" rx="6" class="mint"/>
+  <text x="558" y="208" class="label">Sample main</text>
+  <text x="558" y="238" class="text">Create table and insert rows</text>
+
+  <path d="M266 220H294" class="arrow"/>
+  <path d="M506 220H534" class="arrow"/>
+
+  <rect x="88" y="356" width="184" height="112" rx="6" class="navy"/>
+  <text x="112" y="392" class="dark-label">16 bytes</text>
+  <text x="112" y="422" class="dark-text">storedId.length == 16</text>
+  <text x="112" y="446" class="dark-text">RAW(16) through JDBC</text>
+
+  <rect x="308" y="356" width="184" height="112" rx="6" class="navy"/>
+  <text x="332" y="392" class="dark-label">Exact bytes</text>
+  <text x="332" y="422" class="dark-text">expected hex is fixed</text>
+  <text x="332" y="446" class="dark-text">MSB then LSB order</text>
+
+  <rect x="528" y="356" width="184" height="112" rx="6" class="navy"/>
+  <text x="552" y="392" class="dark-label">Same UUID</text>
+  <text x="552" y="422" class="dark-text">lookup by id works</text>
+  <text x="552" y="446" class="dark-text">bytesToUuid matches</text>
+
+  <path d="M641 268V314H180V356" class="arrow"/>
+  <path d="M641 314H400V356" class="arrow"/>
+  <path d="M641 314V356" class="arrow"/>
+
+  <rect x="118" y="512" width="564" height="42" rx="6" fill="#f8eee8" stroke="#d5967f" stroke-width="2"/>
+  <text x="146" y="539" class="text">The test proves the byte contract, not just that a query returned a row.</text>
+</svg>

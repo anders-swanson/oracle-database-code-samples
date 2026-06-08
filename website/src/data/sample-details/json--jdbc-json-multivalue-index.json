@@ -13,7 +13,7 @@
     "JSON",
     "Testcontainers"
   ],
-  "sourceUpdatedAt": "2026-05-13T17:55:46.706Z",
+  "sourceUpdatedAt": "2026-06-08T16:14:36.710Z",
   "metaTitle": "JDBC JSON Multivalue Index Sample | Oracle AI Database Code Samples",
   "metaDescription": "Plain JDBC sample that indexes scalar values inside JSON arrays with multivalue JSON indexes.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--jdbc-json-multivalue-index/",

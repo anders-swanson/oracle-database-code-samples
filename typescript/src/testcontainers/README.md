@@ -34,4 +34,4 @@ From the `typescript/` directory:
 npm run testcontainers-example
 ```
 
-The example test starts `gvenzl/oracle-free:23.26.1-slim-faststart`, waits for the database to become ready, and connects with the application user created by the container environment variables.
+The example test starts `gvenzl/oracle-free:23.26.2-slim-faststart`, waits for the database to become ready, and connects with the application user created by the container environment variables.

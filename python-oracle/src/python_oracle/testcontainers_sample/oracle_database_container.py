@@ -13,7 +13,7 @@ class OracleDatabaseContainer(DockerContainer):
                  app_user=APP_USER,
                  app_user_password=APP_USER_PASSWORD,
                  oracle_password=None,
-                 image="gvenzl/oracle-free:23.26.1-slim-faststart",
+                 image="gvenzl/oracle-free:23.26.2-slim-faststart",
                  db_name="freepdb1",
                  container_port=1521,
                  host="localhost",

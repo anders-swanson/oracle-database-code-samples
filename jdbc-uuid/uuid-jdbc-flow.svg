@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">JDBC UUID binding flow</title>
+  <desc id="desc">An 800 by 600 diagram showing Java UUID values converted to bytes, bound with PreparedStatement setBytes, stored in Oracle AI Database RAW(16), read with ResultSet getBytes, and reconstructed as UUID values.</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#14202a" flood-opacity="0.13"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#295f63"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .header { fill: #eef7f4; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 34px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .card { stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .label { font: 800 18px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .text { font: 600 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .code { font: 800 13px "Menlo", "Consolas", monospace; fill: #152330; }
+      .dark-title { font: 800 19px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .dark-text { font: 700 13px "Menlo", "Consolas", monospace; fill: #d9f4ef; }
+      .arrow { fill: none; stroke: #295f63; stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <rect class="header" width="800" height="132"/>
+  <path d="M0 504C116 456 244 450 380 500C514 548 652 524 800 466V600H0Z" fill="#2e6f95" opacity="0.07"/>
+
+  <text x="44" y="50" class="eyebrow">plain JDBC</text>
+  <text x="44" y="90" class="title">Bind Bytes, Read Bytes</text>
+  <text x="44" y="116" class="subtitle">The database stores binary data; Java owns the UUID conversion contract.</text>
+
+  <rect x="46" y="178" width="184" height="110" rx="6" fill="#ffffff" class="card"/>
+  <text x="68" y="214" class="label">Java UUID</text>
+  <text x="68" y="244" class="text">Application id value</text>
+  <text x="68" y="268" class="code">UUID</text>
+
+  <rect x="308" y="178" width="184" height="110" rx="6" fill="#f2c94c" class="card"/>
+  <text x="330" y="214" class="label">uuidToBytes</text>
+  <text x="330" y="244" class="text">MSB then LSB</text>
+  <text x="330" y="268" class="code">byte[16]</text>
+
+  <rect x="570" y="178" width="184" height="110" rx="6" fill="#152330" class="card"/>
+  <text x="592" y="214" class="dark-title">RAW(16)</text>
+  <text x="592" y="244" class="dark-text">primary key</text>
+  <text x="592" y="268" class="dark-text">16 bytes</text>
+
+  <path d="M230 233H308" class="arrow"/>
+  <path d="M492 233H570" class="arrow"/>
+  <text x="244" y="218" class="code">putLong</text>
+  <text x="506" y="218" class="code">setBytes</text>
+
+  <rect x="570" y="382" width="184" height="110" rx="6" fill="#152330" class="card"/>
+  <text x="592" y="418" class="dark-title">ResultSet</text>
+  <text x="592" y="448" class="dark-text">getBytes("id")</text>
+  <text x="592" y="472" class="dark-text">byte[16]</text>
+
+  <rect x="308" y="382" width="184" height="110" rx="6" fill="#9bd7d1" class="card"/>
+  <text x="330" y="418" class="label">bytesToUuid</text>
+  <text x="330" y="448" class="text">validate length</text>
+  <text x="330" y="472" class="code">new UUID(msb, lsb)</text>
+
+  <rect x="46" y="382" width="184" height="110" rx="6" fill="#ffffff" class="card"/>
+  <text x="68" y="418" class="label">Same UUID</text>
+  <text x="68" y="448" class="text">Round-trip value</text>
+  <text x="68" y="472" class="code">equals original</text>
+
+  <path d="M662 288V382" class="arrow"/>
+  <path d="M570 437H492" class="arrow"/>
+  <path d="M308 437H230" class="arrow"/>
+  <text x="506" y="422" class="code">getBytes</text>
+  <text x="244" y="422" class="code">getLong</text>
+</svg>

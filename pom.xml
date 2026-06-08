@@ -20,7 +20,7 @@
         <oracle.starters.version>26.1.1</oracle.starters.version>
         <spring.cloud.oracle.version>2.0.1</spring.cloud.oracle.version>
         <spring.cloud.version>5.0.0</spring.cloud.version>
-        <oracle.version>23.26.1.0.0</oracle.version>
+        <oracle.version>23.26.2.0.0</oracle.version>
         <oracle.spatial.version>23.26</oracle.spatial.version>
         <kafka.clients.version>3.9.1</kafka.clients.version>
         <oci.sdk.version>3.67.1</oci.sdk.version>
@@ -44,6 +44,7 @@
         <module>jdbc-graphql</module>
         <module>jdbc-hybrid-search</module>
         <module>jdbc-json-oracle-text</module>
+        <module>jdbc-uuid</module>
         <module>langchain4j-agent-memory</module>
         <module>database-per-service-example</module>
         <module>jdbc-property-graph</module>

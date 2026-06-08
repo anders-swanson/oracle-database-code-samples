@@ -34,4 +34,4 @@ From the `golang/` directory:
 go test ./testcontainers
 ```
 
-The test starts `gvenzl/oracle-free:23.26.1-slim-faststart`, connects as the application user, and verifies the database banner returned from `v$version`.
+The test starts `gvenzl/oracle-free:23.26.2-slim-faststart`, connects as the application user, and verifies the database banner returned from `v$version`.

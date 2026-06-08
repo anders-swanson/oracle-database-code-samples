@@ -1,6 +1,6 @@
 services:
   clientinfodb:
-    image: gvenzl/oracle-free:23.26.1-slim-faststart
+    image: gvenzl/oracle-free:23.26.2-slim-faststart
     container_name: configdb
     ports:
       - 1527:1521

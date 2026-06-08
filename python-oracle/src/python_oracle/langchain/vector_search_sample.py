@@ -1,9 +1,8 @@
 import getpass
 import os
 
-from langchain_community.vectorstores.utils import DistanceStrategy
 from langchain_openai import OpenAIEmbeddings
-from langchain_oracledb import OracleVS
+from langchain_oracledb.vectorstores import DistanceStrategy, OracleVS
 
 from src.python_oracle.testcontainers_sample.oracle_database_container import OracleDatabaseContainer
 

@@ -6,7 +6,7 @@ import type {Connection} from "oracledb";
 // Run the sample using "npm run testcontainers-example"
 export class OracleDatabaseContainer extends GenericContainer {
     constructor(
-        image: string = "gvenzl/oracle-free:23.26.1-slim-faststart",
+        image: string = "gvenzl/oracle-free:23.26.2-slim-faststart",
         private readonly port: number = 1521,
         private readonly username: string = "testuser",
         private readonly password: string = "Welcome12345",

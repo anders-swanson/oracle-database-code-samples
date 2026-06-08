@@ -13,7 +13,7 @@
     "TxEventQ",
     "Kafka"
   ],
-  "sourceUpdatedAt": "2026-04-21T19:57:02.156Z",
+  "sourceUpdatedAt": "2026-06-08T16:14:36.869Z",
   "metaTitle": "Migrate Apache Kafka to Oracle AI Database Transactional Event Queues (TxEventQ) | Oracle AI Database Code Samples",
   "metaDescription": "Step-by-step migration sample from Apache Kafka to Oracle AI Database Transactional Event Queues.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/migrate-kafka-to-oracle/",

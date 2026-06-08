@@ -14,7 +14,7 @@
     "Spring",
     "Security"
   ],
-  "sourceUpdatedAt": "2026-04-21T19:57:02.158Z",
+  "sourceUpdatedAt": "2026-06-08T16:14:36.584Z",
   "metaTitle": "News Event Streaming Application | Oracle AI Database Code Samples",
   "metaDescription": "Spring Boot application that ingests news events, stores them in Oracle AI Database, and supports vector search.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/news-event-streaming/",

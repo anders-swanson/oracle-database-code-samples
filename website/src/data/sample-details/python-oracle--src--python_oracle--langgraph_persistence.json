@@ -1,0 +1,22 @@
+{
+  "id": "python-oracle--src--python_oracle--langgraph_persistence",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/python-oracle/src/python_oracle/langgraph_persistence/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This sample shows a LangGraph travel approval workflow that persists graph state in Oracle AI Database with `langgraph-oracledb`.",
+  "highlights": [
+    "Python 3.13+",
+    "Poetry",
+    "Docker compatible environment",
+    "Local OCI configuration for OCI Generative AI on-demand chat"
+  ],
+  "features": [
+    "AI Agents",
+    "Testcontainers",
+    "Security"
+  ],
+  "sourceUpdatedAt": "2026-06-08T19:51:45.773Z",
+  "metaTitle": "LangGraph Persistence with Oracle AI Database | Oracle AI Database Code Samples",
+  "metaDescription": "Python LangGraph persistence sample using Oracle AI Database checkpoints, store, Testcontainers, and OCI chat.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--langgraph_persistence/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/python-oracle--src--python_oracle--langgraph_persistence.png"
+}

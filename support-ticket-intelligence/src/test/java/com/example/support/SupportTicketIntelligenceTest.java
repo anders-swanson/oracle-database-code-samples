@@ -34,7 +34,7 @@ class SupportTicketIntelligenceTest {
     private static final String LOG_PREFIX = "[support-ticket-intelligence]";
 
     // Start explicitly so TxEventQ grants are in place before Spring creates OKafka beans.
-    private static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.1-full-faststart")
+    private static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.2-full-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
             .withInitScripts("schema.sql", "data.sql")
             .withCreateContainerCmdModifier(command -> command.withHostName("localhost"))

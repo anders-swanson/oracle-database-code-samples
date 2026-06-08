@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 class DatabasePerServiceSampleRunnerTest {
     @Container
-    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.1-slim-faststart")
+    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.2-slim-faststart")
             .withStartupTimeout(Duration.ofMinutes(10))
             .withUsername("testuser")
             .withPassword("testpwd");

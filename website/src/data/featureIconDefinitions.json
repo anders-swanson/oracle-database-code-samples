@@ -55,6 +55,14 @@
     "file": "kafka.svg",
     "sourceLabel": "Database Apache Kafka"
   },
+  "LangChain": {
+    "file": "ai.svg",
+    "sourceLabel": "Artificial-Intelligence"
+  },
+  "LangGraph": {
+    "file": "graph.svg",
+    "sourceLabel": "Graph"
+  },
   "MCP": {
     "file": "mcp.svg",
     "sourceLabel": "Database-Tools-Service"
@@ -134,5 +142,13 @@
   "SQLcl": {
     "file": "sqlcl.svg",
     "sourceLabel": "SQL-Developer-Command-Line"
+  },
+  "Skills": {
+    "file": "mcp.svg",
+    "sourceLabel": "Database-Tools-Service"
+  },
+  "UUID": {
+    "file": "security.svg",
+    "sourceLabel": "Data-Security"
   }
 }

@@ -1,6 +1,6 @@
 services:
   pythonmcpdb:
-    image: gvenzl/oracle-free:23.26.1-slim-faststart
+    image: gvenzl/oracle-free:23.26.2-slim-faststart
     container_name: python-mcpdb
     ports:
       - 1531:1521

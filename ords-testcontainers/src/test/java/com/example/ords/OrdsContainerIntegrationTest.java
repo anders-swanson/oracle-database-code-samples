@@ -49,7 +49,7 @@ import org.testcontainers.utility.MountableFile;
 
 @Testcontainers(disabledWithoutDocker = true)
 class OrdsContainerIntegrationTest {
-    private static final String DATABASE_IMAGE = "gvenzl/oracle-free:23.26.1-slim-faststart";
+    private static final String DATABASE_IMAGE = "gvenzl/oracle-free:23.26.2-slim-faststart";
     private static final String DATABASE_ALIAS = "ordsdb";
     private static final String ADMIN_PASSWORD = "Welcome12345";
     private static final String DATABASE_CONNECTION = "jdbc:oracle:thin:@ordsdb:1521/freepdb1";

@@ -39,6 +39,14 @@
     "description": "Kafka-compatible eventing and migration paths backed by Oracle AI Database queues.",
     "useWhen": "Use when comparing separate-broker designs or moving Kafka-shaped workloads toward database-native eventing."
   },
+  "LangChain": {
+    "description": "Python and Java AI application workflows built with LangChain integrations.",
+    "useWhen": "Use when model calls, tools, retrieval, or agent orchestration should be wired through LangChain APIs."
+  },
+  "LangGraph": {
+    "description": "Stateful graph workflows for durable agent and approval-style application flows.",
+    "useWhen": "Use when an AI workflow needs checkpoints, pause/resume behavior, or explicit graph steps."
+  },
   "MCP": {
     "description": "Model Context Protocol samples that connect agents and tools to Oracle AI Database workflows.",
     "useWhen": "Use when AI tools need controlled access to SQL, metadata, or database-backed operations."
@@ -54,6 +62,10 @@
   "OCI": {
     "description": "Cloud integration samples that connect Oracle AI Database applications with OCI services.",
     "useWhen": "Use when local samples need to reflect deployment, secrets, or service integration patterns on OCI."
+  },
+  "Oracle AI Database": {
+    "description": "Core Oracle AI Database application samples for local development and integration testing.",
+    "useWhen": "Use when the first concern is connecting, persisting, or proving database-backed behavior before adding a specialized feature."
   },
   "ORDS": {
     "description": "Oracle REST Data Services samples for exposing database-backed APIs.",
@@ -79,6 +91,10 @@
     "description": "Command-line and agent workflows built around SQLcl access to Oracle AI Database.",
     "useWhen": "Use when developers or tools need scriptable SQL access, local automation, or MCP-backed database work."
   },
+  "Skills": {
+    "description": "Reusable workflow guidance for building and maintaining Oracle AI Database samples.",
+    "useWhen": "Use when Codex-assisted development needs repeatable sample-building, testing, or documentation procedures."
+  },
   "Testcontainers": {
     "description": "Disposable Oracle AI Database Free containers for repeatable local and integration tests.",
     "useWhen": "Use when tests need real database behavior without sharing a long-lived development instance."
@@ -102,5 +118,9 @@
   "Spatial": {
     "description": "Location-aware storage, indexing, and spatial queries over geometry data.",
     "useWhen": "Use when products ask about proximity, containment, routing, zones, or other location behavior."
+  },
+  "UUID": {
+    "description": "Identifier handling samples that show how application IDs map into Oracle AI Database columns.",
+    "useWhen": "Use when services need compact, portable primary keys that round-trip cleanly through database APIs."
   }
 }

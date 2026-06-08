@@ -4,7 +4,7 @@ import {MongoClient, type Collection} from "mongodb";
 
 import {OrdsContainer, type StartedOrdsContainer} from "../../src/testcontainers/ords_container.js";
 
-const DATABASE_IMAGE = "gvenzl/oracle-free:23.26.1-slim-faststart";
+const DATABASE_IMAGE = "gvenzl/oracle-free:23.26.2-slim-faststart";
 const DATABASE_ALIAS = "ordsdb";
 const ADMIN_PASSWORD = "Welcome12345";
 const DATABASE_CONNECTION = "jdbc:oracle:thin:@ordsdb:1521/freepdb1";

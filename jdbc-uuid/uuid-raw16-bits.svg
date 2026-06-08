@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Java UUID bits stored as RAW(16)</title>
+  <desc id="desc">An 800 by 600 diagram showing a Java UUID split into most significant and least significant 64 bit halves, packed into 16 bytes, and stored in a RAW(16) primary key.</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#14202a" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#295f63"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .band { fill: #eef7f4; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 34px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .label { font: 800 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .text { font: 600 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .code { font: 800 15px "Menlo", "Consolas", monospace; fill: #152330; }
+      .small-code { font: 800 12px "Menlo", "Consolas", monospace; fill: #152330; }
+      .card { fill: #ffffff; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .arrow { fill: none; stroke: #295f63; stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <rect class="band" width="800" height="132"/>
+  <path d="M0 486C132 452 260 458 388 500C514 542 650 520 800 462V600H0Z" fill="#2e6f95" opacity="0.08"/>
+
+  <text x="44" y="50" class="eyebrow">jdbc-uuid</text>
+  <text x="44" y="90" class="title">A UUID Is Two Longs, Then 16 Bytes</text>
+  <text x="44" y="116" class="subtitle">The sample writes Java UUID bits into RAW(16) without string formatting.</text>
+
+  <rect x="52" y="168" width="696" height="86" rx="6" class="card"/>
+  <text x="78" y="203" class="label">Java UUID</text>
+  <text x="78" y="232" class="code">2f4b6f9a-1d7e-4c6b-8d4a-2c8e5f9b0a11</text>
+
+  <path d="M400 254V304" class="arrow"/>
+
+  <rect x="70" y="318" width="290" height="96" rx="6" fill="#f2c94c" stroke="#152330" stroke-width="2" filter="url(#shadow)"/>
+  <text x="94" y="354" class="label">mostSignificantBits</text>
+  <text x="94" y="386" class="small-code">2F 4B 6F 9A 1D 7E 4C 6B</text>
+
+  <rect x="440" y="318" width="290" height="96" rx="6" fill="#9bd7d1" stroke="#152330" stroke-width="2" filter="url(#shadow)"/>
+  <text x="464" y="354" class="label">leastSignificantBits</text>
+  <text x="464" y="386" class="small-code">8D 4A 2C 8E 5F 9B 0A 11</text>
+
+  <path d="M214 414V460H340" class="arrow"/>
+  <path d="M586 414V460H466" class="arrow"/>
+
+  <rect x="212" y="468" width="376" height="76" rx="6" fill="#ffffff" stroke="#152330" stroke-width="2" filter="url(#shadow)"/>
+  <text x="238" y="500" class="label">RAW(16) primary key</text>
+  <text x="238" y="528" class="small-code">2F4B6F9A1D7E4C6B8D4A2C8E5F9B0A11</text>
+</svg>

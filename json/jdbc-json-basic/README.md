@@ -38,7 +38,7 @@ The program will insert a JSON document describing a product, fetch it back, upd
 ## Run the tests
 
 ```bash
-docker pull gvenzl/oracle-free:23.26.1-slim-faststart
+docker pull gvenzl/oracle-free:23.26.2-slim-faststart
 mvn test
 ```
 

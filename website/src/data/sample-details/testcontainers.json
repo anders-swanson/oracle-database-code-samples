@@ -7,7 +7,7 @@
   "features": [
     "Testcontainers"
   ],
-  "sourceUpdatedAt": "2026-04-22T16:13:17.314Z",
+  "sourceUpdatedAt": "2026-06-08T16:14:36.753Z",
   "metaTitle": "Oracle AI Database Testcontainers | Oracle AI Database Code Samples",
   "metaDescription": "Java Testcontainers samples for running Oracle AI Database Free in integration tests.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/testcontainers/",

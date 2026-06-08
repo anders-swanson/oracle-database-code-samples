@@ -159,7 +159,9 @@
           {
             "ids": [
               "golang--connection",
-              "sessionless-transactions"
+              "jdbc-uuid",
+              "sessionless-transactions",
+              "skills"
             ]
           }
         ]

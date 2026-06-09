@@ -15,7 +15,6 @@
     <description>Oracle Vector Search JDBC Implementation</description>
 
     <properties>
-        <langchain4j.version>0.36.2</langchain4j.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
     </properties>
@@ -24,13 +23,13 @@
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ojdbc11</artifactId>
-            <version>${oracle-database.version}</version>
+            <version>${oracle.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ucp</artifactId>
-            <version>${oracle-database.version}</version>
+            <version>${oracle.version}</version>
         </dependency>
 
         <!-- Test Dependencies -->
@@ -58,21 +57,10 @@
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
-            <version>${langchain4j.version}</version>
             <scope>test</scope>
         </dependency>
 
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>ai.djl.huggingface</groupId>
-                <artifactId>tokenizers</artifactId>
-                <version>0.28.0</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <plugins>

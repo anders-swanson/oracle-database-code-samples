@@ -17,7 +17,6 @@
 
     <properties>
         <exec.mainClass>com.example.support.Application</exec.mainClass>
-        <langchain4j.version>0.36.2</langchain4j.version>
     </properties>
 
     <dependencies>
@@ -47,7 +46,6 @@
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
-            <version>${langchain4j.version}</version>
         </dependency>
 
         <dependency>
@@ -71,14 +69,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>ai.djl.huggingface</groupId>
-                <artifactId>tokenizers</artifactId>
-                <version>0.28.0</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 </project>

@@ -16,6 +16,11 @@ Spring JPA (Java Persistence API) provides an abstraction layer over JPA using O
 
 This module includes idiomatic examples of [Spring JPA](https://spring.io/projects/spring-data-jpa) with [Oracle AI Database Free](https://andersswanson.dev/2025/05/22/oracle-database-for-free/).
 
+## Related Blog Posts
+
+- [Spring JPA By Example: One-to-One, Many-to-One, and Many-to-Many](https://andersswanson.dev/2025/06/11/spring-jpa-by-example-one-to-one-many-to-one-and-many-to-many/)
+- [Spring JPA: Paging, Sorting, and Filtering](https://andersswanson.dev/2025/06/11/spring-jpa-paging-sorting-and-filtering/)
+
 ### Basic JPA Entity Example
 
 The [com.example.relationships](./src/main/java/com/example) package defines a basic JPA entity and repository, using the [student](./src/test/resources/student.sql) schema.

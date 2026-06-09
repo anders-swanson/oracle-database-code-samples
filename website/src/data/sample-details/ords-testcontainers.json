@@ -4,16 +4,13 @@
   "blogPost": "https://andersswanson.dev/2026/04/07/test-ords-locally-with-testcontainers-oracle-ai-database-free-and-mongodb/",
   "readmeExcerpt": "This module demonstrates how to run Oracle REST Data Services (ORDS) with Testcontainers against an Oracle AI Database Free container.",
   "highlights": [
-    "Java 21+",
-    "Maven",
-    "Docker-compatible container runtime",
-    "Access to container-registry.oracle.com/database/ords:latest"
+    "[Polyglot, automated ORDS tests with Testcontainers](https://andersswanson.dev/2026/05/22/polyglot-ords-tests-with-testcontainers/)"
   ],
   "features": [
     "ORDS",
     "Testcontainers"
   ],
-  "sourceUpdatedAt": "2026-04-21T18:00:15.525Z",
+  "sourceUpdatedAt": "2026-06-09T19:11:49.929Z",
   "metaTitle": "ORDS Testcontainers | Oracle AI Database Code Samples",
   "metaDescription": "Testcontainers sample for running ORDS alongside Oracle AI Database Free in integration tests.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/ords-testcontainers/",

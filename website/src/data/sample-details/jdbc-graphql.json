@@ -1,7 +1,7 @@
 {
   "id": "jdbc-graphql",
   "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-graphql/README.md",
-  "blogPost": "",
+  "blogPost": "https://andersswanson.dev/2026/01/08/graphql-oracle-instantly-query-relational-data/",
   "readmeExcerpt": "This module demonstrates GraphQL over relational tables from a plain Java/JDBC application on Oracle AI Database.",
   "highlights": [
     "STUDENTS",
@@ -13,7 +13,7 @@
     "JSON",
     "SQL GraphQL"
   ],
-  "sourceUpdatedAt": "2026-04-21T18:03:19.220Z",
+  "sourceUpdatedAt": "2026-06-09T19:11:49.579Z",
   "metaTitle": "JDBC GraphQL | Oracle AI Database Code Samples",
   "metaDescription": "Plain JDBC sample that runs SQL GraphQL queries against Oracle AI Database tables.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-graphql/",

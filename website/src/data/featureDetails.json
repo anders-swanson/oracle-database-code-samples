@@ -87,6 +87,10 @@
     "description": "Spring Boot samples for persistence, configuration, messaging, tracing, and service integration.",
     "useWhen": "Use when Java services need common Spring patterns backed by Oracle AI Database."
   },
+  "Spring": {
+    "description": "Spring framework samples for data access, messaging, configuration, and application wiring.",
+    "useWhen": "Use when Java applications need Spring-managed components backed by Oracle AI Database."
+  },
   "SQLcl": {
     "description": "Command-line and agent workflows built around SQLcl access to Oracle AI Database.",
     "useWhen": "Use when developers or tools need scriptable SQL access, local automation, or MCP-backed database work."

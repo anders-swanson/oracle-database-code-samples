@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">LangChain Oracle component composition</title>
+  <desc id="desc">An 800 by 600 diagram showing runbook rows flowing through OracleDocLoader, OracleTextSplitter, OracleVS, Oracle Text retrieval, answer cache, and chat history in Oracle AI Database.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0 14 7 0 14Z" fill="#25323a"/>
+    </marker>
+    <style>
+      .bg { fill: #f7f8fa; }
+      .title { font: 700 32px Arial, sans-serif; fill: #182832; }
+      .subtitle { font: 400 17px Arial, sans-serif; fill: #425763; }
+      .zone-label { font: 700 14px Arial, sans-serif; fill: #43535d; letter-spacing: 0.7px; }
+      .box-title { font: 700 19px Arial, sans-serif; fill: #17262f; }
+      .body { font: 400 15px Arial, sans-serif; fill: #2f424d; }
+      .small { font: 700 13px Arial, sans-serif; fill: #43535d; }
+      .db { fill: #eaf6ee; stroke: #51865b; stroke-width: 2; }
+      .langchain { fill: #e8f4fb; stroke: #4d8ea9; stroke-width: 2; }
+      .answer { fill: #fff4dc; stroke: #b17a1a; stroke-width: 2; }
+      .card { fill: #ffffff; stroke: #25323a; stroke-opacity: 0.28; stroke-width: 1.5; }
+      .arrow { fill: none; stroke: #25323a; stroke-width: 3; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <text class="title" x="40" y="52">LangChain Oracle Composition</text>
+  <text class="subtitle" x="40" y="82">One sample wires retrieval, memory, and cache tables through Oracle AI Database.</text>
+
+  <rect class="db" x="40" y="122" width="190" height="330" rx="10" ry="10"/>
+  <text class="zone-label" x="62" y="154">SOURCE DATA</text>
+  <rect class="card" x="62" y="184" width="146" height="82" rx="8" ry="8"/>
+  <text class="box-title" x="82" y="216">Runbooks</text>
+  <text class="body" x="82" y="240">CLOB body</text>
+  <text class="body" x="82" y="262">metadata rows</text>
+  <rect class="card" x="62" y="302" width="146" height="92" rx="8" ry="8"/>
+  <text class="box-title" x="82" y="333">Oracle</text>
+  <text class="box-title" x="82" y="356">AI Database</text>
+  <text class="body" x="82" y="381">Free container</text>
+
+  <rect class="langchain" x="278" y="122" width="244" height="330" rx="10" ry="10"/>
+  <text class="zone-label" x="302" y="154">LANGCHAIN-ORACLEDB</text>
+  <rect class="card" x="302" y="182" width="196" height="58" rx="8" ry="8"/>
+  <text class="box-title" x="322" y="216">OracleDocLoader</text>
+  <rect class="card" x="302" y="264" width="196" height="58" rx="8" ry="8"/>
+  <text class="box-title" x="322" y="298">OracleTextSplitter</text>
+  <rect class="card" x="302" y="346" width="196" height="68" rx="8" ry="8"/>
+  <text class="box-title" x="322" y="379">OracleVS</text>
+  <text class="body" x="322" y="400">vectors + metadata</text>
+
+  <rect class="answer" x="570" y="122" width="190" height="330" rx="10" ry="10"/>
+  <text class="zone-label" x="592" y="154">ANSWER FLOW</text>
+  <rect class="card" x="592" y="184" width="146" height="68" rx="8" ry="8"/>
+  <text class="box-title" x="612" y="216">Vector</text>
+  <text class="body" x="612" y="238">semantic top-k</text>
+  <rect class="card" x="592" y="274" width="146" height="68" rx="8" ry="8"/>
+  <text class="box-title" x="612" y="306">Oracle Text</text>
+  <text class="body" x="612" y="328">keyword top-k</text>
+  <rect class="card" x="592" y="364" width="160" height="58" rx="8" ry="8"/>
+  <text class="box-title" x="612" y="398">Fused answer</text>
+
+  <path class="arrow" d="M230 224H297"/>
+  <path class="arrow" d="M400 240V259"/>
+  <path class="arrow" d="M400 322V341"/>
+  <path class="arrow" d="M498 380H587"/>
+  <path class="arrow" d="M665 252V269"/>
+  <path class="arrow" d="M665 342V359"/>
+
+  <rect class="db" x="110" y="492" width="580" height="68" rx="10" ry="10"/>
+  <text class="box-title" x="132" y="524">Persistence:</text>
+  <text class="small" x="314" y="522">OracleChatMessageHistory stores the exchange</text>
+  <text class="small" x="314" y="545">OracleSemanticCache serves the second matching prompt</text>
+</svg>

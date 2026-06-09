@@ -1,0 +1,22 @@
+{
+  "id": "python-oracle--src--python_oracle--langchain_retrieval",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/python-oracle/src/python_oracle/langchain_retrieval/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This sample shows how several `langchain-oracledb` components work together in one small support-runbook workflow on Oracle AI Database.",
+  "highlights": [
+    "Python 3.13+",
+    "Poetry",
+    "Docker compatible environment",
+    "Network access on first run so sentence-transformers can download sentence-transformers/all-MiniLM-L6-v2, unless the model is already cached"
+  ],
+  "features": [
+    "Vector Search",
+    "AI Agents",
+    "Testcontainers"
+  ],
+  "sourceUpdatedAt": "2026-06-09T18:27:45.932Z",
+  "metaTitle": "LangChain Retrieval | Oracle AI Database Code Samples",
+  "metaDescription": "Compose LangChain Oracle components with all-MiniLM retrieval on Oracle AI Database.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--langchain_retrieval/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/python-oracle--src--python_oracle--langchain_retrieval.png"
+}

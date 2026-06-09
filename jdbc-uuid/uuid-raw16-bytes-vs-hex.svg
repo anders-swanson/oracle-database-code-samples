@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="raw16-title raw16-desc">
+  <title id="raw16-title">RAW(16) bytes compared with hexadecimal display</title>
+  <desc id="raw16-desc">An 800 by 600 diagram showing that Oracle AI Database RAW(16) stores a maximum payload of 16 bytes, while the same 16 byte UUID displays as 32 hexadecimal characters because each byte is shown by two hex characters. It also notes that physical row storage can include overhead beyond the payload.</desc>
+  <defs>
+    <filter id="soft-shadow" x="-12%" y="-16%" width="124%" height="136%">
+      <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#14202a" flood-opacity="0.14"/>
+    </filter>
+
+    <style>
+      .bg { fill: #fbfcf7; }
+      .header { fill: #eef7f4; }
+      .wave { fill: #4b7f52; opacity: 0.08; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 32px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .section { font: 800 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .label { font: 800 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .small { font: 600 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .note { font: 700 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .code { font: 800 13px "Menlo", "Consolas", monospace; fill: #152330; }
+      .byte { fill: #f2c94c; stroke: #152330; stroke-width: 1.7; }
+      .hex { fill: #ffffff; stroke: #245f73; stroke-width: 1.4; }
+      .panel { fill: #ffffff; stroke: #152330; stroke-width: 2; filter: url(#soft-shadow); }
+      .accent { fill: #9bd7d1; stroke: #152330; stroke-width: 2; filter: url(#soft-shadow); }
+      .dark { fill: #152330; }
+      .darkText { font: 800 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .darkSmall { font: 700 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9f4ef; }
+      .accentTitle { font: 800 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .accentSmall { font: 700 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .connector { stroke: #245f73; stroke-width: 2.5; stroke-linecap: round; marker-end: url(#down-arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <rect class="header" width="800" height="128"/>
+  <path class="wave" d="M0 520C126 470 258 468 388 516C520 564 660 534 800 478V600H0Z"/>
+
+  <text x="44" y="48" class="eyebrow">Oracle AI Database RAW(16)</text>
+  <text x="44" y="88" class="title">16 Bytes Stored, 32 Hex Characters Shown</text>
+  <text x="44" y="114" class="subtitle">RAW(n) length is bytes, not text characters.</text>
+
+  <rect x="48" y="152" width="704" height="64" rx="6" class="panel"/>
+  <text x="72" y="180" class="section">Sample UUID</text>
+  <text x="72" y="204" class="code">2f4b6f9a-1d7e-4c6b-8d4a-2c8e5f9b0a11</text>
+  <text x="546" y="180" class="small">stored as binary,</text>
+  <text x="546" y="200" class="small">not formatted text</text>
+
+  <text x="48" y="258" class="section">RAW(16) payload: 16 byte slots</text>
+  <g aria-label="Sixteen byte slots">
+    <rect x="58" y="278" width="36" height="44" rx="4" class="byte"/><text x="70" y="305" class="code">2F</text>
+    <rect x="100" y="278" width="36" height="44" rx="4" class="byte"/><text x="112" y="305" class="code">4B</text>
+    <rect x="142" y="278" width="36" height="44" rx="4" class="byte"/><text x="154" y="305" class="code">6F</text>
+    <rect x="184" y="278" width="36" height="44" rx="4" class="byte"/><text x="196" y="305" class="code">9A</text>
+    <rect x="226" y="278" width="36" height="44" rx="4" class="byte"/><text x="238" y="305" class="code">1D</text>
+    <rect x="268" y="278" width="36" height="44" rx="4" class="byte"/><text x="280" y="305" class="code">7E</text>
+    <rect x="310" y="278" width="36" height="44" rx="4" class="byte"/><text x="322" y="305" class="code">4C</text>
+    <rect x="352" y="278" width="36" height="44" rx="4" class="byte"/><text x="364" y="305" class="code">6B</text>
+    <rect x="394" y="278" width="36" height="44" rx="4" class="byte"/><text x="406" y="305" class="code">8D</text>
+    <rect x="436" y="278" width="36" height="44" rx="4" class="byte"/><text x="448" y="305" class="code">4A</text>
+    <rect x="478" y="278" width="36" height="44" rx="4" class="byte"/><text x="490" y="305" class="code">2C</text>
+    <rect x="520" y="278" width="36" height="44" rx="4" class="byte"/><text x="532" y="305" class="code">8E</text>
+    <rect x="562" y="278" width="36" height="44" rx="4" class="byte"/><text x="574" y="305" class="code">5F</text>
+    <rect x="604" y="278" width="36" height="44" rx="4" class="byte"/><text x="616" y="305" class="code">9B</text>
+    <rect x="646" y="278" width="36" height="44" rx="4" class="byte"/><text x="658" y="305" class="code">0A</text>
+    <rect x="688" y="278" width="36" height="44" rx="4" class="byte"/><text x="700" y="305" class="code">11</text>
+  </g>
+  <text x="58" y="344" class="small">01</text><text x="100" y="344" class="small">02</text><text x="142" y="344" class="small">03</text><text x="184" y="344" class="small">04</text>
+  <text x="226" y="344" class="small">05</text><text x="268" y="344" class="small">06</text><text x="310" y="344" class="small">07</text><text x="352" y="344" class="small">08</text>
+  <text x="394" y="344" class="small">09</text><text x="436" y="344" class="small">10</text><text x="478" y="344" class="small">11</text><text x="520" y="344" class="small">12</text>
+  <text x="562" y="344" class="small">13</text><text x="604" y="344" class="small">14</text><text x="646" y="344" class="small">15</text><text x="688" y="344" class="small">16</text>
+
+  <line x1="400" y1="354" x2="400" y2="384" class="connector"/>
+
+  <text x="48" y="410" class="section">Hex display: 32 characters</text>
+  <g aria-label="Thirty two hexadecimal characters">
+    <rect x="80" y="430" width="17" height="32" rx="3" class="hex"/><text x="84" y="452" class="code">2</text>
+    <rect x="99" y="430" width="17" height="32" rx="3" class="hex"/><text x="103" y="452" class="code">F</text>
+    <rect x="118" y="430" width="17" height="32" rx="3" class="hex"/><text x="122" y="452" class="code">4</text>
+    <rect x="137" y="430" width="17" height="32" rx="3" class="hex"/><text x="141" y="452" class="code">B</text>
+    <rect x="156" y="430" width="17" height="32" rx="3" class="hex"/><text x="160" y="452" class="code">6</text>
+    <rect x="175" y="430" width="17" height="32" rx="3" class="hex"/><text x="179" y="452" class="code">F</text>
+    <rect x="194" y="430" width="17" height="32" rx="3" class="hex"/><text x="198" y="452" class="code">9</text>
+    <rect x="213" y="430" width="17" height="32" rx="3" class="hex"/><text x="217" y="452" class="code">A</text>
+    <rect x="232" y="430" width="17" height="32" rx="3" class="hex"/><text x="236" y="452" class="code">1</text>
+    <rect x="251" y="430" width="17" height="32" rx="3" class="hex"/><text x="255" y="452" class="code">D</text>
+    <rect x="270" y="430" width="17" height="32" rx="3" class="hex"/><text x="274" y="452" class="code">7</text>
+    <rect x="289" y="430" width="17" height="32" rx="3" class="hex"/><text x="293" y="452" class="code">E</text>
+    <rect x="308" y="430" width="17" height="32" rx="3" class="hex"/><text x="312" y="452" class="code">4</text>
+    <rect x="327" y="430" width="17" height="32" rx="3" class="hex"/><text x="331" y="452" class="code">C</text>
+    <rect x="346" y="430" width="17" height="32" rx="3" class="hex"/><text x="350" y="452" class="code">6</text>
+    <rect x="365" y="430" width="17" height="32" rx="3" class="hex"/><text x="369" y="452" class="code">B</text>
+    <rect x="384" y="430" width="17" height="32" rx="3" class="hex"/><text x="388" y="452" class="code">8</text>
+    <rect x="403" y="430" width="17" height="32" rx="3" class="hex"/><text x="407" y="452" class="code">D</text>
+    <rect x="422" y="430" width="17" height="32" rx="3" class="hex"/><text x="426" y="452" class="code">4</text>
+    <rect x="441" y="430" width="17" height="32" rx="3" class="hex"/><text x="445" y="452" class="code">A</text>
+    <rect x="460" y="430" width="17" height="32" rx="3" class="hex"/><text x="464" y="452" class="code">2</text>
+    <rect x="479" y="430" width="17" height="32" rx="3" class="hex"/><text x="483" y="452" class="code">C</text>
+    <rect x="498" y="430" width="17" height="32" rx="3" class="hex"/><text x="502" y="452" class="code">8</text>
+    <rect x="517" y="430" width="17" height="32" rx="3" class="hex"/><text x="521" y="452" class="code">E</text>
+    <rect x="536" y="430" width="17" height="32" rx="3" class="hex"/><text x="540" y="452" class="code">5</text>
+    <rect x="555" y="430" width="17" height="32" rx="3" class="hex"/><text x="559" y="452" class="code">F</text>
+    <rect x="574" y="430" width="17" height="32" rx="3" class="hex"/><text x="578" y="452" class="code">9</text>
+    <rect x="593" y="430" width="17" height="32" rx="3" class="hex"/><text x="597" y="452" class="code">B</text>
+    <rect x="612" y="430" width="17" height="32" rx="3" class="hex"/><text x="616" y="452" class="code">0</text>
+    <rect x="631" y="430" width="17" height="32" rx="3" class="hex"/><text x="635" y="452" class="code">A</text>
+    <rect x="650" y="430" width="17" height="32" rx="3" class="hex"/><text x="654" y="452" class="code">1</text>
+    <rect x="669" y="430" width="17" height="32" rx="3" class="hex"/><text x="673" y="452" class="code">1</text>
+  </g>
+
+  <rect x="48" y="492" width="232" height="70" rx="6" class="accent"/>
+  <text x="76" y="516" class="accentTitle">RAW(16)</text>
+  <text x="76" y="538" class="accentSmall">maximum payload:</text>
+  <text x="76" y="553" class="accentSmall">16 bytes</text>
+
+  <rect x="306" y="492" width="200" height="70" rx="6" class="dark"/>
+  <text x="331" y="520" class="darkText">16 x 2 = 32</text>
+  <text x="331" y="542" class="darkSmall">hex characters on display</text>
+
+  <rect x="546" y="492" width="184" height="70" rx="6" class="panel"/>
+  <text x="568" y="520" class="note">Row storage can</text>
+  <text x="568" y="542" class="note">add overhead bytes</text>
+</svg>

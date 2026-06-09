@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Oracle AI Database persistence surfaces for LangChain</title>
+  <desc id="desc">An 800 by 600 diagram showing how the sample stores source rows, vector chunks, chat messages, and semantic cache entries in Oracle AI Database.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f8fa; }
+      .title { font: 700 31px Arial, sans-serif; fill: #182832; }
+      .subtitle { font: 400 17px Arial, sans-serif; fill: #425763; }
+      .db { fill: #eaf6ee; stroke: #51865b; stroke-width: 2; }
+      .card { fill: #ffffff; stroke: #243642; stroke-opacity: 0.25; stroke-width: 1.5; }
+      .chip { fill: #243642; }
+      .chip-text { font: 700 15px Arial, sans-serif; fill: #ffffff; }
+      .box-title { font: 700 20px Arial, sans-serif; fill: #182832; }
+      .body { font: 400 15px Arial, sans-serif; fill: #2f424d; }
+      .label { font: 700 14px Arial, sans-serif; fill: #43535d; letter-spacing: 0.6px; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <text class="title" x="40" y="52">LangChain State in Oracle AI Database</text>
+  <text class="subtitle" x="40" y="82">The sample uses separate database surfaces for data, retrieval, memory, and cache.</text>
+
+  <rect class="db" x="70" y="122" width="660" height="396" rx="14" ry="14"/>
+  <text class="label" x="104" y="158">ORACLE AI DATABASE FREE</text>
+  <text class="body" x="104" y="184">Provisioned by Testcontainers for the sample and integration test.</text>
+
+  <rect class="card" x="104" y="224" width="280" height="98" rx="8" ry="8"/>
+  <rect class="chip" x="126" y="246" width="72" height="28" rx="14" ry="14"/>
+  <text class="chip-text" x="145" y="266">01</text>
+  <text class="box-title" x="216" y="269">Source rows</text>
+  <text class="body" x="126" y="300">Runbook CLOBs and metadata</text>
+
+  <rect class="card" x="426" y="224" width="280" height="98" rx="8" ry="8"/>
+  <rect class="chip" x="448" y="246" width="72" height="28" rx="14" ry="14"/>
+  <text class="chip-text" x="467" y="266">02</text>
+  <text class="box-title" x="538" y="269">Vector chunks</text>
+  <text class="body" x="448" y="300">OracleVS text, JSON, vectors</text>
+
+  <rect class="card" x="104" y="366" width="280" height="98" rx="8" ry="8"/>
+  <rect class="chip" x="126" y="388" width="72" height="28" rx="14" ry="14"/>
+  <text class="chip-text" x="145" y="408">03</text>
+  <text class="box-title" x="216" y="411">Chat history</text>
+  <text class="body" x="126" y="442">Human and AI messages by session</text>
+
+  <rect class="card" x="426" y="366" width="280" height="98" rx="8" ry="8"/>
+  <rect class="chip" x="448" y="388" width="72" height="28" rx="14" ry="14"/>
+  <text class="chip-text" x="467" y="408">04</text>
+  <text class="box-title" x="538" y="411">Semantic cache</text>
+  <text class="body" x="448" y="442">Prompt embeddings and answers</text>
+</svg>

@@ -1,13 +1,13 @@
 {
   "id": "jdbc-event-streaming",
   "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-event-streaming/README.md",
-  "blogPost": "",
+  "blogPost": "https://andersswanson.dev/2025/09/25/consumers-and-message-retention-in-database-driven-event-streaming/",
   "readmeExcerpt": "Example of streaming events using a plain JDBC connection for Oracle AI Database Transactional Event Queues (TxEventQ).",
   "highlights": [],
   "features": [
     "TxEventQ"
   ],
-  "sourceUpdatedAt": "2026-04-21T19:57:02.146Z",
+  "sourceUpdatedAt": "2026-06-09T19:11:49.406Z",
   "metaTitle": "JDBC Event Streaming | Oracle AI Database Code Samples",
   "metaDescription": "Plain JDBC sample for producing and consuming TxEventQ messages with PL/SQL helpers.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-event-streaming/",

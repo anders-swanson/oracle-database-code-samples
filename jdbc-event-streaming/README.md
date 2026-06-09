@@ -7,7 +7,7 @@ tags:
   - JDBC
   - PL/SQL
   - TxEventQ
-blog_post: ""
+blog_post: "https://andersswanson.dev/2025/09/25/consumers-and-message-retention-in-database-driven-event-streaming/"
 ---
 
 # JDBC Event Streaming

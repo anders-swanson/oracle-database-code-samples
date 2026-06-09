@@ -3,11 +3,13 @@
   "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/testcontainers/README.md",
   "blogPost": "https://andersswanson.dev/2025/05/29/easily-test-oracle-database-applications-with-testcontainers/",
   "readmeExcerpt": "This module provides examples using [Testcontainers](https://java.testcontainers.org/) with [Oracle AI Database Free](https://www.oracle.com/database/free/) to test your Oracle AI Database Java applications using dispoable containers.",
-  "highlights": [],
+  "highlights": [
+    "[Learn Testcontainers Java with Oracle AI Database Free](https://andersswanson.dev/2025/09/11/learn-testcontainers-java-with-oracle-database-free/)"
+  ],
   "features": [
     "Testcontainers"
   ],
-  "sourceUpdatedAt": "2026-06-08T16:14:36.753Z",
+  "sourceUpdatedAt": "2026-06-09T19:11:50.106Z",
   "metaTitle": "Oracle AI Database Testcontainers | Oracle AI Database Code Samples",
   "metaDescription": "Java Testcontainers samples for running Oracle AI Database Free in integration tests.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/testcontainers/",

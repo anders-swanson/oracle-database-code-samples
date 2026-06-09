@@ -8,7 +8,7 @@ tags:
   - Java
   - JDBC
   - JSON
-blog_post: ""
+blog_post: "https://andersswanson.dev/2026/01/08/graphql-oracle-instantly-query-relational-data/"
 ---
 
 # JDBC GraphQL

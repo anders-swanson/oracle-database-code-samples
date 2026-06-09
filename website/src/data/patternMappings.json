@@ -97,6 +97,7 @@
       "sampleIds": [
         "jdbc-hybrid-search",
         "ai-vector-search",
+        "python-oracle--src--python_oracle--langchain_retrieval",
         "python-oracle--src--python_oracle--langchain",
         "python-oracle--src--python_oracle--database",
         "sql",
@@ -122,6 +123,7 @@
       "sampleIds": [
         "langchain4j-agent-memory",
         "mcp-agent",
+        "python-oracle--src--python_oracle--langchain_retrieval",
         "python-oracle--src--python_oracle--langchain",
         "python-oracle--src--python_oracle--langgraph_persistence",
         "python-oracle--src--python_oracle--mcp_agent"

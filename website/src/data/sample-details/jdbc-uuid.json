@@ -2,19 +2,19 @@
   "id": "jdbc-uuid",
   "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-uuid/README.md",
   "blogPost": "",
-  "readmeExcerpt": "This sample shows the smallest useful patterns for storing Java `UUID` primary keys in Oracle AI Database with plain JDBC and Spring Data JPA.",
+  "readmeExcerpt": "You can store UUID primary keys as strings, but then the schema stores text for a value that is really 128 bits.",
   "highlights": [
-    "Java UUID values can be stored compactly as RAW(16) primary keys.",
-    "The conversion is explicit and bit-preserving.",
-    "JDBC can bind and read the value as bytes without string formatting.",
-    "Spring Data JPA can persist and find entities by UUID while Oracle AI Database stores the id as RAW(16)."
+    "Java UUID values can be stored as RAW(16) primary keys without string formatting.",
+    "The JDBC conversion is explicit: most-significant bits first, least-significant bits second.",
+    "Spring Data JPA can keep UUID as the repository id type while Oracle AI Database stores the id as RAW(16).",
+    "Testcontainers tests verify the column metadata, stored byte length, byte order, and lookup behavior."
   ],
   "features": [
     "Testcontainers",
     "Spring"
   ],
-  "sourceUpdatedAt": "2026-06-09T14:05:41.941Z",
-  "metaTitle": "JDBC and JPA UUID Primary Keys | Oracle AI Database Code Samples",
+  "sourceUpdatedAt": "2026-06-09T17:35:07.434Z",
+  "metaTitle": "Java UUID Primary Keys as RAW(16) | Oracle AI Database Code Samples",
   "metaDescription": "JDBC and Spring Data JPA sample that stores Java UUID primary keys as RAW(16) values in Oracle AI Database.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-uuid/",
   "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/jdbc-uuid.png"

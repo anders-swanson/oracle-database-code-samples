@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="paths-title paths-desc">
+  <title id="paths-title">JDBC and JPA UUID storage paths</title>
+  <desc id="paths-desc">An 800 by 600 diagram comparing the jdbc-uuid sample storage paths. The JDBC section converts a Java UUID to byte array data and binds it with PreparedStatement setBytes into RAW(16). The JPA section maps a UUID id with Hibernate binary UUID binding and a RAW(16) column definition into the same maximum 16-byte storage shape in Oracle AI Database.</desc>
+  <defs>
+    <filter id="path-shadow" x="-12%" y="-16%" width="124%" height="136%">
+      <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#14202a" flood-opacity="0.14"/>
+    </filter>
+    <marker id="path-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#245f73"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .header { fill: #eef7f4; }
+      .band { fill: #4b7f52; opacity: 0.08; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 30px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .laneTitle { font: 800 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .stepTitle { font: 800 15px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .stepText { font: 600 12px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .code { font: 800 11px "Menlo", "Consolas", monospace; fill: #152330; }
+      .darkTitle { font: 800 15px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .darkText { font: 700 12px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9f4ef; }
+      .card { fill: #ffffff; stroke: #152330; stroke-width: 2; filter: url(#path-shadow); }
+      .jdbc { fill: #f2c94c; stroke: #152330; stroke-width: 2; filter: url(#path-shadow); }
+      .jpa { fill: #9bd7d1; stroke: #152330; stroke-width: 2; filter: url(#path-shadow); }
+      .db { fill: #152330; stroke: #152330; stroke-width: 2; filter: url(#path-shadow); }
+      .arrow { fill: none; stroke: #245f73; stroke-width: 3.4; stroke-linecap: round; marker-end: url(#path-arrow); }
+      .divider { stroke: #c8d8d2; stroke-width: 2; stroke-dasharray: 6 8; }
+      .badge { fill: #ffffff; stroke: #4b7f52; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <rect class="header" width="800" height="124"/>
+  <path class="band" d="M0 520C120 478 252 470 386 514C526 560 660 534 800 480V600H0Z"/>
+
+  <text x="44" y="48" class="eyebrow">jdbc-uuid sample</text>
+  <text x="44" y="88" class="title">UUID Storage Paths: JDBC then JPA</text>
+  <text x="44" y="114" class="subtitle">Both paths store this sample's UUID value as 16 bytes in Oracle AI Database.</text>
+
+  <line x1="46" y1="350" x2="754" y2="350" class="divider"/>
+
+  <text x="50" y="168" class="laneTitle">1. JDBC section</text>
+  <rect x="52" y="190" width="126" height="82" rx="6" class="card"/>
+  <text x="70" y="221" class="stepTitle">Java UUID</text>
+  <text x="70" y="244" class="stepText">application value</text>
+  <text x="70" y="262" class="code">UUID</text>
+
+  <rect x="222" y="190" width="126" height="82" rx="6" class="jdbc"/>
+  <text x="240" y="221" class="stepTitle">uuidToBytes</text>
+  <text x="240" y="244" class="stepText">MSB then LSB</text>
+  <text x="240" y="262" class="code">byte[16]</text>
+
+  <rect x="392" y="190" width="130" height="82" rx="6" class="card"/>
+  <text x="410" y="221" class="stepTitle">JDBC bind</text>
+  <text x="410" y="244" class="stepText">PreparedStatement</text>
+  <text x="410" y="262" class="code">setBytes(...)</text>
+
+  <rect x="562" y="190" width="190" height="82" rx="6" class="db"/>
+  <text x="584" y="221" class="darkTitle">UUID_ORDERS.ID</text>
+  <text x="584" y="244" class="darkText">RAW(16) primary key</text>
+  <text x="584" y="262" class="darkText">max 16-byte payload</text>
+
+  <path d="M178 231H222" class="arrow"/>
+  <path d="M348 231H392" class="arrow"/>
+  <path d="M522 231H562" class="arrow"/>
+
+  <text x="50" y="384" class="laneTitle">2. JPA section</text>
+  <rect x="52" y="406" width="126" height="82" rx="6" class="card"/>
+  <text x="70" y="437" class="stepTitle">JpaOrder.id</text>
+  <text x="70" y="460" class="stepText">entity field</text>
+  <text x="70" y="478" class="code">UUID</text>
+
+  <rect x="222" y="406" width="126" height="82" rx="6" class="jpa"/>
+  <text x="240" y="435" class="stepTitle">Mapping</text>
+  <text x="240" y="458" class="code">@JdbcTypeCode</text>
+  <text x="240" y="476" class="code">RAW(16)</text>
+
+  <rect x="392" y="406" width="126" height="82" rx="6" class="card"/>
+  <text x="410" y="437" class="stepTitle">Hibernate</text>
+  <text x="410" y="460" class="stepText">binary UUID bind</text>
+  <text x="410" y="478" class="code">SqlTypes.BINARY</text>
+
+  <rect x="562" y="406" width="190" height="82" rx="6" class="db"/>
+  <text x="584" y="432" class="darkTitle">JPA_UUID_ORDERS</text>
+  <text x="584" y="455" class="darkText">ID RAW(16) primary key</text>
+  <text x="584" y="475" class="darkText">max 16-byte payload</text>
+
+  <path d="M178 447H222" class="arrow"/>
+  <path d="M348 447H392" class="arrow"/>
+  <path d="M518 447H562" class="arrow"/>
+
+  <rect x="98" y="304" width="604" height="48" rx="6" class="badge"/>
+  <text x="124" y="334" class="stepTitle">Read path:</text>
+  <text x="224" y="334" class="stepText">tests compare stored bytes with uuidToBytes(...).</text>
+</svg>

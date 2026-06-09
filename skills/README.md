@@ -5,6 +5,7 @@ tags:
   - AI
   - Oracle AI Database
   - Skills
+blog_post: "https://andersswanson.dev/2026/05/20/an-agent-skill-that-uses-kafka-java-apis-for-oracle-ai-database/"
 ---
 
 # Skills

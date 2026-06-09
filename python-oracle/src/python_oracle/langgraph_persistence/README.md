@@ -6,7 +6,7 @@ tags:
   - python
   - LangChain
   - Testcontainers
-blog_post: ""
+blog_post: "https://andersswanson.dev/2026/06/09/langgraph-persistence-with-oracle-ai-database/"
 ---
 
 # LangGraph Persistence with Oracle AI Database

@@ -15,6 +15,10 @@ This module provides examples using [Testcontainers](https://java.testcontainers
 
 The `gvenzl/oracle-free` Oracle AI Database container images are recommended for use with Testcontainers and Java. The examples in this module use the Oracle AI Database 26ai Free image `gvenzl/oracle-free:23.26.2-slim-faststart`.
 
+## Related Blog Posts
+
+- [Learn Testcontainers Java with Oracle AI Database Free](https://andersswanson.dev/2025/09/11/learn-testcontainers-java-with-oracle-database-free/)
+
 ### [GetDatabaseConnectionTest](./src/test/java/com/example/GetDatabaseConnectionTest.java)
 
 This test implements a basic Oracle AI Database test with Testcontainers. The version of the containerized database is queried to verify the test connection works.
@@ -38,4 +42,3 @@ The SysdbaInitTest setup script applies grants to a test user to manage Oracle A
 ### [reusable package](./src/test/java/com/example/reusable/README.md)
 
 This package provides sample tests with a reusable Oracle AI Database container, allowing you to reduce startup time between database test suites.
-

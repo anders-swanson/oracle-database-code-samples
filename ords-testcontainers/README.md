@@ -19,6 +19,10 @@ The sample mirrors the [ords-docker-compose](../ords-docker-compose/README.md) m
 
 ![container diagram](test-orchestration.svg)
 
+## Related Blog Posts
+
+- [Polyglot, automated ORDS tests with Testcontainers](https://andersswanson.dev/2026/05/22/polyglot-ords-tests-with-testcontainers/)
+
 ## Prerequisites
 
 - Java 21+ 

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Runbook retrieval ranking</title>
+  <desc id="desc">An 800 by 600 diagram comparing vector search, Oracle Text search, and rank fusion for a VPN over Wi-Fi support question.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0 14 7 0 14Z" fill="#243642"/>
+    </marker>
+    <style>
+      .bg { fill: #f7f8fa; }
+      .title { font: 700 32px Arial, sans-serif; fill: #182832; }
+      .subtitle { font: 400 17px Arial, sans-serif; fill: #425763; }
+      .label { font: 700 16px Arial, sans-serif; fill: #43535d; letter-spacing: 0.5px; }
+      .box-title { font: 700 20px Arial, sans-serif; fill: #182832; }
+      .body { font: 400 15px Arial, sans-serif; fill: #2f424d; }
+      .rank { font: 700 24px Arial, sans-serif; fill: #ffffff; }
+      .card { fill: #ffffff; stroke: #243642; stroke-opacity: 0.25; stroke-width: 1.5; }
+      .query { fill: #e8f4fb; stroke: #4d8ea9; stroke-width: 2; }
+      .semantic { fill: #eaf6ee; stroke: #51865b; stroke-width: 2; }
+      .keyword { fill: #fff4dc; stroke: #b17a1a; stroke-width: 2; }
+      .fused { fill: #f2eafa; stroke: #7b5aa6; stroke-width: 2; }
+      .badge { fill: #243642; }
+      .arrow { fill: none; stroke: #243642; stroke-width: 3; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <text class="title" x="40" y="52">Two Retrieval Views, One Answer</text>
+  <text class="subtitle" x="40" y="82">The sample checks semantic similarity and keyword evidence before choosing a runbook.</text>
+
+  <rect class="query" x="60" y="122" width="680" height="78" rx="10" ry="10"/>
+  <text class="label" x="86" y="153">SUPPORT QUESTION</text>
+  <text class="box-title" x="86" y="181">VPN disconnects on Wi-Fi but stays connected on Ethernet</text>
+
+  <rect class="semantic" x="60" y="250" width="300" height="184" rx="10" ry="10"/>
+  <text class="label" x="88" y="283">VECTOR SEARCH</text>
+  <circle class="badge" cx="102" cy="334" r="24"/>
+  <text class="rank" x="95" y="343">1</text>
+  <text class="box-title" x="142" y="327">Stabilize VPN</text>
+  <text class="box-title" x="142" y="352">over Wi-Fi</text>
+  <text class="body" x="88" y="391">Matches VPN, Wi-Fi, disconnect,</text>
+  <text class="body" x="88" y="414">adapter, and Ethernet signals.</text>
+
+  <rect class="keyword" x="440" y="250" width="300" height="184" rx="10" ry="10"/>
+  <text class="label" x="468" y="283">ORACLE TEXT</text>
+  <circle class="badge" cx="482" cy="334" r="24"/>
+  <text class="rank" x="475" y="343">1</text>
+  <text class="box-title" x="522" y="327">Stabilize VPN</text>
+  <text class="box-title" x="522" y="352">over Wi-Fi</text>
+  <text class="body" x="468" y="391">Finds literal support terms in</text>
+  <text class="body" x="468" y="414">the same stored chunk text.</text>
+
+  <path class="arrow" d="M210 200V245"/>
+  <path class="arrow" d="M590 200V245"/>
+
+  <rect class="fused" x="190" y="482" width="420" height="72" rx="10" ry="10"/>
+  <text class="label" x="216" y="512">RANK FUSION</text>
+  <text class="box-title" x="216" y="540">Answer from the shared top runbook</text>
+  <path class="arrow" d="M300 434C325 456 348 467 382 480"/>
+  <path class="arrow" d="M500 434C475 456 452 467 418 480"/>
+</svg>

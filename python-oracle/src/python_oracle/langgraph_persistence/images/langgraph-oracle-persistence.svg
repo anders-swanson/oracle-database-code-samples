@@ -1,117 +1,92 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
   <title id="title">LangGraph persistence architecture with Oracle AI Database</title>
-  <desc id="desc">An 800 by 600 architecture diagram showing a Python LangGraph travel approval workflow using deterministic policy checks, OCI approval brief drafting, OracleSaver checkpoints, OracleStore records, human approval, and Oracle AI Database Free.</desc>
+  <desc id="desc">An 800 by 600 architecture diagram with three clear zones: a Python LangGraph sample, a review loop, and Oracle AI Database Free persistence using OracleSaver for checkpoints and OracleStore for approved records.</desc>
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f8f3ea"/>
-      <stop offset="55%" stop-color="#fbfbf8"/>
-      <stop offset="100%" stop-color="#e7f2f4"/>
-    </linearGradient>
-    <linearGradient id="graph" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#123047"/>
-      <stop offset="100%" stop-color="#1f6772"/>
-    </linearGradient>
-    <linearGradient id="blue" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#dff1f6"/>
-      <stop offset="100%" stop-color="#f5fbfd"/>
-    </linearGradient>
-    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fff1c9"/>
-      <stop offset="100%" stop-color="#fffaf0"/>
-    </linearGradient>
-    <linearGradient id="violet" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#efe5f6"/>
-      <stop offset="100%" stop-color="#fbf6ff"/>
-    </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
-      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#163247" flood-opacity="0.13"/>
-    </filter>
-    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
-      <path d="M24 0H0V24" fill="none" stroke="#ffffff" stroke-opacity="0.52" stroke-width="1"/>
-    </pattern>
-    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
-      <path d="M0 0L11 5.5L0 11Z" fill="#1c4357"/>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0 14 7 0 14Z" fill="#243642"/>
     </marker>
-    <symbol id="icon-graph" viewBox="0 0 100 100">
-      <path d="M181.458 580.806C179.175 580.806 177.154 581.854 175.779 583.47L167.83 578.893C168.269 577.797 168.528 576.61 168.528 575.361 168.528 574.048 168.259 572.795 167.776 571.655L177.678 565.656C178.658 566.606 179.988 567.198 181.458 567.198 184.46 567.198 186.903 564.755 186.903 561.753 186.903 558.752 184.46 556.309 181.458 556.309 178.457 556.309 176.014 558.752 176.014 561.753 176.014 562.305 176.119 562.825 176.272 563.326L166.326 569.352C164.853 567.559 162.76 566.323 160.358 565.976L160.358 556.173C163.839 555.53 166.483 552.488 166.483 548.826 166.483 544.699 163.124 541.34 158.997 541.34 154.869 541.34 151.51 544.699 151.51 548.826 151.51 549.704 151.691 550.534 151.97 551.32L140.431 557.966C139.441 556.952 138.066 556.316 136.538 556.316 133.537 556.316 131.094 558.759 131.094 561.76 131.094 564.288 132.836 566.402 135.177 567.011L135.177 580.952C131.7 581.595 129.052 584.637 129.052 588.302 129.052 592.429 132.411 595.788 136.538 595.788 138.808 595.788 140.822 594.75 142.197 593.151L153.767 599.813C153.644 600.269 153.556 600.739 153.556 601.236 153.556 604.237 155.995 606.68 159 606.68 162.005 606.68 164.444 604.237 164.444 601.236 164.444 600.739 164.356 600.269 164.233 599.813L175.803 593.151C177.178 594.754 179.189 595.788 181.458 595.788 185.586 595.788 188.944 592.429 188.944 588.302 188.944 584.174 185.586 580.816 181.458 580.816ZM181.458 559.028C182.959 559.028 184.181 560.249 184.181 561.75 184.181 563.251 182.959 564.472 181.458 564.472 179.958 564.472 178.736 563.251 178.736 561.75 178.736 560.249 179.958 559.028 181.458 559.028ZM165.806 575.361C165.806 579.114 162.753 582.167 159 582.167 155.247 582.167 152.194 579.114 152.194 575.361 152.194 571.608 155.247 568.556 159 568.556 162.753 568.556 165.806 571.608 165.806 575.361ZM159 544.056C161.627 544.056 163.764 546.193 163.764 548.819 163.764 551.446 161.627 553.583 159 553.583 156.373 553.583 154.236 551.446 154.236 548.819 154.236 546.193 156.373 544.056 159 544.056ZM133.819 561.75C133.819 560.249 135.041 559.028 136.542 559.028 138.042 559.028 139.264 560.249 139.264 561.75 139.264 563.251 138.042 564.472 136.542 564.472 135.041 564.472 133.819 563.251 133.819 561.75ZM136.542 593.056C133.915 593.056 131.778 590.919 131.778 588.292 131.778 585.665 133.915 583.528 136.542 583.528 139.169 583.528 141.306 585.665 141.306 588.292 141.306 590.919 139.169 593.056 136.542 593.056ZM137.903 580.942 137.903 567C140.244 566.391 141.986 564.278 141.986 561.75 141.986 561.253 141.898 560.784 141.775 560.328L153.345 553.665C154.437 554.938 155.927 555.85 157.639 556.166L157.639 565.969C153.032 566.636 149.472 570.57 149.472 575.358 149.472 576.607 149.727 577.794 150.17 578.89L142.221 583.467C141.129 582.18 139.628 581.258 137.903 580.938ZM159 603.944C157.499 603.944 156.278 602.723 156.278 601.222 156.278 599.722 157.499 598.5 159 598.5 160.501 598.5 161.722 599.722 161.722 601.222 161.722 602.723 160.501 603.944 159 603.944ZM162.893 597.428C161.903 596.414 160.524 595.778 159 595.778 157.476 595.778 156.097 596.414 155.107 597.428L143.568 590.782C143.847 590 144.028 589.166 144.028 588.288 144.028 587.421 143.851 586.6 143.579 585.828L151.558 581.234C153.304 583.443 155.975 584.889 159 584.889 162.025 584.889 164.696 583.443 166.442 581.234L174.421 585.828C174.149 586.604 173.972 587.424 173.972 588.288 173.972 589.166 174.153 589.996 174.432 590.782L162.893 597.425ZM181.458 593.056C178.831 593.056 176.694 590.919 176.694 588.292 176.694 585.665 178.831 583.528 181.458 583.528 184.085 583.528 186.222 585.665 186.222 588.292 186.222 590.919 184.085 593.056 181.458 593.056Z" fill="currentColor" transform="translate(-109 -524)"/>
-    </symbol>
     <style>
-      .frame { fill: url(#bg); }
-      .grid { fill: url(#grid); opacity: 0.36; }
-      .eyebrow { font: 700 14px Arial, sans-serif; letter-spacing: 1.6px; fill: #755d42; }
-      .title { font: 700 34px Georgia, "Times New Roman", serif; fill: #10283c; }
-      .subtitle { font: 400 16px Georgia, "Times New Roman", serif; fill: #40596d; }
-      .label { font: 700 12px Arial, sans-serif; letter-spacing: 1px; fill: #647b88; }
-      .label-light { font: 700 12px Arial, sans-serif; letter-spacing: 1px; fill: #dbeef4; }
-      .box-title { font: 700 21px Arial, sans-serif; fill: #123047; }
-      .box-title-light { font: 700 24px Arial, sans-serif; fill: #ffffff; }
-      .body { font: 500 15px Arial, sans-serif; fill: #365369; }
-      .body-light { font: 500 15px Arial, sans-serif; fill: #dbeef4; }
-      .code { font: 700 13px "SFMono-Regular", Consolas, monospace; fill: #123047; }
-      .small { font: 700 12px Arial, sans-serif; letter-spacing: 0.5px; fill: #425a6a; }
-      .card-blue { fill: url(#blue); stroke: #2b6777; stroke-width: 2; rx: 18; ry: 18; filter: url(#shadow); }
-      .card-graph { fill: url(#graph); stroke: #16384e; stroke-width: 2; rx: 22; ry: 22; filter: url(#shadow); }
-      .card-gold { fill: url(#gold); stroke: #9a7620; stroke-width: 2; rx: 18; ry: 18; filter: url(#shadow); }
-      .card-violet { fill: url(#violet); stroke: #72528c; stroke-width: 2; rx: 18; ry: 18; filter: url(#shadow); }
-      .db-zone { fill: #fffdfa; stroke: #cbb99e; stroke-width: 2; rx: 22; ry: 22; filter: url(#shadow); }
-      .pill { fill: #f5f8fb; stroke: #aab7c4; stroke-width: 1.5; rx: 16; ry: 16; }
-      .note-bg { fill: #fffdfa; opacity: 0.94; rx: 8; ry: 8; }
-      .line { stroke: #1c4357; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
-      .soft-line { stroke: #5d7480; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
-      .dash { stroke: #9a7620; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-dasharray: 7 7; marker-end: url(#arrow); }
+      .bg { fill: #f7f8fa; }
+      .title { font: 700 32px Arial, sans-serif; fill: #182832; }
+      .subtitle { font: 400 17px Arial, sans-serif; fill: #425763; }
+      .zone-label { font: 700 15px Arial, sans-serif; fill: #43535d; letter-spacing: 0.7px; }
+      .zone-title { font: 700 22px Arial, sans-serif; fill: #182832; }
+      .db-title { font: 700 20px Arial, sans-serif; fill: #182832; }
+      .card-title { font: 700 20px Arial, sans-serif; fill: #182832; }
+      .body { font: 400 16px Arial, sans-serif; fill: #2f424d; }
+      .arrow-label { font: 700 15px Arial, sans-serif; fill: #243642; }
+      .zone { stroke-width: 2; }
+      .app-zone { fill: #e8f4fb; stroke: #4d8ea9; }
+      .loop-zone { fill: #fff4dc; stroke: #b17a1a; }
+      .db-zone { fill: #eaf6ee; stroke: #51865b; }
+      .card { fill: #ffffff; stroke: #243642; stroke-opacity: 0.28; stroke-width: 1.5; }
+      .footer { fill: #ffffff; stroke: #bac7cf; stroke-width: 2; }
+      .footer-title { font: 700 20px Arial, sans-serif; fill: #182832; }
+      .footer-text { font: 700 17px Arial, sans-serif; fill: #2f424d; }
+      .arrow { fill: none; stroke: #243642; stroke-width: 3; marker-end: url(#arrow); }
+      .thin-line { stroke: #243642; stroke-opacity: 0.18; stroke-width: 1.5; }
     </style>
   </defs>
 
-  <rect class="frame" width="800" height="600"/>
-  <rect class="grid" width="800" height="600"/>
+  <rect class="bg" width="800" height="600"/>
 
-  <text x="46" y="54" class="eyebrow">ORACLE AI DATABASE SAMPLE</text>
-  <text x="46" y="94" class="title">LangGraph Persistence Architecture</text>
-  <text x="46" y="124" class="subtitle">OCI drafts briefs; OracleSaver checkpoints; OracleStore saves records.</text>
+  <text class="title" x="40" y="50">LangGraph Persistence with Oracle AI Database</text>
+  <text class="subtitle" x="40" y="80">Runtime context stays separate from resumable graph state and durable app data.</text>
 
-  <rect x="46" y="178" width="180" height="130" class="card-blue"/>
-  <text x="70" y="210" class="label">PYTHON APP</text>
-  <text x="70" y="244" class="box-title">Travel request</text>
-  <text x="70" y="270" class="body">Ava, Chicago,</text>
-  <text x="70" y="286" class="body">$1450 estimate</text>
+  <rect class="zone app-zone" x="40" y="118" width="220" height="344" rx="10" ry="10"/>
+  <text class="zone-label" x="62" y="150">PYTHON SAMPLE</text>
+  <text class="zone-title" x="62" y="181">LangGraph app</text>
 
-  <rect x="270" y="144" width="252" height="198" class="card-graph"/>
-  <circle cx="310" cy="192" r="28" fill="#ffffff" opacity="0.18"/>
-  <use href="#icon-graph" x="282" y="164" width="56" height="56" color="#ffffff"/>
-  <text x="350" y="180" class="label-light">COMPILED GRAPH</text>
-  <text x="350" y="215" class="box-title-light">LangGraph</text>
-  <text x="350" y="244" class="body-light">evaluate_policy</text>
-  <text x="350" y="266" class="body-light">draft_approval_brief</text>
-  <text x="350" y="288" class="body-light">request_approval</text>
-  <text x="350" y="310" class="body-light">finalize_request</text>
+  <rect class="card" x="62" y="207" width="176" height="72" rx="8" ry="8"/>
+  <text class="card-title" x="82" y="237">StateGraph</text>
+  <text class="body" x="82" y="262">approval flow</text>
 
-  <rect x="574" y="104" width="200" height="112" class="card-violet"/>
-  <text x="598" y="136" class="label">OCI GENAI</text>
-  <text x="598" y="170" class="box-title">ChatOCIGenAI</text>
-  <text x="598" y="196" class="body">Approval brief</text>
+  <rect class="card" x="62" y="300" width="176" height="72" rx="8" ry="8"/>
+  <text class="card-title" x="82" y="330">Runtime</text>
+  <text class="body" x="82" y="355">ApprovalContext</text>
 
-  <rect x="574" y="260" width="200" height="112" class="card-gold"/>
-  <text x="598" y="292" class="label">INTERRUPT</text>
-  <text x="598" y="326" class="box-title">Human approval</text>
-  <text x="598" y="352" class="body">Decision resumes</text>
+  <rect class="card" x="62" y="393" width="176" height="44" rx="8" ry="8"/>
+  <text class="body" x="82" y="421">ChatOCIGenAI</text>
 
-  <rect x="64" y="416" width="672" height="126" class="db-zone"/>
-  <text x="92" y="449" class="label">TESTCONTAINERS RUNTIME</text>
-  <text x="92" y="485" class="box-title">Oracle AI Database Free</text>
-  <text x="92" y="512" class="body">checkpoints + approved records</text>
+  <rect class="zone loop-zone" x="300" y="118" width="200" height="344" rx="10" ry="10"/>
+  <text class="zone-label" x="322" y="150">REVIEW LOOP</text>
+  <text class="zone-title" x="322" y="181">Human gate</text>
 
-  <rect x="388" y="442" width="150" height="72" class="pill"/>
-  <text x="410" y="470" class="code">OracleSaver</text>
-  <text x="410" y="494" class="body">checkpoints</text>
+  <rect class="card" x="322" y="207" width="156" height="76" rx="8" ry="8"/>
+  <text class="card-title" x="342" y="238">Draft brief</text>
+  <text class="body" x="342" y="263">LLM summary</text>
 
-  <rect x="560" y="442" width="150" height="72" class="pill"/>
-  <text x="582" y="470" class="code">OracleStore</text>
-  <text x="582" y="494" class="body">approved records</text>
+  <path class="arrow" d="M400 289V326"/>
+  <text class="arrow-label" x="416" y="313">interrupt</text>
 
-  <path d="M218 235H270" class="line"/>
-  <path d="M397 342V416" class="line"/>
+  <rect class="card" x="322" y="332" width="156" height="76" rx="8" ry="8"/>
+  <text class="card-title" x="342" y="363">Approval</text>
+  <text class="body" x="342" y="388">resume command</text>
 
-  <text x="535" y="180" class="small">draft</text>
-  <text x="532" y="282" class="small">pause</text>
-  <rect x="406" y="350" width="126" height="24" class="note-bg"/>
+  <rect class="zone db-zone" x="540" y="118" width="220" height="344" rx="10" ry="10"/>
+  <text class="zone-label" x="562" y="150">PERSISTENCE</text>
+  <text class="db-title" x="562" y="181">Oracle AI Database</text>
+  <text class="body" x="562" y="206">Free in Testcontainers</text>
+  <line class="thin-line" x1="562" y1="221" x2="738" y2="221"/>
+
+  <rect class="card" x="562" y="242" width="176" height="86" rx="8" ry="8"/>
+  <text class="card-title" x="582" y="274">OracleSaver</text>
+  <text class="body" x="582" y="300">checkpoints</text>
+  <text class="body" x="582" y="319">thread resume</text>
+
+  <rect class="card" x="562" y="352" width="176" height="86" rx="8" ry="8"/>
+  <text class="card-title" x="582" y="384">OracleStore</text>
+  <text class="body" x="582" y="410">approved record</text>
+  <text class="body" x="582" y="429">queryable proof</text>
+
+  <path class="arrow" d="M260 243H315"/>
+
+  <path class="arrow" d="M478 247C515 247 522 276 557 285"/>
+
+  <path class="arrow" d="M478 373C515 373 522 394 557 395"/>
+
+  <rect class="footer" x="40" y="492" width="720" height="68" rx="10" ry="10"/>
+  <text class="footer-title" x="62" y="522">Key idea</text>
+  <text class="footer-text" x="180" y="520">OracleSaver = resumable graph state</text>
+  <text class="footer-text" x="180" y="544">OracleStore = durable application data</text>
 </svg>

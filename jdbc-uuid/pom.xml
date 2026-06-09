@@ -12,7 +12,7 @@
 
     <artifactId>jdbc-uuid</artifactId>
     <name>jdbc-uuid</name>
-    <description>Plain JDBC sample that stores Java UUID primary keys as RAW(16)</description>
+    <description>JDBC and Spring Data JPA sample that stores Java UUID primary keys as RAW(16)</description>
 
     <properties>
         <exec.mainClass>com.example.uuid.JdbcUuidSample</exec.mainClass>
@@ -24,10 +24,19 @@
             <artifactId>ojdbc11</artifactId>
             <version>${oracle.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
 
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-testcontainers</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -41,4 +50,13 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

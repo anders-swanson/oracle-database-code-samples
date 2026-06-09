@@ -47,6 +47,11 @@ class ApprovalDecision:
     notes: str = ""
 
 
+@dataclass(frozen=True)
+class ApprovalContext:
+    model: ChatModel
+
+
 class ApprovalState(TypedDict, total=False):
     request: dict[str, Any]
     status: Literal["PENDING", "APPROVED", "REJECTED"]
@@ -57,22 +62,19 @@ class ApprovalState(TypedDict, total=False):
     response: str
 
 
-def build_graph(checkpointer: OracleSaver, store: OracleStore, model: ChatModel):
-    def draft_with_model(state: ApprovalState) -> ApprovalState:
-        return draft_approval_brief(state, model)
-
-    builder = StateGraph(ApprovalState)
+def build_graph(checkpointer: OracleSaver, store: OracleStore):
+    builder = StateGraph(ApprovalState, context_schema=ApprovalContext)
     builder.add_node("evaluate_policy", evaluate_policy)
-    builder.add_node("draft_approval_brief", draft_with_model)
+    builder.add_node("draft_approval_brief", draft_approval_brief)
     builder.add_node("request_approval", request_approval)
     builder.add_node("finalize_request", finalize_request)
     builder.add_edge(START, "evaluate_policy")
-    builder.add_edge("evaluate_policy", "draft_approval_brief")
     builder.add_conditional_edges(
-        "draft_approval_brief",
+        "evaluate_policy",
         route_after_policy,
-        {"approval": "request_approval", "finalize": "finalize_request"},
+        {"approval": "draft_approval_brief", "finalize": "finalize_request"},
     )
+    builder.add_edge("draft_approval_brief", "request_approval")
     builder.add_edge("request_approval", "finalize_request")
     builder.add_edge("finalize_request", END)
     return builder.compile(
@@ -100,9 +102,12 @@ def route_after_policy(state: ApprovalState) -> Literal["approval", "finalize"]:
     return "approval" if state["needs_approval"] else "finalize"
 
 
-def draft_approval_brief(state: ApprovalState, model: ChatModel) -> ApprovalState:
+def draft_approval_brief(
+    state: ApprovalState,
+    runtime: Runtime[ApprovalContext],
+) -> ApprovalState:
     request = TravelRequest(**state["request"])
-    response = model.invoke([
+    response = runtime.context.model.invoke([
         SystemMessage(content=(
             "You draft concise approval briefs for business travel reviewers. "
             "Do not approve or reject the request. "
@@ -134,18 +139,25 @@ def request_approval(state: ApprovalState) -> ApprovalState:
     }
 
 
-def finalize_request(state: ApprovalState, runtime: Runtime) -> ApprovalState:
+def finalize_request(
+    state: ApprovalState,
+    runtime: Runtime[ApprovalContext],
+) -> ApprovalState:
     request = TravelRequest(**state["request"])
     decision = ApprovalDecision(**state.get(
         "decision",
         {"approved": True, "approver": "policy", "notes": "Auto-approved by policy."},
     ))
+    approval_brief = state.get(
+        "approval_brief",
+        "Approval brief was not needed because the request was within the approval limit.",
+    )
     record = {
         "request": asdict(request),
         "decision": asdict(decision),
         "status": state["status"],
         "policy_reason": state["policy_reason"],
-        "approval_brief": state["approval_brief"],
+        "approval_brief": approval_brief,
     }
 
     if decision.approved:
@@ -169,18 +181,30 @@ def run_request(
     graph,
     thread_id: str,
     request: TravelRequest,
+    context: ApprovalContext,
 ) -> ApprovalState:
     return graph.invoke(
         {"request": asdict(request)},
-        {"configurable": {"thread_id": thread_id}},
+        thread_config(thread_id),
+        context=context,
     )
 
 
-def resume_request(graph, thread_id: str, decision: ApprovalDecision) -> ApprovalState:
+def resume_request(
+    graph,
+    thread_id: str,
+    decision: ApprovalDecision,
+    context: ApprovalContext,
+) -> ApprovalState:
     return graph.invoke(
         Command(resume=asdict(decision)),
-        {"configurable": {"thread_id": thread_id}},
+        thread_config(thread_id),
+        context=context,
     )
+
+
+def thread_config(thread_id: str) -> dict[str, dict[str, str]]:
+    return {"configurable": {"thread_id": thread_id}}
 
 
 def approval_namespace(traveler: str) -> tuple[str, str]:
@@ -189,6 +213,16 @@ def approval_namespace(traveler: str) -> tuple[str, str]:
 
 def approval_key(request: TravelRequest) -> str:
     return f"{request.destination.lower()}-{request.estimated_cost}"
+
+
+def read_approval_record(
+    store: OracleStore,
+    request: TravelRequest,
+) -> dict[str, Any] | None:
+    item = store.get(approval_namespace(request.traveler), approval_key(request))
+    if item is None:
+        return None
+    return item.value
 
 
 def create_oci_chat_model() -> ChatModel:
@@ -240,8 +274,12 @@ def main() -> None:
 
     request = TravelRequest(**DEFAULT_TRAVEL_REQUEST)
     model = create_oci_chat_model()
+    context = ApprovalContext(model=model)
+    config = thread_config(args.thread_id)
 
+    print("### Starting Oracle AI Database Free (container) ###")
     with OracleDatabaseContainer() as db:
+        print("### Oracle AI Database Free running! ###\n")
         conn_string = oracle_langgraph_connection_string(db)
         with (
             OracleSaver.from_conn_string(conn_string) as checkpointer,
@@ -249,20 +287,29 @@ def main() -> None:
         ):
             checkpointer.setup()
             store.setup()
-            graph = build_graph(checkpointer, store, model)
+            graph = build_graph(checkpointer, store)
 
-            first_result = run_request(graph, args.thread_id, request)
+            first_result = run_request(graph, args.thread_id, request, context)
             interrupt_payload = first_result.get("__interrupt__")
             if interrupt_payload:
-                print(format_approval_interrupt(interrupt_payload[0].value))
+                print(format_approval_interrupt(interrupt_payload[0].value) + '\n')
+                print(format_checkpoint_summary(graph.get_state(config)))
 
-            decision = ApprovalDecision(
-                approved=not args.reject,
-                approver=args.approver,
-                notes="Approved from the sample CLI." if not args.reject else "Rejected from the sample CLI.",
-            )
-            final_result = resume_request(graph, args.thread_id, decision)
+                decision = ApprovalDecision(
+                    approved=not args.reject,
+                    approver=args.approver,
+                    notes=(
+                        "Approved from the sample CLI."
+                        if not args.reject
+                        else "Rejected from the sample CLI."
+                    ),
+                )
+                final_result = resume_request(graph, args.thread_id, decision, context)
+            else:
+                final_result = first_result
+
             print(final_result["response"])
+            print(format_store_summary(read_approval_record(store, request)))
 
 
 def _message_text(message: BaseMessage) -> str:
@@ -283,6 +330,32 @@ def format_approval_interrupt(payload: dict[str, Any]) -> str:
         "",
         "Approval brief:",
         payload["approval_brief"],
+    ])
+
+
+def format_checkpoint_summary(snapshot) -> str:
+    values = snapshot.values or {}
+    next_nodes = ", ".join(snapshot.next) if snapshot.next else "none"
+    return "\n".join([
+        "OracleSaver checkpoint:",
+        f"- Thread is paused before: {next_nodes}",
+        f"- Persisted status: {values.get('status', 'UNKNOWN')}",
+        f"- Persisted policy reason: {values.get('policy_reason', 'not set')}",
+    ])
+
+
+def format_store_summary(record: dict[str, Any] | None) -> str:
+    if record is None:
+        return "OracleStore record: none"
+
+    decision = record["decision"]
+    request = record["request"]
+    return "\n".join([
+        "OracleStore record:",
+        f"- Traveler: {request['traveler']}",
+        f"- Destination: {request['destination']}",
+        f"- Status: {record['status']}",
+        f"- Approver: {decision['approver']}",
     ])
 
 

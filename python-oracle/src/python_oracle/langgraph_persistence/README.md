@@ -1,6 +1,6 @@
 ---
 name: python-oracle/src/python_oracle/langgraph_persistence
-description: Python LangGraph persistence sample using Oracle AI Database checkpoints, store, Testcontainers, and OCI chat.
+description: Python LangGraph persistence sample using Oracle AI Database checkpoints, store readback, Testcontainers, and OCI Generative AI chat.
 tags:
   - AI
   - python
@@ -13,11 +13,11 @@ blog_post: ""
 
 This sample shows a LangGraph travel approval workflow that persists graph state in Oracle AI Database with `langgraph-oracledb`.
 
-The workflow keeps the policy decision deterministic: a numeric cost comparison decides whether the request needs a human approval. OCI Generative AI is used where it adds value: drafting a concise approval brief from the request and policy result before the graph pauses. LangGraph checkpoints that brief in Oracle AI Database, resumes the same `thread_id` after the approval decision, and stores the approved record with the request, decision, policy reason, and brief.
+The workflow keeps the policy decision deterministic: a numeric cost comparison decides whether the request needs a human approval. OCI Generative AI is used only when it adds value: drafting a concise approval brief before the graph pauses for a reviewer. LangGraph checkpoints that brief in Oracle AI Database, resumes the same `thread_id` after the approval decision, and stores the approved record with the request, decision, policy reason, and brief.
 
 ## Architecture Diagrams
 
-These diagrams show how the Python sample, LangGraph, OracleSaver, OracleStore, Testcontainers, OCI chat, and Oracle AI Database fit together.
+These diagrams show how the Python sample, LangGraph, `OracleSaver`, `OracleStore`, Testcontainers, OCI Generative AI, and Oracle AI Database fit together.
 
 ![LangGraph Oracle persistence architecture](images/langgraph-oracle-persistence.svg)
 
@@ -52,7 +52,21 @@ From the `python-oracle/` directory:
 poetry run python src/python_oracle/langgraph_persistence/travel_approval_graph.py
 ```
 
-The script starts Oracle AI Database Free with Testcontainers, creates the LangGraph checkpoint and store tables, drafts an OCI-generated approval brief, runs the request until LangGraph interrupts for approval, resumes the graph with an approval decision, and prints the final outcome.
+The script starts Oracle AI Database Free with Testcontainers, creates the LangGraph checkpoint and store tables, runs the request, and prints the final outcome. For the default over-limit request, it also drafts an OCI-generated approval brief, pauses with `interrupt()`, prints a checkpoint summary from `OracleSaver`, resumes with `Command(resume=...)`, and reads the approved business record back from `OracleStore`.
+
+To run the rejection branch:
+
+```bash
+poetry run python src/python_oracle/langgraph_persistence/travel_approval_graph.py --reject
+```
+
+## What to Notice
+
+- `thread_id` is the durable LangGraph cursor. The same `thread_id` is used for the first invoke, the checkpoint summary, and the resume command.
+- `OracleSaver` is passed as the graph checkpointer. It persists graph state so the human approval interrupt can survive outside the process.
+- `OracleStore` is passed as the graph store. The final node writes approved business records and the CLI reads the record back with `store.get(...)`.
+- `Runtime[ApprovalContext]` carries the live `ChatOCIGenAI` model into the graph. The model is runtime context, not checkpointed graph state.
+- OCI Generative AI drafts reviewer context only after policy says approval is required. Auto-approved requests skip the model call and go straight to finalization.
 
 ## Files to Inspect
 

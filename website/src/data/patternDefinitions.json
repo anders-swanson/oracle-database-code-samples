@@ -168,6 +168,18 @@
       }
     },
     {
+      "id": "database-security",
+      "intentId": "ship-and-operate",
+      "title": "Database Security",
+      "summary": "Keep application data access decisions close to Oracle AI Database with identity-aware guardrails and auditable authorization paths.",
+      "useWhen": "Use this when one application account needs different row, column, write, or audit outcomes for different end users or service flows.",
+      "features": ["Security", "Testcontainers"],
+      "topics": ["Security"],
+      "sampleCriteria": {
+        "include": [{ "ids": ["jdbc-deep-data-security"] }]
+      }
+    },
+    {
       "id": "spring-microservice-config",
       "intentId": "ship-and-operate",
       "title": "Spring Boot",

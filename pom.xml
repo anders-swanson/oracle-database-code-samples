@@ -46,6 +46,7 @@
     <modules>
         <module>ai-vector-search</module>
         <module>jdbc-graphql</module>
+        <module>jdbc-deep-data-security</module>
         <module>jdbc-hybrid-search</module>
         <module>jdbc-json-oracle-text</module>
         <module>jdbc-uuid</module>

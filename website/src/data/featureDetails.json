@@ -83,6 +83,10 @@
     "description": "Database-side procedural logic for transactions, queues, and operational workflows.",
     "useWhen": "Use when business logic benefits from running close to the data and inside the transaction."
   },
+  "Security": {
+    "description": "Identity-aware access, data protection, and audit samples for Oracle AI Database applications.",
+    "useWhen": "Use when applications need database-enforced boundaries for who can see, update, or operate on sensitive data."
+  },
   "SpringBoot": {
     "description": "Spring Boot samples for persistence, configuration, messaging, tracing, and service integration.",
     "useWhen": "Use when Java services need common Spring patterns backed by Oracle AI Database."

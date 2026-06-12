@@ -1,0 +1,21 @@
+{
+  "id": "jdbc-deep-data-security",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This module shows how a Java application can keep authorization policy close to the data in Oracle AI Database.",
+  "highlights": [
+    "Alice sees only cases assigned to alice@example.com, with sensitive values masked.",
+    "Bob sees only the ACME East case assigned to bob@example.com.",
+    "Alice can update one assigned case, but Alice and Bob cannot update unauthorized cases.",
+    "Maria sees ACME West regional cases and can update one regional case."
+  ],
+  "features": [
+    "Testcontainers",
+    "Security"
+  ],
+  "sourceUpdatedAt": "2026-06-09T22:00:55.932Z",
+  "metaTitle": "JDBC Deep Data Security | Oracle AI Database Code Samples",
+  "metaDescription": "Plain JDBC sample showing support-case access guardrails with Oracle AI Database Deep Data Security and a local compatibility path.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jdbc-deep-data-security/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/jdbc-deep-data-security.png"
+}

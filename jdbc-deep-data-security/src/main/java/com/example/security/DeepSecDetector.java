@@ -36,8 +36,8 @@ final class DeepSecDetector {
         return new IllegalStateException("""
                 Deep Data Security mode requires an Oracle AI Database 26ai environment with Deep Data Security enabled,
                 policy administration privileges, and token-based end-user identity configuration.
-                Run this sample with --mode=compat for the deterministic local workflow, or inspect
-                src/main/resources/sql/deepsec-security.sql for the Deep Data Security data role and data grant shape.
+                Run DeepDataSecurityTest for the deterministic local workflow, or inspect
+                src/test/resources/sql/deepsec-security.sql for the Deep Data Security data role and data grant shape.
                 """);
     }
 }

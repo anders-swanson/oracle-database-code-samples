@@ -1,6 +1,8 @@
+whenever sqlerror exit sql.sqlcode
+
 -- Deep Data Security policy handoff for Oracle AI Database 26ai environments.
 --
--- The default Testcontainers workflow uses sql/compat-security.sql so it can
+-- The default Testcontainers workflow uses sql/02-compat-security.sql so it can
 -- run locally without IAM, TLS wallets, SYS grants, or cloud identity setup.
 -- This file shows the database-native objects that express the same policy
 -- shape in a Deep Data Security-enabled environment.

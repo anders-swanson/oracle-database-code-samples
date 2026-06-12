@@ -168,7 +168,7 @@ case
 end as internal_notes
 ```
 
-Source: [`compat-security.sql`](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/main/resources/sql/compat-security.sql)
+Source: [`02-compat-security.sql`](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/resources/sql/02-compat-security.sql)
 
 The rules are small enough to inspect:
 
@@ -312,7 +312,7 @@ create or replace data grant service_routing_cases
 /
 ```
 
-Source: [`deepsec-security.sql`](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/main/resources/sql/deepsec-security.sql)
+Source: [`deepsec-security.sql`](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/resources/sql/deepsec-security.sql)
 
 That maps directly to the Deep Data Security docs. Data grants authorize operations on specific rows, columns, or cells, can reference the end-user security context in predicates, and are assigned to end users or data roles ([Fine-Grained Data Authorization](https://docs.oracle.com/en/database/oracle/oracle-database/26/ddscg/fine-grained-data-authorization.html)).
 
@@ -344,13 +344,13 @@ The sample code enforces that boundary. If Deep Data Security probing succeeds, 
 if (effectiveMode == SecurityMode.DEEPSEC) {
     throw new IllegalStateException("""
             Deep Data Security probing succeeded, but this local sample keeps the automated workflow in compatibility mode.
-            Use src/main/resources/sql/deepsec-security.sql and OracleEndUserContextApplier.java as the Deep Data Security handoff points
+            Use src/test/resources/sql/deepsec-security.sql and OracleEndUserContextApplier.java as the Deep Data Security handoff points
             for a 26ai environment with identity tokens and policy administration privileges.
             """);
 }
 ```
 
-Source: [`DeepDataSecuritySample.java`](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/main/java/com/example/security/DeepDataSecuritySample.java)
+Source: [`DeepDataSecurityTest.java`](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/java/com/example/security/DeepDataSecurityTest.java)
 
 That is the right kind of honesty for a security sample. It gives you something runnable today without blurring the line between a compatibility proof and a Deep Data Security deployment.
 
@@ -366,9 +366,9 @@ Then inspect these files in order:
 
 1. [`DeepDataSecurityTest.java`](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/java/com/example/security/DeepDataSecurityTest.java) for the expected actor outcomes.
 2. [`SupportCaseRepository.java`](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/main/java/com/example/security/SupportCaseRepository.java) for the shared SELECT, guarded UPDATE, and audit insert.
-3. [`compat-security.sql`](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/main/resources/sql/compat-security.sql) for the local policy implementation.
+3. [`02-compat-security.sql`](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/resources/sql/02-compat-security.sql) for the local policy implementation.
 4. [`OracleEndUserContextApplier.java`](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/main/java/com/example/security/OracleEndUserContextApplier.java) for the JDBC context handoff.
-5. [`deepsec-security.sql`](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/main/resources/sql/deepsec-security.sql) for the Deep Data Security data-role and data-grant handoff.
+5. [`deepsec-security.sql`](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/resources/sql/deepsec-security.sql) for the Deep Data Security data-role and data-grant handoff.
 
 If the sample fails, that gives you a concrete debugging surface: actor context, policy predicate, row count, or audit evidence. If it passes, it does not prove your production identity setup is correct. It proves the sample's intended authorization behavior and shows where to replace the compatibility harness with Oracle AI Database Deep Data Security policy objects.
 

@@ -15,10 +15,6 @@
     <name>jdbc-deep-data-security</name>
     <description>Plain JDBC sample showing support-case access guardrails with Oracle AI Database Deep Data Security</description>
 
-    <properties>
-        <exec.mainClass>com.example.security.DeepDataSecuritySample</exec.mainClass>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>

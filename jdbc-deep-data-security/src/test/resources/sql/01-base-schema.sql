@@ -1,3 +1,5 @@
+whenever sqlerror exit sql.sqlcode
+
 begin
     execute immediate 'drop view support_case_access_v';
 exception

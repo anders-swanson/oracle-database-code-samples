@@ -1,11 +1,9 @@
 package com.example.security;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,25 +12,6 @@ import java.util.Objects;
 import javax.sql.DataSource;
 
 final class SupportCaseRepository {
-    private static final String BASE_SCHEMA_RESOURCE = "/sql/base-schema.sql";
-    private static final String COMPAT_SECURITY_RESOURCE = "/sql/compat-security.sql";
-    private static final String SUPPORT_CASES_RESOURCE = "/data/support-cases.csv";
-
-    private static final String INSERT_CASE_SQL = """
-            insert into support_cases (
-                case_id,
-                tenant_id,
-                region,
-                assigned_agent,
-                severity,
-                status,
-                subject,
-                customer_email,
-                ssn,
-                internal_notes
-            )
-            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """;
     private static final String SELECT_VISIBLE_CASES_SQL = """
             select case_id,
                    tenant_id,
@@ -75,50 +54,6 @@ final class SupportCaseRepository {
         this.dataSource = Objects.requireNonNull(dataSource, "dataSource is required");
         this.contextApplier = Objects.requireNonNull(contextApplier, "contextApplier is required");
         this.securityMode = Objects.requireNonNull(securityMode, "securityMode is required");
-    }
-
-    boolean resetForCompatibilityMode() throws IOException, SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            SqlScriptRunner.runResource(connection, BASE_SCHEMA_RESOURCE);
-            SqlScriptRunner.runResource(connection, COMPAT_SECURITY_RESOURCE);
-            return tryCreateApplicationContext(connection);
-        }
-    }
-
-    void loadSampleData() throws IOException, SQLException {
-        List<String> lines = SqlScriptRunner.readResource(SUPPORT_CASES_RESOURCE).lines().skip(1).toList();
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(INSERT_CASE_SQL)) {
-            connection.setAutoCommit(false);
-            try {
-                for (int lineIndex = 0; lineIndex < lines.size(); lineIndex++) {
-                    String line = lines.get(lineIndex);
-                    if (line.isBlank()) {
-                        continue;
-                    }
-                    String[] columns = line.split(",", -1);
-                    if (columns.length != 10) {
-                        throw new IOException("Expected 10 support case columns on data line " + (lineIndex + 2) + " but found " + columns.length + ": " + line);
-                    }
-                    statement.setLong(1, Long.parseLong(columns[0]));
-                    statement.setString(2, columns[1]);
-                    statement.setString(3, columns[2]);
-                    statement.setString(4, columns[3]);
-                    statement.setString(5, columns[4]);
-                    statement.setString(6, columns[5]);
-                    statement.setString(7, columns[6]);
-                    statement.setString(8, columns[7]);
-                    statement.setString(9, columns[8]);
-                    statement.setString(10, columns[9]);
-                    statement.addBatch();
-                }
-                statement.executeBatch();
-                connection.commit();
-            } catch (SQLException | IOException | RuntimeException exception) {
-                connection.rollback();
-                throw exception;
-            }
-        }
     }
 
     List<SupportCaseView> findVisibleCases(SupportActor actor, boolean elevated) throws SQLException {
@@ -216,18 +151,6 @@ final class SupportCaseRepository {
             }
         }
         return events;
-    }
-
-    private boolean tryCreateApplicationContext(Connection connection) throws SQLException {
-        try (Statement statement = connection.createStatement()) {
-            statement.execute("create or replace context support_security_ctx using support_security");
-            return true;
-        } catch (SQLException exception) {
-            if (exception.getErrorCode() == 1031) {
-                return false;
-            }
-            throw exception;
-        }
     }
 
     private void insertAudit(

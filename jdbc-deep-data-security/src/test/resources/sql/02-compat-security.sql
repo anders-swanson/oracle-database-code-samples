@@ -1,3 +1,5 @@
+whenever sqlerror exit sql.sqlcode
+
 -- Compatibility policy path for local Oracle AI Database Free tests.
 --
 -- The package keeps policy context in session package state so the sample can
@@ -189,6 +191,9 @@ create or replace package body support_security as
         return 'not authorized';
     end;
 end support_security;
+/
+
+create or replace context support_security_ctx using support_security
 /
 
 create or replace view support_case_access_v as

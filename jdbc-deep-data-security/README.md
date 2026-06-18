@@ -1,102 +1,59 @@
 ---
 name: jdbc-deep-data-security
-description: Plain JDBC sample showing support-case access guardrails with Oracle AI Database Deep Data Security and a local compatibility path.
+description: Plain JDBC sample that validates Oracle AI Database Deep Data Security data grants with Testcontainers.
 tags:
   - Java
   - JDBC
-  - security
+  - Security
   - Testcontainers
 blog_post: ""
 ---
 
 # JDBC Deep Data Security
 
-This module teaches how a Java application can keep authorization policy close to the data in Oracle AI Database.
+This module is a small, runnable Deep Data Security sample for Oracle AI Database. It follows the local end-user quick start from the Deep Data Security guide, but drives the validation from a JUnit test over JDBC instead of SQL*Plus.
 
-The sample models a support desk that stores cases for multiple tenants and regions. The Java app connects as one database user, applies an end-user context for Alice, Bob, manager Maria, and a routing service, then runs the same SQL under each actor.
+The workflow is intentionally narrow:
 
-The default workflow is a local compatibility harness. It runs in Oracle AI Database Free with Testcontainers and proves the access behavior that an Oracle AI Database Deep Data Security deployment should enforce. The module also includes the JDBC `EndUserSecurityContext` code path and a Deep Data Security SQL handoff script for Oracle AI Database 26ai environments.
+1. Testcontainers starts Oracle AI Database Free.
+2. A SYS-owned setup script creates an `hr.employees` table, two local Deep Sec end users, two data roles, two data grants, and mandatory data-grant enforcement on the table.
+3. The test connects with JDBC as `"manderson"` and `"ebaker"`.
+4. Both users run the same `select * from hr.employees` query.
+5. JUnit asserts that data grants filter rows, return unauthorized SSN cells as `NULL`, and expose the expected phone-update authorization through `ORA_CHECK_DATA_PRIVILEGE`.
 
-## Why this sample is useful
+![Deep Data Security JDBC flow](deep-data-security-flow.svg)
 
-Oracle AI Database Deep Data Security is easiest to learn when the access decisions are visible:
+## What It Proves
 
-- The application changes only the end-user context.
-- The SQL stays the same.
-- The database-side policy decides which rows, columns, and writes are allowed.
-- The test verifies both allowed and denied paths.
+Deep Data Security is enforced by Oracle AI Database, not by Java-side filtering. The Java test never adds `where email = ?` or `where manager = ?` predicates. It connects as a Deep Sec end user and lets data grants decide the visible rows and cells.
 
-That makes this module useful as a teaching sample even without a full identity-provider setup. The compatibility harness gives new users a deterministic loop; the Deep Data Security files show where the same policy shape moves in a real deployment.
-
-## How Deep Data Security thinks
-
-The mental model is:
-
-1. A trusted application opens a database connection.
-2. Before executing SQL, the application attaches an end-user security context with the current user name, active data roles, and runtime attributes such as tenant and region.
-3. Oracle AI Database evaluates data grants against that context.
-4. The same `SELECT` or `UPDATE` can see different rows, columns, or cells depending on the current end user.
-5. Temporary privilege elevation is scoped to the smallest operation and cleared before the connection is reused.
-
-Compatibility mode mirrors that contract with ordinary SQL objects so the module can run locally. It is a behavioral harness, not a replacement for Oracle AI Database Deep Data Security.
-
-## Mode matrix
-
-| Mode      | Purpose                        | What runs locally                                                                                        | What it proves                                                                                                                                        |
-|-----------|--------------------------------|----------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `compat`  | Default deterministic workflow | Testcontainers runs static SQL scripts, executes the JDBC workflow, and validates the report | The intended row filtering, masking, guarded writes, elevation, and sample audit evidence                                                             |
-| `auto`    | Probe and explain              | Helper code can check for `ORA_END_USER_CONTEXT` and fall back only when the feature is unavailable | Local databases without Deep Data Security still get the compatibility proof; unexpected probe errors fail closed                                     |
-| `deepsec` | Deployment handoff check       | Helper code can fail fast unless Deep Data Security objects are present                                  | The module found a Deep Data Security-capable environment, but identity, token, TLS, and policy administration setup are still external prerequisites |
-
-## What the sample proves
-
-- Alice sees only cases assigned to `alice@example.com`, with sensitive values masked.
-- Bob sees only the ACME East case assigned to `bob@example.com`.
-- Alice can update one assigned case, but Alice and Bob cannot update unauthorized cases.
-- Maria sees ACME West regional cases and can update one regional case.
-- The routing service sees no cases until a tightly scoped elevation is applied.
-- Every read and write path records actor, role, mode, operation, case ID, row count, and elevation state in an audit table.
-
-| Actor           | Context                                 | Visible cases          | Sensitive fields                              | Write behavior                                                        |
-|-----------------|-----------------------------------------|------------------------|-----------------------------------------------|-----------------------------------------------------------------------|
-| Alice           | `AGENT`, tenant `ACME`, region `WEST`   | `1001`, `1002`         | Masked email, SSN suffix only, redacted notes | Can update assigned case `1001`; cannot update unassigned case `1005` |
-| Bob             | `AGENT`, tenant `ACME`, region `EAST`   | `1003`                 | Masked email, SSN suffix only, redacted notes | Cannot update Alice's case `1001`                                     |
-| Maria           | `MANAGER`, tenant `ACME`, region `WEST` | `1001`, `1002`, `1005` | Unmasked regional case details                | Can update regional case `1005`                                       |
-| Routing service | `SERVICE`, no elevation                 | none                   | none                                          | No case access                                                        |
-| Routing service | `SERVICE`, elevated                     | `1004`                 | Unmasked routed case details                  | Elevation is visible in the sample audit trail                        |
-
-![Support case access guardrails](./support-case-access-guardrails.svg)
-
-The diagram shows the stable application contract: one JDBC user, changing end-user context, and policy decisions made close to the data. In compatibility mode, the package and secured view are teaching scaffolding. In a Deep Data Security deployment, data roles and data grants become the policy source.
-
-The implementation keeps two policy paths explicit:
-
-![Deep Data Security policy paths](./deepsec-policy-paths.svg)
-
-The second diagram is the most important boundary in the sample: compatibility mode proves behavior locally; the Deep Data Security path shows the deployment handoff.
-
-## Feature map
-
-| Feature | Where to look | What it demonstrates |
+| End user | Data roles | Expected access |
 | --- | --- | --- |
-| End-user security context | [OracleEndUserContextApplier.java](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/main/java/com/example/security/OracleEndUserContextApplier.java) | The JDBC shape for `OracleConnection.setEndUserSecurityContext(...)` and `clearEndUserSecurityContext()`. |
-| Test user grants | [00-testuser-grants.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/resources/sql/00-testuser-grants.sql) | SYS-owned setup for the local Testcontainers user. |
-| Schema and seed data | [01-base-schema.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/resources/sql/01-base-schema.sql), [03-support-cases.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/resources/sql/03-support-cases.sql) | Static SQL for support-case tables, audit table, and deterministic test rows. |
-| Data roles and data grants | [deepsec-security.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/resources/sql/deepsec-security.sql) | Deep Data Security policy concepts for agents, managers, and scoped service elevation. |
-| Local compatibility policy | [02-compat-security.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/resources/sql/02-compat-security.sql) | A runnable policy layer with session context, `DBMS_SESSION`, a secured view, row filtering, and masking. |
-| Guarded JDBC access | [SupportCaseRepository.java](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/main/java/com/example/security/SupportCaseRepository.java) | One SELECT and one UPDATE path whose results change only because the actor context changes. |
-| Deterministic proof | [DeepDataSecurityTest.java](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/java/com/example/security/DeepDataSecurityTest.java) | Testcontainers validation for filtered rows, masked values, denied writes, elevation, and audit attribution. |
+| `"manderson"` | `employee_role`, `manager_role` | Marvin sees his own row with SSN, plus Emma and Taylor as direct reports with SSN returned as `NULL`. |
+| `"ebaker"` | `employee_role` | Emma sees only her own row, including her own SSN. |
 
-## Prerequisites
+The employee grant is deliberately small: it lets employees read their own row and grants update authorization only for their own phone number.
 
-- Java 21
-- Maven
-- Docker for the Testcontainers workflow
-- Enough memory to start the `gvenzl/oracle-free:23.26.2-full-faststart` container image
+```sql
+create data grant hr.employees_own_record
+    as select, update (phone)
+    on hr.employees
+    where email = ORA_END_USER_CONTEXT.username
+    to employee_role;
+```
 
-The Testcontainers path creates the application user and then runs a small SYS script to grant the local permission needed for `SUPPORT_SECURITY_CTX`.
+The test confirms the authorization shape with `ORA_CHECK_DATA_PRIVILEGE`: Marvin's own phone cell is updateable, but Emma and Taylor's phone cells are not updateable through the manager row visibility grant.
 
-## Run the test
+The setup also runs `SET USE DATA GRANTS ONLY ON hr.employees ENABLED` so Deep Sec users must go through data grants for the protected table.
+
+## Code Map
+
+- [pom.xml](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/pom.xml) declares the plain JDBC and Testcontainers dependencies.
+- [deep-data-security-demo.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/resources/sql/deep-data-security-demo.sql) creates the HR table, local end users, data roles, and data grants.
+- [DeepDataSecurityTest.java](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/java/com/example/security/DeepDataSecurityTest.java) runs the JDBC proof against Oracle AI Database Free.
+- [deep-data-security-flow.svg](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/deep-data-security-flow.svg) diagrams the end-to-end test flow.
+
+## Run The Test
 
 From the repository root:
 
@@ -104,41 +61,18 @@ From the repository root:
 mvn -pl jdbc-deep-data-security test
 ```
 
-The test starts Oracle AI Database Free with Testcontainers, runs the static setup scripts, executes the support-case workflow, and verifies the full access behavior in JUnit assertions.
+The test uses the `gvenzl/oracle-free:23.26.2-full-faststart` image. Docker must be running before Maven starts the test.
 
-## Deep Data Security handoff
+## Why Local End Users
 
-The Deep Data Security-specific pieces are intentionally separate from the local compatibility proof:
+Deep Data Security also supports application-mediated security contexts with IAM tokens, application identities, and driver-supplied `EndUserSecurityContext` payloads. That path is closer to a production web application, but it needs IAM, token, and TLS setup.
 
-- [OracleEndUserContextApplier.java](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/main/java/com/example/security/OracleEndUserContextApplier.java) shows how application code unwraps `OracleConnection`, creates an `EndUserSecurityContext`, sends end-user name, data roles, and attributes, then clears the context before the connection returns to a pool.
-- [deepsec-security.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/resources/sql/deepsec-security.sql) shows data roles and data grants for agents, managers, and scoped service elevation.
+This sample uses local Deep Sec end users because the official guide describes it as the simplest development and testing scenario. It still exercises real Deep Data Security objects: local end users, data roles, `ORA_END_USER_CONTEXT.username`, and data grants.
 
-That separation keeps the sample teachable: local tests prove the authorization behavior without cloud identity setup, while the Deep Data Security files show the database-native policy objects to use in a deployment.
+## Source Material
 
-Before running the handoff script in a real environment, you still need:
-
-- Oracle AI Database 26ai with Deep Data Security enabled
-- a database schema that owns `support_cases`; the script uses `support_app` as an example owner that you must replace
-- an end-user context definition for the attributes the Java code sends
-- an application identity mapped to the IAM client ID
-- IAM and token configuration for end-user and database-access tokens
-- TLS/wallet configuration when required by the environment
-- policy administration privileges such as creating data roles, end-user contexts, data grants, and mandatory data privilege settings
-
-The handoff script uses locally managed data roles because the plain JDBC sample demonstrates `EndUserSecurityContext.withDataRoles(...)`. In a production application, derive those roles from verified identity claims or use externally mapped data roles, rather than accepting role names from request parameters.
-
-## Compatibility-to-Deep-Data-Security mapping
-
-| Local compatibility piece                | Deep Data Security deployment piece              | Why it exists in the sample                                                                  |
-|------------------------------------------|--------------------------------------------------|----------------------------------------------------------------------------------------------|
-| `CompatibilityContextApplier`            | `OracleEndUserContextApplier`                    | Shows that the application boundary is "apply actor context, run SQL, clear context"         |
-| `support_security` package state         | end-user security context                        | Makes Alice, Bob, Maria, and the service actor visible to policy code                        |
-| `support_case_access_v`                  | data grants on `support_cases`                   | Proves row filtering and sensitive-value behavior with a normal local database               |
-| `can_update_case(...)` guarded predicate | `UPDATE (status)` data grants                    | Keeps write authorization close to the data instead of scattering checks through Java        |
-| sample audit table                       | production audit/FGA/unified audit configuration | Gives deterministic teaching evidence, but is not a tamper-resistant production audit design |
-
-## Important limits
-
-Compatibility mode intentionally runs in one schema so it remains simple for Testcontainers. That means it is not a database security boundary: code with direct access to `support_cases` can bypass the secured view and guarded repository method. A production deployment should separate owner and runtime schemas, grant only the intended views/procedures, or rely on Oracle AI Database Deep Data Security mandatory data privileges.
-
-The compatibility harness masks unauthorized sensitive values with readable placeholders. Deep Data Security column restrictions return unauthorized cells as `NULL` unless you add a projection layer that converts authorization checks into explicit display masks.
+- [What Is Oracle Deep Data Security](https://docs.oracle.com/en/database/oracle/oracle-database/26/ddscg/what-is-oracle-deep-data-security.html)
+- [Configure Oracle Deep Data Security for Direct Logon with Local End Users](https://docs.oracle.com/en/database/oracle/oracle-database/26/ddscg/configure-oracle-deep-data-security-direct-logon-local-end-users.html)
+- [Configure Data Access Control](https://docs.oracle.com/en/database/oracle/oracle-database/26/ddscg/configure-data-access-control-l.html)
+- [Validate Data Access Control](https://docs.oracle.com/en/database/oracle/oracle-database/26/ddscg/validate-data-access-control-l.html)
+- [About Data Grants](https://docs.oracle.com/en/database/oracle/oracle-database/26/ddscg/data-grants.html)

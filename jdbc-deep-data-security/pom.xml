@@ -8,12 +8,11 @@
         <groupId>com.example</groupId>
         <artifactId>oracle-database-java-samples</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>jdbc-deep-data-security</artifactId>
     <name>jdbc-deep-data-security</name>
-    <description>Plain JDBC sample showing support-case access guardrails with Oracle AI Database Deep Data Security</description>
+    <description>Plain JDBC sample for Oracle AI Database Deep Data Security data grants</description>
 
     <dependencies>
         <dependency>
@@ -23,8 +22,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -35,11 +34,6 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers-junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -48,7 +48,7 @@ class DeepDataSecurityTest {
     }
 
     @Test
-    void dataGrantsFilterRowsMaskCellsAndGuardUpdatesForJdbcSessions() throws Exception {
+    void verifyDataGrants() throws Exception {
         System.out.println("\n=== Test: data grants filter rows, mask cells, and guard updates ===");
         List<Employee> marvinRows = employeesVisibleTo("manderson");
         List<Employee> emmaRows = employeesVisibleTo("ebaker");
@@ -85,7 +85,7 @@ class DeepDataSecurityTest {
     }
 
     @Test
-    void contextAttributesCanScopeDataGrantsForTheCurrentJdbcSession() throws Exception {
+    void verifyContextForDataGrants() throws Exception {
         System.out.println("\n=== Test: context attributes scope data grants for one JDBC session ===");
         HcmContext defaultContext = securityContextVisibleTo("manderson");
         printContext("Default context for \"manderson\"", defaultContext);

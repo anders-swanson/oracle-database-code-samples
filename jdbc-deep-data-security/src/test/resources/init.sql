@@ -99,4 +99,3 @@ create data grant hr.hcm_context_manager_update
            on sys.end_user_context
        where owner = 'HR' and name = 'HCM_CONTEXT'
            to manager_role;
-

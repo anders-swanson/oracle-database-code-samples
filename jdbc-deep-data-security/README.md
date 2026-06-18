@@ -68,7 +68,7 @@ The setup also runs `SET USE DATA GRANTS ONLY ON hr.employees ENABLED` so Deep D
 ## Code Map
 
 - [pom.xml](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/pom.xml) declares the plain JDBC and Testcontainers dependencies.
-- [deep-data-security-demo.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/resources/sql/deep-data-security-demo.sql) creates the HR table, local end users, custom end-user context, data roles, and data grants.
+- [init.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/resources/init.sql) creates the HR table, local end users, custom end-user context, data roles, and data grants.
 - [DeepDataSecurityTest.java](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/java/com/example/security/DeepDataSecurityTest.java) runs the JDBC proof against Oracle AI Database Free.
 - [deep-data-security-flow.svg](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/deep-data-security-flow.svg) diagrams the end-to-end test flow.
 
@@ -88,10 +88,50 @@ Deep Data Security also supports application-mediated security contexts with IAM
 
 Local Deep Sec end users are the simplest for development and testing, while still exercising Deep Data Security objects: local end users, data roles, `ORA_END_USER_CONTEXT.username`, custom `ORA_END_USER_CONTEXT.hr.hcm_context` attributes, and data grants.
 
+## IAM Token Access With EndUserSecurityContext
+
+In an IAM-backed application, the app typically connects with an application or pool identity, then attaches the real end-user identity to the JDBC connection before running SQL. Oracle AI Database validates the tokens, activates the requested Deep Data Security data roles, and exposes the attached attributes through `ORA_END_USER_CONTEXT`.
+
+```java
+import oracle.jdbc.EndUserSecurityContext;
+import oracle.jdbc.OracleConnection;
+import oracle.sql.json.OracleJsonFactory;
+import oracle.sql.json.OracleJsonObject;
+
+import java.sql.Connection;
+
+class IamDeepDataSecurityExample {
+    void runAsEndUser(Connection pooledConnection, String databaseAccessToken, String endUserToken)
+            throws Exception {
+        OracleJsonObject hcmContext = new OracleJsonFactory().createObject();
+        hcmContext.put("org_id", 10);
+        hcmContext.put("scope", "WORKFORCE");
+
+        EndUserSecurityContext securityContext = EndUserSecurityContext
+                .createWithToken(databaseAccessToken, endUserToken)
+                .withDataRoles("employee_role", "manager_role")
+                .withAttributes("HR.HCM_CONTEXT", hcmContext);
+
+        OracleConnection oracleConnection = pooledConnection.unwrap(OracleConnection.class);
+        oracleConnection.setEndUserSecurityContext(securityContext);
+
+        try {
+            // Run normal application SQL here. Data grants still evaluate
+            // ORA_END_USER_CONTEXT.username and ORA_END_USER_CONTEXT.hr.hcm_context.org_id.
+        } finally {
+            oracleConnection.clearEndUserSecurityContext();
+        }
+    }
+}
+```
+
+This sample does not run that path locally because a real IAM integration needs token issuance, trust configuration, and TLS setup. The runnable Testcontainers test uses local end users so the data grants can be validated without external identity infrastructure. For the full IAM setup flow, see [Configure Oracle Deep Data Security for Direct Logon with End Users Using IAM](https://docs.oracle.com/en/database/oracle/oracle-database/26/ddscg/configure-oracle-deep-data-security-direct-logon-end-users-iam.html#).
+
 ## References
 
 - [What Is Oracle Deep Data Security](https://docs.oracle.com/en/database/oracle/oracle-database/26/ddscg/what-is-oracle-deep-data-security.html)
 - [Configure Oracle Deep Data Security for Direct Logon with Local End Users](https://docs.oracle.com/en/database/oracle/oracle-database/26/ddscg/configure-oracle-deep-data-security-direct-logon-local-end-users.html)
+- [Configure Oracle Deep Data Security for Direct Logon with End Users Using IAM](https://docs.oracle.com/en/database/oracle/oracle-database/26/ddscg/configure-oracle-deep-data-security-direct-logon-end-users-iam.html#)
 - [Data Access Control Configuration](https://docs.oracle.com/en/database/oracle/oracle-database/26/ddscg/data-access-control-configuration.html)
 - [Configure End-User Contexts and Attributes](https://docs.oracle.com/en/database/oracle/oracle-database/26/ddscg/configure-end-user-contexts-and-attributes.html)
 - [Read End-User Context Attributes](https://docs.oracle.com/en/database/oracle/oracle-database/26/ddscg/read-end-user-context-attributes.html)

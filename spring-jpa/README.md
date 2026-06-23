@@ -7,7 +7,7 @@ tags:
   - Java
   - SpringBoot
   - Testcontainers
-blog_post: ""
+blog_post: "https://andersswanson.dev/2025/06/10/learn-spring-jpa-by-example-with-oracle-database-free/"
 ---
 
 # Learn Spring JPA By Example with Oracle AI Database Free

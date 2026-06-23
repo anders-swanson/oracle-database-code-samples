@@ -8,31 +8,15 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring-jpa</artifactId>
+    <artifactId>spring-boot-ucp</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>spring-jpa</name>
-    <description>Example of Spring JPA with Oracle AI Database</description>
+    <name>spring-boot-ucp</name>
+    <description>Spring Boot sample showing Oracle Universal Connection Pool configuration for Oracle AI Database</description>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-data-jdbc</artifactId>
         </dependency>
         <dependency>
             <groupId>com.oracle.database.spring</groupId>
@@ -40,22 +24,10 @@
             <version>${oracle.starters.version}</version>
         </dependency>
 
-    <!-- Include if using Oracle AI Database Wallet -->
-<!--        <dependency>-->
-<!--            <groupId>com.oracle.database.spring</groupId>-->
-<!--            <artifactId>oracle-spring-boot-starter-wallet</artifactId>-->
-<!--            <version>${oracle.version}</version>-->
-<!--        </dependency>-->
-
         <!--Test Dependencies-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -80,6 +52,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.example.ucp.UcpApplication</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>

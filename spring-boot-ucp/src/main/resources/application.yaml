@@ -1,0 +1,189 @@
+spring:
+  application:
+    name: spring-boot-ucp
+  datasource:
+    username: ${USERNAME:testuser}
+    password: ${PASSWORD:testpwd}
+    url: ${JDBC_URL:jdbc:oracle:thin:@localhost:1521/freepdb1}
+
+    # Set these to use UCP over Hikari.
+    driver-class-name: oracle.jdbc.OracleDriver
+    type: oracle.ucp.jdbc.PoolDataSource
+    oracleucp:
+      # Creates this many available connections when the pool is first created.
+      # UCP default is 0, which means connections are created lazily.
+      initial-pool-size: 1
+      # Keeps at least this many total available plus borrowed connections, once
+      # the pool has grown to this size.
+      min-pool-size: 1
+      # Caps the total number of available plus borrowed connections. Requests
+      # wait or fail once all connections are borrowed and this limit is reached.
+      max-pool-size: 4
+      # Names the pool for diagnostics, JMX, and UCP manager operations.
+      connection-pool-name: ${spring.application.name}
+      # Uses the Oracle JDBC data source as the physical connection factory.
+      connection-factory-class-name: oracle.jdbc.pool.OracleDataSource
+
+---
+# Dynamic sizing profile:
+# Demonstrates a pool that can grow and shrink with application load. Use this
+# when steady traffic is moderate but bursts need extra temporary capacity.
+spring:
+  config:
+    activate:
+      on-profile: sizing
+  datasource:
+    oracleucp:
+      # Pre-creates two available connections to reduce first-request ramp-up.
+      initial-pool-size: 2
+      # Keeps the pool from shrinking below two total connections after demand
+      # has caused the pool to reach that size.
+      min-pool-size: 2
+      # Maintains at least one idle connection in the background when possible.
+      min-idle: 1
+      # Allows the dynamic pool to grow to eight total connections under load.
+      max-pool-size: 8
+
+---
+# Static sizing profile:
+# Demonstrates a narrow, pre-warmed pool. Use this when you want predictable
+# database session counts and want to avoid sudden connection storms.
+spring:
+  config:
+    activate:
+      on-profile: static-sizing
+  datasource:
+    oracleucp:
+      # Starts with three physical connections for a small pre-warmed pool.
+      initial-pool-size: 3
+      # Maintains three total connections once the pool reaches this size.
+      min-pool-size: 3
+      # Keeps the static profile narrow so demand can grow by only one extra
+      # connection before callers wait.
+      max-pool-size: 4
+
+---
+# Timeouts profile:
+# Demonstrates stale-connection controls for idle, reused, and exhausted pools.
+# Use this when networks, firewalls, or long-running services can leave
+# connections open longer than your application should keep them.
+spring:
+  config:
+    activate:
+      on-profile: timeouts
+  datasource:
+    oracleucp:
+      # Closes available idle connections after 30 seconds. Borrowed connections
+      # are not affected by this timeout.
+      inactive-connection-timeout: 30
+      # Limits borrow-time validation to 5 seconds before UCP treats the
+      # connection as invalid.
+      connection-validation-timeout: 5
+      # Runs the timeout enforcement cycle every 10 seconds. Actual reclamation
+      # happens when this periodic check notices an expired connection.
+      timeout-check-interval: 10
+      # Retires a physical connection after 60 seconds of lifetime, but only
+      # when it is borrowed, returned, or found by the timeout check.
+      max-connection-reuse-time: 60
+      # Retires a physical connection after it has been borrowed 25 times.
+      max-connection-reuse-count: 25
+      # Waits up to 2 seconds for a connection when the pool is exhausted.
+      connection-wait-duration: 2s
+
+---
+# Abandoned connection profile:
+# Demonstrates reclamation of borrowed connections that are held too long. Use
+# this as a backstop for code paths that may leak or block while holding a
+# connection, especially in services with strict pool capacity.
+spring:
+  config:
+    activate:
+      on-profile: abandoned
+  datasource:
+    oracleucp:
+      # Reclaims borrowed connections that have not been used for 10 seconds.
+      # UCP determines abandonment by monitoring database calls.
+      abandoned-connection-timeout: 10
+      # Reclaims any borrowed connection that remains checked out for 60 seconds,
+      # even if that connection is actively doing work.
+      time-to-live-connection-timeout: 60
+      # Applies a default 15-second statement execution timeout through UCP.
+      query-timeout: 15
+
+---
+# Harvesting profile:
+# Demonstrates reclaiming harvestable borrowed connections when the pool is low
+# on available connections. Use this when an application caches connection
+# handles but can mark selected work as safe for UCP to reclaim.
+spring:
+  config:
+    activate:
+      on-profile: harvesting
+  datasource:
+    oracleucp:
+      # Keeps enough total connections in the pool for harvesting to have
+      # available and borrowed connections to manage.
+      min-pool-size: 2
+      # Provides room for the pool to borrow more connections before harvesting.
+      max-pool-size: 4
+      # Triggers harvesting when available connections drop to one.
+      connection-harvest-trigger-count: 1
+      # Allows UCP to reclaim up to two borrowed, harvestable connections after
+      # the trigger threshold is reached.
+      connection-harvest-max-count: 2
+
+---
+# Statement cache profile:
+# Demonstrates per-physical-connection SQL statement caching. Use this when the
+# application repeatedly prepares the same SQL and can benefit from reduced
+# parse and cursor creation overhead.
+spring:
+  config:
+    activate:
+      on-profile: statement-cache
+  datasource:
+    oracleucp:
+      # Caches up to 10 prepared or callable statements per physical connection.
+      # A value of 0 disables Oracle JDBC statement caching.
+      max-statements: 10
+
+---
+# Validation profile:
+# Demonstrates borrow-time connection validation with a trusted-idle window.
+# Use this when stale or reset session state is a risk, but you want to reduce
+# validation overhead for recently used connections.
+spring:
+  config:
+    activate:
+      on-profile: validation
+  datasource:
+    oracleucp:
+      # Validates each borrowed connection. With Oracle JDBC, UCP uses its
+      # internal ping, so sql-for-validate-connection is intentionally omitted.
+      validate-connection-on-borrow: true
+      # Skips validation for recently used or recently tested idle connections
+      # for 30 seconds. This only works when validate-connection-on-borrow is true.
+      seconds-to-trust-idle-connection: 30
+
+---
+# DRCP profile:
+# Demonstrates using UCP as the client-side pool for Oracle AI Database
+# Resident Connection Pooling. Use this when many application instances keep
+# pools open but only a smaller subset of connections is active at once.
+spring:
+  config:
+    activate:
+      on-profile: drcp
+  datasource:
+    # The short DRCP URL form appends :POOLED to request pooled server processes.
+    url: ${JDBC_URL:jdbc:oracle:thin:@localhost:1521/freepdb1:POOLED}
+    oracleucp:
+      # Limits this client-side pool while the server-side DRCP pool multiplexes
+      # physical database server processes.
+      max-pool-size: 4
+      # Names this UCP pool separately from the default profile for diagnostics.
+      connection-pool-name: spring-boot-ucp-drcp
+      connection-properties:
+        # DRCP uses a non-empty connection class to share pooled server
+        # processes across compatible middle-tier pools.
+        oracle.jdbc.DRCPConnectionClass: spring-boot-ucp

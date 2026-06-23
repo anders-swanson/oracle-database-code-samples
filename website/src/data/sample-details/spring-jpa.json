@@ -1,17 +1,19 @@
 {
   "id": "spring-jpa",
   "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-jpa/README.md",
-  "blogPost": "https://andersswanson.dev/2025/06/10/learn-spring-jpa-by-example-with-oracle-database-free/",
+  "blogPost": "",
   "readmeExcerpt": "Spring JPA (Java Persistence API) provides an abstraction layer over JPA using ORM (Object Relational Mapping). Spring JPA simplifies database interactions by abstracting common operations to simple Java objects and annotations.",
   "highlights": [
     "[Spring JPA By Example: One-to-One, Many-to-One, and Many-to-Many](https://andersswanson.dev/2025/06/11/spring-jpa-by-example-one-to-one-many-to-one-and-many-to-many/)",
-    "[Spring JPA: Paging, Sorting, and Filtering](https://andersswanson.dev/2025/06/11/spring-jpa-paging-sorting-and-filtering/)"
+    "[Spring JPA: Paging, Sorting, and Filtering](https://andersswanson.dev/2025/06/11/spring-jpa-paging-sorting-and-filtering/)",
+    "If you're using Spring Boot JdbcClient or JdbcTemplate, you can use AOP or @ControllerAdvice",
+    "If you're using JDBC directly, you may also catch and handle the SQLException in-place for ORA-type errors."
   ],
   "features": [
     "Testcontainers",
     "Spring"
   ],
-  "sourceUpdatedAt": "2026-06-09T19:11:50.283Z",
+  "sourceUpdatedAt": "2026-06-23T20:02:34.701Z",
   "metaTitle": "Learn Spring JPA By Example with Oracle AI Database Free | Oracle AI Database Code Samples",
   "metaDescription": "Spring JPA examples for Oracle AI Database entities, repositories, and relationships.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-jpa/",

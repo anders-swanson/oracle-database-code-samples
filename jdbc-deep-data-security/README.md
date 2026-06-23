@@ -1,19 +1,18 @@
 ---
 name: jdbc-deep-data-security
-description: Plain JDBC sample that validates Oracle AI Database Deep Data Security data grants with Testcontainers.
+description: JDBC sample that validates Oracle AI Database Deep Data Security data grants with Testcontainers.
 tags:
   - Java
-  - JDBC
   - Security
   - Testcontainers
-blog_post: ""
+blog_post: "https://andersswanson.dev/2026/06/22/deep-data-security-row-and-column-level-rbac/"
 ---
 
 # JDBC Deep Data Security
 
-This locally runnable Deep Data Security example for Oracle AI Database. It follows the local end-user quick start from the Deep Data Security guide, driving the validation from a JUnit test.
+This is a locally runnable [Deep Data Security](https://docs.oracle.com/en/database/oracle/oracle-database/26/ddscg/introduction-oracle-deep-data-security.html) example for Oracle AI Database. It follows the local end-user quick start from the Deep Data Security guide, driving the validation from a JUnit test.
 
-The flow is simple:
+Test flow:
 
 1. Testcontainers starts Oracle AI Database Free.
 2. A [setup script](./src/test/resources/init.sql) creates an `hr.employees` table, a custom `hr.hcm_context`, two local Deep Sec end users, two data roles, data grants, and mandatory data-grant enforcement on the table.
@@ -25,7 +24,7 @@ The flow is simple:
 
 ## How Policy Enforcement Works
 
-Deep Data Security is enforced by Oracle AI Database, not by application-side filtering. The test doesn't need to add policy-level filters like `where email = ?` or `where manager = ?` - it connects as a Deep Data Security end user and lets data grant policies determine the visible rows and cells.
+Deep Data Security is enforced by Oracle AI Database, without any client-side APIs. Policy-level filters like `where email = ?` or `where manager = ?` are applied by the database server when the Deep Data Security user is connected.
 
 | End user      | Data roles                      | Expected access                                                                                                                   |
 |---------------|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
@@ -65,7 +64,7 @@ The test validates with `ORA_CHECK_DATA_PRIVILEGE`: Marvin's own phone cell is u
 
 The setup also runs `SET USE DATA GRANTS ONLY ON hr.employees ENABLED` so Deep Data Security users _must_ use data grants for the protected table.
 
-## Code Map
+## Code References
 
 - [pom.xml](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/pom.xml) declares the plain JDBC and Testcontainers dependencies.
 - [init.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/jdbc-deep-data-security/src/test/resources/init.sql) creates the HR table, local end users, custom end-user context, data roles, and data grants.

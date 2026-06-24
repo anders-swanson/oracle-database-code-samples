@@ -43,6 +43,32 @@ spring:
       min-idle: 1
       # Allows the dynamic pool to grow to eight total connections under load.
       max-pool-size: 8
+  application:
+    name: Pool Sizing
+
+---
+# Dynamic resizing sample profile:
+# Demonstrates changing pool limits on a live PoolDataSource with setters.
+# Start with a deliberately small pool, then let application code increase and
+# lower the limits without rebuilding the data source.
+spring:
+  config:
+    activate:
+      on-profile: dynamic-resizing
+  datasource:
+    oracleucp:
+      # Starts with one connection so the sample can show runtime growth.
+      initial-pool-size: 1
+      # Begins with one maintained connection.
+      min-pool-size: 1
+      # Begins capped at two connections; the sample raises this with
+      # PoolDataSource.setMaxPoolSize before borrowing more connections.
+      max-pool-size: 2
+      # Uses a distinct name because this profile starts the pool during
+      # application startup.
+      connection-pool-name: spring-boot-ucp-dynamic-resizing
+  application:
+    name: Dynamic Pool Sizing
 
 ---
 # Static sizing profile:
@@ -61,6 +87,8 @@ spring:
       # Keeps the static profile narrow so demand can grow by only one extra
       # connection before callers wait.
       max-pool-size: 4
+  application:
+    name: Static Pool Sizing
 
 ---
 # Timeouts profile:
@@ -89,6 +117,8 @@ spring:
       max-connection-reuse-count: 25
       # Waits up to 2 seconds for a connection when the pool is exhausted.
       connection-wait-duration: 2s
+  application:
+    name: Connection timeouts
 
 ---
 # Abandoned connection profile:
@@ -109,6 +139,8 @@ spring:
       time-to-live-connection-timeout: 60
       # Applies a default 15-second statement execution timeout through UCP.
       query-timeout: 15
+  application:
+    name: Reclaimed abandoned borrowed connections
 
 ---
 # Harvesting profile:
@@ -131,6 +163,8 @@ spring:
       # Allows UCP to reclaim up to two borrowed, harvestable connections after
       # the trigger threshold is reached.
       connection-harvest-max-count: 2
+  application:
+    name: Borrwed connection harvesting
 
 ---
 # Statement cache profile:
@@ -146,6 +180,8 @@ spring:
       # Caches up to 10 prepared or callable statements per physical connection.
       # A value of 0 disables Oracle JDBC statement caching.
       max-statements: 10
+  application:
+    name: Per-connection statement caching
 
 ---
 # Validation profile:
@@ -164,6 +200,8 @@ spring:
       # Skips validation for recently used or recently tested idle connections
       # for 30 seconds. This only works when validate-connection-on-borrow is true.
       seconds-to-trust-idle-connection: 30
+  application:
+    name: Borrow-time connection validation
 
 ---
 # DRCP profile:
@@ -187,3 +225,5 @@ spring:
         # DRCP uses a non-empty connection class to share pooled server
         # processes across compatible middle-tier pools.
         oracle.jdbc.DRCPConnectionClass: spring-boot-ucp
+  application:
+    name: Database Resident Connection Pooling (DRCP)

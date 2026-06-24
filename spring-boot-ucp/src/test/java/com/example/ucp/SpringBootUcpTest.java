@@ -103,6 +103,25 @@ class SpringBootUcpTest {
     }
 
     @Test
+    void dynamicResizingProfileChangesPoolLimitsWithDataSourceSetters() throws SQLException {
+        try (ConfigurableApplicationContext context = profileContext("dynamic-resizing", oracle.getJdbcUrl())) {
+            PoolDataSource poolDataSource = context.getBean(DataSource.class).unwrap(PoolDataSource.class);
+            DynamicPoolResizingService resizingService = context.getBean(DynamicPoolResizingService.class);
+            DynamicPoolResizingReport report = resizingService.lastReport();
+
+            assertThat(report.initialMinPoolSize()).isEqualTo(1);
+            assertThat(report.initialMaxPoolSize()).isEqualTo(2);
+            assertThat(report.expandedMinPoolSize()).isEqualTo(2);
+            assertThat(report.expandedMaxPoolSize()).isEqualTo(5);
+            assertThat(report.borrowedConnectionsAtExpandedMax()).isEqualTo(5);
+            assertThat(report.resizedMinPoolSize()).isEqualTo(1);
+            assertThat(report.resizedMaxPoolSize()).isEqualTo(3);
+            assertThat(poolDataSource.getMinPoolSize()).isEqualTo(1);
+            assertThat(poolDataSource.getMaxPoolSize()).isEqualTo(3);
+        }
+    }
+
+    @Test
     void bindsStaticSizingProfile() {
         assertProfile("static-sizing", report -> {
             assertThat(report.initialPoolSize()).isEqualTo(3);

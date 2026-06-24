@@ -23,6 +23,7 @@ The configuration sets `spring.datasource.type` to `oracle.ucp.jdbc.PoolDataSour
 - [PoolMetrics](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-boot-ucp/src/main/java/com/example/ucp/PoolMetrics.java): Captures runtime UCP pool statistics such as total, borrowed, available, pending, wait, and cumulative borrow/return counts.
 - [PoolDiagnostics](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-boot-ucp/src/main/java/com/example/ucp/PoolDiagnostics.java): Captures UCP diagnostic settings, JMX status, metric update interval, and registered pool names.
 - [PoolReporter](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-boot-ucp/src/main/java/com/example/ucp/PoolReporter.java): Logs configuration, metrics, and diagnostics at startup.
+- [DynamicPoolResizingService](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-boot-ucp/src/main/java/com/example/ucp/DynamicPoolResizingService.java): Demonstrates runtime pool resizing with `PoolDataSource.setMinPoolSize` and `PoolDataSource.setMaxPoolSize`.
 - [HarvestingService](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-boot-ucp/src/main/java/com/example/ucp/HarvestingService.java): Demonstrates how to mark a borrowed connection as non-harvestable while it is doing work.
 - [ConnectionLabelingService](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-boot-ucp/src/main/java/com/example/ucp/ConnectionLabelingService.java): Demonstrates callback-driven connection labeling for transaction isolation state.
 - [application.yaml](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-boot-ucp/src/main/resources/application.yaml): Contains the default configuration and each profile-specific UCP configuration.
@@ -56,6 +57,7 @@ Run one profile at a time:
 | Profile | Command | Demonstrates |
 | --- | --- | --- |
 | `sizing` | `mvn spring-boot:run -Dspring-boot.run.profiles=sizing` | `initial-pool-size`, `min-pool-size`, `min-idle`, and `max-pool-size` for dynamic pool sizing. |
+| `dynamic-resizing` | `mvn spring-boot:run -Dspring-boot.run.profiles=dynamic-resizing` | Runtime resizing with `PoolDataSource` setters after the UCP data source has been created. |
 | `static-sizing` | `mvn spring-boot:run -Dspring-boot.run.profiles=static-sizing` | A narrow min/max range that avoids connection storms and follows Real-World Performance sizing guidance. |
 | `timeouts` | `mvn spring-boot:run -Dspring-boot.run.profiles=timeouts` | Wait, idle, validation, reuse, and timeout sweep settings for stale connection control. |
 | `abandoned` | `mvn spring-boot:run -Dspring-boot.run.profiles=abandoned` | Abandoned borrowed connection reclamation, time-to-live, and query timeout settings. |
@@ -89,6 +91,21 @@ mvn spring-boot:run \
 ```
 
 The diagnostic system properties must be set before UCP initializes the pool, so pass them as JVM arguments rather than Spring application properties.
+
+## Dynamic Pool Resizing
+
+The `dynamic-resizing` profile starts with a small pool:
+
+```yaml
+spring:
+  datasource:
+    oracleucp:
+      initial-pool-size: 1
+      min-pool-size: 1
+      max-pool-size: 2
+```
+
+`DynamicPoolResizingService` then unwraps the Spring `DataSource` to a `PoolDataSource`, calls `setMinPoolSize(2)` and `setMaxPoolSize(5)`, borrows five connections to verify the expanded limit, and lowers the live settings with `setMinPoolSize(1)` and `setMaxPoolSize(3)`.
 
 ## Connection Validation and Labeling
 
@@ -136,7 +153,7 @@ From the repository root:
 mvn -pl spring-boot-ucp test
 ```
 
-The tests start Oracle AI Database Free with Testcontainers, verify each profile binds to the expected `PoolDataSource` settings, run `select 1 from dual`, and start a conservative DRCP configuration for the DRCP profile.
+The tests start Oracle AI Database Free with Testcontainers, verify each profile binds to the expected `PoolDataSource` settings, run `select 1 from dual`, verify runtime resizing with `PoolDataSource` setters, and start a conservative DRCP configuration for the DRCP profile.
 
 ## References
 

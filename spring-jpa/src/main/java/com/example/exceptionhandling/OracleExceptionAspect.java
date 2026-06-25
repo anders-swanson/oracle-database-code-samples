@@ -1,7 +1,7 @@
 package com.example.exceptionhandling;
 
 import com.example.errors.OracleErrorExtractor;
-import com.example.errors.OracleJpaException;
+import com.example.errors.OracleDataAccessException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -21,7 +21,7 @@ public class OracleExceptionAspect {
             throw OracleErrorExtractor.from(exception)
                     .map(oracleError ->
                             // Put your specific error handling logic here
-                            new OracleJpaException(oracleError, exception)
+                            new OracleDataAccessException(oracleError, exception)
                     )
                     .orElseThrow(() -> exception);
         }

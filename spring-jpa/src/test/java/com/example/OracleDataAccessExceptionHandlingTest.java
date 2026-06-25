@@ -2,7 +2,7 @@ package com.example;
 
 import java.time.Duration;
 
-import com.example.errors.OracleJpaException;
+import com.example.errors.OracleDataAccessException;
 import com.example.exceptionhandling.StudentExceptionHandlingService;
 import com.example.model.Student;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Testcontainers
-public class OracleJpaExceptionHandlingTest {
+public class OracleDataAccessExceptionHandlingTest {
     @Container
     @ServiceConnection
     static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.2-slim-faststart")
@@ -46,8 +46,8 @@ public class OracleJpaExceptionHandlingTest {
     @Test
     void jpaExceptionsHandled() {
         assertThatThrownBy(() -> studentService.createStudent(invalidGpaStudent()))
-                .isInstanceOf(OracleJpaException.class)
-                .extracting(exception -> ((OracleJpaException) exception).getOracleError())
+                .isInstanceOf(OracleDataAccessException.class)
+                .extracting(exception -> ((OracleDataAccessException) exception).getOracleError())
                 .satisfies(error -> {
                     assertThat(error.errorCode()).isEqualTo(2290); // check for your specific ORA error
                     assertThat(error.oraCode()).isEqualTo("ORA-02290");

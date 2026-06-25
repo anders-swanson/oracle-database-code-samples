@@ -1,7 +1,7 @@
 package com.example.web;
 
-import com.example.exceptionhandling.StudentExceptionHandlingService;
 import com.example.model.Student;
+import com.example.repository.StudentRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class StudentsController {
-    private final StudentExceptionHandlingService studentService;
+    private final StudentRepository studentRepository;
 
-    public StudentsController(StudentExceptionHandlingService studentService) {
-        this.studentService = studentService;
+    public StudentsController(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
     @PostMapping("/students")
     @ResponseStatus(HttpStatus.CREATED)
     public Student createStudent(@RequestBody Student student) {
         student.setId(null);
-        return studentService.createStudent(student);
+        return studentRepository.saveAndFlush(student);
     }
 }

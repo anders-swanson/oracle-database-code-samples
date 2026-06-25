@@ -1,9 +1,9 @@
 package com.example.errors;
 
-public class OracleJpaException extends RuntimeException {
+public class OracleDataAccessException extends RuntimeException {
     private final OracleDatabaseError oracleError;
 
-    public OracleJpaException(OracleDatabaseError oracleError, Throwable cause) {
+    public OracleDataAccessException(OracleDatabaseError oracleError, Throwable cause) {
         super("%s from Oracle AI Database JPA operation".formatted(oracleError.oraCode()), cause);
         this.oracleError = oracleError;
     }

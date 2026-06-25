@@ -7,37 +7,40 @@ import java.util.Optional;
 import java.util.Set;
 
 public final class OracleErrorExtractor {
-    private OracleErrorExtractor() {}
-
     public static Optional<OracleDatabaseError> from(Throwable throwable) {
         Set<Throwable> seen = Collections.newSetFromMap(new IdentityHashMap<>());
-        return findSQLException(throwable, seen)
-                .filter(sqlException -> sqlException.getErrorCode() > 0)
-                .map(sqlException -> OracleDatabaseError.fromErrorCode(
-                        sqlException.getErrorCode(),
-                        sqlException.getMessage()
-                ));
+
+        Throwable current = throwable;
+        while (current != null && seen.add(current)) {
+            if (current instanceof SQLException sqlException) {
+                Optional<OracleDatabaseError> error = fromSqlException(sqlException, seen);
+                if (error.isPresent()) {
+                    return error;
+                }
+            }
+            current = current.getCause();
+        }
+
+        return Optional.empty();
     }
 
-    private static Optional<SQLException> findSQLException(Throwable throwable, Set<Throwable> seen) {
-        if (throwable == null || !seen.add(throwable)) {
-            return Optional.empty();
-        }
-
-        if (throwable instanceof SQLException sqlException) {
-            if (sqlException.getErrorCode() > 0) {
-                return Optional.of(sqlException);
+    private static Optional<OracleDatabaseError> fromSqlException(SQLException exception, Set<Throwable> seen) {
+        SQLException current = exception;
+        while (current != null) {
+            if (current.getErrorCode() > 0) {
+                return Optional.of(OracleDatabaseError.fromErrorCode(
+                        current.getErrorCode(),
+                        current.getMessage()
+                ));
             }
 
-            SQLException next = sqlException.getNextException();
-            while (next != null && seen.add(next)) {
-                if (next.getErrorCode() > 0) {
-                    return Optional.of(next);
-                }
-                next = next.getNextException();
+            SQLException next = current.getNextException();
+            if (next == null || !seen.add(next)) {
+                return Optional.empty();
             }
+            current = next;
         }
 
-        return findSQLException(throwable.getCause(), seen);
+        return Optional.empty();
     }
 }

@@ -34,17 +34,17 @@
 
   <text x="44" y="50" class="eyebrow">configuration</text>
   <text x="44" y="90" class="title">One Sample, Several Pool Behaviors</text>
-  <text x="44" y="116" class="subtitle">Spring profiles switch UCP settings while the Java code stays small.</text>
+  <text x="44" y="116" class="subtitle">Spring profiles switch UCP settings.</text>
 
   <rect x="50" y="166" width="206" height="104" rx="6" class="card"/>
   <text x="74" y="202" class="label">Spring Boot</text>
   <text x="74" y="230" class="code">spring.datasource.type</text>
-  <text x="74" y="252" class="text">oracle.ucp.jdbc.PoolDataSource</text>
+  <text x="74" y="252" class="text">UCP PoolDataSource</text>
 
   <rect x="300" y="166" width="200" height="104" rx="6" class="gold"/>
   <text x="324" y="202" class="label">UCP binding</text>
   <text x="324" y="230" class="text">oracleucp settings</text>
-  <text x="324" y="252" class="text">become PoolDataSource state</text>
+  <text x="324" y="252" class="text">configure PoolDataSource</text>
 
   <rect x="544" y="166" width="206" height="104" rx="6" class="mint"/>
   <text x="568" y="202" class="label">Oracle AI Database</text>
@@ -75,6 +75,4 @@
   <path d="M400 314H488V346" class="arrow"/>
   <path d="M400 314H666V346" class="arrow"/>
 
-  <rect x="102" y="496" width="596" height="46" rx="6" fill="#f8eee8" stroke="#d5967f" stroke-width="2"/>
-  <text x="128" y="525" class="small">The useful trick is comparing pool behavior by profile before changing application code.</text>
 </svg>

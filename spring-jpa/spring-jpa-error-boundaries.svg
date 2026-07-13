@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Choose AOP or ControllerAdvice for Spring JPA errors</title>
+  <desc id="desc">An 800 by 600 comparison diagram showing Spring AOP as the application boundary for non-HTTP callers and ControllerAdvice as the HTTP response boundary for REST controllers.</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="130%">
+      <feDropShadow dx="0" dy="7" stdDeviation="8" flood-color="#14202a" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#315d64"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .header { fill: #eef7f4; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 34px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .panel { fill: #ffffff; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .left { fill: #9bd7d1; stroke: #152330; stroke-width: 2; }
+      .right { fill: #f2c94c; stroke: #152330; stroke-width: 2; }
+      .node { fill: #ffffff; stroke: #152330; stroke-width: 2; }
+      .dark { fill: #152330; stroke: #152330; stroke-width: 2; }
+      .label { font: 800 20px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .sub { font: 700 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .node-label { font: 800 15px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .node-text { font: 600 12px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .dark-label { font: 800 15px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .dark-text { font: 700 12px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9f4ef; }
+      .arrow { fill: none; stroke: #315d64; stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow); }
+      .rule { stroke: #d5967f; stroke-width: 3; stroke-linecap: round; }
+      .caption { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #60453b; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <rect class="header" width="800" height="132"/>
+  <path d="M0 500C126 456 252 462 382 502C520 545 650 532 800 466V600H0Z" fill="#2e6f95" opacity="0.08"/>
+
+  <text x="44" y="50" class="eyebrow">boundary choice</text>
+  <text x="44" y="90" class="title">AOP Translates, Advice Responds</text>
+  <text x="44" y="116" class="subtitle">Keep database policy and HTTP policy near the boundaries where they belong.</text>
+
+  <rect x="58" y="166" width="314" height="324" rx="6" class="panel"/>
+  <rect x="58" y="166" width="314" height="74" rx="6" class="left"/>
+  <text x="84" y="205" class="label">Spring AOP</text>
+  <text x="84" y="226" class="sub">application operation boundary</text>
+
+  <rect x="86" y="274" width="118" height="62" rx="6" class="node"/>
+  <text x="106" y="300" class="node-label">Service</text>
+  <text x="106" y="320" class="node-text">saveAndFlush</text>
+
+  <rect x="226" y="274" width="118" height="62" rx="6" class="node"/>
+  <text x="246" y="300" class="node-label">@Around</text>
+  <text x="246" y="320" class="node-text">catch Spring DAO</text>
+
+  <rect x="156" y="382" width="142" height="66" rx="6" class="dark"/>
+  <text x="178" y="410" class="dark-label">App exception</text>
+  <text x="178" y="430" class="dark-text">OracleJpaException</text>
+
+  <path d="M204 305H226" class="arrow"/>
+  <path d="M285 336V382" class="arrow"/>
+
+  <rect x="428" y="166" width="314" height="324" rx="6" class="panel"/>
+  <rect x="428" y="166" width="314" height="74" rx="6" class="right"/>
+  <text x="454" y="205" class="label">ControllerAdvice</text>
+  <text x="454" y="226" class="sub">HTTP response boundary</text>
+
+  <rect x="456" y="274" width="118" height="62" rx="6" class="node"/>
+  <text x="476" y="300" class="node-label">Controller</text>
+  <text x="476" y="320" class="node-text">POST /students</text>
+
+  <rect x="596" y="274" width="118" height="62" rx="6" class="node"/>
+  <text x="616" y="300" class="node-label">Handler</text>
+  <text x="616" y="320" class="node-text">@ExceptionHandler</text>
+
+  <rect x="526" y="382" width="142" height="66" rx="6" class="dark"/>
+  <text x="548" y="410" class="dark-label">API response</text>
+  <text x="548" y="430" class="dark-text">400 JSON body</text>
+
+  <path d="M574 305H596" class="arrow"/>
+  <path d="M655 336V382" class="arrow"/>
+
+  <line x1="400" y1="174" x2="400" y2="486" class="rule"/>
+
+  <rect x="108" y="520" width="584" height="42" rx="6" fill="#f8eee8" stroke="#d5967f" stroke-width="2"/>
+  <text x="166" y="547" class="caption">Use both when needed: translate once, then map web failures to HTTP.</text>
+</svg>

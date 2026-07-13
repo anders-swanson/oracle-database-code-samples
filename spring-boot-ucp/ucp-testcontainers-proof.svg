@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Testcontainers proof for Spring Boot UCP</title>
+  <desc id="desc">An 800 by 600 diagram showing the Maven test starting Oracle AI Database Free with Testcontainers, booting Spring profiles, checking UCP binding, running select 1 from dual, and proving DRCP with a started server-side pool.</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="130%">
+      <feDropShadow dx="0" dy="7" stdDeviation="8" flood-color="#14202a" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#295f63"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .header { fill: #eef7f4; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 32px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .card { fill: #ffffff; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .mint { fill: #9bd7d1; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .gold { fill: #f2c94c; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .navy { fill: #152330; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .label { font: 800 18px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .text { font: 600 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .small { font: 700 12px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .dark-label { font: 800 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .dark-text { font: 700 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9f4ef; }
+      .code { font: 800 12px "Menlo", "Consolas", monospace; fill: #152330; }
+      .arrow { fill: none; stroke: #295f63; stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <rect class="header" width="800" height="132"/>
+  <path d="M0 496C132 454 252 462 382 502C520 546 650 530 800 468V600H0Z" fill="#2e6f95" opacity="0.08"/>
+
+  <text x="44" y="50" class="eyebrow">validation</text>
+  <text x="44" y="90" class="title">Verify each scenario with Testcontainers</text>
+  <text x="44" y="116" class="subtitle">Unit tests check UCP configurations against Oracle AI Database Free.</text>
+
+  <rect x="52" y="168" width="206" height="100" rx="6" class="card"/>
+  <text x="76" y="204" class="label">Maven test</text>
+  <text x="76" y="230" class="code">mvn -pl spring-boot-ucp</text>
+  <text x="76" y="249" class="code">test</text>
+
+  <rect x="300" y="168" width="200" height="100" rx="6" class="gold"/>
+  <text x="324" y="204" class="label">Testcontainers</text>
+  <text x="324" y="232" class="text">Oracle AI Database Free</text>
+  <text x="324" y="252" class="text">container image</text>
+
+  <rect x="542" y="168" width="206" height="100" rx="6" class="mint"/>
+  <text x="566" y="204" class="label">Spring profiles</text>
+  <text x="566" y="232" class="text">new context per profile</text>
+  <text x="566" y="252" class="text">verify for each profile (PDS)</text>
+
+  <path d="M258 218H300" class="arrow"/>
+  <path d="M500 218H542" class="arrow"/>
+
+  <rect x="62" y="350" width="158" height="102" rx="6" class="navy"/>
+  <text x="84" y="382" class="dark-label">Pool sizing</text>
+  <text x="84" y="410" class="dark-text">verify UCP pool size</text>
+
+  <rect x="238" y="350" width="158" height="102" rx="6" class="navy"/>
+  <text x="260" y="382" class="dark-label">SQL Cache</text>
+  <text x="260" y="410" class="dark-text">verify cached</text>
+  <text x="260" y="432" class="dark-text">statement reuse</text>
+
+  <rect x="414" y="350" width="158" height="102" rx="6" class="navy"/>
+  <text x="436" y="382" class="dark-label">DRCP</text>
+  <text x="436" y="410" class="dark-text">start connection pool</text>
+  <text x="436" y="432" class="dark-text">on the db server</text>
+
+  <rect x="590" y="350" width="158" height="102" rx="6" class="navy"/>
+  <text x="612" y="382" class="dark-label">...</text>
+  <text x="612" y="410" class="dark-text">plus more profiles!</text>
+  <text x="612" y="432" class="dark-text">timeouts, harvesting,</text>
+
+  <path d="M645 268V314H141V350" class="arrow"/>
+  <path d="M645 314H317V350" class="arrow"/>
+  <path d="M645 314H493V350" class="arrow"/>
+  <path d="M645 314V350" class="arrow"/>
+
+  <rect x="108" y="512" width="584" height="42" rx="6" fill="#f8eee8" stroke="#d5967f" stroke-width="2"/>
+  <text x="134" y="539" class="small">The tests check configuration binding and runnable database behavior in the same module.</text>
+</svg>

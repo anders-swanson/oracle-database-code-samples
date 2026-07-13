@@ -1,7 +1,7 @@
 {
   "id": "spring-boot-ucp",
   "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-boot-ucp/README.md",
-  "blogPost": "",
+  "blogPost": "https://andersswanson.dev/2026/07/13/connection-pooling-how-to-tune-oracle-ucp/",
   "readmeExcerpt": "This sample shows teachable Oracle Universal Connection Pool (UCP) configurations for Spring Boot applications that connect to Oracle AI Database. Each configuration is isolated in a Spring profile so you can compare pool sizing, timeout, validation, harvesting, statement cache, connection labeling, pool metrics, diagnostics, and Database Resident Connection Pooling (DRCP) settings without changing Java code.",
   "highlights": [
     "[UcpApplication](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-boot-ucp/src/main/java/com/example/ucp/UcpApplication.java): The Spring Boot entry point.",
@@ -13,7 +13,7 @@
     "Testcontainers",
     "Spring"
   ],
-  "sourceUpdatedAt": "2026-06-23T19:55:16.909Z",
+  "sourceUpdatedAt": "2026-07-13T19:57:58.340Z",
   "metaTitle": "Spring Boot UCP Profiles | Oracle AI Database Code Samples",
   "metaDescription": "Spring Boot sample showing Oracle Universal Connection Pool configuration for Oracle AI Database.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-ucp/",

@@ -45,13 +45,12 @@
 
     <modules>
         <module>ai-vector-search</module>
+        <module>database-per-service-example</module>
         <module>jdbc-graphql</module>
         <module>jdbc-deep-data-security</module>
         <module>jdbc-hybrid-search</module>
         <module>jdbc-json-oracle-text</module>
         <module>jdbc-uuid</module>
-        <module>langchain4j-agent-memory</module>
-        <module>database-per-service-example</module>
         <module>jdbc-property-graph</module>
         <module>jdbc-spatial-example</module>
         <module>jdbc-event-streaming</module>
@@ -63,14 +62,16 @@
         <module>json/jdbc-json-multivalue-index</module>
         <module>json/jpa-duality-views</module>
         <module>json/mongodb-duality-views</module>
+        <module>langchain4j-agent-memory</module>
         <module>migrate-kafka-to-oracle/kafka-app</module>
         <module>migrate-kafka-to-oracle/kafka-app-step-1</module>
         <module>migrate-kafka-to-oracle/kafka-app-step-2</module>
         <module>migrate-kafka-to-oracle/kafka-app-step-3</module>
         <module>news-event-streaming</module>
+        <module>nl2sql-guardrails</module>
+        <module>mcp-agent</module>
         <module>oracle-database-kafka-apis</module>
         <module>ords-testcontainers</module>
-        <module>mcp-agent</module>
         <module>sessionless-transactions</module>
         <module>spring-boot-cdc</module>
         <module>spring-boot-database-client-info</module>

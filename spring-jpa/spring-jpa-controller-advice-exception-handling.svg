@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">ControllerAdvice exception handling for Spring JPA APIs</title>
+  <desc id="desc">An 800 by 600 diagram showing a REST controller letting OracleJpaException bubble to ControllerAdvice, where ExceptionHandler maps it to an HTTP status and JSON response body.</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="130%">
+      <feDropShadow dx="0" dy="7" stdDeviation="8" flood-color="#14202a" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#315d64"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .header { fill: #eef7f4; }
+      .wave { fill: #2e6f95; opacity: 0.08; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 34px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .band { fill: #f2c94c; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .card { fill: #ffffff; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .mint { fill: #9bd7d1; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .coral { fill: #f3aa8c; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .navy { fill: #152330; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .label { font: 800 18px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .text { font: 600 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .code { font: 800 12px "Menlo", "Consolas", monospace; fill: #152330; }
+      .dark-label { font: 800 18px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .dark-text { font: 700 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9f4ef; }
+      .arrow { fill: none; stroke: #315d64; stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow); }
+      .caption { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #60453b; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <rect class="header" width="800" height="132"/>
+  <path class="wave" d="M0 500C126 456 252 462 382 502C520 545 650 532 800 466V600H0Z"/>
+
+  <text x="44" y="50" class="eyebrow">controller advice</text>
+  <text x="44" y="90" class="title">Map App Exceptions To HTTP Responses</text>
+  <text x="44" y="116" class="subtitle">ControllerAdvice maps exceptions to responses.</text>
+
+  <rect x="70" y="170" width="660" height="86" rx="6" class="band"/>
+  <text x="100" y="207" class="label">@ControllerAdvice + @ExceptionHandler</text>
+  <text x="100" y="232" class="text">Apply one response policy across controllers instead of catching database errors in every endpoint.</text>
+
+  <rect x="64" y="318" width="142" height="96" rx="6" class="card"/>
+  <text x="88" y="352" class="label">Request</text>
+  <text x="88" y="380" class="code">POST /students</text>
+  <text x="88" y="400" class="text">invalid GPA</text>
+
+  <rect x="238" y="318" width="142" height="96" rx="6" class="mint"/>
+  <text x="262" y="352" class="label">Controller</text>
+  <text x="262" y="380" class="code">createStudent</text>
+  <text x="262" y="400" class="text">calls service</text>
+
+  <rect x="412" y="318" width="142" height="96" rx="6" class="coral"/>
+  <text x="436" y="352" class="label">Handler</text>
+  <text x="436" y="380" class="code">handler method</text>
+  <text x="436" y="400" class="text">reads ORA code</text>
+
+  <rect x="586" y="318" width="150" height="96" rx="6" class="navy"/>
+  <text x="610" y="352" class="dark-label">Response</text>
+  <text x="610" y="380" class="dark-text">400 Bad Request</text>
+  <text x="610" y="400" class="dark-text">JSON error body</text>
+
+  <path d="M206 366H238" class="arrow"/>
+  <path d="M380 366H412" class="arrow"/>
+  <path d="M554 366H586" class="arrow"/>
+  <path d="M400 256V288H483V318" class="arrow"/>
+
+  <rect x="134" y="510" width="532" height="42" rx="6" fill="#f8eee8" stroke="#d5967f" stroke-width="2"/>
+  <text x="171" y="537" class="caption">Use this path when the failure needs a stable API response contract.</text>
+</svg>

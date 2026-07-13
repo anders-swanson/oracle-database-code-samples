@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Spring JPA Oracle error translation flow</title>
+  <desc id="desc">An 800 by 600 diagram showing an invalid GPA request causing ORA-02290, then flowing through Spring JPA, an AOP aspect, Oracle error extraction, and controller advice.</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="130%">
+      <feDropShadow dx="0" dy="7" stdDeviation="8" flood-color="#14202a" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#315d64"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .header { fill: #edf7f4; }
+      .wave { fill: #2e6f95; opacity: 0.08; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 34px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .card { fill: #ffffff; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .mint { fill: #9bd7d1; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .gold { fill: #f2c94c; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .coral { fill: #f3aa8c; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .navy { fill: #152330; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .label { font: 800 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .text { font: 600 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .code { font: 800 12px "Menlo", "Consolas", monospace; fill: #152330; }
+      .dark-label { font: 800 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .dark-text { font: 700 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9f4ef; }
+      .arrow { fill: none; stroke: #315d64; stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow); }
+      .caption { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #60453b; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <rect class="header" width="800" height="132"/>
+  <path class="wave" d="M0 502C120 455 248 462 382 502C520 545 650 532 800 466V600H0Z"/>
+
+  <text x="44" y="50" class="eyebrow">spring jpa error handling</text>
+  <text x="44" y="90" class="title">Translate Once, Respond At The Edge</text>
+  <text x="44" y="116" class="subtitle">A real ORA code moves from Oracle AI Database into one app exception and one HTTP contract.</text>
+
+  <rect x="54" y="170" width="154" height="98" rx="6" class="card"/>
+  <text x="76" y="204" class="label">Invalid GPA</text>
+  <text x="76" y="232" class="code">gpa = 4.50</text>
+  <text x="76" y="252" class="text">request or service call</text>
+
+  <rect x="240" y="170" width="154" height="98" rx="6" class="coral"/>
+  <text x="262" y="204" class="label">Oracle AI DB</text>
+  <text x="262" y="232" class="code">ORA-02290</text>
+  <text x="262" y="252" class="text">check constraint fails</text>
+
+  <rect x="426" y="170" width="154" height="98" rx="6" class="gold"/>
+  <text x="448" y="204" class="label">Spring JPA</text>
+  <text x="448" y="232" class="text">wraps JDBC error as</text>
+  <text x="448" y="252" class="code">DataAccessException</text>
+
+  <rect x="612" y="170" width="154" height="98" rx="6" class="mint"/>
+  <text x="634" y="204" class="label">AOP aspect</text>
+  <text x="634" y="232" class="code">@Around</text>
+  <text x="634" y="252" class="text">catches at boundary</text>
+
+  <path d="M208 219H240" class="arrow"/>
+  <path d="M394 219H426" class="arrow"/>
+  <path d="M580 219H612" class="arrow"/>
+
+  <rect x="128" y="346" width="196" height="106" rx="6" class="navy"/>
+  <text x="152" y="382" class="dark-label">OracleErrorExtractor</text>
+  <text x="152" y="412" class="dark-text">finds SQLException</text>
+  <text x="152" y="434" class="dark-text">keeps numeric error code</text>
+
+  <rect x="354" y="346" width="196" height="106" rx="6" class="navy"/>
+  <text x="378" y="382" class="dark-label">OracleJpaException</text>
+  <text x="378" y="412" class="dark-text">sample exception carries</text>
+  <text x="378" y="434" class="dark-text">ORA-02290 and detail</text>
+
+  <rect x="580" y="346" width="196" height="106" rx="6" class="navy"/>
+  <text x="604" y="382" class="dark-label">ControllerAdvice</text>
+  <text x="604" y="412" class="dark-text">maps known error to</text>
+  <text x="604" y="434" class="dark-text">400 JSON response</text>
+
+  <path d="M688 268V306H226V346" class="arrow"/>
+  <path d="M324 399H354" class="arrow"/>
+  <path d="M550 399H580" class="arrow"/>
+
+  <rect x="144" y="512" width="512" height="42" rx="6" fill="#f8eee8" stroke="#d5967f" stroke-width="2"/>
+  <text x="176" y="539" class="caption">The aspect translates the failure; controller advice owns the HTTP response.</text>
+</svg>

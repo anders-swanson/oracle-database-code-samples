@@ -7,7 +7,7 @@ tags:
   - JDBC
   - SpringBoot
   - Testcontainers
-blog_post: ""
+blog_post: "https://andersswanson.dev/2026/07/13/connection-pooling-how-to-tune-oracle-ucp/"
 ---
 
 # Spring Boot UCP Profiles

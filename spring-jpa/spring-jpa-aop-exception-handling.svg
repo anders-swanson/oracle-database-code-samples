@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Spring AOP exception handling for JPA operations</title>
+  <desc id="desc">An 800 by 600 diagram showing Spring AOP around a service method, catching DataAccessException, extracting the Oracle AI Database error code, and throwing OracleJpaException.</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="130%">
+      <feDropShadow dx="0" dy="7" stdDeviation="8" flood-color="#14202a" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#315d64"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .header { fill: #eef7f4; }
+      .wave { fill: #2e6f95; opacity: 0.08; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 34px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .band { fill: #9bd7d1; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .card { fill: #ffffff; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .gold { fill: #f2c94c; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .coral { fill: #f3aa8c; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .navy { fill: #152330; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .label { font: 800 18px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .text { font: 600 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .code { font: 800 12px "Menlo", "Consolas", monospace; fill: #152330; }
+      .dark-label { font: 800 18px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .dark-text { font: 700 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9f4ef; }
+      .arrow { fill: none; stroke: #315d64; stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow); }
+      .caption { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #60453b; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <rect class="header" width="800" height="132"/>
+  <path class="wave" d="M0 500C126 456 252 462 382 502C520 545 650 532 800 466V600H0Z"/>
+
+  <text x="44" y="50" class="eyebrow">spring aop</text>
+  <text x="44" y="90" class="title">Handle JPA errors with Spring AOP</text>
+  <text x="44" y="116" class="subtitle">Aspects keep repository code clean, handling errors from a centralized location.</text>
+
+  <rect x="70" y="170" width="660" height="86" rx="6" class="band"/>
+  <text x="100" y="207" class="label">@Around(&quot;within(com.example.exceptionhandling..*)&quot;)</text>
+  <text x="100" y="232" class="text">Proceed with the service method, then handle Spring data access failures in one place.</text>
+
+  <rect x="70" y="318" width="146" height="96" rx="6" class="card"/>
+  <text x="94" y="352" class="label">Service</text>
+  <text x="94" y="380" class="code">saveAndFlush</text>
+  <text x="94" y="400" class="text">normal JPA call</text>
+
+  <rect x="250" y="318" width="146" height="96" rx="6" class="coral"/>
+  <text x="274" y="352" class="label">Spring JPA</text>
+  <text x="274" y="380" class="code">DataAccess</text>
+  <text x="274" y="400" class="text">wraps JDBC cause</text>
+
+  <rect x="430" y="318" width="146" height="96" rx="6" class="gold"/>
+  <text x="454" y="352" class="label">Extractor</text>
+  <text x="454" y="380" class="code">SQLException</text>
+  <text x="454" y="400" class="text">reads error code</text>
+
+  <rect x="610" y="318" width="146" height="96" rx="6" class="navy"/>
+  <text x="634" y="352" class="dark-label">App error</text>
+  <text x="634" y="380" class="dark-text">OracleJpa</text>
+  <text x="634" y="400" class="dark-text">carries ORA code</text>
+
+  <path d="M216 366H250" class="arrow"/>
+  <path d="M396 366H430" class="arrow"/>
+  <path d="M576 366H610" class="arrow"/>
+  <path d="M400 256V288H143V318" class="arrow"/>
+
+  <rect x="120" y="510" width="560" height="42" rx="6" fill="#f8eee8" stroke="#d5967f" stroke-width="2"/>
+  <text x="159" y="537" class="caption">Use this path when the JPA operation may be called outside an HTTP request.</text>
+</svg>

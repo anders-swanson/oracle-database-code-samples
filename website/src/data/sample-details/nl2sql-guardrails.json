@@ -1,0 +1,16 @@
+{
+  "id": "nl2sql-guardrails",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/nl2sql-guardrails/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "NL2SQ sample showing guardrails for Oracle AI Database. Uses Select AI.",
+  "highlights": [],
+  "features": [
+    "AI Agents",
+    "Security"
+  ],
+  "sourceUpdatedAt": "2026-07-13T17:58:12.488Z",
+  "metaTitle": "Evaluating a Tenant-Aware Text-to-SQL Agent | Oracle AI Database Code Samples",
+  "metaDescription": "NL2SQ sample showing guardrails for Oracle AI Database. Uses Select AI.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/nl2sql-guardrails/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/nl2sql-guardrails.png"
+}

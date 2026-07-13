@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">UCP observability loop</title>
+  <desc id="desc">An 800 by 600 diagram showing PoolReporter logging configuration, metrics, and diagnostics from a Spring Boot Oracle UCP data source after the first connection borrow starts the pool.</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="130%">
+      <feDropShadow dx="0" dy="7" stdDeviation="8" flood-color="#14202a" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M2 2L10 6L2 10Z" fill="#295f63"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfcf7; }
+      .header { fill: #eef7f4; }
+      .eyebrow { font: 800 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #5e6d68; text-transform: uppercase; }
+      .title { font: 800 34px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .subtitle { font: 600 16px "Avenir Next", "Trebuchet MS", sans-serif; fill: #49646a; }
+      .card { fill: #ffffff; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .mint { fill: #9bd7d1; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .gold { fill: #f2c94c; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .navy { fill: #152330; stroke: #152330; stroke-width: 2; filter: url(#shadow); }
+      .label { font: 800 18px "Avenir Next", "Trebuchet MS", sans-serif; fill: #152330; }
+      .text { font: 600 14px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .small { font: 700 12px "Avenir Next", "Trebuchet MS", sans-serif; fill: #30484f; }
+      .dark-label { font: 800 17px "Avenir Next", "Trebuchet MS", sans-serif; fill: #ffffff; }
+      .dark-text { font: 700 13px "Avenir Next", "Trebuchet MS", sans-serif; fill: #d9f4ef; }
+      .code { font: 800 12px "Menlo", "Consolas", monospace; fill: #152330; }
+      .arrow { fill: none; stroke: #295f63; stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="800" height="600"/>
+  <rect class="header" width="800" height="132"/>
+  <path d="M0 500C126 456 252 462 382 502C520 545 650 532 800 466V600H0Z" fill="#2e6f95" opacity="0.08"/>
+
+  <text x="44" y="50" class="eyebrow">observability</text>
+  <text x="44" y="90" class="title">Make the Pool Inspectable</text>
+  <text x="44" y="116" class="subtitle">The sample reports bound settings, live counts, and diagnostic switches.</text>
+
+  <rect x="70" y="170" width="190" height="100" rx="6" class="card"/>
+  <text x="94" y="207" class="label">First borrow</text>
+  <text x="94" y="235" class="text">starts the UCP pool</text>
+  <text x="94" y="255" class="text">and creates statistics</text>
+
+  <rect x="306" y="170" width="188" height="100" rx="6" class="gold"/>
+  <text x="330" y="207" class="label">PoolReporter</text>
+  <text x="330" y="235" class="code">ApplicationRunner</text>
+  <text x="330" y="255" class="text">unwraps PoolDataSource</text>
+
+  <rect x="540" y="170" width="190" height="100" rx="6" class="mint"/>
+  <text x="564" y="207" class="label">UCP manager</text>
+  <text x="564" y="235" class="text">JMX, metric interval,</text>
+  <text x="564" y="255" class="text">registered pool names</text>
+
+  <path d="M260 220H306" class="arrow"/>
+  <path d="M494 220H540" class="arrow"/>
+
+  <rect x="74" y="352" width="188" height="108" rx="6" class="navy"/>
+  <text x="98" y="386" class="dark-label">PoolReport</text>
+  <text x="98" y="414" class="dark-text">initial, min, max</text>
+  <text x="98" y="436" class="dark-text">timeouts and labels</text>
+
+  <rect x="306" y="352" width="188" height="108" rx="6" class="navy"/>
+  <text x="330" y="386" class="dark-label">PoolMetrics</text>
+  <text x="330" y="414" class="dark-text">borrowed, available</text>
+  <text x="330" y="436" class="dark-text">wait and counters</text>
+
+  <rect x="538" y="352" width="188" height="108" rx="6" class="navy"/>
+  <text x="562" y="386" class="dark-label">PoolDiagnostics</text>
+  <text x="562" y="414" class="dark-text">JVM diagnostics</text>
+  <text x="562" y="436" class="dark-text">manager state</text>
+
+  <path d="M400 270V316H168V352" class="arrow"/>
+  <path d="M400 316V352" class="arrow"/>
+  <path d="M400 316H632V352" class="arrow"/>
+
+  <rect x="112" y="512" width="576" height="42" rx="6" fill="#f8eee8" stroke="#d5967f" stroke-width="2"/>
+  <text x="138" y="539" class="small">A pool setting is easier to trust when the app can print what Spring actually bound.</text>
+</svg>

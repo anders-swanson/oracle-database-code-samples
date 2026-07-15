@@ -1,1 +1,0 @@
--- todo: customer/sales schema with starter data. The schema must be interesting enough to run queries like ("Show me total sales this quarter") to complex ("Find top 10 churning customers based on their machine learning churn score").

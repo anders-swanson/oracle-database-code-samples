@@ -1,0 +1,17 @@
+selectai:
+  profile: ${SELECTAI_PROFILE:GENAI}
+
+spring:
+  datasource:
+    # Configure your ADB TNS name, wallet directory, username, and password.
+    url: jdbc:oracle:thin:@${TNS_NAME:testdb_high}?TNS_ADMIN=${WALLET_DIR}
+    username: ${DATABASE_USERNAME:testuser}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: oracle.jdbc.OracleDriver
+    type: oracle.ucp.jdbc.PoolDataSourceImpl
+    oracleucp:
+      connection-factory-class-name: oracle.jdbc.pool.OracleDataSource
+      connection-pool-name: NL2SQLExample
+      initial-pool-size: 5
+      min-pool-size: 1
+      max-pool-size: 30

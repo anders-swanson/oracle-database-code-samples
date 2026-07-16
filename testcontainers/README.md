@@ -39,6 +39,12 @@ This test demonstrates how to mount a SQL script on a containerized database and
 
 The SysdbaInitTest setup script applies grants to a test user to manage Oracle AI Database Transacational Event Queues (JMS), and then creates a JMS queue.
 
+## [SelectAILocalTest](./src/test/java/com/example/SelectAILocalTest.java)
+
+This test configures a local Oracle AI Database Free container to use the [DBMS_CLOUD family PL/SQL packages](https://docs.oracle.com/en-us/iaas/autonomous-database-serverless/doc/dbms-cloud-ai-package.html), enabling the [Select AI](https://www.oracle.com/autonomous-database/select-ai/) feature in local tests.
+
+The test uses the OCI GenAI service, and requires an OCI identity configured in `~/.oci`, as well as the `OCI_COMPARTMENT_ID` environment variable set.
+
 ### [reusable package](./src/test/java/com/example/reusable/README.md)
 
 This package provides sample tests with a reusable Oracle AI Database container, allowing you to reduce startup time between database test suites.

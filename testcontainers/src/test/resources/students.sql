@@ -1,4 +1,4 @@
-create table students (
+create table STUDENTS (
     id         varchar2(36) default sys_guid() primary key,
     first_name varchar2(50) not null,
     last_name  varchar2(50) not null,
@@ -8,12 +8,12 @@ create table students (
     gpa        binary_double
 );
 
-create table lecture_halls (
+create table LECTURE_HALLS (
     id         varchar2(36) default sys_guid() primary key,
     name       varchar2(50) not null
 );
 
-create table courses (
+create table COURSES (
     id              varchar2(36) default sys_guid() primary key,
     lecture_hall_id varchar2(36) not null,
     name            varchar2(50) not null,
@@ -23,7 +23,7 @@ create table courses (
         references lecture_halls(id)
 );
 
-create table enrollments (
+create table ENROLLMENTS (
     id         varchar2(36) default sys_guid() primary key,
     student_id varchar2(36) not null,
     course_id  varchar2(36) not null,

@@ -36,8 +36,8 @@ public class SelectAILocalTest {
     @Container
     static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.2-full-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
-            .withUsername("TESTUSER")
-            .withPassword("testpwd")
+            .withUsername("UNI")
+            .withPassword("StudentsSchemaPassword12345")
             .withInitScript("students.sql")
             .withEnv(Map.of("ORACLE_PASSWORD", SYS_PASSWORD,
                     "WALLET_PASSWORD", WALLET_PASSWORD,
@@ -85,7 +85,7 @@ public class SelectAILocalTest {
     private String selectai(String prompt, String action) {
         try (Connection conn = ds.getConnection()) {
             String sql = """
-                    BEGIN
+                BEGIN
                     ? := DBMS_CLOUD_AI.GENERATE(
                              prompt       => ?,
                              action       => ?,
@@ -127,10 +127,10 @@ public class SelectAILocalTest {
                               "region": "us-chicago-1",
                               "oci_compartment_id": "%s",
                               "object_list": [
-                                { "owner": "TESTUSER", "name": "STUDENTS" },
-                                { "owner": "TESTUSER", "name": "COURSES" },
-                                { "owner": "TESTUSER", "name": "LECTURE_HALLS" },
-                                { "owner": "TESTUSER", "name": "ENROLLMENTS" }
+                                { "owner": "UNI", "name": "STUDENTS" },
+                                { "owner": "UNI", "name": "COURSES" },
+                                { "owner": "UNI", "name": "LECTURE_HALLS" },
+                                { "owner": "UNI", "name": "ENROLLMENTS" }
                               ],
                               "enforce_object_list": true
                             }'

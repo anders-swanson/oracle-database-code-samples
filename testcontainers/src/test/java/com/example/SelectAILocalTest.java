@@ -10,6 +10,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.oracle.OracleContainer;
 import org.testcontainers.utility.MountableFile;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,6 +48,7 @@ public class SelectAILocalTest {
     static void setup() throws Exception {
         oracleContainer.start();
 
+        System.out.println("Installing certificates and DBMS_CLOUD family of PL/SQL packages...");
         // Download certificates, create the database wallet, and install DBMS_CLOUD.
         oracleContainer.copyFileToContainer(MountableFile.forClasspathResource("selectai/init.sh"), "/tmp/init.sh");
         var initResult = oracleContainer.execInContainer("bash", "/tmp/init.sh");
@@ -54,12 +56,14 @@ public class SelectAILocalTest {
                 .withFailMessage(initResult.getStdout())
                 .isZero();
 
+        System.out.println("Configuring Oracle AI Database for outbound HTTPS connections (ACES)...");
         oracleContainer.copyFileToContainer(MountableFile.forClasspathResource("selectai/dbms_cloud_aces.sql"), "/tmp/dbms_cloud_aces.sql");
         var acesResult = oracleContainer.execInContainer("sqlplus", "sys / as sysdba", "@/tmp/dbms_cloud_aces.sql");
         assertThat(acesResult.getExitCode())
                 .withFailMessage(acesResult.getStdout())
                 .isZero();
 
+        System.out.println("Configuring grants...");
         // Initialize the testuser for DBMS_CLOUD (applying grants)
         oracleContainer.copyFileToContainer(MountableFile.forClasspathResource("selectai/dbms_cloud_grants.sql"), "/tmp/init.sql");
         var grantsResult = oracleContainer.execInContainer("sqlplus", "sys / as sysdba", "@/tmp/init.sql");
@@ -73,16 +77,20 @@ public class SelectAILocalTest {
         ds.setUser("selectai");
         ds.setPassword("Welcome12345");
 
+        System.out.println("Creating DBMS_CLOUD profile for Select AI...");
         createGenAiProfile();
     }
 
     @Test
     public void selectAIRunsLocally() {
-        System.out.println("Generated SQL:");
-        System.out.println(selectai("what are the courses available?", "showsql"));
+        System.out.println("Generating SQL using 'select ai showsql'...");
+        System.out.println("Generated SQL on UNI schema: \n" +
+                selectai(ds,
+                        "what are the available courses and where are they held?",
+                        "showsql"));
     }
 
-    private String selectai(String prompt, String action) {
+    private String selectai(DataSource ds, String prompt, String action) {
         try (Connection conn = ds.getConnection()) {
             String sql = """
                 BEGIN

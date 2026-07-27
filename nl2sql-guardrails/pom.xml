@@ -13,10 +13,6 @@
     <name>nl2sql-guardrails</name>
     <description>Oracle AI Database NL2SQL Guardrails Example</description>
 
-    <properties>
-        <exec.mainClass>com.example.nl2sql.NL2SQLApplication</exec.mainClass>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.oracle.oci.sdk</groupId>
@@ -24,18 +20,9 @@
             <version>${oci.sdk.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.oracle.database.spring</groupId>
-            <artifactId>oracle-spring-boot-starter-ucp</artifactId>
-            <version>${oracle.starters.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.oracle.database.spring</groupId>
-            <artifactId>oracle-spring-boot-starter-wallet</artifactId>
-            <version>${oracle.starters.version}</version>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc11</artifactId>
+            <version>${oracle.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

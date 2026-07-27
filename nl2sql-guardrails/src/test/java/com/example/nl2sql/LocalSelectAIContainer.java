@@ -1,10 +1,10 @@
 package com.example.nl2sql;
 
 import com.oracle.bmc.ConfigFileReader;
-import oracle.jdbc.pool.OracleDataSource;
 import org.testcontainers.oracle.OracleContainer;
 import org.testcontainers.utility.MountableFile;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,15 +18,20 @@ public class LocalSelectAIContainer {
     private final static String CERTS_FILE = "https://objectstorage.us-phoenix-1.oraclecloud.com/p/KB63IAuDCGhz_azOVQ07Qa_mxL3bGrFh1dtsltreRJPbmb-VwsH2aQ4Pur2ADBMA/n/adwcdemo/b/CERTS/o/dbc_certs.tar";
     private static final String WALLET_PASSWORD = "MyWalletPassword12345";
     private final static String SYS_PASSWORD = "Welcome12345";
-    private static OracleDataSource ds;
+
+
+    static DataSource admin;
+    static DataSource batman;
+
 
     /**
      * The "full" image is required to run catcon.pl inside the container.
      */
     public static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.2-full-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
-            .withUsername("TESTUSER")
+            .withUsername("HEROES")
             .withPassword("Welcome12345")
+            .withInitScript("heroes.sql")
             .withEnv(Map.of("ORACLE_PASSWORD", SYS_PASSWORD,
                     "WALLET_PASSWORD", WALLET_PASSWORD,
                     "CERTS_FILE", CERTS_FILE));
@@ -59,16 +64,23 @@ public class LocalSelectAIContainer {
                 .isZero();
 
         // Configure a test datasource
-        ds = new OracleDataSource();
-        ds.setURL(oracleContainer.getJdbcUrl());
-        ds.setUser("selectai");
-        ds.setPassword("Welcome12345");
+        admin = dataSource("admin");
+        batman = dataSource("batman");
 
-        System.out.println("Creating DBMS_CLOUD profile for Select AI...");
-        createGenAiProfile();
+        System.out.println("Creating DBMS_CLOUD profiles...");
+        createGenAiProfile(admin);
+        createGenAiProfile(batman);
     }
 
-    private static void createGenAiProfile() throws IOException, SQLException {
+    private static oracle.jdbc.datasource.impl.OracleDataSource dataSource(String endUser) throws SQLException {
+        oracle.jdbc.datasource.impl.OracleDataSource dataSource = new oracle.jdbc.datasource.impl.OracleDataSource();
+        dataSource.setURL(LocalSelectAIContainer.oracleContainer.getJdbcUrl());
+        dataSource.setUser("\"" + endUser + "\"");
+        dataSource.setPassword("Welcome12345"); // use your own secure password
+        return dataSource;
+    }
+
+    private static void createGenAiProfile(DataSource dataSource) throws IOException, SQLException {
         ConfigFileReader.ConfigFile configFile = ConfigFileReader.parseDefault();
         String privateKey = Files.readString(Path.of(configFile.get("key_file")));
 
@@ -89,10 +101,11 @@ public class LocalSelectAIContainer {
                               "region": "us-chicago-1",
                               "oci_compartment_id": "%s",
                               "object_list": [
-                                { "owner": "UNI", "name": "STUDENTS" },
-                                { "owner": "UNI", "name": "COURSES" },
-                                { "owner": "UNI", "name": "LECTURE_HALLS" },
-                                { "owner": "UNI", "name": "ENROLLMENTS" }
+                                { "owner": "HEROES", "name": "HEROES" },
+                                { "owner": "HEROES", "name": "VILLAINS" },
+                                { "owner": "HEROES", "name": "CITY_DISTRICTS" },
+                                { "owner": "HEROES", "name": "BATTLES" },
+                                { "owner": "HEROES", "name": "INSURANCE_CLAIMS" }
                               ],
                               "enforce_object_list": true
                             }'
@@ -100,7 +113,7 @@ public class LocalSelectAIContainer {
                 END;
                 """.formatted(System.getenv("OCI_COMPARTMENT_ID"));
 
-        try (var connection = ds.getConnection();
+        try (var connection = dataSource.getConnection();
              var statement = connection.prepareStatement(profileSQL)) {
             statement.setString(1, configFile.get("user"));
             statement.setString(2, configFile.get("tenancy"));

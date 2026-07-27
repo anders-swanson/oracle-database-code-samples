@@ -10,23 +10,23 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 @Component
-public class SelectAIService {
+public class SelectAI {
     private final DataSource dataSource;
     private final String profile;
 
-    public SelectAIService(DataSource dataSource,
-                           @Value("selectai.profile") String profile) {
+    public SelectAI(DataSource dataSource,
+                    @Value("selectai.profile") String profile) {
         this.dataSource = dataSource;
         this.profile = profile;
     }
 
-    public String showSQL(String prompt) {
+    public String run(String prompt, Action action) {
         try (Connection conn = dataSource.getConnection()) {
             String sql = """
                 BEGIN
                     ? := DBMS_CLOUD_AI.GENERATE(
                              prompt       => ?,
-                             action       => 'showsql',
+                             action       => ?,
                              profile_name => ?);
                 END;
                 """;
@@ -34,12 +34,33 @@ public class SelectAIService {
             try (CallableStatement statement = conn.prepareCall(sql)) {
                 statement.registerOutParameter(1, Types.CLOB);
                 statement.setString(2, prompt);
-                statement.setString(3, profile);
+                statement.setString(3, action.getAction());
+                statement.setString(4, "MY_PROFILE");
                 statement.execute();
                 return statement.getString(1);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    // runsql, showsql, explainsql, narrate, or chat
+    public enum Action {
+        RUNSQL("RUNSQL"),
+        SHOWSQL("SHOWSQL"),
+        EXPLAINSQL("EXPLAINSQL"),
+        NARRATE("NARRATE"),
+        CHAT("CHAT");
+
+        private final String action;
+
+        Action(String action) {
+            this.action = action;
+        }
+
+        public String getAction() {
+            return action;
+        }
+
     }
 }

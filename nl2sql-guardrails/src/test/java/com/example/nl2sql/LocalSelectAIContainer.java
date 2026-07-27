@@ -1,31 +1,20 @@
-package com.example;
+package com.example.nl2sql;
 
 import com.oracle.bmc.ConfigFileReader;
 import oracle.jdbc.pool.OracleDataSource;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.oracle.OracleContainer;
 import org.testcontainers.utility.MountableFile;
 
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.CallableStatement;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.time.Duration;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Testcontainers
-@EnabledIfEnvironmentVariable(named = "OCI_COMPARTMENT_ID", matches = ".+")
-public class SelectAILocalTest {
+public class LocalSelectAIContainer {
     private final static String CERTS_FILE = "https://objectstorage.us-phoenix-1.oraclecloud.com/p/KB63IAuDCGhz_azOVQ07Qa_mxL3bGrFh1dtsltreRJPbmb-VwsH2aQ4Pur2ADBMA/n/adwcdemo/b/CERTS/o/dbc_certs.tar";
     private static final String WALLET_PASSWORD = "MyWalletPassword12345";
     private final static String SYS_PASSWORD = "Welcome12345";
@@ -34,17 +23,16 @@ public class SelectAILocalTest {
     /**
      * The "full" image is required to run catcon.pl inside the container.
      */
-    static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.2-full-faststart")
+    public static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.2-full-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
-            .withUsername("UNI")
-            .withPassword("StudentsSchemaPassword12345")
-            .withInitScript("students.sql")
+            .withUsername("TESTUSER")
+            .withPassword("Welcome12345")
             .withEnv(Map.of("ORACLE_PASSWORD", SYS_PASSWORD,
                     "WALLET_PASSWORD", WALLET_PASSWORD,
                     "CERTS_FILE", CERTS_FILE));
 
-    @BeforeAll
-    static void setup() throws Exception {
+
+    public static void start() throws Exception {
         oracleContainer.start();
 
         System.out.println("Installing certificates and DBMS_CLOUD family of PL/SQL packages...");
@@ -78,39 +66,6 @@ public class SelectAILocalTest {
 
         System.out.println("Creating DBMS_CLOUD profile for Select AI...");
         createGenAiProfile();
-    }
-
-    @Test
-    public void selectAIRunsLocally() {
-        System.out.println("Generating SQL using 'select ai showsql'...");
-        System.out.println("Generated SQL on UNI schema: \n" +
-                selectai(ds,
-                        "what are the available courses and where are they held?",
-                        "showsql"));
-    }
-
-    private String selectai(DataSource ds, String prompt, String action) {
-        try (Connection conn = ds.getConnection()) {
-            String sql = """
-                BEGIN
-                    ? := DBMS_CLOUD_AI.GENERATE(
-                             prompt       => ?,
-                             action       => ?,
-                             profile_name => ?);
-                END;
-                """;
-
-            try (CallableStatement statement = conn.prepareCall(sql)) {
-                statement.registerOutParameter(1, Types.CLOB);
-                statement.setString(2, prompt);
-                statement.setString(3, action);
-                statement.setString(4, "MY_PROFILE");
-                statement.execute();
-                return statement.getString(1);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private static void createGenAiProfile() throws IOException, SQLException {

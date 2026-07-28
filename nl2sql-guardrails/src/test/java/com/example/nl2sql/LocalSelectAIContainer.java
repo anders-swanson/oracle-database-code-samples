@@ -22,6 +22,7 @@ public class LocalSelectAIContainer {
 
     static DataSource admin;
     static DataSource batman;
+    static DataSource selectai;
 
 
     /**
@@ -64,18 +65,18 @@ public class LocalSelectAIContainer {
                 .isZero();
 
         // Configure a test datasource
-        admin = dataSource("admin");
-        batman = dataSource("batman");
+        selectai = dataSource("selectai");
+        admin = dataSource("\"admin\"");
+        batman = dataSource("\"batman\"");
 
         System.out.println("Creating DBMS_CLOUD profiles...");
-        createGenAiProfile(admin);
-        createGenAiProfile(batman);
+        createGenAiProfile(selectai);
     }
 
     private static oracle.jdbc.datasource.impl.OracleDataSource dataSource(String endUser) throws SQLException {
         oracle.jdbc.datasource.impl.OracleDataSource dataSource = new oracle.jdbc.datasource.impl.OracleDataSource();
         dataSource.setURL(LocalSelectAIContainer.oracleContainer.getJdbcUrl());
-        dataSource.setUser("\"" + endUser + "\"");
+        dataSource.setUser(endUser);
         dataSource.setPassword("Welcome12345"); // use your own secure password
         return dataSource;
     }
@@ -93,11 +94,17 @@ public class LocalSelectAIContainer {
                         private_key     => ?,
                         fingerprint     => ?
                     );
+
+                    EXECUTE IMMEDIATE
+                      'CREATE OR REPLACE PUBLIC SYNONYM OCI_GENAI FOR SELECTAI.GENAI_CRED';
+                    EXECUTE IMMEDIATE
+                      'GRANT EXECUTE ON OCI_GENAI TO HEROES_ROLE';
+
                     DBMS_CLOUD_AI.CREATE_PROFILE(
                             profile_name => 'MY_PROFILE',
                             attributes   => '{
                               "provider": "oci",
-                              "credential_name": "GENAI_CRED",
+                              "credential_name": "OCI_GENAI",
                               "region": "us-chicago-1",
                               "oci_compartment_id": "%s",
                               "object_list": [
@@ -110,6 +117,7 @@ public class LocalSelectAIContainer {
                               "enforce_object_list": true
                             }'
                     );
+                    DBMS_CLOUD_AI.GRANT_PROFILE_ACCESS('MY_PROFILE', 'HEROES_ROLE');
                 END;
                 """.formatted(System.getenv("OCI_COMPARTMENT_ID"));
 

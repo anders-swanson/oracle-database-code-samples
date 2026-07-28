@@ -3,6 +3,14 @@ whenever sqlerror exit failure rollback;
 -- Set as appropriate for your database. "freepdb1" is the default PDB in Oracle AI Database Free
 alter session set container = freepdb1;
 
+-- add grants for DMBS_CLOUD family packages
+create user selectai identified by Welcome12345 quota unlimited on users;
+grant connect, resource to selectai;
+grant create public synonym to selectai;
+grant execute on dbms_cloud to selectai;
+grant execute on dbms_cloud_ai to selectai;
+grant select any table on schema HEROES to selectai;
+
 -- Local end users have no schema objects. Data roles grant them only the
 -- sample data required for their Select AI requests.
 create end user "batman" identified by Welcome12345;
@@ -11,12 +19,11 @@ create end user "admin" identified by Welcome12345;
 create data role batman_role;
 create data role admin_role;
 
-create role heroes_session_role;
-grant create session to heroes_session_role;
-grant execute on dbms_cloud to heroes_session_role;
-grant execute on dbms_cloud_ai to heroes_session_role;
-grant heroes_session_role to batman_role;
-grant heroes_session_role to admin_role;
+create role heroes_role;
+grant create session to heroes_role;
+grant execute on dbms_cloud_ai to heroes_role;
+grant heroes_role to batman_role;
+grant heroes_role to admin_role;
 
 grant data role batman_role to "batman";
 grant data role admin_role to "admin";

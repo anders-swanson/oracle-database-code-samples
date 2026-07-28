@@ -2,7 +2,6 @@ package com.example.nl2sql;
 
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -12,7 +11,6 @@ import static com.example.nl2sql.LocalSelectAIContainer.batman;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
-@Disabled
 @EnabledIfEnvironmentVariable(named = "OCI_COMPARTMENT_ID", matches = ".+")
 public class NL2SQLTest {
 
@@ -21,7 +19,7 @@ public class NL2SQLTest {
         LocalSelectAIContainer.start();
     }
 
-    private final SelectAI selectai = new SelectAI("MY_PROFILE");
+    private final SelectAI selectai = new SelectAI("SELECTAI.MY_PROFILE");
 
     @Test
     void adminSeesAllClaimsWhileBatmanSeesOnlyHisClaims() throws Exception {

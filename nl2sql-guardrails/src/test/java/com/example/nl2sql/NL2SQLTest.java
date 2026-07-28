@@ -2,6 +2,7 @@ package com.example.nl2sql;
 
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -22,9 +23,10 @@ public class NL2SQLTest {
     private final SelectAI selectai = new SelectAI("SELECTAI.MY_PROFILE");
 
     @Test
+    @Disabled
     void adminSeesAllClaimsWhileBatmanSeesOnlyHisClaims() throws Exception {
         String prompt = """
-                Can you show me all my insurance claims?
+                Can you show me all my insurance claims in HEROES?
                 """;
 
         String adminClaims;

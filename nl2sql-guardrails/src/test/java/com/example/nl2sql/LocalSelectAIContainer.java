@@ -19,11 +19,8 @@ public class LocalSelectAIContainer {
     private static final String WALLET_PASSWORD = "MyWalletPassword12345";
     private final static String SYS_PASSWORD = "Welcome12345";
 
-
     static DataSource admin;
     static DataSource batman;
-    static DataSource selectai;
-
 
     /**
      * The "full" image is required to run catcon.pl inside the container.
@@ -65,12 +62,11 @@ public class LocalSelectAIContainer {
                 .isZero();
 
         // Configure a test datasource
-        selectai = dataSource("selectai");
         admin = dataSource("\"admin\"");
         batman = dataSource("\"batman\"");
 
         System.out.println("Creating DBMS_CLOUD profiles...");
-        createGenAiProfile(selectai);
+        createGenAiProfile(dataSource("selectai"));
     }
 
     private static oracle.jdbc.datasource.impl.OracleDataSource dataSource(String endUser) throws SQLException {

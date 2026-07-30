@@ -16,14 +16,14 @@
     <packaging>pom</packaging>
 
     <properties>
-        <okafka.version>23.7.0.0</okafka.version>
-        <oracle.starters.version>26.2.0</oracle.starters.version>
-        <spring.cloud.oracle.version>2.0.2</spring.cloud.oracle.version>
+        <okafka.version>23.26.1.0</okafka.version>
+        <oracle.starters.version>26.2.1</oracle.starters.version>
+        <spring.cloud.oracle.version>2.0.3</spring.cloud.oracle.version>
         <spring.cloud.version>5.0.4</spring.cloud.version>
         <oracle.version>23.26.2.0.0</oracle.version>
         <oracle.spatial.version>23.26</oracle.spatial.version>
-        <kafka.clients.version>3.9.1</kafka.clients.version>
-        <oci.sdk.version>3.90.0</oci.sdk.version>
+        <kafka.clients.version>3.9.2</kafka.clients.version>
+        <oci.sdk.version>3.92.1</oci.sdk.version>
         <java.version>21</java.version>
         <aqapi.jakarta.version>23.9.0.0</aqapi.jakarta.version>
         <jakarta.jms-api.version>3.1.0</jakarta.jms-api.version>
@@ -196,7 +196,7 @@
             <!-- Oracle AI Database JDBC -->
             <dependency>
                 <groupId>com.oracle.database.jdbc</groupId>
-                <artifactId>ojdbc11</artifactId>
+                <artifactId>ojdbc17</artifactId>
                 <version>${oracle.version}</version>
             </dependency>
             <dependency>

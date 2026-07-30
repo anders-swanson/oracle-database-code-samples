@@ -28,7 +28,7 @@ For an in-depth walkthough of Spring JMS with Transactional Event Queues, see th
 The sample provides an all-in-one test leveraging Testcontainers and Oracle AI Database to do the following: 
 
 1. Start and configure a database server using Testcontainers
-2. Produce several messages to a Transactional Event Queue using an autowired JMSTemplate.
+2. Produce several messages to a Transactional Event Queue using an autowired `JmsClient`.
 3. Verify all messages are consumed by the JMSListener.
 
 You can run the test like so, from the project's root directory:

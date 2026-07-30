@@ -24,9 +24,9 @@ The [Spring Boot Starter for AQ/JMS](https://github.com/oracle/spring-cloud-orac
 - Java 21+, Maven
 - Docker compatible environment with docker-compose
 
-## Setup Oracle AI Database Free and Zipkin with docker-compose
+## Setup Oracle AI Database Free and Grafana LGTM with docker-compose
 
-Start the Oracle AI Database Free and Zipkin containers with docker-compose:
+Start the Oracle AI Database Free and Grafana LGTM containers with docker-compose:
 
 ```bash
 docker-compose -d
@@ -52,8 +52,8 @@ Here, `826248b10168fdba96386521023a6475` is the trace ID. Yours will be differen
 
 ## View traces
 
-1. Navigate to the Zipkin UI, using the container URL `http://localhost:9411/zipkin/`
-2. Click "Run Query" to find all traces, or search for a specific trace ID
+1. Navigate to the Grafana Tracing UI, using the container URL `http://localhost:3000/a/grafana-exploretraces-app`
+2. Click "Traces" to find all traces, or search for a specific trace ID
 3. View the trace! You can see the producer scheduling, publishing the event, and consuming the event in a single trace.
 
 ![a Spring JMS trace with Oracle AI Database](./images/search-trace-id.png)

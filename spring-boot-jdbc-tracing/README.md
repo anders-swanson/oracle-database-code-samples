@@ -26,7 +26,7 @@ This example application demonstrates how to instrument Oracle AI Database JDBC 
 
 ## Setup Oracle AI Database Free and Grafana LGTM with docker-compose
 
-Start the Oracle AI Database Free and Zipkin containers with docker-compose:
+Start the Oracle AI Database Free and Grafana LGTM containers with docker-compose:
 
 ```bash
 docker-compose -d

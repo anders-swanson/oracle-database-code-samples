@@ -2,8 +2,8 @@ package com.example.fraud;
 
 /** JSON event sent through the CARD_CHARGES OKafka topic. */
 public class CardChargeEvent {
-    private String transactionId;
-    private String cardholderId;
+    private long transactionId;
+    private long cardholderId;
     private String occurredAt;
     private double amount;
     private String currency;
@@ -14,10 +14,7 @@ public class CardChargeEvent {
     private double latitude;
     private double longitude;
 
-    public CardChargeEvent() {
-    }
-
-    public CardChargeEvent(String transactionId, String cardholderId, String occurredAt, double amount,
+    public CardChargeEvent(long transactionId, long cardholderId, String occurredAt, double amount,
                            String currency, String merchantName, String merchantCategory, String channel,
                            String deviceId, double latitude, double longitude) {
         this.transactionId = transactionId;
@@ -34,13 +31,14 @@ public class CardChargeEvent {
     }
 
     public String toSemanticString() {
-
+        return "%s %s charge of %.2f at %s in the %s category via %s using device %s"
+                .formatted(currency, cardholderId, amount, merchantName, merchantCategory, channel, deviceId);
     }
 
-    public String getTransactionId() { return transactionId; }
-    public void setTransactionId(String transactionId) { this.transactionId = transactionId; }
-    public String getCardholderId() { return cardholderId; }
-    public void setCardholderId(String cardholderId) { this.cardholderId = cardholderId; }
+    public long getTransactionId() { return transactionId; }
+    public void setTransactionId(long transactionId) { this.transactionId = transactionId; }
+    public long getCardholderId() { return cardholderId; }
+    public void setCardholderId(long cardholderId) { this.cardholderId = cardholderId; }
     public String getOccurredAt() { return occurredAt; }
     public void setOccurredAt(String occurredAt) { this.occurredAt = occurredAt; }
     public double getAmount() { return amount; }

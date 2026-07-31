@@ -42,6 +42,6 @@ From the repository root:
 mvn -pl credit-card-fraud-detection -am integration-test
 ```
 
-The test starts Oracle AI Database Free, grants the Testcontainers user the required TxEventQ privileges, creates the `CARD_CHARGES` topic, then produces and consumes four OSON events. It verifies a normal charge is approved, a rapid San Francisco-to-New York charge is declined, and an unfamiliar behavior pattern is reviewed.
+The test starts Oracle AI Database Free, grants the Testcontainers user the required TxEventQ privileges, creates the `CARD_CHARGES` topic, then creates semantic cardholder behavior profiles, and produces and consumes four OSON events. It verifies a normal charge is approved, a rapid San Francisco-to-New York charge is declined, and an unfamiliar behavior pattern is reviewed.
 
 The OKafka flow is in [FraudDetectionSample](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/credit-card-fraud-detection/src/main/java/com/example/fraud/FraudDetectionSample.java); the schema and deterministic seed profiles are in [schema.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/credit-card-fraud-detection/src/test/resources/schema.sql) and [data.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/credit-card-fraud-detection/src/test/resources/data.sql).

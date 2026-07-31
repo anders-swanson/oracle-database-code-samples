@@ -2,7 +2,7 @@ package com.example.fraud;
 
 /** Persisted, explainable outcome of one card-charge assessment. */
 public record FraudAssessment(
-        String transactionId,
+        long transactionId,
         double spatialScore,
         double behaviorScore,
         double amountScore,

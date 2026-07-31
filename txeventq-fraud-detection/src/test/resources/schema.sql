@@ -1,5 +1,5 @@
 create table cardholders (
-    cardholder_id varchar2(40) primary key,
+    cardholder_id number(19) generated always as identity primary key,
     display_name varchar2(120) not null,
     known_device_id varchar2(120) not null,
     normal_amount number(10,2) not null
@@ -7,14 +7,15 @@ create table cardholders (
 
 create table cardholder_behavior_profiles (
     profile_id number generated always as identity primary key,
-    cardholder_id varchar2(40) not null references cardholders(cardholder_id),
+    cardholder_id number(19) not null references cardholders(cardholder_id),
     profile_name varchar2(100) not null,
-    embedding vector(8, float32) not null
+    embedding vector(384, float32) not null annotations(Distance 'COSINE', IndexType 'IVF'),
+    constraint cardholder_behavior_profiles_uk unique (cardholder_id, profile_name)
 );
 
 create table card_transactions (
-    transaction_id varchar2(40) primary key,
-    cardholder_id varchar2(40) not null references cardholders(cardholder_id),
+    transaction_id number(19) generated always as identity primary key,
+    cardholder_id number(19) not null references cardholders(cardholder_id),
     occurred_at timestamp with time zone not null,
     amount number(10,2) not null,
     currency varchar2(3) not null,
@@ -22,9 +23,7 @@ create table card_transactions (
     merchant_category varchar2(40) not null,
     channel varchar2(40) not null,
     device_id varchar2(120) not null,
-    raw_event json not null,
-    location mdsys.sdo_geometry not null,
-    behavior_vector vector(8, float32) not null
+    location mdsys.sdo_geometry not null
 );
 
 insert into user_sdo_geom_metadata (table_name, column_name, diminfo, srid)
@@ -50,7 +49,7 @@ with target accuracy 95
 parameters (type ivf, neighbor partitions 4);
 
 create table fraud_assessments (
-    transaction_id varchar2(40) primary key references card_transactions(transaction_id),
+    transaction_id number(19) primary key references card_transactions(transaction_id),
     spatial_score number(5,2) not null,
     behavior_score number(5,2) not null,
     amount_score number(5,2) not null,
@@ -61,3 +60,10 @@ create table fraud_assessments (
 );
 
 create index card_transactions_recent_idx on card_transactions(cardholder_id, occurred_at);
+
+
+insert into cardholders (display_name, known_device_id, normal_amount)
+values ('Alice Garcia', 'alice-phone', 60);
+
+insert into cardholders (display_name, known_device_id, normal_amount)
+values ('Bob Lee', 'bob-phone', 50);

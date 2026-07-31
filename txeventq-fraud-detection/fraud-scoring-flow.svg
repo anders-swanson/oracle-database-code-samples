@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title description">
+  <title id="title">Credit card fraud scoring flow</title>
+  <desc id="description">OKafka charge events are assessed using spatial, vector, relational amount, and velocity signals before an explainable decision is persisted.</desc>
+  <defs>
+    <style>
+      .title { font: 700 28px Arial, sans-serif; fill: #102a43; }
+      .label { font: 700 16px Arial, sans-serif; fill: #102a43; }
+      .copy { font: 14px Arial, sans-serif; fill: #243b53; }
+      .box { stroke: #486581; stroke-width: 2; rx: 12; }
+      .arrow { stroke: #486581; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#486581"/></marker>
+  </defs>
+  <rect width="800" height="600" fill="#f0f4f8"/>
+  <text x="400" y="52" text-anchor="middle" class="title">Explainable card-charge fraud scoring</text>
+  <rect x="40" y="110" width="190" height="110" class="box" fill="#d9e2ec"/>
+  <text x="135" y="145" text-anchor="middle" class="label">CARD_CHARGES</text>
+  <text x="135" y="171" text-anchor="middle" class="copy">OKafka OSON event</text>
+  <text x="135" y="194" text-anchor="middle" class="copy">merchant, amount, device,</text>
+  <text x="135" y="212" text-anchor="middle" class="copy">timestamp, location</text>
+  <path d="M230 165 H292" class="arrow"/>
+  <rect x="300" y="110" width="200" height="110" class="box" fill="#bcccdc"/>
+  <text x="400" y="145" text-anchor="middle" class="label">FraudScoringService</text>
+  <text x="400" y="171" text-anchor="middle" class="copy">deterministic 0–100 score</text>
+  <text x="400" y="194" text-anchor="middle" class="copy">reason codes and decision</text>
+  <path d="M500 165 H562" class="arrow"/>
+  <rect x="570" y="110" width="190" height="110" class="box" fill="#9fb3c8"/>
+  <text x="665" y="145" text-anchor="middle" class="label">Persisted result</text>
+  <text x="665" y="171" text-anchor="middle" class="copy">APPROVE / REVIEW /</text>
+  <text x="665" y="194" text-anchor="middle" class="copy">DECLINE + components</text>
+  <path d="M400 220 V275" class="arrow"/>
+  <rect x="65" y="300" width="150" height="150" class="box" fill="#d9e2ec"/>
+  <text x="140" y="335" text-anchor="middle" class="label">Spatial 40%</text>
+  <text x="140" y="365" text-anchor="middle" class="copy">SDO_GEOM distance</text>
+  <text x="140" y="388" text-anchor="middle" class="copy">from recent approved</text>
+  <text x="140" y="411" text-anchor="middle" class="copy">charge location</text>
+  <rect x="245" y="300" width="150" height="150" class="box" fill="#d9e2ec"/>
+  <text x="320" y="335" text-anchor="middle" class="label">Behavior 30%</text>
+  <text x="320" y="365" text-anchor="middle" class="copy">VECTOR_DISTANCE</text>
+  <text x="320" y="388" text-anchor="middle" class="copy">closest cardholder</text>
+  <text x="320" y="411" text-anchor="middle" class="copy">baseline profile</text>
+  <rect x="425" y="300" width="150" height="150" class="box" fill="#d9e2ec"/>
+  <text x="500" y="335" text-anchor="middle" class="label">Amount 20%</text>
+  <text x="500" y="365" text-anchor="middle" class="copy">relational comparison</text>
+  <text x="500" y="388" text-anchor="middle" class="copy">to normal amount</text>
+  <rect x="605" y="300" width="150" height="150" class="box" fill="#d9e2ec"/>
+  <text x="680" y="335" text-anchor="middle" class="label">Velocity 10%</text>
+  <text x="680" y="365" text-anchor="middle" class="copy">recent relational</text>
+  <text x="680" y="388" text-anchor="middle" class="copy">charge count</text>
+  <text x="400" y="530" text-anchor="middle" class="copy">Oracle AI Database: TxEventQ, JSON, Spatial, vectors, and relational SQL in one transaction.</text>
+</svg>

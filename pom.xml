@@ -90,6 +90,7 @@
         <module>support-ticket-intelligence</module>
         <module>testcontainers</module>
         <module>txeventq-examples</module>
+        <module>txeventq-fraud-detection</module>
         <module>txeventq-multidb-replication</module>
     </modules>
 

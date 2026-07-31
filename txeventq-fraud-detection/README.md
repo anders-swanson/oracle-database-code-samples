@@ -3,7 +3,6 @@ name: credit-card-fraud-detection
 description: Score OKafka credit-card charge events with relational history, Oracle Spatial distance, and Oracle AI Vector Search behavior profiles.
 tags:
   - Java
-  - Kafka
   - OKafka
   - TxEventQ
   - JSON
@@ -22,7 +21,7 @@ This sample consumes JSON card-charge events from an OKafka `CARD_CHARGES` topic
 Each event carries a transaction ID, cardholder, timestamp, amount and currency, merchant/category, channel, device ID, and latitude/longitude. The [FraudScoringService](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/credit-card-fraud-detection/src/main/java/com/example/fraud/FraudScoringService.java) combines four 0–100 signals:
 
 - Spatial: distance from the cardholder's most recent approved charge during the previous two hours.
-- Behavior: cosine distance from the closest `VECTOR(8, FLOAT32)` cardholder profile.
+- Behavior: cosine distance from the closest `VECTOR(384, FLOAT32)` cardholder profile.
 - Amount: increase over the cardholder's normal amount.
 - Velocity: charge count in the previous fifteen minutes.
 
@@ -39,7 +38,7 @@ Prerequisites:
 From the repository root:
 
 ```shell
-mvn -pl credit-card-fraud-detection -am integration-test
+mvn test -pl txeventq-fraud-detection/pom.xml
 ```
 
 The test starts Oracle AI Database Free, grants the Testcontainers user the required TxEventQ privileges, creates the `CARD_CHARGES` topic, then creates semantic cardholder behavior profiles, and produces and consumes four OSON events. It verifies a normal charge is approved, a rapid San Francisco-to-New York charge is declined, and an unfamiliar behavior pattern is reviewed.

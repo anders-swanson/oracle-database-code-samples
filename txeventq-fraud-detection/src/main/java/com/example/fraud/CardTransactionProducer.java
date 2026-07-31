@@ -23,7 +23,6 @@ public class CardTransactionProducer {
     public CardTransactionProducer(KafkaProducer<String, CardChargeEvent> producer, String topic) {
         this.producer = producer;
         this.topic = topic;
-        producer.initTransactions();
     }
 
     public void produce(List<CardChargeEvent> events) {
@@ -34,6 +33,7 @@ public class CardTransactionProducer {
                 event.setTransactionId(id);
                 producer.send(new ProducerRecord<>(topic, event));
                 producer.commitTransaction();
+                System.out.println("Producer: Sent: " + event.toSemanticString());
             } catch (Exception exception) {
                 producer.abortTransaction();
                 throw new IllegalStateException("Unable to publish card charge event", exception);

@@ -14,6 +14,8 @@ public class CardChargeEvent {
     private double latitude;
     private double longitude;
 
+    public CardChargeEvent() {}
+
     public CardChargeEvent(long transactionId, long cardholderId, String occurredAt, double amount,
                            String currency, String merchantName, String merchantCategory, String channel,
                            String deviceId, double latitude, double longitude) {

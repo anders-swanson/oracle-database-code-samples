@@ -13,6 +13,7 @@ import org.oracle.okafka.clients.producer.KafkaProducer;
 
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
 public class OkafkaConfiguration {
@@ -31,6 +32,7 @@ public class OkafkaConfiguration {
         NewTopic newTopic = new NewTopic(TOPIC_NAME, 1, (short) 0);
         try (Admin admin = AdminClient.create(baseProperties)) {
             admin.createTopics(List.of(newTopic)).all().get();
+            System.out.println("Created topic " + newTopic.name());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new IllegalStateException("Interrupted while creating " + TOPIC_NAME, e);
@@ -48,12 +50,13 @@ public class OkafkaConfiguration {
         );
     }
 
-    public CardTransactionConsumer createCardTransactionConsumer(int expectedEvents) {
+    public CardTransactionConsumer createCardTransactionConsumer(int expectedEvents, CountDownLatch shutdownSignal) {
         return new CardTransactionConsumer(
                 kafkaConsumer(),
                 new FraudScoringService(),
                 TOPIC_NAME,
-                expectedEvents
+                expectedEvents,
+                shutdownSignal
         );
     }
 
@@ -63,7 +66,9 @@ public class OkafkaConfiguration {
         properties.put("enable.idempotence", "true");
         properties.put("oracle.transactional.producer", "true");
         properties.put("key.serializer", StringSerializer.class.getName());
-        return new KafkaProducer<>(properties, new StringSerializer(), serializationFactory.createSerializer());
+        var producer = new KafkaProducer<String, CardChargeEvent>(properties, new StringSerializer(), serializationFactory.createSerializer());
+        producer.initTransactions();
+        return producer;
     }
 
     public KafkaConsumer<String, CardChargeEvent> kafkaConsumer() {

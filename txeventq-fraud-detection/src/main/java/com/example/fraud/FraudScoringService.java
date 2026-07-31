@@ -13,7 +13,7 @@ import java.util.List;
 import oracle.jdbc.OracleTypes;
 import oracle.spatial.geometry.JGeometry;
 
-/** Scores and persists an incoming charge using relational, Spatial, and vector data. */
+/** Scores a persisted card charge and stores its fraud assessment. */
 public class FraudScoringService {
     private static final double SCORE_THRESHOLD_REVIEW = 40d;
     private static final double SCORE_THRESHOLD_DECLINE = 70d;
@@ -44,7 +44,7 @@ public class FraudScoringService {
 
     private CardholderProfile cardholder(Connection connection, long cardholderId) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("""
-                select known_device_id, normal_amount
+                select normal_amount
                 from cardholders
                 where cardholder_id = ?
                 """)) {
@@ -53,7 +53,7 @@ public class FraudScoringService {
                 if (!resultSet.next()) {
                     throw new IllegalArgumentException("Unknown cardholder " + cardholderId);
                 }
-                return new CardholderProfile(resultSet.getString(1), resultSet.getDouble(2));
+                return new CardholderProfile(resultSet.getDouble(1));
             }
         }
     }
@@ -81,7 +81,7 @@ public class FraudScoringService {
     }
 
     private double amountScore(double amount, double normalAmount) {
-        return Math.max(0d, Math.min(100d, ((amount / normalAmount) - 1d) * 25d));
+        return Math.clamp(((amount / normalAmount) - 1d) * 25d, 0d, 100d);
     }
 
     private double behaviorScore(double cosineDistance) {
@@ -144,6 +144,6 @@ public class FraudScoringService {
         return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
     }
 
-    private record CardholderProfile(String knownDeviceId, double normalAmount) {
+    private record CardholderProfile(double normalAmount) {
     }
 }

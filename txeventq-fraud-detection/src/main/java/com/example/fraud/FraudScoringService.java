@@ -81,11 +81,13 @@ public class FraudScoringService {
     }
 
     private double amountScore(double amount, double normalAmount) {
+        // A below-normal charge is not risky (0), and extreme amounts cannot exceed the 100-point score scale.
         return Math.clamp(((amount / normalAmount) - 1d) * 25d, 0d, 100d);
     }
 
     private double behaviorScore(double cosineDistance) {
         // Semantic embedding distances are concentrated below 0.5. Map the observed normal-to-unusual range to risk.
+        // Distances at or below the normal baseline score 0; distances at or above the unusual threshold score 100.
         return Math.clamp((cosineDistance - NORMAL_BEHAVIOR_DISTANCE)
                 / (UNUSUAL_BEHAVIOR_DISTANCE - NORMAL_BEHAVIOR_DISTANCE) * 100d, 0d, 100d);
     }
@@ -103,6 +105,7 @@ public class FraudScoringService {
             statement.setObject(3, asTimestamp(occurredAt));
             try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
+                // Allow two charges in 15 minutes at 0 risk; five or more reach the 100-point maximum.
                 return Math.clamp((resultSet.getInt(1) - 2) * (100d / 3d), 0d, 100d);
             }
         }

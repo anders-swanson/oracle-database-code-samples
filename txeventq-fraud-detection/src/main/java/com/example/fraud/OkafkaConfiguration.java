@@ -54,6 +54,7 @@ public class OkafkaConfiguration {
         return new CardTransactionConsumer(
                 kafkaConsumer(),
                 new FraudScoringService(),
+                new SelectAI("SELECTAI.MY_PROFILE"),
                 TOPIC_NAME,
                 expectedEvents,
                 shutdownSignal

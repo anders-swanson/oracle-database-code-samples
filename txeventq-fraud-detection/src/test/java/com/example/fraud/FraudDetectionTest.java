@@ -59,7 +59,6 @@ class FraudDetectionTest {
             BehaviorVector.addBehaviorProfile(connection, 2, "weekday fuel stop",
                     normalBobFuelCharge().toSemanticString());
         }
-
         if (SELECTAI_ENABLED) {
             setupWithSelectAI(oracle);
         }

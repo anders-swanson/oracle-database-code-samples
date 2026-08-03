@@ -34,6 +34,13 @@
             <artifactId>sdoapi</artifactId>
         </dependency>
 
+        <!--  For Select AI authentication to OCI GenAI -->
+        <dependency>
+            <groupId>com.oracle.oci.sdk</groupId>
+            <artifactId>oci-java-sdk-identity</artifactId>
+            <version>${oci.sdk.version}</version>
+        </dependency>
+
         <!-- in memory embedding model for local testing-->
         <dependency>
             <groupId>dev.langchain4j</groupId>

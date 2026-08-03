@@ -11,6 +11,8 @@ import static java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor;
 
 /** Runnable OKafka flow that persists an explainable assessment for each card charge. */
 public final class FraudDetectionSample {
+    static final boolean SELECTAI_ENABLED = System.getProperty("selectai") != null;
+
     public static void run(Properties baseProperties, List<CardChargeEvent> events) {
         try (ExecutorService executor = newVirtualThreadPerTaskExecutor()) {
             var okafkaConfiguration = new OkafkaConfiguration(baseProperties);

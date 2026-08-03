@@ -4,6 +4,7 @@ import java.io.File;
 import java.sql.ResultSet;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import oracle.jdbc.pool.OracleDataSource;
@@ -14,6 +15,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.oracle.OracleContainer;
 import org.testcontainers.utility.MountableFile;
 
+import static com.example.fraud.FraudDetectionSample.SELECTAI_ENABLED;
+import static com.example.fraud.SelectAISetup.setupWithSelectAI;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
@@ -21,12 +24,17 @@ class FraudDetectionTest {
     private static final String USERNAME = "testuser";
     private static final String PASSWORD = "Welcome123#";
 
+    private final static String CERTS_FILE = "https://objectstorage.us-phoenix-1.oraclecloud.com/p/KB63IAuDCGhz_azOVQ07Qa_mxL3bGrFh1dtsltreRJPbmb-VwsH2aQ4Pur2ADBMA/n/adwcdemo/b/CERTS/o/dbc_certs.tar";
+    private static final String WALLET_PASSWORD = "MyWalletPassword12345";
+
     @Container
     private static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.2-full-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
             .withInitScripts("schema.sql")
             .withUsername(USERNAME)
-            .withPassword(PASSWORD);
+            .withPassword(PASSWORD).withEnv(Map.of(
+                    "WALLET_PASSWORD", WALLET_PASSWORD,
+                    "CERTS_FILE", CERTS_FILE));
 
     private static OracleDataSource dataSource;
 
@@ -50,6 +58,9 @@ class FraudDetectionTest {
                     normalBobCharge().toSemanticString());
             BehaviorVector.addBehaviorProfile(connection, 2, "weekday fuel stop",
                     normalBobFuelCharge().toSemanticString());
+        }
+        if (SELECTAI_ENABLED) {
+            setupWithSelectAI(oracle);
         }
     }
 

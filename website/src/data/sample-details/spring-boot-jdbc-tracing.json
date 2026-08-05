@@ -11,7 +11,7 @@
     "Spring",
     "Observability"
   ],
-  "sourceUpdatedAt": "2026-04-21T19:57:02.321Z",
+  "sourceUpdatedAt": "2026-07-30T19:33:51.480Z",
   "metaTitle": "Spring Boot Oracle AI Database JDBC Tracing | Oracle AI Database Code Samples",
   "metaDescription": "Spring Boot sample for Oracle JDBC tracing with OpenTelemetry.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/spring-boot-jdbc-tracing/",

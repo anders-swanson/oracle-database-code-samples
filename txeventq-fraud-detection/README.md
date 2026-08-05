@@ -9,7 +9,7 @@ tags:
   - Spatial
   - Vector Search
   - Testcontainers
-blog_post: ""
+blog_post: "https://andersswanson.dev/2026/08/03/no-separate-database-required-real-time-multi-model-data-processing/"
 ---
 
 # Credit card fraud detection with OKafka

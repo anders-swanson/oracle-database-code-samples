@@ -45,6 +45,7 @@
       "sampleIds": [
         "news-event-streaming",
         "txeventq-examples",
+        "txeventq-fraud-detection",
         "jms-producer-consumer",
         "jdbc-event-streaming",
         "json--json-event-streaming",
@@ -97,6 +98,7 @@
       "sampleIds": [
         "jdbc-hybrid-search",
         "ai-vector-search",
+        "txeventq-fraud-detection",
         "python-oracle--src--python_oracle--langchain_retrieval",
         "python-oracle--src--python_oracle--langchain",
         "python-oracle--src--python_oracle--database",
@@ -220,7 +222,8 @@
         "Spatial"
       ],
       "sampleIds": [
-        "jdbc-spatial-example"
+        "jdbc-spatial-example",
+        "txeventq-fraud-detection"
       ]
     },
     {

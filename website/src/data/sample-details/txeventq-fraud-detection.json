@@ -1,0 +1,25 @@
+{
+  "id": "txeventq-fraud-detection",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/txeventq-fraud-detection/README.md",
+  "blogPost": "https://andersswanson.dev/2026/08/03/no-separate-database-required-real-time-multi-model-data-processing/",
+  "readmeExcerpt": "This sample consumes JSON card-charge events from an OKafka `CARD_CHARGES` topic and persists an explainable fraud assessment in Oracle AI Database. It is deliberately a deterministic teaching example, not a production fraud model.",
+  "highlights": [
+    "Spatial: distance from the cardholder's most recent approved charge during the previous two hours.",
+    "Behavior: cosine distance from the closest VECTOR(384, FLOAT32) cardholder profile.",
+    "Amount: increase over the cardholder's normal amount.",
+    "Velocity: charge count in the previous fifteen minutes."
+  ],
+  "features": [
+    "Vector Search",
+    "JSON",
+    "Spatial",
+    "TxEventQ",
+    "Testcontainers",
+    "Kafka"
+  ],
+  "sourceUpdatedAt": "2026-08-05T14:11:59.899Z",
+  "metaTitle": "Credit card fraud detection with OKafka | Oracle AI Database Code Samples",
+  "metaDescription": "Score OKafka credit-card charge events with relational history, Oracle Spatial distance, and Oracle AI Vector Search behavior profiles.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/txeventq-fraud-detection/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/txeventq-fraud-detection.png"
+}

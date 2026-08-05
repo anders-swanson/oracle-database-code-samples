@@ -11,6 +11,7 @@ import org.oracle.okafka.clients.admin.AdminClient;
 import org.oracle.okafka.clients.consumer.KafkaConsumer;
 import org.oracle.okafka.clients.producer.KafkaProducer;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
@@ -50,8 +51,9 @@ public class OkafkaConfiguration {
         );
     }
 
-    public CardTransactionConsumer createCardTransactionConsumer(int expectedEvents, CountDownLatch shutdownSignal) {
+    public CardTransactionConsumer createCardTransactionConsumer(DataSource dataSource, int expectedEvents, CountDownLatch shutdownSignal) {
         return new CardTransactionConsumer(
+                dataSource,
                 kafkaConsumer(),
                 new FraudScoringService(),
                 new SelectAI("SELECTAI.MY_PROFILE"),

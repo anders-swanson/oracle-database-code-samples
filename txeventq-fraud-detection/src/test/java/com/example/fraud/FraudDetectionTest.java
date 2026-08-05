@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import oracle.jdbc.pool.OracleDataSource;
+import oracle.ucp.jdbc.PoolDataSource;
+import oracle.ucp.jdbc.PoolDataSourceFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.junit.jupiter.Container;
@@ -36,7 +38,7 @@ class FraudDetectionTest {
                     "WALLET_PASSWORD", WALLET_PASSWORD,
                     "CERTS_FILE", CERTS_FILE));
 
-    private static OracleDataSource dataSource;
+    private static PoolDataSource dataSource;
 
     @BeforeAll
     static void setUp() throws Exception {
@@ -44,10 +46,14 @@ class FraudDetectionTest {
         oracle.copyFileToContainer(MountableFile.forClasspathResource("okafka.sql"), "/tmp/okafka.sql");
         oracle.execInContainer("sqlplus", "sys / as sysdba", "@/tmp/okafka.sql");
 
-        dataSource = new OracleDataSource();
+        dataSource = PoolDataSourceFactory.getPoolDataSource();
+        dataSource.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
         dataSource.setURL(oracle.getJdbcUrl());
         dataSource.setUser(USERNAME);
         dataSource.setPassword(PASSWORD);
+        dataSource.setMinPoolSize(1);
+        dataSource.setMaxPoolSize(10);
+        dataSource.setConnectionPoolName("FraudDetectionConsumer");
 
         try (var connection = dataSource.getConnection()) {
             BehaviorVector.addBehaviorProfile(connection, 1, "local grocery on known phone",
@@ -67,7 +73,7 @@ class FraudDetectionTest {
     @Test
     void scoresLocalDistantAndUnfamiliarCharges() throws Exception {
         List<CardChargeEvent> events = sampleEvents();
-        FraudDetectionSample.run(okafkaProperties(), events);
+        FraudDetectionSample.run(dataSource, okafkaProperties(), events);
 
         CardChargeEvent localCharge = events.get(0);
         CardChargeEvent secondLocalCharge = events.get(1);

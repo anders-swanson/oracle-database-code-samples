@@ -1,5 +1,6 @@
 package com.example.fraud;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
@@ -13,7 +14,7 @@ import static java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor;
 public final class FraudDetectionSample {
     static final boolean SELECTAI_ENABLED = System.getProperty("selectai") != null;
 
-    public static void run(Properties baseProperties, List<CardChargeEvent> events) {
+    public static void run(DataSource dataSource, Properties baseProperties, List<CardChargeEvent> events) {
         try (ExecutorService executor = newVirtualThreadPerTaskExecutor()) {
             var okafkaConfiguration = new OkafkaConfiguration(baseProperties);
 
@@ -21,7 +22,7 @@ public final class FraudDetectionSample {
 
             // Start consumer
             CountDownLatch consumerShutdown = new CountDownLatch(1);
-            var consumer = okafkaConfiguration.createCardTransactionConsumer(events.size(), consumerShutdown);
+            var consumer = okafkaConfiguration.createCardTransactionConsumer(dataSource, events.size(), consumerShutdown);
             System.out.println("Main: starting consumer");
             Future<?> consumerTask = executor.submit(consumer);
 

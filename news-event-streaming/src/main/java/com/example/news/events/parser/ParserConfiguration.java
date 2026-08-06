@@ -2,7 +2,7 @@ package com.example.news.events.parser;
 
 import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -7,8 +7,8 @@ import java.util.List;
 
 import com.example.courses.Course;
 import com.example.students.Student;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 public class DatabasePerServiceSampleRunner {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();

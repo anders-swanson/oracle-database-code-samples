@@ -36,8 +36,8 @@
         <djl.tokenizers.version>0.36.0</djl.tokenizers.version>
         <springai.version>2.0.0</springai.version>
         <testcontainers.version>2.0.5</testcontainers.version>
-        <jackson-2-bom.version>2.21.5</jackson-2-bom.version>
-        <jackson-bom.version>3.1.5</jackson-bom.version>
+        <jackson-2-bom.version>2.22.1</jackson-2-bom.version>
+        <jackson-bom.version>3.2.1</jackson-bom.version>
         <bouncycastle.version>1.84</bouncycastle.version>
         <lz4.version>1.11.1</lz4.version>
 

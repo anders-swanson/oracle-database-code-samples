@@ -6,7 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 final class HttpUtil {
     private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();

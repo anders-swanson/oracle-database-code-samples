@@ -11,9 +11,13 @@ blog_post: "https://andersswanson.dev/2025/05/29/easily-test-oracle-database-app
 
 # Oracle AI Database Testcontainers
 
-This module provides examples using [Testcontainers](https://java.testcontainers.org/) with [Oracle AI Database Free](https://www.oracle.com/database/free/) to test your Oracle AI Database Java applications using dispoable containers.
+This module provides examples using [Testcontainers](https://java.testcontainers.org/) with [Oracle AI Database Free](https://www.oracle.com/database/free/) to test Java applications using disposable containers.
 
 The `gvenzl/oracle-free` Oracle AI Database container images are recommended for use with Testcontainers and Java. The examples in this module use the Oracle AI Database 26ai Free image `gvenzl/oracle-free:23.26.2-slim-faststart`.
+
+### Official Oracle Container Registry image
+
+Use the [`OracleFree` Testcontainer](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/testcontainers/ORACLE_FREE.md) to test with the official Oracle Container Registry image. The guide includes a quick start, application-user setup, initialization scripts, admin connections, and configuration options.
 
 ## Related Blog Posts
 

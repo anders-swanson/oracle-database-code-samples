@@ -9,7 +9,7 @@ import org.testcontainers.oracle.OracleContainer;
 class JsonAttributesSampleTest {
 
     @Container
-    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.2-slim-faststart")
+    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.3-slim-faststart")
             .withUsername("testuser")
             .withPassword("testpwd")
             .withInitScript("schema.sql");

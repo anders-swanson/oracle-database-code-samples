@@ -30,7 +30,7 @@ class FraudDetectionTest {
     private static final String WALLET_PASSWORD = "MyWalletPassword12345";
 
     @Container
-    private static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.2-full-faststart")
+    private static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.3-full-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
             .withInitScripts("schema.sql")
             .withUsername(USERNAME)

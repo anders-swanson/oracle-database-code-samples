@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class OracleDataAccessExceptionHandlingTest {
     @Container
     @ServiceConnection
-    static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.2-slim-faststart")
+    static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.3-slim-faststart")
             .withStartupTimeout(Duration.ofMinutes(2))
             .withUsername("testuser")
             .withPassword("testpwd")

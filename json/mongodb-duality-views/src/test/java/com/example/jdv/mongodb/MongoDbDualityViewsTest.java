@@ -45,7 +45,7 @@ class MongoDbDualityViewsTest {
     // Network for Oracle AI Database and ORDS to communicate
     private static final Network NETWORK = Network.newNetwork();
 
-    private static final OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.2-slim-faststart")
+    private static final OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.3-slim-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
             .withPassword(ADMIN_PASSWORD)
             .withNetwork(NETWORK)

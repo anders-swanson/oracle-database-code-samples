@@ -26,7 +26,7 @@ class JdbcUuidSampleTest {
     private static final UUID MISSING_ID = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
     @Container
-    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.2-slim-faststart")
+    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.3-slim-faststart")
             .withUsername("testuser")
             .withPassword("testpwd");
 

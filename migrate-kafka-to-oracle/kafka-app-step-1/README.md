@@ -27,7 +27,7 @@ Start the database:
 ```bash
 docker run --name oracledb -d -p 1521:1521 \
   -e ORACLE_PASSWORD=testpwd \
-  gvenzl/oracle-free:23.26.2-slim-faststart
+  gvenzl/oracle-free:23.26.3-slim-faststart
 ```
 
 Create the application user and required TxEventQ grants:

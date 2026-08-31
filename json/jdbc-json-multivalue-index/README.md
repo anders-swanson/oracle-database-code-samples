@@ -63,7 +63,7 @@ The test starts Oracle AI Database Free, applies both SQL scripts, and calls `Mu
 ## Run the tests
 
 ```bash
-docker pull gvenzl/oracle-free:23.26.2-slim-faststart
+docker pull gvenzl/oracle-free:23.26.3-slim-faststart
 mvn -pl json/jdbc-json-multivalue-index -am test
 ```
 

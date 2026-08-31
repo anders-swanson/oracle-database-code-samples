@@ -9,7 +9,7 @@ import oracledb
 from src.python_oracle.testcontainers_sample.oracle_database_container import OracleDatabaseContainer
 
 
-ORACLE_FREE_IMAGE = "gvenzl/oracle-free:23.26.2-full-faststart"
+ORACLE_FREE_IMAGE = "gvenzl/oracle-free:23.26.3-full-faststart"
 
 DOCUMENTS = [
     {

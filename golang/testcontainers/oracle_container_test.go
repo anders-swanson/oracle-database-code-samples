@@ -12,7 +12,7 @@ func TestOracleContainer(t *testing.T) {
 	// Start an Oracle AI Database container
 	ctx := context.Background()
 	container, err := NewOracleContainer(ctx,
-		"gvenzl/oracle-free:23.26.2-slim-faststart",
+		"gvenzl/oracle-free:23.26.3-slim-faststart",
 		"testuser",
 		"testpwd",
 	)

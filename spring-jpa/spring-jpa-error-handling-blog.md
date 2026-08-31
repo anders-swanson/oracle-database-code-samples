@@ -128,7 +128,7 @@ That fallback is not the end state for a production app. It is the honest defaul
 
 ## The Test Proves Both Boundaries
 
-The useful part of this sample is that both paths run against Oracle AI Database Free through Testcontainers. [`OracleJpaExceptionHandlingTest`](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-jpa/src/test/java/com/example/OracleJpaExceptionHandlingTest.java) starts `gvenzl/oracle-free:23.26.2-slim-faststart`, initializes `student.sql`, and uses the same invalid student in both tests.
+The useful part of this sample is that both paths run against Oracle AI Database Free through Testcontainers. [`OracleJpaExceptionHandlingTest`](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/spring-jpa/src/test/java/com/example/OracleJpaExceptionHandlingTest.java) starts `gvenzl/oracle-free:23.26.3-slim-faststart`, initializes `student.sql`, and uses the same invalid student in both tests.
 
 The service-level test checks the AOP translation:
 

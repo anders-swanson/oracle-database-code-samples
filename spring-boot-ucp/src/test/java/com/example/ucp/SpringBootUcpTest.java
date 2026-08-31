@@ -31,7 +31,7 @@ class SpringBootUcpTest {
 
     @Container
     @ServiceConnection
-    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.2-slim-faststart")
+    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.3-slim-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
             .withUsername(APP_USERNAME)
             .withPassword(APP_PASSWORD)

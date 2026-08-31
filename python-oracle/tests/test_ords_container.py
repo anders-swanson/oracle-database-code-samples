@@ -12,7 +12,7 @@ from src.python_oracle.testcontainers_sample.oracle_database_container import Or
 from src.python_oracle.testcontainers_sample.ords_container import OrdsContainer
 
 
-DATABASE_IMAGE = "gvenzl/oracle-free:23.26.2-slim-faststart"
+DATABASE_IMAGE = "gvenzl/oracle-free:23.26.3-slim-faststart"
 DATABASE_ALIAS = "ordsdb"
 ADMIN_PASSWORD = "Welcome12345"
 DATABASE_CONNECTION = "jdbc:oracle:thin:@ordsdb:1521/freepdb1"

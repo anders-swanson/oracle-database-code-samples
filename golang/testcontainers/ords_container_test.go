@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	ordsDatabaseImage      = "gvenzl/oracle-free:23.26.2-slim-faststart"
+	ordsDatabaseImage      = "gvenzl/oracle-free:23.26.3-slim-faststart"
 	ordsDatabaseAlias      = "ordsdb"
 	ordsAdminPassword      = "Welcome12345"
 	ordsDatabaseConnection = "jdbc:oracle:thin:@ordsdb:1521/freepdb1"

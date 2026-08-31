@@ -20,7 +20,7 @@ from sentence_transformers import SentenceTransformer
 from src.python_oracle.testcontainers_sample.oracle_database_container import OracleDatabaseContainer
 
 
-ORACLE_FREE_FULL_IMAGE = "gvenzl/oracle-free:23.26.2-full-faststart"
+ORACLE_FREE_FULL_IMAGE = "gvenzl/oracle-free:23.26.3-full-faststart"
 EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 SOURCE_TABLE = "LANGCHAIN_RUNBOOK_SOURCES"
 VECTOR_TABLE = "langchain_runbook_chunks"

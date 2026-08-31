@@ -34,7 +34,7 @@ public class SelectAILocalTest {
     /**
      * The "full" image is required to run catcon.pl inside the container.
      */
-    static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.2-full-faststart")
+    static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.3-full-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
             .withUsername("UNI")
             .withPassword("StudentsSchemaPassword12345")

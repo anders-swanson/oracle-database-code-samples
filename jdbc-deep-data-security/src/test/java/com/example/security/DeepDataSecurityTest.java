@@ -24,7 +24,7 @@ class DeepDataSecurityTest {
     private static final String PASSWORD = "testpwd";
 
     @Container
-    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.2-full-faststart")
+    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.3-full-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
             .withUsername("testuser")
             .withPassword(PASSWORD);

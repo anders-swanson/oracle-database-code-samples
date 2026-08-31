@@ -24,7 +24,7 @@ public class DatabasePropertySourceTest {
     /**
      * Use a containerized Oracle AI Database instance to test the Database property source.
      */
-    static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.2-slim-faststart")
+    static OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.3-slim-faststart")
             .withStartupTimeout(Duration.ofMinutes(2))
             .withUsername("testuser")
             .withPassword("testpwd");

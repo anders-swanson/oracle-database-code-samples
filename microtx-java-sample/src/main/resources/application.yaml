@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: microtx-java-sample
+
+server:
+  port: ${SERVER_PORT:8080}

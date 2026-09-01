@@ -1,0 +1,65 @@
+# Oracle Transaction Manager for Microservices
+#
+# Copyright © 2025, Oracle and/or its affiliates. All rights reserved.
+#
+# Transaction Coordinator configuration file for running inside a Docker container.
+
+tmmAppName: tcs
+tmmConfiguration:
+  initContainerEnabled: false
+  listenAddr: 0.0.0.0:9000
+  internalAddr: http://coordinator:9000
+  externalUrl: http://localhost:9000
+  serveTLS:
+    enabled: false
+    certFile:
+    keyFile:
+  skipVerifyInsecureTLS: false
+  notificationSpikeTimeInSec: 5
+  xaCoordinator:
+    enabled: true
+    txMaxTimeout: 600000
+  lraCoordinator:
+    enabled: true
+  tccCoordinator:
+    enabled: true
+  maxRetryCount: 10
+  minRetryInterval: 1000
+  maxRetryInterval: 10000
+  httpClientTimeoutInSecs: 180
+  logging:
+    httpTraceEnabled: true
+    level: debug
+    devMode: true
+  storage:
+    type: memory # use db storage for EE databases and production environments
+    db:
+      connectionString: microtxdb:1521/FREEPDB1
+      netServiceName: ""
+      connectionParams: standaloneConnection=false
+    etcd:
+      endpoints: http://localhost:2379
+      credentialsFilePath: ""
+      cacertFilePath: ""
+      skipHostNameVerification: false
+    batchInterval: 180
+    thresholdFactor: 4
+  authorization:
+    enabled: false
+    IdentityProviderName:
+    IdentityProviderUrl:
+    IdentityProviderClientId:
+  narayanaLraCompatibilityMode:
+    enabled: false
+authentication:
+  enabled: false
+  jwt:
+    issuer:
+    jwksUri:
+encryption:
+  secretKeys:
+  EncryptionSecretKeyVersion:
+transactionToken:
+  transactionTokenEnabled: false
+  keyPairs:
+  transactionTokenKeyPairVersion:

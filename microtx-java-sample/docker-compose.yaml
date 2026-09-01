@@ -1,0 +1,157 @@
+name: microtx-java-sample
+
+services:
+  workflow-key-init: # dynamically creates a secret for microtx workflow server.
+    image: busybox:1.37.0
+    container_name: workflow-key-init
+    command:
+      - sh
+      - -eu
+      - -c
+      - |
+        if [ ! -s /run/workflow-key/WF_ENCRYPTION_KEY ]; then
+          head -c 32 /dev/urandom | od -An -tx1 | tr -d ' \n' > /run/workflow-key/WF_ENCRYPTION_KEY
+        fi
+        chmod 0444 /run/workflow-key/WF_ENCRYPTION_KEY
+    network_mode: none
+    volumes:
+      - workflow-encryption-key:/run/workflow-key
+    restart: "no"
+
+  microtxdb:
+    image: gvenzl/oracle-free:23.26.3-slim-faststart
+    container_name: microtxdb
+    environment:
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD:-Welcome12345}
+      APP_USER: ${ORACLE_APP_USER:-microtx}
+      APP_USER_PASSWORD: ${ORACLE_APP_PASSWORD:-Welcome12345}
+    volumes:
+      - microtxdb-data:/opt/oracle/oradata
+    networks:
+      - internal
+    ports:
+      - "1521:1521"
+    healthcheck:
+      test: ["CMD-SHELL", "lsnrctl status | grep READY"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+  coordinator:
+    image: container-registry.oracle.com/database/microtx-coordinator:${MICROTX_VERSION:-26.1.1}
+    container_name: coordinator
+    environment:
+      CONFIG_FILE: /app/compose-config/tcs-config.yaml
+      STORAGE_DB_CREDENTIAL: >-
+        {"username":"${ORACLE_APP_USER:-microtx}","password":"${ORACLE_APP_PASSWORD:-Welcome12345}"}
+    volumes:
+      - ./config:/app/compose-config:ro
+    networks:
+      - internal
+    ports:
+      - "9000:9000"
+    depends_on:
+      microtxdb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:9000/health"]
+      interval: 60s
+      timeout: 30s
+      retries: 12
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+  workflow-server:
+    image: container-registry.oracle.com/database/microtx-workflow:${MICROTX_VERSION:-26.1.1}
+    container_name: workflow-server
+    mem_limit: 4g
+    environment:
+      CONFIG_PROP: /app/compose-config/workflow-server-config.properties
+      CONDUCTOR_SECRETS_ENCRYPTION_KEYPATH: /run/secrets/WF_ENCRYPTION_KEY
+      CONDUCTOR_CONNECTOR_STORAGE_PATH: /file_storage
+      CONDUCTOR_STORAGE_STORAGE_PATH_LOCATION: /file_storage
+      SPRING_DATASOURCE_URL: jdbc:oracle:thin:@microtxdb:1521/FREEPDB1
+      SPRING_DATASOURCE_USERNAME: ${ORACLE_APP_USER:-microtx}
+      SPRING_DATASOURCE_PASSWORD: ${ORACLE_APP_PASSWORD:-Welcome12345}
+    volumes:
+      - ./config:/app/compose-config:ro
+      - workflow-file-storage:/file_storage
+      - workflow-encryption-key:/run/secrets:ro
+    networks:
+      - internal
+    ports:
+      - "9010:9010"
+    depends_on:
+      workflow-key-init:
+        condition: service_completed_successfully
+      microtxdb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:9010/workflow-server/health"]
+      interval: 60s
+      timeout: 30s
+      retries: 12
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+  console:
+    image: container-registry.oracle.com/database/microtx-console:${MICROTX_VERSION:-26.1.1}
+    container_name: console
+    mem_limit: 4g
+    environment:
+      SECURITY_ENABLED: "false"
+      WF_SERVER: http://workflow-server:9010
+      TMM_TCS_URL: http://coordinator:9000
+      CONDUCTOR_BACKEND_ENDPOINT: http://workflow-server:9010
+      SECURITY_CONFIG_REQUIRE_ENCRYPTION: "false"
+      SECURITY_JERSEY_ENABLED: "true"
+      SECURITY_PROPERTIES_OIDC_IDENTITY_URI: ""
+      SECURITY_PROPERTIES_OIDC_CLIENT_ID: ""
+      SECURITY_PROPERTIES_OIDC_CLIENT_SECRET: ""
+      SECURITY_PROPERTIES_OIDC_ISSUER: ""
+      SECURITY_PROPERTIES_OIDC_AUDIENCE: ""
+      SECURITY_PROPERTIES_OIDC_BASE_SCOPES: openid
+      SECURITY_PROPERTIES_FRONTEND_URI: http://localhost:8080
+      SECURITY_PROPERTIES_COOKIE_ENCRYPTION_ENABLED: "true"
+      SECURITY_PROPERTIES_COOKIE_ENCRYPTION_PASSWORD: ""
+      FAST_REFRESH: "false"
+    networks:
+      - internal
+    ports:
+      - "8080:8080"
+    depends_on:
+      coordinator:
+        condition: service_healthy
+      workflow-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8080/health"]
+      interval: 60s
+      timeout: 30s
+      retries: 12
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+networks:
+  internal:
+    name: microtx-java-sample
+
+volumes:
+  microtxdb-data:
+  workflow-encryption-key:
+  workflow-file-storage:

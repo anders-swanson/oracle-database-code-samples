@@ -74,6 +74,7 @@
         <module>news-event-streaming</module>
         <module>nl2sql-guardrails</module>
         <module>mcp-agent</module>
+        <module>microtx-java-sample</module>
         <module>oracle-database-kafka-apis</module>
         <module>ords-testcontainers</module>
         <module>sessionless-transactions</module>

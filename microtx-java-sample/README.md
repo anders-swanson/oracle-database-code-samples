@@ -7,20 +7,21 @@ tags:
   - SpringBoot
 ---
 
-# MicroTx Java Sample
+# Oracle Transaction Manager for Microservices (MicroTx) Sample
 
-This module is the starting point for a basic Java service that will use Oracle Transaction Manager for Microservices. The current scaffold provides a runnable Spring Boot HTTP service; MicroTx transaction behavior will be added in a later step.
+[MicroTx](https://www.oracle.com/database/transaction-manager-for-microservices/) is a durable workflow orchestration layer supporting agentic AI and distrubted transaction management, integrated with Oracle AI Database.
 
 ## Important Files
 
-- [MicroTxApplication](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/microtx-java-sample/src/main/java/com/example/microtx/MicroTxApplication.java): Spring Boot entry point.
-- [ServiceController](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/microtx-java-sample/src/main/java/com/example/microtx/ServiceController.java): Baseline HTTP endpoint used to verify that the service is running.
-- [MicroTxApplicationTest](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/microtx-java-sample/src/test/java/com/example/microtx/MicroTxApplicationTest.java): Starts the service and verifies its HTTP response.
-- [microtx-docker-compose.yaml](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/microtx-java-sample/microtx-docker-compose.yaml): Runs the MicroTx coordinator, workflow server, console, and Oracle AI Database Free on one network.
+- [MicroTx docker-compose.yaml](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/microtx-java-sample/docker-compose.yaml): Runs the MicroTx coordinator, workflow server, console, and Oracle AI Database Free on one network.
 
 ## Run MicroTx and Oracle AI Database Free
 
-The Compose environment pulls the MicroTx Free images from Oracle Container Registry. Sign in and accept the MicroTx repository terms before starting it:
+The Docker Compose environment pulls the MicroTx Free images from Oracle Container Registry. MicroTx Free is for developers to build and evaluate applications using distributed transactions and workflows with Agentic AI.
+
+- [MicroTx console image](https://container-registry.oracle.com/ords/ocr/ba/database/microtx-console)
+- [MicroTx coordinator image](https://container-registry.oracle.com/ords/ocr/ba/database/microtx-coordinator)
+- [MicroTx workflow image](https://container-registry.oracle.com/ords/ocr/ba/database/microtx-workflow)
 
 ```bash
 docker login container-registry.oracle.com
@@ -52,15 +53,7 @@ docker compose -f microtx-docker-compose.yaml down
 
 Add `--volumes` only when you intentionally want to delete the persisted development data and workflow-server encryption key. Deleting the key prevents the workflow server from decrypting secrets that were encrypted with it.
 
-## Run the Service
-
-From the repository root:
-
-```bash
-mvn -pl microtx-java-sample spring-boot:run
-```
-
-Then access the console UI:
+## Access the MicroTx console UI
 
 ```bash
 http://localhost:8080/consoleui
@@ -70,8 +63,14 @@ You should see the microtx dashboard:
 
 ![console UI](./consoleui.png)
 
-## Test
+## MicroTx Java Application
 
-```bash
-mvn -pl microtx-java-sample test
-```
+TBD - stay tuned for a working Java sample that complements the Docker Compose environment.
+
+## MicroTx Enterprise Edition (EE)
+
+The MicroTx EE images are recommended for licensed, production workflows. Find the MicroTx EE images here:
+
+- [MicroTx EE console image](https://container-registry.oracle.com/ords/ocr/ba/database/microtx-ee-console)
+- [MicroTx EE coordinator image](https://container-registry.oracle.com/ords/ocr/ba/database/microtx-ee-coordinator)
+- [MicroTx EE workflow image](https://container-registry.oracle.com/ords/ocr/ba/database/microtx-ee-workflow)

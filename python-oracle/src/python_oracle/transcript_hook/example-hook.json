@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv --directory /path/to/oracle-database-code-samples/python-oracle run python -m src.python_oracle.transcript_hook.oracle_transcript_hook --config /Users/you/.config/codex/oracle-transcript-hook.yaml",
+            "timeout": 30,
+            "statusMessage": "Saving transcript to Oracle AI Database"
+          }
+        ]
+      }
+    ]
+  }
+}

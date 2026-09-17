@@ -18,14 +18,14 @@ The sample file is [`vector_search_sample.py`](./vector_search_sample.py).
 ## Prerequisites
 
 - Python 3.13+
-- Poetry
+- uv
 - Docker compatible environment
 - `OPENAI_API_KEY` set in your environment, or available for interactive prompt entry
 
 Install dependencies from the `python-oracle/` directory:
 
 ```bash
-poetry install
+uv sync
 ```
 
 ## Run the sample
@@ -33,7 +33,7 @@ poetry install
 From the `python-oracle/` directory:
 
 ```bash
-poetry run python src/python_oracle/langchain/vector_search_sample.py
+uv run python src/python_oracle/langchain/vector_search_sample.py
 ```
 
 The script starts Oracle AI Database Free with the local Testcontainers helper, creates an `OracleVS` vector store in `sample_vectors`, embeds sample texts, and prints the top similarity-search match for the query.

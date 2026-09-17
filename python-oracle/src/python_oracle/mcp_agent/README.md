@@ -25,7 +25,7 @@ These diagrams show how the Python agent, LangChain, SQLcl MCP, and Oracle AI Da
 ## Prerequisites
 
 - Docker and Docker Compose
-- Poetry
+- uv
 - Python 3.13 or higher
 - Java runtime for SQLcl
 - SQLcl 26.1 or higher, installed and available on `PATH`
@@ -36,7 +36,7 @@ Run commands from the `python-oracle` directory.
 ## 1. Install Dependencies
 
 ```bash
-poetry install
+uv sync
 ```
 
 ## 2. Start Oracle AI Database Free
@@ -69,13 +69,13 @@ exit
 For an interactive terminal loop:
 
 ```bash
-OPENAI_API_KEY=<your-openai-api-key> poetry run python src/python_oracle/mcp_agent/sqlcl_mcp_agent.py --connection python_mcp
+OPENAI_API_KEY=<your-openai-api-key> uv run python src/python_oracle/mcp_agent/sqlcl_mcp_agent.py --connection python_mcp
 ```
 
 For a single question:
 
 ```bash
-OPENAI_API_KEY=<your-openai-api-key> poetry run python src/python_oracle/mcp_agent/sqlcl_mcp_agent.py --connection python_mcp --question "List the top 10 players by score."
+OPENAI_API_KEY=<your-openai-api-key> uv run python src/python_oracle/mcp_agent/sqlcl_mcp_agent.py --connection python_mcp --question "List the top 10 players by score."
 ```
 
 Try prompts like:

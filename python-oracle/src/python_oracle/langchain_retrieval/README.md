@@ -30,14 +30,14 @@ The embedding model uses `sentence-transformers/all-MiniLM-L6-v2` through Python
 ## Prerequisites
 
 - Python 3.13+
-- Poetry
+- uv
 - Docker compatible environment
 - Network access on first run so `sentence-transformers` can download `sentence-transformers/all-MiniLM-L6-v2`, unless the model is already cached
 
 Install dependencies from the `python-oracle/` directory:
 
 ```bash
-poetry install
+uv sync
 ```
 
 ## Run it
@@ -45,7 +45,7 @@ poetry install
 From `python-oracle/`:
 
 ```bash
-poetry run python src/python_oracle/langchain_retrieval/runbook_retrieval.py
+uv run python src/python_oracle/langchain_retrieval/runbook_retrieval.py
 ```
 
 The script starts the full Oracle AI Database Free image because the sample creates an Oracle Text index and uses `DBMS_VECTOR_CHAIN` for chunking. The Testcontainers path intentionally uses exact vector search over the tiny fixture rather than creating an HNSW index, which avoids `ORA-51962` vector memory pressure in small Free containers.
@@ -79,7 +79,7 @@ The chunk count may vary if Oracle AI Database chunking behavior changes, but it
 From the `python-oracle/` directory:
 
 ```bash
-poetry run python -m unittest tests.test_langchain_retrieval -v
+uv run python -m unittest tests.test_langchain_retrieval -v
 ```
 
 The test provisions Oracle AI Database Free with Testcontainers, runs the sample end to end, and verifies:

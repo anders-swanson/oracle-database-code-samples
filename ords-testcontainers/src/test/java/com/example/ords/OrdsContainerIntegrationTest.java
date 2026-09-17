@@ -52,6 +52,7 @@ class OrdsContainerIntegrationTest {
     private static final String DATABASE_IMAGE = "gvenzl/oracle-free:23.26.3-slim-faststart";
     private static final String DATABASE_ALIAS = "ordsdb";
     private static final String ADMIN_PASSWORD = "Welcome12345";
+    private static final String ORDS_USER_PASSWORD = "OrdsUser12345";
     private static final String DATABASE_CONNECTION = "jdbc:oracle:thin:@ordsdb:1521/freepdb1";
     private static final String SCHEMA_CONNECTION = "ordsdb:1521/freepdb1";
     private static final String ORDS_INIT_SCRIPT = "/tmp/ords_init.sql";
@@ -79,6 +80,7 @@ class OrdsContainerIntegrationTest {
             .withNetwork(NETWORK)
             .withDatabaseConnectionString(DATABASE_CONNECTION)
             .withOraclePassword(ADMIN_PASSWORD)
+            .withOracleUserPassword(ORDS_USER_PASSWORD)
             .withSchema(DB_API_ADMIN_USERNAME, DB_API_ADMIN_PASSWORD, SCHEMA_CONNECTION)
             .withSchema(MONGO_USERNAME, MONGO_PASSWORD, SCHEMA_CONNECTION);
 

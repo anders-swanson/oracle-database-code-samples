@@ -18,13 +18,13 @@ The sample file is [json_text_search.py](https://github.com/anders-swanson/oracl
 ## Prerequisites
 
 - Python 3.13+
-- Poetry
+- uv
 - Docker compatible environment
 
 Install dependencies from the `python-oracle/` directory:
 
 ```bash
-poetry install
+uv sync
 ```
 
 ## Run the sample
@@ -32,7 +32,7 @@ poetry install
 From the `python-oracle/` directory:
 
 ```bash
-poetry run python src/python_oracle/full_text_search/json_text_search.py
+uv run python src/python_oracle/full_text_search/json_text_search.py
 ```
 
 The script uses the local Testcontainers helper to start the full Oracle AI Database Free image required by Oracle Text, creates a JSON table and search index, inserts four JSON documents, validates the expected search results, and prints ranked keyword, proximity, and filtered JSON matches.

@@ -26,14 +26,14 @@ These diagrams show how the Python sample, LangGraph, `OracleSaver`, `OracleStor
 ## Prerequisites
 
 - Python 3.13+
-- Poetry
+- uv
 - Docker compatible environment
 - Local OCI configuration for OCI Generative AI on-demand chat
 
 Install dependencies from the `python-oracle/` directory:
 
 ```bash
-poetry install
+uv sync
 ```
 
 Set the OCI compartment before running the command-line sample:
@@ -49,7 +49,7 @@ The sample assumes an OCI Generative AI on-demand model and defaults to the mode
 From the `python-oracle/` directory:
 
 ```bash
-poetry run python src/python_oracle/langgraph_persistence/travel_approval_graph.py
+uv run python src/python_oracle/langgraph_persistence/travel_approval_graph.py
 ```
 
 The script starts Oracle AI Database Free with Testcontainers, creates the LangGraph checkpoint and store tables, runs the request, and prints the final outcome. For the default over-limit request, it also drafts an OCI-generated approval brief, pauses with `interrupt()`, prints a checkpoint summary from `OracleSaver`, resumes with `Command(resume=...)`, and reads the approved business record back from `OracleStore`.
@@ -57,7 +57,7 @@ The script starts Oracle AI Database Free with Testcontainers, creates the LangG
 To run the rejection branch:
 
 ```bash
-poetry run python src/python_oracle/langgraph_persistence/travel_approval_graph.py --reject
+uv run python src/python_oracle/langgraph_persistence/travel_approval_graph.py --reject
 ```
 
 ## What to Notice

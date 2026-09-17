@@ -19,6 +19,7 @@ public class OrdsContainer extends GenericContainer<OrdsContainer> {
 
     private static final String CONNECTION_STRING_ENV = "CONN_STRING";
     private static final String ORACLE_PASSWORD_ENV = "ORACLE_PWD";
+    private static final String ORACLE_USER_PASSWORD_ENV = "ORACLE_USER_PWD";
     private static final Duration DEFAULT_STARTUP_TIMEOUT = Duration.ofMinutes(5);
 
     private final List<SchemaConfiguration> schemas = new ArrayList<>();
@@ -54,6 +55,13 @@ public class OrdsContainer extends GenericContainer<OrdsContainer> {
         ));
     }
 
+    public OrdsContainer withOracleUserPassword(String oracleUserPassword) {
+        return withEnv(ORACLE_USER_PASSWORD_ENV, requireNonBlank(
+                oracleUserPassword,
+                "Oracle user password cannot be null or empty"
+        ));
+    }
+
     public OrdsContainer withSchema(String username, String password, String connectDescriptor) {
         schemas.add(new SchemaConfiguration(
                 requireNonBlank(username, "Schema username is required"),
@@ -83,6 +91,7 @@ public class OrdsContainer extends GenericContainer<OrdsContainer> {
     public void start() {
         validateRequiredEnv(CONNECTION_STRING_ENV);
         validateRequiredEnv(ORACLE_PASSWORD_ENV);
+        validateRequiredEnv(ORACLE_USER_PASSWORD_ENV);
         super.start();
     }
 

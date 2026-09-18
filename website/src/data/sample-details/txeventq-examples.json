@@ -8,7 +8,7 @@
     "TxEventQ",
     "Kafka"
   ],
-  "sourceUpdatedAt": "2026-04-21T19:57:02.331Z",
+  "sourceUpdatedAt": "2026-08-27T19:48:29.159Z",
   "metaTitle": "Oracle AI Database Transactional Event Queues Examples | Oracle AI Database Code Samples",
   "metaDescription": "Java examples for Oracle AI Database Transactional Event Queues using Kafka APIs and PL/SQL.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/txeventq-examples/",

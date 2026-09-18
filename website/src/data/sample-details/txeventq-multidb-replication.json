@@ -10,7 +10,7 @@
   "features": [
     "TxEventQ"
   ],
-  "sourceUpdatedAt": "2026-04-21T19:57:02.332Z",
+  "sourceUpdatedAt": "2026-08-27T19:48:29.159Z",
   "metaTitle": "Transactional Event Queues Multi-Database Replication Example | Oracle AI Database Code Samples",
   "metaDescription": "Multi-database TxEventQ replication sample using JMS and database links.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/txeventq-multidb-replication/",

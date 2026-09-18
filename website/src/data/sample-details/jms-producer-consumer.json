@@ -11,7 +11,7 @@
     "TxEventQ",
     "Testcontainers"
   ],
-  "sourceUpdatedAt": "2026-04-21T19:57:02.150Z",
+  "sourceUpdatedAt": "2026-08-27T19:48:29.151Z",
   "metaTitle": "Java Message Service (JMS) Producer / Consumer Example | Oracle AI Database Code Samples",
   "metaDescription": "JMS producer and consumer example for Oracle AI Database Transactional Event Queues.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/jms-producer-consumer/",

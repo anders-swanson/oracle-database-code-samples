@@ -3,7 +3,7 @@
     "slug": "java",
     "name": "Java",
     "title": "Java Samples for Oracle AI Database",
-    "description": "Java samples for JDBC, Spring Boot, messaging, search, JSON, graph, spatial, and test workflows on Oracle AI Database. Browse 48 runnable samples with linked source code.",
+    "description": "Java samples for JDBC, Spring Boot, messaging, search, JSON, graph, spatial, and test workflows on Oracle AI Database. Browse 49 runnable samples with linked source code.",
     "useWhen": "Use when JVM applications need real Oracle AI Database examples instead of pseudocode.",
     "sampleIds": [
       "txeventq-fraud-detection",
@@ -35,6 +35,7 @@
       "mcp-agent",
       "testcontainers",
       "txeventq-examples",
+      "microtx-java-sample",
       "ords-testcontainers",
       "sessionless-transactions",
       "ai-vector-search",
@@ -67,19 +68,20 @@
     ],
     "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/java/",
     "metaTitle": "Java Samples for Oracle AI Database | Oracle AI Database Code Samples",
-    "metaDescription": "Java samples for JDBC, Spring Boot, messaging, search, JSON, graph, spatial, and test workflows on Oracle AI Database. Browse 48 runnable samples with linked…",
-    "updatedAt": "2026-08-05T14:11:59.899Z"
+    "metaDescription": "Java samples for JDBC, Spring Boot, messaging, search, JSON, graph, spatial, and test workflows on Oracle AI Database. Browse 49 runnable samples with linked…",
+    "updatedAt": "2026-09-02T15:31:05.589Z"
   },
   {
     "slug": "python",
     "name": "Python",
     "title": "Python Samples for Oracle AI Database",
-    "description": "Python samples for database connectivity, full-text search, LangChain, MCP agents, and Testcontainers with Oracle AI Database. Browse 6 runnable samples with linked source code.",
+    "description": "Python samples for database connectivity, full-text search, LangChain, MCP agents, and Testcontainers with Oracle AI Database. Browse 7 runnable samples with linked source code.",
     "useWhen": "Use when Python tools or AI workflows need runnable database-backed examples.",
     "sampleIds": [
       "python-oracle--src--python_oracle--langchain_retrieval",
       "python-oracle--src--python_oracle--langchain",
       "python-oracle--src--python_oracle--database",
+      "python-oracle--src--python_oracle--transcript_hook",
       "python-oracle--src--python_oracle--full_text_search",
       "python-oracle--src--python_oracle--mcp_agent",
       "python-oracle--src--python_oracle--testcontainers_sample"
@@ -88,12 +90,13 @@
       "ai-agents",
       "semantic-search-rag",
       "json-documents-duality",
-      "local-testing"
+      "local-testing",
+      "observability"
     ],
     "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/python/",
     "metaTitle": "Python Samples for Oracle AI Database | Oracle AI Database Code Samples",
-    "metaDescription": "Python samples for database connectivity, full-text search, LangChain, MCP agents, and Testcontainers with Oracle AI Database. Browse 6 runnable samples with…",
-    "updatedAt": "2026-06-09T18:27:45.932Z"
+    "metaDescription": "Python samples for database connectivity, full-text search, LangChain, MCP agents, and Testcontainers with Oracle AI Database. Browse 7 runnable samples with…",
+    "updatedAt": "2026-09-17T20:04:27.055Z"
   },
   {
     "slug": "go",
@@ -118,7 +121,7 @@
     "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/go/",
     "metaTitle": "Go Samples for Oracle AI Database | Oracle AI Database Code Samples",
     "metaDescription": "Go samples for connecting services, tests, and database-backed workflows to Oracle AI Database. Browse 5 runnable samples with linked source code.",
-    "updatedAt": "2026-06-09T19:11:49.249Z"
+    "updatedAt": "2026-09-17T19:17:05.185Z"
   },
   {
     "slug": "script",
@@ -138,7 +141,7 @@
     "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/script/",
     "metaTitle": "Script Samples for Oracle AI Database | Oracle AI Database Code Samples",
     "metaDescription": "Script-oriented samples for local Oracle AI Database setup and command-line workflows. Browse 3 runnable samples with linked source code.",
-    "updatedAt": "2026-06-08T16:14:36.742Z"
+    "updatedAt": "2026-08-31T17:14:12.444Z"
   },
   {
     "slug": "typescript",
@@ -158,6 +161,6 @@
     "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/typescript/",
     "metaTitle": "TypeScript Samples for Oracle AI Database | Oracle AI Database Code Samples",
     "metaDescription": "TypeScript samples for Node.js applications, eventing, and test workflows backed by Oracle AI Database. Browse 3 runnable samples with linked source code.",
-    "updatedAt": "2026-06-08T16:14:36.885Z"
+    "updatedAt": "2026-08-31T17:14:12.443Z"
   }
 ]

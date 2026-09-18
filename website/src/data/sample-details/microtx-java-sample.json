@@ -1,0 +1,17 @@
+{
+  "id": "microtx-java-sample",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/microtx-java-sample/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "[MicroTx](https://www.oracle.com/database/transaction-manager-for-microservices/) is a durable workflow orchestration layer supporting agentic AI and distrubted transaction management, integrated with Oracle AI Database.",
+  "highlights": [
+    "[MicroTx docker-compose.yaml](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/microtx-java-sample/docker-compose.yaml): Runs the MicroTx coordinator, workflow server, console, and Oracle AI Database Free on one network."
+  ],
+  "features": [
+    "Spring"
+  ],
+  "sourceUpdatedAt": "2026-09-02T15:31:05.589Z",
+  "metaTitle": "Oracle Transaction Manager for Microservices (MicroTx) Sample | Oracle AI Database Code Samples",
+  "metaDescription": "Spring Boot service scaffold for Oracle Transaction Manager for Microservices.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/microtx-java-sample/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/microtx-java-sample.png"
+}

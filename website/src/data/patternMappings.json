@@ -129,6 +129,7 @@
         "python-oracle--src--python_oracle--langchain_retrieval",
         "python-oracle--src--python_oracle--langchain",
         "python-oracle--src--python_oracle--langgraph_persistence",
+        "python-oracle--src--python_oracle--transcript_hook",
         "python-oracle--src--python_oracle--mcp_agent"
       ]
     },
@@ -329,6 +330,7 @@
         "Observability"
       ],
       "sampleIds": [
+        "python-oracle--src--python_oracle--transcript_hook",
         "spring-boot-jms-tracing",
         "spring-boot-database-client-info",
         "spring-boot-jdbc-custom-tracer",

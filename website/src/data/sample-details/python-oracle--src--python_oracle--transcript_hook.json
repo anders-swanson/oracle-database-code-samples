@@ -1,0 +1,20 @@
+{
+  "id": "python-oracle--src--python_oracle--transcript_hook",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/python-oracle/src/python_oracle/transcript_hook/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This sample is a command hook that writes an agent's transcript to Oracle AI Database. It works directly with the [Codex `Stop` hook](https://learn.chatgpt.com/docs/hooks#stop) and can be adapted to other agents that provide a session identifier and transcript file path.",
+  "highlights": [
+    "Python 3.13+",
+    "uv",
+    "An Oracle AI Database user with permission to create a table and read and write its rows"
+  ],
+  "features": [
+    "AI Agents",
+    "Observability"
+  ],
+  "sourceUpdatedAt": "2026-09-17T20:04:27.055Z",
+  "metaTitle": "Persist Agent Transcripts in Oracle AI Database | Oracle AI Database Code Samples",
+  "metaDescription": "Python agent hook that persists complete Codex session transcripts in Oracle AI Database.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--transcript_hook/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/python-oracle--src--python_oracle--transcript_hook.png"
+}

@@ -5,7 +5,7 @@
   "readmeExcerpt": "This folder contains a LangChain-based vector-search sample for Oracle AI Database. It uses `langchain-oracledb` with `OpenAIEmbeddings` to persist sample texts into Oracle AI Database and then runs a similarity search with `OracleVS`.",
   "highlights": [
     "Python 3.13+",
-    "Poetry",
+    "uv",
     "Docker compatible environment",
     "OPENAI_API_KEY set in your environment, or available for interactive prompt entry"
   ],
@@ -13,7 +13,7 @@
     "Vector Search",
     "AI Agents"
   ],
-  "sourceUpdatedAt": "2026-06-09T18:08:10.865Z",
+  "sourceUpdatedAt": "2026-09-17T19:17:05.185Z",
   "metaTitle": "LangChain Vector Search Sample | Oracle AI Database Code Samples",
   "metaDescription": "LangChain-based Python vector search sample for Oracle AI Database.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/python-oracle--src--python_oracle--langchain/",

@@ -14,7 +14,7 @@
     "Testcontainers",
     "Kafka"
   ],
-  "sourceUpdatedAt": "2026-04-21T17:09:34.219Z",
+  "sourceUpdatedAt": "2026-08-27T19:48:29.152Z",
   "metaTitle": "JSON Event Streaming with OKafka and OSON | Oracle AI Database Code Samples",
   "metaDescription": "OKafka sample that streams OSON payloads through Oracle AI Database TxEventQ topics.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/json--json-event-streaming/",

@@ -15,7 +15,7 @@ blog_post: "https://andersswanson.dev/2026/04/07/test-ords-locally-with-testcont
 
 This module demonstrates how to run Oracle REST Data Services (ORDS) with Testcontainers against an Oracle AI Database Free container.
 
-The sample mirrors the [ords-docker-compose](../ords-docker-compose/README.md) module, but replaces Docker Compose with a custom Java `GenericContainer` implementation that can be reused in integration tests.
+The sample mirrors the [ords-docker-compose](../ords-docker-compose/README.md) module, but replaces Docker Compose with the Oracle AI Database Spring Boot Testcontainers support that can be reused in integration tests.
 
 ![container diagram](test-orchestration.svg)
 
@@ -40,7 +40,7 @@ mvn test
 
 - Starting an Oracle AI Database Free container on a shared Docker network
 - Bootstrapping an `ordsuser/ordsuserpwd` schema with a sysdba SQL script
-- Starting an ORDS container with a custom `OrdsContainer`
+- Starting an ORDS container with the starter-provided `OrdsContainer`
 - Waiting for ORDS to become reachable over HTTP
 - Enabling the test schema for ORDS before container startup completes
 - Validating MongoDB Java client CRUD compatibility through the ORDS MongoDB API

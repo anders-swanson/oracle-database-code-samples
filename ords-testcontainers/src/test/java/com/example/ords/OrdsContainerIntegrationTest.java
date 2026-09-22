@@ -28,6 +28,8 @@ import javax.net.ssl.X509TrustManager;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.oracle.spring.testcontainers.OracleContainer;
+import com.oracle.spring.testcontainers.OrdsContainer;
 import tools.jackson.databind.ObjectMapper;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -44,17 +46,15 @@ import org.bson.Document;
 import org.testcontainers.containers.Container;
 import org.testcontainers.containers.Network;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.oracle.OracleContainer;
 import org.testcontainers.utility.MountableFile;
 
 @Testcontainers(disabledWithoutDocker = true)
 class OrdsContainerIntegrationTest {
-    private static final String DATABASE_IMAGE = "gvenzl/oracle-free:23.26.3-slim-faststart";
+    private static final String DATABASE_IMAGE = OracleContainer.IMAGE_NAME + ":latest";
     private static final String DATABASE_ALIAS = "ordsdb";
-    private static final String ADMIN_PASSWORD = "Welcome12345";
-    private static final String ORDS_USER_PASSWORD = "OrdsUser12345";
-    private static final String DATABASE_CONNECTION = "jdbc:oracle:thin:@ordsdb:1521/freepdb1";
-    private static final String SCHEMA_CONNECTION = "ordsdb:1521/freepdb1";
+    private static final String ADMIN_PASSWORD = OracleContainer.DEFAULT_PASSWORD;
+    private static final String DATABASE_CONNECTION = "jdbc:oracle:thin:@ordsdb:1521/FREEPDB1";
+    private static final String SCHEMA_CONNECTION = "ordsdb:1521/FREEPDB1";
     private static final String ORDS_INIT_SCRIPT = "/tmp/ords_init.sql";
     private static final String DB_API_ADMIN_USERNAME = "ordsuser";
     private static final String DB_API_ADMIN_PASSWORD = "ordsuserpwd";
@@ -71,8 +71,6 @@ class OrdsContainerIntegrationTest {
     private static final Network NETWORK = Network.newNetwork();
 
     private static final OracleContainer oracleContainer = new OracleContainer(DATABASE_IMAGE)
-            .withStartupTimeout(Duration.ofMinutes(5))
-            .withPassword(ADMIN_PASSWORD)
             .withNetwork(NETWORK)
             .withNetworkAliases(DATABASE_ALIAS);
 
@@ -80,7 +78,6 @@ class OrdsContainerIntegrationTest {
             .withNetwork(NETWORK)
             .withDatabaseConnectionString(DATABASE_CONNECTION)
             .withOraclePassword(ADMIN_PASSWORD)
-            .withOracleUserPassword(ORDS_USER_PASSWORD)
             .withSchema(DB_API_ADMIN_USERNAME, DB_API_ADMIN_PASSWORD, SCHEMA_CONNECTION)
             .withSchema(MONGO_USERNAME, MONGO_PASSWORD, SCHEMA_CONNECTION);
 

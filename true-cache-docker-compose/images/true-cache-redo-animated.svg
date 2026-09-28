@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Writes on the primary, reads from True Cache</title>
+  <desc id="desc">Writes enter the Oracle AI Database primary. Committed changes travel by redo apply to an in-memory True Cache replica, which serves read traffic. Moving dots emphasize the paths.</desc>
+  <defs>
+    <marker id="tealArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M1 1 8 5 1 9" fill="none" stroke="#69e1d2" stroke-width="2"/></marker>
+    <marker id="goldArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M1 1 8 5 1 9" fill="none" stroke="#f4bf69" stroke-width="2"/></marker>
+    <style>
+      @keyframes redoFlow { from { transform: translateX(0); opacity: 0; } 15%,85% { opacity: 1; } to { transform: translateX(215px); opacity: 0; } }
+      @keyframes writeFlow { from { transform: translateY(0); opacity: 0; } 15%,85% { opacity: 1; } to { transform: translateY(100px); opacity: 0; } }
+      @keyframes readFlow { from { transform: translateY(0); opacity: 0; } 15%,85% { opacity: 1; } to { transform: translateY(100px); opacity: 0; } }
+      .redo-dot { animation: redoFlow 3s ease-in-out infinite; }
+      .write-dot { animation: writeFlow 3s ease-in-out infinite; }
+      .read-dot { animation: readFlow 3s ease-in-out infinite; }
+      @media (prefers-reduced-motion: reduce) { .redo-dot, .write-dot, .read-dot { animation: none; opacity: 0; } }
+    </style>
+  </defs>
+  <rect width="800" height="600" fill="#101724"/>
+  <rect x="40" y="42" width="720" height="516" rx="30" fill="#172231" stroke="#334858" stroke-width="2"/>
+  <text x="70" y="95" font-family="Arial, Helvetica, sans-serif" font-size="35" font-weight="700" fill="#f5f6f4">How True Cache stays current</text>
+  <text x="70" y="131" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400" fill="#b8c8d2">Writes land on the primary. The cache serves reads.</text>
+  <path d="M233 188 V265" fill="none" stroke="#f4bf69" stroke-width="4" marker-end="url(#goldArrow)"/>
+  <path d="M343 363 H549" fill="none" stroke="#69e1d2" stroke-width="5" marker-end="url(#tealArrow)"/>
+  <path d="M640 188 V265" fill="none" stroke="#f4bf69" stroke-width="4" marker-end="url(#goldArrow)"/>
+  <circle class="write-dot" cx="233" cy="183" r="7" fill="#ffe4a6" opacity="0"/>
+  <circle class="redo-dot" cx="343" cy="363" r="8" fill="#9af3e8" opacity="0"/>
+  <circle class="read-dot" cx="640" cy="183" r="7" fill="#ffe4a6" opacity="0"/>
+  <text x="233" y="179" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" fill="#f4bf69">WRITE</text>
+  <text x="446" y="345" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#a1f0e5">redo apply</text>
+  <text x="640" y="179" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" fill="#f4bf69">READ</text>
+  <g data-role="illustration">
+    <rect x="105" y="281" width="238" height="202" rx="25" fill="#263346" stroke="#6b7d8a" stroke-width="2"/>
+    <ellipse cx="224" cy="325" rx="56" ry="19" fill="#f0b78a"/>
+    <path d="M168 325v54c0 11 25 20 56 20s56-9 56-20v-54" fill="#c76555"/>
+    <ellipse cx="224" cy="379" rx="56" ry="20" fill="#e08168"/>
+    <text x="224" y="445" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#f5f6f4">Oracle AI Database</text>
+    <rect x="550" y="281" width="179" height="202" rx="25" fill="#1c3b49" stroke="#69e1d2" stroke-width="2"/>
+    <ellipse cx="640" cy="325" rx="52" ry="18" fill="#78e8d9"/>
+    <path d="M588 325v54c0 11 23 20 52 20s52-9 52-20v-54" fill="#269eab"/>
+    <ellipse cx="640" cy="379" rx="52" ry="20" fill="#45c4c1"/>
+    <text x="640" y="445" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#f5f6f4">True Cache</text>
+  </g>
+  <text x="78" y="527" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" fill="#a8bac6">In-memory replica · read-only</text>
+</svg>

@@ -1,8 +1,7 @@
 package com.example.okafkamemory;
 
 import com.example.okafkamemory.candidate.CandidatePreparationService;
-import com.example.okafkamemory.candidate.CandidateWork;
-import com.example.okafkamemory.candidate.CandidateWorkRepository;
+import com.example.okafkamemory.memory.Memory;
 import com.example.okafkamemory.embedding.MemoryEmbeddingService;
 import com.example.okafkamemory.memory.JdbcMemoryRepository;
 import oracle.sql.VECTOR;
@@ -86,7 +85,7 @@ class MemoryFlowTest {
     @Autowired IntakeService intake;
     private TranscriptRepository transcripts;
     @Autowired CandidatePreparationService preparation;
-    private CandidateWorkRepository candidates;
+    private JdbcMemoryRepository memories;
     @Autowired MemoryEmbeddingService embeddings;
     @Autowired MemorySearchService search;
     @Autowired JdbcClient jdbc;
@@ -95,7 +94,7 @@ class MemoryFlowTest {
     @BeforeEach
     void repositories() {
         transcripts = new JdbcTranscriptRepository(jdbc);
-        candidates = new CandidateWorkRepository(jdbc);
+        memories = new JdbcMemoryRepository(jdbc);
     }
 
     @Test
@@ -153,7 +152,7 @@ class MemoryFlowTest {
                     WHERE table_name = 'TRANSCRIPTS' AND column_name = 'EVENT_PAYLOAD'
                     """).query(String.class).single()).isEqualTo("JSON");
             assertThat(prepare(event.sourceEventId())).singleElement()
-                    .satisfies(candidate -> assertThat(candidate.evidence()).isEqualTo(evidence));
+                    .satisfies(memory -> assertThat(memory.evidence()).isEqualTo(evidence));
         }
     }
 
@@ -199,23 +198,23 @@ class MemoryFlowTest {
                 Map.of("role", "user", "text", "remember first fact"),
                 Map.of("role", "user", "text", "remember second fact"),
                 Map.of("role", "user", "text", "remember my password is hunter2"))), true));
-        List<CandidateWork> found = prepare(multiId);
+        List<Memory> found = prepare(multiId);
         assertThat(found).hasSize(2);
-        assertThat(found).extracting(CandidateWork::candidateText)
+        assertThat(found).extracting(Memory::memoryText)
                 .containsExactlyInAnyOrder("first fact", "second fact");
-        assertThat(candidates.findCandidates(multiId)).hasSize(2);
+        assertThat(memories.findByTranscript(transcripts.findBySourceEventId(multiId).orElseThrow().transcriptId())).hasSize(2);
     }
 
     @Test
-    void onlyCandidatesAboveConfiguredJudgeThresholdArePersisted() {
+    void onlyMemoriesAboveConfiguredJudgeThresholdArePersisted() {
         UUID source = UUID.randomUUID();
         process(new IncomingEvent(source, "user:demo", Map.of("messages", List.of(
                 Map.of("role", "user", "text", "remember threshold fact"),
                 Map.of("role", "user", "text", "remember above threshold fact"),
                 Map.of("role", "user", "text", "remember maybe I like tea"))), true));
-        assertThat(prepare(source)).singleElement().satisfies(candidate -> {
-            assertThat(candidate.candidateText()).isEqualTo("above threshold fact");
-            assertThat(candidate.judgeScore()).isEqualTo(81);
+        assertThat(prepare(source)).singleElement().satisfies(memory -> {
+            assertThat(memory.memoryText()).isEqualTo("above threshold fact");
+            assertThat(memory.judgeScore()).isEqualTo(81);
         });
 
         UUID rejected = UUID.randomUUID();
@@ -231,13 +230,13 @@ class MemoryFlowTest {
         process(new IncomingEvent(source, "user:demo", Map.of("message", "remember invalid judge output"), true));
         assertThatThrownBy(() -> prepare(source)).hasRootCauseMessage(
                 "Candidate judge must return an integer score between 0 and 100");
-        assertThat(candidates.findCandidates(source)).isEmpty();
+        assertThat(memories.findByTranscript(transcripts.findBySourceEventId(source).orElseThrow().transcriptId())).isEmpty();
         assertThat(jdbc.sql("SELECT preparation_status FROM transcripts WHERE source_event_id = ?")
                 .param(UuidBytes.encode(source)).query(String.class).single()).isEqualTo("READY");
     }
 
     @Test
-    void preparationRollsBackCandidateMemoryAndHandoffTogether() {
+    void preparationRollsBackMemoryAndHandoffTogether() {
         UUID source = UUID.randomUUID();
         var transcript = process(new IncomingEvent(source, "user:demo",
                 Map.of("message", "remember atomic preparation"), true));
@@ -247,10 +246,7 @@ class MemoryFlowTest {
             }, "embeddings");
             return null;
         })).hasRootCauseMessage("simulated embedding handoff failure");
-        assertThat(candidates.findCandidates(source)).isEmpty();
-        assertThat(jdbc.sql("SELECT COUNT(*) FROM event_memories m JOIN candidate_work c "
-                + "ON c.candidate_id = m.candidate_id WHERE c.transcript_id = ?")
-                .param(transcript.transcriptId()).query(Integer.class).single()).isZero();
+        assertThat(memories.findByTranscript(transcripts.findBySourceEventId(source).orElseThrow().transcriptId())).isEmpty();
         assertThat(jdbc.sql("SELECT preparation_status FROM transcripts WHERE transcript_id = ?")
                 .param(transcript.transcriptId()).query(String.class).single()).isEqualTo("READY");
 
@@ -262,26 +258,29 @@ class MemoryFlowTest {
                 return null;
             });
         }
-        assertThat(candidates.findCandidates(source)).hasSize(1);
-        assertThat(jdbc.sql("SELECT COUNT(*) FROM event_memories m JOIN candidate_work c "
-                + "ON c.candidate_id = m.candidate_id WHERE c.transcript_id = ?")
-                .param(transcript.transcriptId()).query(Integer.class).single()).isEqualTo(1);
-        assertThat(published).singleElement()
-                .isInstanceOf(com.example.okafkamemory.events.MemoryReadyForEmbedding.class);
+        var stored = memories.findByTranscript(transcript.transcriptId());
+        assertThat(stored).singleElement().satisfies(memory -> {
+            assertThat(memory.transcriptId()).isEqualTo(transcript.transcriptId());
+            assertThat(memory.evidence()).isEqualTo("remember atomic preparation");
+            assertThat(memory.judgeScore()).isEqualTo(90);
+        });
+        assertThat(published).singleElement().isInstanceOfSatisfying(
+                com.example.okafkamemory.events.MemoryReadyForEmbedding.class,
+                event -> assertThat(event.memoryId()).isEqualTo(stored.getFirst().memoryId()));
     }
 
     @Test
-    void admittedCandidatesReachSearch() throws Exception {
-        CandidateWork promoted = candidate("user:demo", "remember I prefer dark mode");
+    void admittedMemoriesReachSearch() throws Exception {
+        Memory memory = memory("user:demo", "remember I prefer dark mode");
         assertThat(search.search(new MemorySearchRequest("dark mode", 5)))
                 .noneMatch(hit -> hit.memoryText().equals("I prefer dark mode"));
         assertThat(jdbc.sql("""
-                SELECT VSIZE(m.id) FROM event_memories m WHERE m.candidate_id = ?
-                """).param(UuidBytes.encode(promoted.candidateId()))
+                SELECT VSIZE(m.id) FROM event_memories m WHERE m.id = ?
+                """).param(UuidBytes.encode(memory.memoryId()))
                 .query(Integer.class).single()).isEqualTo(16);
 
-        embed(promoted.candidateId());
-        assertThat(hasEmbedding(promoted)).isTrue();
+        embed(memory.memoryId());
+        assertThat(hasEmbedding(memory)).isTrue();
         assertThat(search.search(new MemorySearchRequest("dark mode", 5)))
                 .anySatisfy(hit -> {
                     assertThat(hit.memoryText()).isEqualTo("I prefer dark mode");
@@ -302,80 +301,80 @@ class MemoryFlowTest {
 
     @Test
     void embeddingUpdateCanReplaceAnExistingVector() {
-        CandidateWork candidate = candidate("user:demo", "remember replaceable embedding");
-        embed(candidate.candidateId());
+        Memory memory = memory("user:demo", "remember replaceable embedding");
+        embed(memory.memoryId());
         float[] replacement = {0.25f, 0.5f, 0.75f};
         transaction(connection -> {
-            JdbcMemoryRepository.from(connection).updateEmbedding(candidate.candidateId(), replacement);
+            JdbcMemoryRepository.from(connection).updateEmbedding(memory.memoryId(), replacement);
             return null;
         });
-        assertThat(jdbc.sql("SELECT embedding FROM event_memories WHERE candidate_id = ?")
-                .param(UuidBytes.encode(candidate.candidateId()))
+        assertThat(jdbc.sql("SELECT embedding FROM event_memories WHERE id = ?")
+                .param(UuidBytes.encode(memory.memoryId()))
                 .query((rs, row) -> rs.getObject("embedding", VECTOR.class).toFloatArray()).single())
                 .containsExactly(replacement);
-        // The service can re-embed an existing vector too; it does not rely on candidate status.
-        embed(candidate.candidateId());
-        assertThat(jdbc.sql("SELECT VECTOR_DIMENSION_COUNT(embedding) FROM event_memories WHERE candidate_id = ?")
-                .param(UuidBytes.encode(candidate.candidateId())).query(Integer.class).single())
+        // The service can re-embed an existing vector too; it does not rely on memory status.
+        embed(memory.memoryId());
+        assertThat(jdbc.sql("SELECT VECTOR_DIMENSION_COUNT(embedding) FROM event_memories WHERE id = ?")
+                .param(UuidBytes.encode(memory.memoryId())).query(Integer.class).single())
                 .isEqualTo(1536);
     }
 
     @Test
     void failedEmbeddingRollsBackAndCanBeRetried() {
-        CandidateWork failed = candidate("user:demo", "remember retryable memory");
-        CandidateWork other = candidate("user:demo", "remember independent memory");
-        String hex = failed.candidateId().toString().replace("-", "");
+        Memory failed = memory("user:demo", "remember retryable memory");
+        Memory other = memory("user:demo", "remember independent memory");
+        String hex = failed.memoryId().toString().replace("-", "");
         jdbc.sql("""
                 CREATE OR REPLACE TRIGGER fail_one_embedding
                 BEFORE UPDATE OF embedding ON event_memories FOR EACH ROW
                 BEGIN
-                    IF :NEW.candidate_id = HEXTORAW('%s') THEN
+                    IF :NEW.id = HEXTORAW('%s') THEN
                         RAISE_APPLICATION_ERROR(-20003, 'simulated embedding failure');
                     END IF;
                 END;
                 """.formatted(hex)).update();
         try {
-            assertThatThrownBy(() -> embed(failed.candidateId())).isInstanceOf(RuntimeException.class);
+            assertThatThrownBy(() -> embed(failed.memoryId())).isInstanceOf(RuntimeException.class);
             assertThat(hasEmbedding(failed)).isFalse();
-            embed(other.candidateId());
+            embed(other.memoryId());
             assertThat(hasEmbedding(other)).isTrue();
         } finally {
             jdbc.sql("DROP TRIGGER fail_one_embedding").update();
         }
-        embed(failed.candidateId());
+        embed(failed.memoryId());
         assertThat(hasEmbedding(failed)).isTrue();
     }
 
     @Test
     void searchExcludesOtherOwnersExpiredAndInactive() {
-        CandidateWork foreign = completed("user:other", "dark mode foreign");
-        CandidateWork expired = completed("user:demo", "dark mode expired");
-        CandidateWork inactive = completed("user:demo", "dark mode inactive");
-        jdbc.sql("UPDATE event_memories SET expires_at = SYSTIMESTAMP - INTERVAL '1' DAY WHERE candidate_id = ?")
-                .param(UuidBytes.encode(expired.candidateId())).update();
-        jdbc.sql("UPDATE event_memories SET status = 'inactive' WHERE candidate_id = ?")
-                .param(UuidBytes.encode(inactive.candidateId())).update();
+        Memory foreign = embeddedMemory("user:other", "dark mode foreign");
+        Memory expired = embeddedMemory("user:demo", "dark mode expired");
+        Memory inactive = embeddedMemory("user:demo", "dark mode inactive");
+        jdbc.sql("UPDATE event_memories SET expires_at = SYSTIMESTAMP - INTERVAL '1' DAY WHERE id = ?")
+                .param(UuidBytes.encode(expired.memoryId())).update();
+        jdbc.sql("UPDATE event_memories SET status = 'inactive' WHERE id = ?")
+                .param(UuidBytes.encode(inactive.memoryId())).update();
         var hits = search.search(new MemorySearchRequest("dark mode", 50));
         assertThat(hits).noneMatch(hit -> hit.memoryText().contains("foreign")
                 || hit.memoryText().contains("expired") || hit.memoryText().contains("inactive"));
         assertThat(hasEmbedding(foreign)).isTrue();
     }
 
-    private CandidateWork completed(String owner, String text) {
-        CandidateWork candidate = candidate(owner, "remember " + text);
-        embed(candidate.candidateId());
-        return candidate;
+    private Memory embeddedMemory(String owner, String text) {
+        Memory memory = memory(owner, "remember " + text);
+        embed(memory.memoryId());
+        return memory;
     }
 
-    private CandidateWork candidate(String owner, String message) {
+    private Memory memory(String owner, String message) {
         UUID source = UUID.randomUUID();
         process(new IncomingEvent(source, owner, Map.of("message", message), true));
         return prepare(source).getFirst();
     }
 
-    private boolean hasEmbedding(CandidateWork candidate) {
-        return jdbc.sql("SELECT COUNT(*) FROM event_memories WHERE candidate_id = ? AND embedding IS NOT NULL")
-                .param(UuidBytes.encode(candidate.candidateId())).query(Integer.class).single() == 1;
+    private boolean hasEmbedding(Memory memory) {
+        return jdbc.sql("SELECT COUNT(*) FROM event_memories WHERE id = ? AND embedding IS NOT NULL")
+                .param(UuidBytes.encode(memory.memoryId())).query(Integer.class).single() == 1;
     }
 
     private Transcript process(IncomingEvent event) {
@@ -386,13 +385,13 @@ class MemoryFlowTest {
         return transcripts.findBySourceEventId(event.sourceEventId()).orElse(null);
     }
 
-    private List<CandidateWork> prepare(UUID sourceEventId) {
+    private List<Memory> prepare(UUID sourceEventId) {
         long id = transcripts.findBySourceEventId(sourceEventId).orElseThrow().transcriptId();
         transaction(connection -> {
             preparation.process(connection, id, (topic, key, value) -> {}, "embeddings");
             return null;
         });
-        return candidates.findCandidates(sourceEventId);
+        return memories.findByTranscript(id);
     }
 
     private void embed(UUID id) {

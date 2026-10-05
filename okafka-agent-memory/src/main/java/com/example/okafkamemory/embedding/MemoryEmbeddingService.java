@@ -19,14 +19,14 @@ public class MemoryEmbeddingService {
         this.dimensions = dimensions;
     }
 
-    public void embed(Connection connection, UUID candidateId) {
+    public void embed(Connection connection, UUID memoryId) {
         var memories = JdbcMemoryRepository.from(connection);
-        memories.findText(candidateId).ifPresent(text -> {
+        memories.findText(memoryId).ifPresent(text -> {
             float[] vector = model.embed(text);
             if (vector == null || vector.length != dimensions) {
                 throw new IllegalStateException("Embedding dimension must be " + dimensions);
             }
-            memories.updateEmbedding(candidateId, vector);
+            memories.updateEmbedding(memoryId, vector);
         });
     }
 }

@@ -2,7 +2,6 @@ package com.example.okafkamemory.memory;
 
 import com.example.okafkamemory.UuidBytes;
 import com.example.okafkamemory.persistence.SingleConnectionJdbcClientFactory;
-import com.example.okafkamemory.candidate.CandidateWork;
 import oracle.jdbc.OracleType;
 import oracle.sql.VECTOR;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -10,6 +9,7 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,34 +25,45 @@ public class JdbcMemoryRepository {
         this.jdbc = jdbc;
     }
 
-    /** Stored in the preparation transaction alongside the admitted candidate. */
-    public void store(CandidateWork candidate, MemoryId memoryId) {
+    public void store(Memory memory) {
         jdbc.sql("""
-                INSERT INTO event_memories (id, candidate_id, owner_scope, memory_text)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO event_memories (id, transcript_id, owner_scope, evidence, memory_text, judge_score)
+                VALUES (?, ?, ?, ?, ?, ?)
                 """)
-                .param(1, memoryId.toBytes())
-                .param(2, UuidBytes.encode(candidate.candidateId()))
-                .param(3, candidate.ownerScope())
-                .param(4, candidate.candidateText(), Types.CLOB)
+                .param(1, UuidBytes.encode(memory.memoryId()))
+                .param(2, memory.transcriptId())
+                .param(3, memory.ownerScope())
+                .param(4, memory.evidence(), Types.CLOB)
+                .param(5, memory.memoryText(), Types.CLOB)
+                .param(6, memory.judgeScore())
                 .update();
     }
 
-    public Optional<String> findText(UUID candidateId) {
-        return jdbc.sql("SELECT memory_text FROM event_memories WHERE candidate_id = ?")
-                .param(UuidBytes.encode(candidateId)).query(String.class).optional();
+    public List<Memory> findByTranscript(long transcriptId) {
+        return jdbc.sql("""
+                SELECT id, transcript_id, owner_scope, evidence, memory_text, judge_score
+                FROM event_memories WHERE transcript_id = ? ORDER BY id
+                """).param(transcriptId).query((rs, row) -> new Memory(
+                        UuidBytes.decode(rs.getBytes("id")), rs.getLong("transcript_id"),
+                        rs.getString("owner_scope"), rs.getString("evidence"),
+                        rs.getString("memory_text"), rs.getInt("judge_score"))).list();
     }
 
-    public void updateEmbedding(UUID candidateId, float[] embedding) {
+    public Optional<String> findText(UUID memoryId) {
+        return jdbc.sql("SELECT memory_text FROM event_memories WHERE id = ?")
+                .param(UuidBytes.encode(memoryId)).query(String.class).optional();
+    }
+
+    public void updateEmbedding(UUID memoryId, float[] embedding) {
         final VECTOR vector;
         try {
             vector = VECTOR.ofFloat32Values(embedding);
         } catch (SQLException invalidVector) {
             throw new IllegalArgumentException("Invalid embedding", invalidVector);
         }
-        jdbc.sql("UPDATE event_memories SET embedding = ? WHERE candidate_id = ?")
+        jdbc.sql("UPDATE event_memories SET embedding = ? WHERE id = ?")
                 .param(1, vector, OracleType.VECTOR.getVendorTypeNumber())
-                .param(2, UuidBytes.encode(candidateId))
+                .param(2, UuidBytes.encode(memoryId))
                 .update();
     }
 }

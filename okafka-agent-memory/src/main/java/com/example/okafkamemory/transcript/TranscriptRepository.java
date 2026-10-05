@@ -15,4 +15,7 @@ public interface TranscriptRepository {
 
     Optional<Transcript> findReady(long transcriptId);
 
+    /** Returns false if another preparation already completed this transcript. */
+    boolean completePreparation(long transcriptId, boolean hasMemories);
+
 }

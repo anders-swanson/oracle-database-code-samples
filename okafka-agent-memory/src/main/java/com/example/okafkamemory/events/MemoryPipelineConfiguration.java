@@ -59,8 +59,8 @@ public class MemoryPipelineConfiguration {
             @Qualifier("intakeOkafkaProperties") Properties properties) {
         return new TransactionalEventConsumer<>(topics.embeddings(), consumer(properties, topics.embeddings(), MemoryReadyForEmbedding.class),
                 properties, (connection, record, publisher) -> {
-                    requireKey(record.key(), record.value().candidateId().toString());
-                    embeddings.embed(connection, record.value().candidateId());
+                    requireKey(record.key(), record.value().memoryId().toString());
+                    embeddings.embed(connection, record.value().memoryId());
                 });
     }
 

@@ -18,7 +18,7 @@ services:
       test:
         - CMD-SHELL
         - >-
-          printf 'WHENEVER SQLERROR EXIT FAILURE\nSELECT t.preparation_status, m.candidate_id FROM transcripts t, event_memories m WHERE 1 = 0;\nEXIT;\n'
+          printf 'WHENEVER SQLERROR EXIT FAILURE\nSELECT t.preparation_status, m.transcript_id, m.evidence, m.judge_score FROM transcripts t, event_memories m WHERE 1 = 0;\nEXIT;\n'
           | sqlplus -L -s 'TESTUSER/Welcome123#@//localhost:1521/FREEPDB1' > /dev/null
       interval: 10s
       timeout: 10s

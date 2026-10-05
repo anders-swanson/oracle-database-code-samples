@@ -95,4 +95,12 @@ public class JdbcTranscriptRepository implements TranscriptRepository {
                 .param(transcriptId).query(TRANSCRIPT_ROW_MAPPER).optional();
     }
 
+    @Override
+    public boolean completePreparation(long transcriptId, boolean hasMemories) {
+        return jdbcClient.sql("""
+                UPDATE transcripts SET preparation_status = ?
+                WHERE transcript_id = ? AND preparation_status = 'READY'
+                """).param(hasMemories ? "DONE" : "NO_MEMORY").param(transcriptId).update() == 1;
+    }
+
 }

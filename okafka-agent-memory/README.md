@@ -49,24 +49,23 @@ Each stage has an OKafka consumer and publishes the next event after completing 
 | Topic | Event | Consumer action |
 | --- | --- | --- |
 | `MEMORY_INCOMING` | `IncomingEvent` with the transcript payload | Log a warning and drop events that fail prerequisites. Store accepted transcripts once per source ID and publish `TranscriptReady` only for new rows. |
-| `MEMORY_TRANSCRIPTS` | `TranscriptReady(transcriptId)` | Use OCI to extract facts and judge each against the source transcript. Persist admitted candidates and their memory rows together, then publish one `MemoryReadyForEmbedding` per memory. |
-| `MEMORY_EMBEDDINGS` | `MemoryReadyForEmbedding(candidateId)` | Use OCI to embed the stored memory text, save or replace its vector. |
+| `MEMORY_TRANSCRIPTS` | `TranscriptReady(transcriptId)` | Use OCI to extract facts and judge each against the source transcript. Persist admitted memories with evidence, judge scores, and transcript provenance, then publish one `MemoryReadyForEmbedding` per memory. |
+| `MEMORY_EMBEDDINGS` | `MemoryReadyForEmbedding(memoryId)` | Use OCI to embed the stored memory text, save or replace its vector. |
 
 Internal events carry IDs; consumers load the corresponding rows. No worker scans SQL tables for ready work. Configure the incoming topic with `memory.intake.topic` and the other topics with `memory.events.*`. Each topic has one partition in this lab and a consumer group named `<topic>_PROCESSOR`.
 
 Each stage creates a transactional producer on `consumer.getDBConnection()`. The same connection backs its `JdbcClient`. One `producer.commitTransaction()` atomically commits consumption of the input, database changes, and all next-stage events. `abortTransaction()` rolls them all back together. This is exactly-once processing of the database and queue effects at each stage. OCI calls can repeat after rollback; they are outside the database's atomic guarantee.
 
-Each repository has a `from(Connection)` factory, for example `JdbcTranscriptRepository.from(connection)` or `CandidateWorkRepository.from(connection)`. These factories use the caller's connection without committing, rolling back, or closing it. The `JdbcClient` constructors also remain available for pooled access, including the search API.
+Each repository has a `from(Connection)` factory, for example `JdbcTranscriptRepository.from(connection)` or `JdbcMemoryRepository.from(connection)`. These factories use the caller's connection without committing, rolling back, or closing it. The `JdbcClient` constructors also remain available for pooled access, including the search API.
 
 A failed stage event is rolled back and retried after a one-second pause. Other stages keep running, but a repeatedly failing event can block later events on its stage's partition. This example has no dead-letter or human-review workflow.
 
-## Inspect the three durable tables
+## Inspect the two durable tables
 
 | Table | What to look for |
 | --- | --- |
 | `transcripts` | The accepted JSON payload, numeric ID, and `READY`, `DONE`, or `NO_MEMORY` preparation state. |
-| `candidate_work` | Each admitted fact, its evidence, its `judge_score`, and its transcript provenance. |
-| `event_memories` | Immutable promoted text and its vector. A null vector is durable but excluded from search. |
+| `event_memories` | Admitted text, transcript provenance, evidence, judge score, and vector. A null vector is durable but excluded from search. |
 
 Inspect them with SQL*Plus in the database container. Use `RAWTOHEX(source_event_id)` to inspect the UUID as 32 hexadecimal characters without hyphens:
 
@@ -76,12 +75,11 @@ docker compose exec oracle-free sqlplus 'TESTUSER/Welcome123#@//localhost:1521/F
 
 ```sql
 SELECT transcript_id, RAWTOHEX(source_event_id) AS source_event_id, preparation_status FROM transcripts;
-SELECT RAWTOHEX(candidate_id), transcript_id, judge_score FROM candidate_work;
-SELECT RAWTOHEX(id), owner_scope, memory_text, VECTOR_DIMENSION_COUNT(embedding) AS dimensions FROM event_memories;
+SELECT RAWTOHEX(id), transcript_id, owner_scope, memory_text, judge_score, VECTOR_DIMENSION_COUNT(embedding) AS dimensions FROM event_memories;
 EXIT;
 ```
 
-The three tables retain provenance and processing state; the topics deliver the work. Preparation stores admitted candidates and their memory rows in the same transaction. Embedding readiness is represented only by the memory's vector: search excludes null vectors. The embedding stage updates the memory directly by its unique candidate ID and can replace an existing vector. Extraction and judging use separate calls to the configured Spring AI `ChatModel`. The judge scores each candidate from 0 to 100 using the source transcript, supporting evidence, attribution, durability, usefulness, and sensitivity. It replaces exact evidence matching, keyword secret filtering, and prefix-based curation. This is a model judgment, not a guaranteed secret detector.
+The two tables retain provenance and processing state; the topics deliver the work. Preparation stores admitted memories and their embedding handoffs in the same transaction. Embedding readiness is represented only by the memory's vector: search excludes null vectors. The embedding stage updates the memory directly by its memory ID and can replace an existing vector. Extraction and judging use separate calls to the configured Spring AI `ChatModel`. The judge scores each candidate from 0 to 100 using the source transcript, supporting evidence, attribution, durability, usefulness, and sensitivity. It replaces exact evidence matching, keyword secret filtering, and prefix-based curation. This is a model judgment, not a guaranteed secret detector.
 
 Configure admission in `application.yml`:
 
@@ -91,9 +89,9 @@ memory:
     score-threshold: 70
 ```
 
-Only scores **strictly greater** than the threshold are persisted; a score of 70 is rejected at the default setting, and 71 is admitted. The threshold must be between 0 and 100. Admitted candidates retain their score in `candidate_work.judge_score`. Low-scoring candidates are discarded; when none pass, the transcript becomes `NO_MEMORY`. Missing, malformed, fractional, or out-of-range judge scores fail preparation and leave its event eligible for retry. The embedding consumer uses the separate Spring AI `EmbeddingModel` to generate retrieval vectors.
+Only scores **strictly greater** than the threshold are persisted; a score of 70 is rejected at the default setting, and 71 is admitted. The threshold must be between 0 and 100. Admitted memories retain their score in `event_memories.judge_score`. Low-scoring candidates are discarded; when none pass, the transcript becomes `NO_MEMORY`. Missing, malformed, fractional, or out-of-range judge scores fail preparation and leave its event eligible for retry. The embedding consumer uses the separate Spring AI `EmbeddingModel` to generate retrieval vectors.
 
-The former `MEMORY_CANDIDATES` topic is no longer consumed. Existing unpromoted candidates from the old pipeline require migration and embedding-event backfill, or a disposable reset and republication.
+The former candidate table and `MEMORY_CANDIDATES` topic are no longer used. Existing data requires merging evidence, judge scores, and transcript links into memory rows. Old embedding events carrying `candidateId` must be replaced with events carrying the corresponding `memoryId`, or use a disposable reset and republication.
 
 ## Verify and reset
 
@@ -105,7 +103,7 @@ mvn verify
 
 Run `mvn test` for deterministic database tests without OCI calls. These tests still require Docker.
 
-Stop the app with Ctrl-C and the database with `docker compose down`. Compose retains its volume between runs. The schema uses `RAW(16)` source event IDs, a native `JSON` transcript column, and a required `candidate_work.judge_score` column. It is incompatible with earlier schemas requiring candidate status, without judge scores, or with CLOB transcripts, VARCHAR2 source IDs, per-memory embedding model columns, SQL-polled retry fields, or ten tables. To discard **disposable demo data** and create a clean schema, run:
+Stop the app with Ctrl-C and the database with `docker compose down`. Compose retains its volume between runs. The schema uses `RAW(16)` source event IDs, a native `JSON` transcript column, and a required `event_memories.judge_score` column. It is incompatible with earlier schemas with a separate candidate table, without judge scores, or with CLOB transcripts, VARCHAR2 source IDs, per-memory embedding model columns, SQL-polled retry fields, or ten tables. To discard **disposable demo data** and create a clean schema, run:
 
 ```sh
 docker compose down --volumes
@@ -134,7 +132,7 @@ To check live OCI chat and embeddings without starting a database:
 
 ```sh
 export OCI_COMPARTMENT_ID=YOUR_COMPARTMENT_OCID
-mvn -Poci-smoke verify -Dtest=MemoryIdTest
+mvn -Poci-smoke verify -Dtest=IncomingEventTest
 ```
 
 Production identity, retention, deletion, and review workflows are outside this lab.

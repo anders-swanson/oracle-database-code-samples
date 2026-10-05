@@ -1,16 +1,15 @@
 package com.example.okafkamemory.candidate;
 
+import com.example.okafkamemory.events.EventPublisher;
 import com.example.okafkamemory.events.MemoryReadyForEmbedding;
 import com.example.okafkamemory.memory.JdbcMemoryRepository;
-import com.example.okafkamemory.memory.MemoryId;
-import com.example.okafkamemory.events.EventPublisher;
+import com.example.okafkamemory.memory.Memory;
 import com.example.okafkamemory.transcript.JdbcTranscriptRepository;
 import com.example.okafkamemory.transcript.Transcript;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,12 +34,11 @@ public class CandidatePreparationService {
     public void process(Connection connection, long transcriptId, EventPublisher publisher,
                         String embeddingTopic) throws Exception {
         var transcripts = JdbcTranscriptRepository.from(connection);
-        var workRepository = CandidateWorkRepository.from(connection);
         Optional<Transcript> ready = transcripts.findReady(transcriptId);
         if (ready.isEmpty()) return;
         Transcript transcript = ready.orElseThrow();
 
-        var candidates = new ArrayList<CandidateWork>();
+        var admitted = new ArrayList<Memory>();
         for (ExtractedCandidate extracted : extractor.extract(transcript)) {
             if (extracted == null || extracted.evidence() == null || extracted.candidateText() == null) {
                 continue;
@@ -50,16 +48,15 @@ public class CandidatePreparationService {
             if (evidence.isEmpty() || text.isEmpty()) continue;
             int score = judge.score(transcript, new ExtractedCandidate(evidence, text));
             if (score <= scoreThreshold) continue;
-            candidates.add(new CandidateWork(UUID.randomUUID(), transcript.sourceEventId(),
-                    transcript.transcriptId(), transcript.ownerScope(), evidence, text, score));
+            admitted.add(new Memory(UUID.randomUUID(), transcript.transcriptId(),
+                    transcript.ownerScope(), evidence, text, score));
         }
+        if (!transcripts.completePreparation(transcriptId, !admitted.isEmpty())) return;
         var memories = JdbcMemoryRepository.from(connection);
-        for (CandidateWork candidate : workRepository.complete(transcript, candidates)) {
-            UUID id = UUID.nameUUIDFromBytes(("okafka-agent-memory:memory:" + candidate.candidateId())
-                    .getBytes(StandardCharsets.UTF_8));
-            memories.store(candidate, new MemoryId(id));
-            publisher.publish(embeddingTopic, candidate.candidateId().toString(),
-                    new MemoryReadyForEmbedding(candidate.candidateId()));
+        for (Memory memory : admitted) {
+            memories.store(memory);
+            publisher.publish(embeddingTopic, memory.memoryId().toString(),
+                    new MemoryReadyForEmbedding(memory.memoryId()));
         }
     }
 }

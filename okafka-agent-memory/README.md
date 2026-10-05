@@ -8,6 +8,7 @@ tags:
   - Spring AI
   - Vector Search
   - Testcontainers
+blog_post: "https://andersswanson.dev/2026/09/25/event-driven-memory-for-ai-agents-with-oracle-okafka/"
 ---
 
 # OKafka event-to-memory lab

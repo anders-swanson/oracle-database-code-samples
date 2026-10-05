@@ -10,7 +10,7 @@
     "ORDS",
     "Testcontainers"
   ],
-  "sourceUpdatedAt": "2026-06-09T19:11:49.929Z",
+  "sourceUpdatedAt": "2026-09-22T17:03:49.741Z",
   "metaTitle": "ORDS Testcontainers | Oracle AI Database Code Samples",
   "metaDescription": "Testcontainers sample for running ORDS alongside Oracle AI Database Free in integration tests.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/ords-testcontainers/",

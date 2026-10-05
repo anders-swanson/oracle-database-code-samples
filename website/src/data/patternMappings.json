@@ -49,6 +49,7 @@
         "jms-producer-consumer",
         "jdbc-event-streaming",
         "json--json-event-streaming",
+        "okafka-agent-memory",
         "spring-boot-cdc",
         "spring-boot-jms-example",
         "support-ticket-intelligence",
@@ -102,6 +103,7 @@
         "python-oracle--src--python_oracle--langchain_retrieval",
         "python-oracle--src--python_oracle--langchain",
         "python-oracle--src--python_oracle--database",
+        "okafka-agent-memory",
         "sql",
         "support-ticket-intelligence"
       ]
@@ -129,6 +131,7 @@
         "python-oracle--src--python_oracle--langchain_retrieval",
         "python-oracle--src--python_oracle--langchain",
         "python-oracle--src--python_oracle--langgraph_persistence",
+        "okafka-agent-memory",
         "python-oracle--src--python_oracle--transcript_hook",
         "python-oracle--src--python_oracle--mcp_agent"
       ]

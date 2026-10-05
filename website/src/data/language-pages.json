@@ -3,7 +3,7 @@
     "slug": "java",
     "name": "Java",
     "title": "Java Samples for Oracle AI Database",
-    "description": "Java samples for JDBC, Spring Boot, messaging, search, JSON, graph, spatial, and test workflows on Oracle AI Database. Browse 49 runnable samples with linked source code.",
+    "description": "Java samples for JDBC, Spring Boot, messaging, search, JSON, graph, spatial, and test workflows on Oracle AI Database. Browse 51 runnable samples with linked source code.",
     "useWhen": "Use when JVM applications need real Oracle AI Database examples instead of pseudocode.",
     "sampleIds": [
       "txeventq-fraud-detection",
@@ -31,6 +31,7 @@
       "spring-jpa",
       "json--mongodb-duality-views",
       "news-event-streaming",
+      "okafka-agent-memory",
       "oracle-database-kafka-apis",
       "mcp-agent",
       "testcontainers",
@@ -54,6 +55,7 @@
       "spring-vault-oracle-app",
       "support-ticket-intelligence",
       "txeventq-multidb-replication",
+      "true-cache-docker-compose",
       "spring-data-mongodb-oracle-api"
     ],
     "relatedPatternIds": [
@@ -61,15 +63,15 @@
       "json-documents-duality",
       "spring-microservice-config",
       "kafka-migration",
-      "api-facades",
-      "observability",
       "semantic-search-rag",
-      "ai-agents"
+      "ai-agents",
+      "api-facades",
+      "observability"
     ],
     "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/java/",
     "metaTitle": "Java Samples for Oracle AI Database | Oracle AI Database Code Samples",
-    "metaDescription": "Java samples for JDBC, Spring Boot, messaging, search, JSON, graph, spatial, and test workflows on Oracle AI Database. Browse 49 runnable samples with linked…",
-    "updatedAt": "2026-09-02T15:31:05.589Z"
+    "metaDescription": "Java samples for JDBC, Spring Boot, messaging, search, JSON, graph, spatial, and test workflows on Oracle AI Database. Browse 51 runnable samples with linked…",
+    "updatedAt": "2026-10-05T20:40:18.499Z"
   },
   {
     "slug": "python",

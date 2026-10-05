@@ -1,0 +1,26 @@
+{
+  "id": "okafka-agent-memory",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/README.md",
+  "blogPost": "https://andersswanson.dev/2026/09/25/event-driven-memory-for-ai-agents-with-oracle-okafka/",
+  "readmeExcerpt": "Publish a transcript through OKafka, extract useful facts with OCI Generative AI, and search the resulting memories in Oracle AI Database. The lab uses three event consumers, two durable tables, and Spring AI chat and embedding models. OKafka delivers events through Oracle AI Database Transactional Event Queues (TxEventQ).",
+  "highlights": [
+    "[DemoProducer](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/main/java/com/example/okafkamemory/DemoProducer.java): publishes incoming OSON events.",
+    "[IntakePolicy](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/main/java/com/example/okafkamemory/intake/IntakePolicy.java): deterministic intake prerequisites.",
+    "[CandidatePreparationService](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/main/java/com/example/okafkamemory/candidate/CandidatePreparationService.java): extraction, admission, persistence, and embedding handoffs.",
+    "[TransactionalEventConsumer](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/main/java/com/example/okafkamemory/events/TransactionalEventConsumer.java): transaction ownership and retries."
+  ],
+  "features": [
+    "Vector Search",
+    "TxEventQ",
+    "AI Agents",
+    "Testcontainers",
+    "Spring",
+    "Kafka",
+    "Security"
+  ],
+  "sourceUpdatedAt": "2026-10-05T20:40:18.499Z",
+  "metaTitle": "OKafka event-to-memory lab | Oracle AI Database Code Samples",
+  "metaDescription": "Build durable, owner-scoped agent memory from OKafka events with Oracle AI Database and OCI Generative AI.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/okafka-agent-memory/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/okafka-agent-memory.png"
+}

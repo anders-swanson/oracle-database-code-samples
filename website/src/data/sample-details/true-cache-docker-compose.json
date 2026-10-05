@@ -1,0 +1,18 @@
+{
+  "id": "true-cache-docker-compose",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/true-cache-docker-compose/README.md",
+  "blogPost": "https://andersswanson.dev/2026/09/29/true-cache-with-docker-compose-and-redis-cli/",
+  "readmeExcerpt": "This article demonstrates how to run Oracle True Cache locally with `docker-compose` for testing, local development, and experimentation. We'll also [enable the True Cache Redis API](https://docs.oracle.com/en/database/oracle/oracle-database/26/odbtc/using-oracle-true-cache-redis-server.html) and verify it with `redis-cli`.",
+  "highlights": [
+    "Docker and Docker Compose.",
+    "**Optional**: redis-cli to run the separate Redis API test."
+  ],
+  "features": [
+    "Oracle AI Database"
+  ],
+  "sourceUpdatedAt": "2026-09-29T19:53:06.359Z",
+  "metaTitle": "True Cache with Docker Compose and redis-cli | Oracle AI Database Code Samples",
+  "metaDescription": "Docker Compose setup for running Oracle AI Database Free with True Cache locally.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/true-cache-docker-compose/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/true-cache-docker-compose.png"
+}

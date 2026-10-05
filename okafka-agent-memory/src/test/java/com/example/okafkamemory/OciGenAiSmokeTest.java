@@ -5,6 +5,7 @@ import com.example.okafkamemory.candidate.SpringAiCandidateJudge;
 import com.example.okafkamemory.transcript.Transcript;
 import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,8 @@ import static org.assertj.core.api.Assertions.assertThat;
         "spring.datasource.oracleucp.initial-pool-size=0",
         "spring.datasource.oracleucp.min-pool-size=0"
 })
-class OciGenAiSmokeIT {
+@EnabledIfEnvironmentVariable(named = "OCI_COMPARTMENT_ID", matches = ".+")
+class OciGenAiSmokeTest {
     @Autowired CandidateExtractor extractor;
     @Autowired SpringAiCandidateJudge judge;
     @Autowired ChatModel chat;

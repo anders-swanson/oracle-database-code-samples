@@ -17,6 +17,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.oracle.okafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,7 +43,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 })
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class MemoryPipelineIT {
+@EnabledIfEnvironmentVariable(named = "OCI_COMPARTMENT_ID", matches = ".+")
+class MemoryPipelineTest {
     @Container @ServiceConnection
     private static final OracleContainer oracle = new OracleContainer()
             .withUsername("TESTUSER").withPassword("Welcome123#");

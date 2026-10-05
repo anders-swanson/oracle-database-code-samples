@@ -95,10 +95,10 @@ The former candidate table and `MEMORY_CANDIDATES` topic are no longer used. Exi
 
 ## Verify and reset
 
-`mvn verify` runs the sample with Oracle AI Database Free in Testcontainers, including a real OKafka producer-to-search path. It uses its own database and calls OCI for extraction, judging, and embeddings, so export `OCI_COMPARTMENT_ID` first. Deterministic persistence tests use test-only model fixtures. Integration tests also verify atomic input/output handoffs and event redelivery after a failed embedding write.
+` mvn test` runs the sample with Oracle AI Database Free in Testcontainers, including a real OKafka producer-to-search path. It uses its own database and calls OCI for extraction, judging, and embeddings, so export `OCI_COMPARTMENT_ID` first. Deterministic persistence tests use test-only model fixtures. Integration tests also verify atomic input/output handoffs and event redelivery after a failed embedding write.
 
 ```sh
-mvn verify
+ mvn test
 ```
 
 Run `mvn test` for deterministic database tests without OCI calls. These tests still require Docker.
@@ -131,8 +131,8 @@ The [Oracle Spring AI chat guide](https://oracle.github.io/spring-cloud-oracle/s
 To check live OCI chat and embeddings without starting a database:
 
 ```sh
-export OCI_COMPARTMENT_ID=YOUR_COMPARTMENT_OCID
-mvn -Poci-smoke verify -Dtest=IncomingEventTest
+export OCI_COMPARTMENT_ID=<YOUR_COMPARTMENT_OCID>
+mvn test
 ```
 
 Production identity, retention, deletion, and review workflows are outside this lab.

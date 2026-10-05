@@ -27,7 +27,7 @@ public class IntakeService {
         }
         String reason = policy.rejectionReason(event);
         if (reason != null) {
-            log.warn("Dropping incoming event {}: {}", event.sourceEventId(), reason);
+            log.warn("At the intake stage: rejected incoming event {} because {}.", event.sourceEventId(), reason);
             return;
         }
         if (connection.getAutoCommit()) {
@@ -36,8 +36,13 @@ public class IntakeService {
         var transcripts = JdbcTranscriptRepository.from(connection);
         var inserted = transcripts.insertIfAbsent(new TranscriptDraft(
                 event.sourceEventId(), event.ownerScope(), event.transcriptPayload()));
-        if (inserted.isEmpty()) return;
+        if (inserted.isEmpty()) {
+            log.info("At the intake stage: skipped incoming event {} because a transcript already exists for it.", event.sourceEventId());
+            return;
+        }
         var transcript = inserted.orElseThrow();
+        log.info("At the intake stage: created transcript {} from incoming event {}; awaiting transaction commit.",
+                transcript.transcriptId(), event.sourceEventId());
         publisher.publish(transcriptTopic, Long.toString(transcript.transcriptId()),
                 new TranscriptReady(transcript.transcriptId()));
     }

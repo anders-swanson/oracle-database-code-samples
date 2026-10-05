@@ -1,7 +1,6 @@
 package com.example.okafkamemory.events;
 
 import com.example.okafkamemory.candidate.CandidatePreparationService;
-import com.example.okafkamemory.curation.CurationService;
 import com.example.okafkamemory.embedding.MemoryEmbeddingService;
 import com.example.okafkamemory.intake.IncomingEvent;
 import com.example.okafkamemory.intake.IntakeService;
@@ -27,12 +26,11 @@ public class MemoryPipelineConfiguration {
     MemoryTopics memoryTopics(@Qualifier("intakeOkafkaProperties") Properties properties,
                               @Value("${memory.intake.topic}") String incoming,
                               @Value("${memory.events.transcripts}") String transcripts,
-                              @Value("${memory.events.candidates}") String candidates,
                               @Value("${memory.events.embeddings}") String embeddings) {
-        for (String topic : List.of(incoming, transcripts, candidates, embeddings)) {
+        for (String topic : List.of(incoming, transcripts, embeddings)) {
             OkafkaIntakeConfiguration.ensureTopic(properties, topic);
         }
-        return new MemoryTopics(incoming, transcripts, candidates, embeddings);
+        return new MemoryTopics(incoming, transcripts, embeddings);
     }
 
     @Bean
@@ -52,17 +50,7 @@ public class MemoryPipelineConfiguration {
         return new TransactionalEventConsumer<>(topics.transcripts(), consumer(properties, topics.transcripts(), TranscriptReady.class),
                 properties, (connection, record, publisher) -> {
                     requireKey(record.key(), Long.toString(record.value().transcriptId()));
-                    preparation.process(connection, record.value().transcriptId(), publisher, topics.candidates());
-                });
-    }
-
-    @Bean
-    TransactionalEventConsumer<CandidateReady> curationConsumer(MemoryTopics topics, CurationService curation,
-            @Qualifier("intakeOkafkaProperties") Properties properties) {
-        return new TransactionalEventConsumer<>(topics.candidates(), consumer(properties, topics.candidates(), CandidateReady.class),
-                properties, (connection, record, publisher) -> {
-                    requireKey(record.key(), record.value().candidateId().toString());
-                    curation.curate(connection, record.value().candidateId(), publisher, topics.embeddings());
+                    preparation.process(connection, record.value().transcriptId(), publisher, topics.embeddings());
                 });
     }
 

@@ -21,12 +21,12 @@ public class MemoryEmbeddingService {
 
     public void embed(Connection connection, UUID candidateId) {
         var memories = JdbcMemoryRepository.from(connection);
-        memories.pendingText(candidateId).ifPresent(text -> {
+        memories.findText(candidateId).ifPresent(text -> {
             float[] vector = model.embed(text);
             if (vector == null || vector.length != dimensions) {
                 throw new IllegalStateException("Embedding dimension must be " + dimensions);
             }
-            memories.completeEmbedding(candidateId, vector);
+            memories.updateEmbedding(candidateId, vector);
         });
     }
 }

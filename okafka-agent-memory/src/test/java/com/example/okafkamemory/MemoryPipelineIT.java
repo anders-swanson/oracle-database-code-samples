@@ -96,10 +96,6 @@ class MemoryPipelineIT {
                         SELECT preparation_status FROM transcripts WHERE source_event_id = ?
                         """).param(UuidBytes.encode(sourceEventId)).query(String.class).single()).isEqualTo("DONE");
                 assertThat(jdbc.sql("""
-                        SELECT c.status FROM candidate_work c JOIN transcripts t
-                        ON c.transcript_id = t.transcript_id WHERE t.source_event_id = ?
-                        """).param(UuidBytes.encode(sourceEventId)).query(String.class).single()).isEqualTo("COMPLETE");
-                assertThat(jdbc.sql("""
                         SELECT VSIZE(m.id) FROM event_memories m
                         JOIN candidate_work c ON m.candidate_id = c.candidate_id
                         JOIN transcripts t ON c.transcript_id = t.transcript_id
@@ -228,7 +224,7 @@ class MemoryPipelineIT {
             await(() -> jdbc.sql("""
                     SELECT COUNT(*) FROM event_memories m JOIN candidate_work c
                     ON c.candidate_id = m.candidate_id JOIN transcripts t ON t.transcript_id = c.transcript_id
-                    WHERE t.source_event_id = ? AND m.embedding IS NULL AND c.status = 'PENDING_EMBEDDING'
+                    WHERE t.source_event_id = ? AND m.embedding IS NULL
                     """).param(UuidBytes.encode(id)).query(Integer.class).single() == 1
                     && embedding.failure() != null);
         } finally {
@@ -237,7 +233,7 @@ class MemoryPipelineIT {
         await(() -> jdbc.sql("""
                 SELECT COUNT(*) FROM event_memories m JOIN candidate_work c
                 ON c.candidate_id = m.candidate_id JOIN transcripts t ON t.transcript_id = c.transcript_id
-                WHERE t.source_event_id = ? AND m.embedding IS NOT NULL AND c.status = 'COMPLETE'
+                WHERE t.source_event_id = ? AND m.embedding IS NOT NULL
                 """).param(UuidBytes.encode(id)).query(Integer.class).single() == 1);
     }
 

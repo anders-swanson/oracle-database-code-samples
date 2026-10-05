@@ -2,7 +2,7 @@ package com.example.okafkamemory.candidate;
 
 import java.util.UUID;
 
-/** Independently addressable work for the curation stage. */
+/** Admitted candidate with its source provenance and judge score. */
 public record CandidateWork(UUID candidateId, UUID sourceEventId, long transcriptId,
                             String ownerScope, String evidence, String candidateText, int judgeScore) {
 }

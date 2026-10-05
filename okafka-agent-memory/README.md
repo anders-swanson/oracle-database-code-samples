@@ -40,7 +40,7 @@ curl -s http://localhost:8080/api/memories/search \
 
 The response should include the dark-mode preference with vector, text, and recency scores. OCI may rephrase the extracted fact. If the first search returns `[]`, wait a moment and repeat it. Try another fact by changing `-Dexec.args`; the producer adds `remember ` to make the request explicit.
 
-`memory.background-processing.enabled` defaults to `true` and starts all four OKafka stage consumers. The producer sets it to `false` in its own process so it only publishes events. This setting does not affect the separately running application or disable the search API.
+`memory.background-processing.enabled` defaults to `true` and starts all three OKafka stage consumers. The producer sets it to `false` in its own process so it only publishes events. This setting does not affect the separately running application or disable the search API.
 
 ## Follow the events
 
@@ -49,9 +49,8 @@ Each stage has an OKafka consumer and publishes the next event after completing 
 | Topic | Event | Consumer action |
 | --- | --- | --- |
 | `MEMORY_INCOMING` | `IncomingEvent` with the transcript payload | Log a warning and drop events that fail prerequisites. Store accepted transcripts once per source ID and publish `TranscriptReady` only for new rows. |
-| `MEMORY_TRANSCRIPTS` | `TranscriptReady(transcriptId)` | Use OCI to extract facts and judge each against the source transcript. Persist only candidates scoring above the configured threshold and publish one `CandidateReady` per admitted candidate. |
-| `MEMORY_CANDIDATES` | `CandidateReady(candidateId)` | Promote admitted candidates to memory rows and publish `MemoryReadyForEmbedding`. |
-| `MEMORY_EMBEDDINGS` | `MemoryReadyForEmbedding(candidateId)` | Use OCI to embed the stored memory text, save its vector, and mark the candidate complete. |
+| `MEMORY_TRANSCRIPTS` | `TranscriptReady(transcriptId)` | Use OCI to extract facts and judge each against the source transcript. Persist admitted candidates and their memory rows together, then publish one `MemoryReadyForEmbedding` per memory. |
+| `MEMORY_EMBEDDINGS` | `MemoryReadyForEmbedding(candidateId)` | Use OCI to embed the stored memory text, save or replace its vector. |
 
 Internal events carry IDs; consumers load the corresponding rows. No worker scans SQL tables for ready work. Configure the incoming topic with `memory.intake.topic` and the other topics with `memory.events.*`. Each topic has one partition in this lab and a consumer group named `<topic>_PROCESSOR`.
 
@@ -66,7 +65,7 @@ A failed stage event is rolled back and retried after a one-second pause. Other 
 | Table | What to look for |
 | --- | --- |
 | `transcripts` | The accepted JSON payload, numeric ID, and `READY`, `DONE`, or `NO_MEMORY` preparation state. |
-| `candidate_work` | Each admitted fact, its evidence, its `judge_score`, and its `READY`, `PENDING_EMBEDDING`, or `COMPLETE` state. |
+| `candidate_work` | Each admitted fact, its evidence, its `judge_score`, and its transcript provenance. |
 | `event_memories` | Immutable promoted text and its vector. A null vector is durable but excluded from search. |
 
 Inspect them with SQL*Plus in the database container. Use `RAWTOHEX(source_event_id)` to inspect the UUID as 32 hexadecimal characters without hyphens:
@@ -77,12 +76,12 @@ docker compose exec oracle-free sqlplus 'TESTUSER/Welcome123#@//localhost:1521/F
 
 ```sql
 SELECT transcript_id, RAWTOHEX(source_event_id) AS source_event_id, preparation_status FROM transcripts;
-SELECT RAWTOHEX(candidate_id), transcript_id, judge_score, status FROM candidate_work;
+SELECT RAWTOHEX(candidate_id), transcript_id, judge_score FROM candidate_work;
 SELECT RAWTOHEX(id), owner_scope, memory_text, VECTOR_DIMENSION_COUNT(embedding) AS dimensions FROM event_memories;
 EXIT;
 ```
 
-The three tables retain provenance and processing state; the topics deliver the work. A promoted memory has a null vector until its embedding event succeeds, so search excludes it during that interval. Extraction and judging use separate calls to the configured Spring AI `ChatModel`. The judge scores each candidate from 0 to 100 using the source transcript, supporting evidence, attribution, durability, usefulness, and sensitivity. It replaces exact evidence matching, keyword secret filtering, and prefix-based curation. This is a model judgment, not a guaranteed secret detector.
+The three tables retain provenance and processing state; the topics deliver the work. Preparation stores admitted candidates and their memory rows in the same transaction. Embedding readiness is represented only by the memory's vector: search excludes null vectors. The embedding stage updates the memory directly by its unique candidate ID and can replace an existing vector. Extraction and judging use separate calls to the configured Spring AI `ChatModel`. The judge scores each candidate from 0 to 100 using the source transcript, supporting evidence, attribution, durability, usefulness, and sensitivity. It replaces exact evidence matching, keyword secret filtering, and prefix-based curation. This is a model judgment, not a guaranteed secret detector.
 
 Configure admission in `application.yml`:
 
@@ -92,7 +91,9 @@ memory:
     score-threshold: 70
 ```
 
-Only scores **strictly greater** than the threshold are persisted; a score of 70 is rejected at the default setting, and 71 is admitted. The threshold must be between 0 and 100. Admitted candidates retain their score in `candidate_work.judge_score`. Low-scoring candidates are discarded; when none pass, the transcript becomes `NO_MEMORY`. Missing, malformed, fractional, or out-of-range judge scores fail preparation and leave its event eligible for retry. The later curation consumer promotes admitted candidates, and the embedding consumer uses the separate Spring AI `EmbeddingModel` to generate retrieval vectors.
+Only scores **strictly greater** than the threshold are persisted; a score of 70 is rejected at the default setting, and 71 is admitted. The threshold must be between 0 and 100. Admitted candidates retain their score in `candidate_work.judge_score`. Low-scoring candidates are discarded; when none pass, the transcript becomes `NO_MEMORY`. Missing, malformed, fractional, or out-of-range judge scores fail preparation and leave its event eligible for retry. The embedding consumer uses the separate Spring AI `EmbeddingModel` to generate retrieval vectors.
+
+The former `MEMORY_CANDIDATES` topic is no longer consumed. Existing unpromoted candidates from the old pipeline require migration and embedding-event backfill, or a disposable reset and republication.
 
 ## Verify and reset
 
@@ -104,7 +105,7 @@ mvn verify
 
 Run `mvn test` for deterministic database tests without OCI calls. These tests still require Docker.
 
-Stop the app with Ctrl-C and the database with `docker compose down`. Compose retains its volume between runs. The schema uses `RAW(16)` source event IDs, a native `JSON` transcript column, and a required `candidate_work.judge_score` column. It is incompatible with earlier schemas without judge scores or with CLOB transcripts, VARCHAR2 source IDs, per-memory embedding model columns, SQL-polled retry fields, or ten tables. To discard **disposable demo data** and create a clean schema, run:
+Stop the app with Ctrl-C and the database with `docker compose down`. Compose retains its volume between runs. The schema uses `RAW(16)` source event IDs, a native `JSON` transcript column, and a required `candidate_work.judge_score` column. It is incompatible with earlier schemas requiring candidate status, without judge scores, or with CLOB transcripts, VARCHAR2 source IDs, per-memory embedding model columns, SQL-polled retry fields, or ten tables. To discard **disposable demo data** and create a clean schema, run:
 
 ```sh
 docker compose down --volumes

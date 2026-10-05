@@ -9,15 +9,13 @@ CREATE TABLE transcripts (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT SYSTIMESTAMP NOT NULL
 );
 
--- Each candidate can be curated and embedded independently.
+-- Only admitted candidates are stored, alongside their memory rows.
 CREATE TABLE candidate_work (
     candidate_id RAW(16) PRIMARY KEY,
     transcript_id NUMBER NOT NULL REFERENCES transcripts(transcript_id),
     evidence CLOB NOT NULL,
     candidate_text CLOB NOT NULL,
     judge_score NUMBER(3) NOT NULL CHECK (judge_score BETWEEN 0 AND 100),
-    status VARCHAR2(24 CHAR) DEFAULT 'READY' NOT NULL
-        CHECK (status IN ('READY', 'PENDING_EMBEDDING', 'COMPLETE')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT SYSTIMESTAMP NOT NULL
 );
 

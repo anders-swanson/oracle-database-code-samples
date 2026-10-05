@@ -13,7 +13,7 @@ import org.springframework.ai.chat.prompt.Prompt;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Test-only responses for deterministic persistence and curation checks. */
+/** Test-only responses for deterministic persistence and admission checks. */
 public class FixtureChatModel implements ChatModel {
     private final ObjectMapper objectMapper = new ObjectMapper();
 

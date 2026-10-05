@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import java.sql.Connection;
 import java.sql.Types;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class CandidateWorkRepository {
@@ -39,19 +38,14 @@ public class CandidateWorkRepository {
                 .param(UuidBytes.encode(sourceEventId)).query(CANDIDATE).list();
     }
 
-    public Optional<CandidateWork> findReadyCandidate(UUID candidateId) {
-        return jdbc.sql(SELECT_CANDIDATE + " WHERE c.candidate_id = ? AND c.status = 'READY'")
-                .param(UuidBytes.encode(candidateId)).query(CANDIDATE).optional();
-    }
-
-    public CandidatePreparationResult complete(Transcript transcript, List<CandidateWork> candidates) {
+    public List<CandidateWork> complete(Transcript transcript, List<CandidateWork> candidates) {
         String outcome = candidates.isEmpty() ? "NO_MEMORY" : "DONE";
         int changed = jdbc.sql("""
                 UPDATE transcripts SET preparation_status = ?
                 WHERE transcript_id = ? AND preparation_status = 'READY'
                 """).param(outcome).param(transcript.transcriptId()).update();
         if (changed == 0) {
-            return findResult(transcript.sourceEventId()).orElseThrow();
+            return List.of();
         }
         for (CandidateWork candidate : candidates) {
             jdbc.sql("""
@@ -65,19 +59,6 @@ public class CandidateWorkRepository {
                     .param(5, candidate.judgeScore())
                     .update();
         }
-        return new CandidatePreparationResult(transcript.sourceEventId(),
-                candidates.isEmpty() ? CandidatePreparationResult.Outcome.NO_MEMORY
-                        : CandidatePreparationResult.Outcome.CANDIDATES, candidates);
-    }
-
-    public Optional<CandidatePreparationResult> findResult(UUID sourceEventId) {
-        return jdbc.sql("""
-                SELECT preparation_status FROM transcripts WHERE source_event_id = ?
-                """).param(UuidBytes.encode(sourceEventId)).query(String.class).optional()
-                .filter(status -> !status.equals("READY"))
-                .map(status -> new CandidatePreparationResult(sourceEventId,
-                        status.equals("NO_MEMORY") ? CandidatePreparationResult.Outcome.NO_MEMORY
-                                : CandidatePreparationResult.Outcome.CANDIDATES,
-                        findCandidates(sourceEventId)));
+        return List.copyOf(candidates);
     }
 }

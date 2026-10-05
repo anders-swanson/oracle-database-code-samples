@@ -1,6 +1,8 @@
 package com.example.okafkamemory.candidate;
 
-import com.example.okafkamemory.events.CandidateReady;
+import com.example.okafkamemory.events.MemoryReadyForEmbedding;
+import com.example.okafkamemory.memory.JdbcMemoryRepository;
+import com.example.okafkamemory.memory.MemoryId;
 import com.example.okafkamemory.events.EventPublisher;
 import com.example.okafkamemory.transcript.JdbcTranscriptRepository;
 import com.example.okafkamemory.transcript.Transcript;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,7 +33,7 @@ public class CandidatePreparationService {
     }
 
     public void process(Connection connection, long transcriptId, EventPublisher publisher,
-                        String candidateTopic) throws Exception {
+                        String embeddingTopic) throws Exception {
         var transcripts = JdbcTranscriptRepository.from(connection);
         var workRepository = CandidateWorkRepository.from(connection);
         Optional<Transcript> ready = transcripts.findReady(transcriptId);
@@ -50,10 +53,13 @@ public class CandidatePreparationService {
             candidates.add(new CandidateWork(UUID.randomUUID(), transcript.sourceEventId(),
                     transcript.transcriptId(), transcript.ownerScope(), evidence, text, score));
         }
-        var result = workRepository.complete(transcript, candidates);
-        for (CandidateWork candidate : result.candidates()) {
-            publisher.publish(candidateTopic, candidate.candidateId().toString(),
-                    new CandidateReady(candidate.candidateId()));
+        var memories = JdbcMemoryRepository.from(connection);
+        for (CandidateWork candidate : workRepository.complete(transcript, candidates)) {
+            UUID id = UUID.nameUUIDFromBytes(("okafka-agent-memory:memory:" + candidate.candidateId())
+                    .getBytes(StandardCharsets.UTF_8));
+            memories.store(candidate, new MemoryId(id));
+            publisher.publish(embeddingTopic, candidate.candidateId().toString(),
+                    new MemoryReadyForEmbedding(candidate.candidateId()));
         }
     }
 }

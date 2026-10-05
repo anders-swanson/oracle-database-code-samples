@@ -47,7 +47,6 @@ memory:
     topic: MEMORY_INCOMING
   events:
     transcripts: MEMORY_TRANSCRIPTS
-    candidates: MEMORY_CANDIDATES
     embeddings: MEMORY_EMBEDDINGS
   okafka:
     service-name: freepdb1

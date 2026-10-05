@@ -25,8 +25,8 @@ public class JdbcMemoryRepository {
         this.jdbc = jdbc;
     }
 
-    /** Called in the curation transaction. The text is inserted only once. */
-    public void promote(CandidateWork candidate, MemoryId memoryId) {
+    /** Stored in the preparation transaction alongside the admitted candidate. */
+    public void store(CandidateWork candidate, MemoryId memoryId) {
         jdbc.sql("""
                 INSERT INTO event_memories (id, candidate_id, owner_scope, memory_text)
                 VALUES (?, ?, ?, ?)
@@ -36,48 +36,23 @@ public class JdbcMemoryRepository {
                 .param(3, candidate.ownerScope())
                 .param(4, candidate.candidateText(), Types.CLOB)
                 .update();
-        int changed = jdbc.sql("""
-                UPDATE candidate_work SET status = 'PENDING_EMBEDDING'
-                WHERE candidate_id = ? AND status = 'READY'
-                """).param(UuidBytes.encode(candidate.candidateId())).update();
-        if (changed != 1) {
-            throw new IllegalStateException("Candidate changed while promoting " + candidate.candidateId());
-        }
     }
 
-    public Optional<String> pendingText(UUID candidateId) {
-        return jdbc.sql("""
-                SELECT m.memory_text FROM event_memories m
-                JOIN candidate_work c ON c.candidate_id = m.candidate_id
-                WHERE c.candidate_id = ? AND c.status = 'PENDING_EMBEDDING'
-                """).param(UuidBytes.encode(candidateId)).query(String.class).optional();
+    public Optional<String> findText(UUID candidateId) {
+        return jdbc.sql("SELECT memory_text FROM event_memories WHERE candidate_id = ?")
+                .param(UuidBytes.encode(candidateId)).query(String.class).optional();
     }
 
-    public void completeEmbedding(UUID candidateId, float[] embedding) {
+    public void updateEmbedding(UUID candidateId, float[] embedding) {
         final VECTOR vector;
         try {
             vector = VECTOR.ofFloat32Values(embedding);
         } catch (SQLException invalidVector) {
             throw new IllegalArgumentException("Invalid embedding", invalidVector);
         }
-        int changed = jdbc.sql("""
-                UPDATE event_memories SET embedding = ?
-                WHERE candidate_id = ? AND embedding IS NULL
-                  AND EXISTS (SELECT 1 FROM candidate_work c
-                              WHERE c.candidate_id = event_memories.candidate_id
-                                AND c.status = 'PENDING_EMBEDDING')
-                """)
+        jdbc.sql("UPDATE event_memories SET embedding = ? WHERE candidate_id = ?")
                 .param(1, vector, OracleType.VECTOR.getVendorTypeNumber())
                 .param(2, UuidBytes.encode(candidateId))
                 .update();
-        if (changed == 1) {
-            int completed = jdbc.sql("""
-                    UPDATE candidate_work SET status = 'COMPLETE'
-                    WHERE candidate_id = ? AND status = 'PENDING_EMBEDDING'
-                    """).param(UuidBytes.encode(candidateId)).update();
-            if (completed != 1) {
-                throw new IllegalStateException("Candidate changed while embedding " + candidateId);
-            }
-        }
     }
 }

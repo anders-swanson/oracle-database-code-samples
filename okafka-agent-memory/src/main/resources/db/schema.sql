@@ -1,5 +1,5 @@
 -- Each stage commits its database changes and next-stage TxEventQ events in one transaction.
-CREATE TABLE transcripts (
+CREATE TABLE IF NOT EXISTS transcripts (
     transcript_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     source_event_id RAW(16) NOT NULL UNIQUE CHECK (VSIZE(source_event_id) = 16),
     owner_scope VARCHAR2(256 CHAR) NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE transcripts (
 );
 
 -- Text is immutable in this lab. A null embedding keeps the memory out of search.
-CREATE TABLE event_memories (
+CREATE TABLE IF NOT EXISTS event_memories (
     id RAW(16) PRIMARY KEY,
     transcript_id NUMBER NOT NULL REFERENCES transcripts(transcript_id),
     evidence CLOB NOT NULL,
@@ -23,4 +23,4 @@ CREATE TABLE event_memories (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT SYSTIMESTAMP NOT NULL
 );
 
-CREATE INDEX ix_event_memories_transcript ON event_memories(transcript_id);
+CREATE INDEX IF NOT EXISTS ix_event_memories_transcript ON event_memories(transcript_id);

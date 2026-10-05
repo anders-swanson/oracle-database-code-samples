@@ -54,3 +54,11 @@ memory:
     bootstrap-servers: localhost:1521
     tns-admin: .
     tns-alias: ''
+
+logging:
+  level:
+    org:
+      apache:
+        kafka: WARN
+      oracle:
+        okafka: WARN

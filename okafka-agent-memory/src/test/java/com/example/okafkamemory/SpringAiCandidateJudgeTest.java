@@ -22,8 +22,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SpringAiCandidateJudgeTest {
     private final Transcript transcript = new Transcript(1, UUID.randomUUID(), "user:demo",
-            Map.of("message", "I like dark mode"), OffsetDateTime.now());
-    private final ExtractedCandidate candidate = new ExtractedCandidate("Prefers dark mode", "Use a dark theme");
+            Map.of("message", "My OKafka events use OSON"), OffsetDateTime.now());
+    private final ExtractedCandidate candidate = new ExtractedCandidate("Uses OSON for OKafka events", "OKafka events use OSON serialization");
     private final StubChatModel model = new StubChatModel();
     private final SpringAiCandidateJudge judge = new SpringAiCandidateJudge(model);
 
@@ -33,7 +33,7 @@ class SpringAiCandidateJudgeTest {
         respond("{\"score\":" + score + "}");
         assertThat(judge.score(transcript, candidate)).isEqualTo(score);
         assertThat(model.lastPrompt.getUserMessage().getText())
-                .contains("I like dark mode", "Prefers dark mode", "Use a dark theme");
+                .contains("My OKafka events use OSON", "Uses OSON for OKafka events", "OKafka events use OSON serialization");
     }
 
     @ParameterizedTest

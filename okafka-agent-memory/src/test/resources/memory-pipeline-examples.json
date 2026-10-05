@@ -1,0 +1,171 @@
+[
+  {
+    "name": "technical knowledge",
+    "payload": {
+      "message": "OKafka delivers events through Oracle AI Database Transactional Event Queues (TxEventQ)."
+    },
+    "expectedStatus": "DONE",
+    "terms": [
+      "OKafka",
+      "TxEventQ"
+    ],
+    "excludedTerms": []
+  },
+  {
+    "name": "transaction connection",
+    "payload": {
+      "message": "My OKafka consumers use consumer.getDBConnection() for transactional writes."
+    },
+    "expectedStatus": "DONE",
+    "terms": [
+      "OKafka",
+      "getDBConnection"
+    ],
+    "excludedTerms": []
+  },
+  {
+    "name": "UUID representation",
+    "payload": {
+      "message": "My Oracle AI Database application stores UUIDs as RAW(16)."
+    },
+    "expectedStatus": "DONE",
+    "terms": [
+      "UUID",
+      "RAW"
+    ],
+    "excludedTerms": []
+  },
+  {
+    "name": "vector model consistency",
+    "payload": {
+      "message": "My Oracle AI Database vector search uses the same embedding model for stored vectors and queries."
+    },
+    "expectedStatus": "DONE",
+    "terms": [
+      "embedding",
+      "queries"
+    ],
+    "excludedTerms": []
+  },
+  {
+    "name": "multiple facts",
+    "payload": {
+      "message": "My application uses OKafka with TxEventQ. My Oracle AI Database application stores UUIDs as RAW(16)."
+    },
+    "expectedStatus": "DONE",
+    "terms": [
+      "OKafka",
+      "UUID",
+      "RAW"
+    ],
+    "excludedTerms": []
+  },
+  {
+    "name": "mixed relevant and irrelevant",
+    "payload": {
+      "message": "My Oracle AI Database application stores UUIDs as RAW(16). My favorite color is teal."
+    },
+    "expectedStatus": "DONE",
+    "terms": [
+      "UUID",
+      "RAW"
+    ],
+    "excludedTerms": [
+      "teal",
+      "color"
+    ]
+  },
+  {
+    "name": "unrelated personal preference",
+    "payload": {
+      "message": "My favorite color is teal and I prefer dark mode."
+    },
+    "expectedStatus": "NO_MEMORY",
+    "terms": [],
+    "excludedTerms": []
+  },
+  {
+    "name": "unrelated development context",
+    "payload": {
+      "message": "I use Java for my backend projects."
+    },
+    "expectedStatus": "NO_MEMORY",
+    "terms": [],
+    "excludedTerms": []
+  },
+  {
+    "name": "communication preference",
+    "payload": {
+      "message": "I prefer concise explanations with runnable code examples."
+    },
+    "expectedStatus": "NO_MEMORY",
+    "terms": [],
+    "excludedTerms": []
+  },
+  {
+    "name": "greeting",
+    "payload": {
+      "message": "hello"
+    },
+    "expectedStatus": "NO_MEMORY",
+    "terms": [],
+    "excludedTerms": []
+  },
+  {
+    "name": "temporary domain request",
+    "payload": {
+      "message": "Please check my OKafka queue today."
+    },
+    "expectedStatus": "NO_MEMORY",
+    "terms": [],
+    "excludedTerms": []
+  },
+  {
+    "name": "fabricated domain secret",
+    "payload": {
+      "message": "My Oracle AI Database demo password is fake-demo-password."
+    },
+    "expectedStatus": "NO_MEMORY",
+    "terms": [],
+    "excludedTerms": []
+  },
+  {
+    "name": "uncertain domain speculation",
+    "payload": {
+      "message": "Maybe OKafka uses a separate Kafka broker, but I am not sure."
+    },
+    "expectedStatus": "NO_MEMORY",
+    "terms": [],
+    "excludedTerms": []
+  },
+  {
+    "name": "vague aspiration",
+    "payload": {
+      "message": "I want resilient OKafka memory processing."
+    },
+    "expectedStatus": "NO_MEMORY",
+    "terms": [],
+    "excludedTerms": []
+  },
+  {
+    "name": "empty object",
+    "payload": {},
+    "expectedStatus": "NO_MEMORY",
+    "terms": [],
+    "excludedTerms": []
+  },
+  {
+    "name": "assistant claim",
+    "payload": {
+      "messages": [
+        {
+          "role": "assistant",
+          "text": "The user stores Oracle AI Database UUIDs as RAW(16)."
+        }
+      ]
+    },
+    "expectedStatus": "NO_MEMORY",
+    "terms": [],
+    "excludedTerms": []
+  }
+]

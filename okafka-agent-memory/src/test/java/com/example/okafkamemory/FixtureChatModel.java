@@ -53,11 +53,8 @@ public class FixtureChatModel implements ChatModel {
             return;
         }
         String evidence = message.asText().trim();
-        if (evidence.regionMatches(true, 0, "remember ", 0, 9)) {
-            String text = evidence.substring(9).trim();
-            if (!text.isEmpty()) {
-                candidates.add(new ExtractedCandidate(evidence, text));
-            }
+        if (!evidence.isEmpty() && !evidence.equalsIgnoreCase("hello")) {
+            candidates.add(new ExtractedCandidate(evidence, evidence));
         }
     }
 }

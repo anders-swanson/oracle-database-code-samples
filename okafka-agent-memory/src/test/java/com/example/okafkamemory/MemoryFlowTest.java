@@ -117,7 +117,7 @@ class MemoryFlowTest {
 
         // A dropped ID has no durable rejection; a later allowed event can use it.
         UUID source = filtered.getFirst().sourceEventId();
-        for (String message : List.of("remember first fact", "remember changed fact")) {
+        for (String message : List.of("first fact", "changed fact")) {
             transaction(connection -> {
                 intake.process(connection, new IncomingEvent(source, "user:demo", Map.of("message", message), true),
                         (topic, key, value) -> published.add(value), "transcripts");
@@ -126,12 +126,12 @@ class MemoryFlowTest {
         }
         assertThat(published).hasSize(1);
         assertThat(transcripts.findBySourceEventId(source).orElseThrow().eventPayload())
-                .containsEntry("message", "remember first fact");
+                .containsEntry("message", "first fact");
     }
 
     @Test
     void structuredTranscriptSurvivesOsonAndNativeJsonStorage() {
-        String evidence = "remember I prefer \"dark\" mode\nwith tabs";
+        String evidence = "My OKafka events use \"OSON\" serialization\nwith tabs";
         var payload = Map.<String, Object>of("messages", List.of(
                 Map.of("role", "user", "text", evidence)));
         var event = new IncomingEvent(UUID.randomUUID(), "user:demo", payload, true);
@@ -170,9 +170,9 @@ class MemoryFlowTest {
                 .query(Integer.class).single()).isZero();
 
         var first = process(new IncomingEvent(duplicateId, "user:demo",
-                Map.of("message", "remember first fact"), true));
+                Map.of("message", "first fact"), true));
         var duplicate = process(new IncomingEvent(duplicateId, "user:other",
-                Map.of("message", "remember different fact"), true));
+                Map.of("message", "different fact"), true));
         assertThat(duplicate).isEqualTo(first);
         assertThat(transcripts.findBySourceEventId(duplicateId).orElseThrow().sourceEventId())
                 .isEqualTo(duplicateId);
@@ -183,7 +183,7 @@ class MemoryFlowTest {
                 .param(new byte[15]).update())
                 .isInstanceOf(org.springframework.dao.DataIntegrityViolationException.class);
         assertThat(transcripts.findById(first.transcriptId()).orElseThrow().eventPayload())
-                .containsEntry("message", "remember first fact");
+                .containsEntry("message", "first fact");
         assertThat(jdbc.sql("SELECT COUNT(*) FROM transcripts WHERE source_event_id = ?")
                 .param(UuidBytes.encode(duplicateId))
                 .query(Integer.class).single()).isEqualTo(1);
@@ -195,9 +195,9 @@ class MemoryFlowTest {
                 .query(String.class).single()).isEqualTo("NO_MEMORY");
 
         process(new IncomingEvent(multiId, "user:demo", Map.of("messages", List.of(
-                Map.of("role", "user", "text", "remember first fact"),
-                Map.of("role", "user", "text", "remember second fact"),
-                Map.of("role", "user", "text", "remember my password is hunter2"))), true));
+                Map.of("role", "user", "text", "first fact"),
+                Map.of("role", "user", "text", "second fact"),
+                Map.of("role", "user", "text", "my password is hunter2"))), true));
         List<Memory> found = prepare(multiId);
         assertThat(found).hasSize(2);
         assertThat(found).extracting(Memory::memoryText)
@@ -209,16 +209,16 @@ class MemoryFlowTest {
     void onlyMemoriesAboveConfiguredJudgeThresholdArePersisted() {
         UUID source = UUID.randomUUID();
         process(new IncomingEvent(source, "user:demo", Map.of("messages", List.of(
-                Map.of("role", "user", "text", "remember threshold fact"),
-                Map.of("role", "user", "text", "remember above threshold fact"),
-                Map.of("role", "user", "text", "remember maybe I like tea"))), true));
+                Map.of("role", "user", "text", "threshold fact"),
+                Map.of("role", "user", "text", "above threshold fact"),
+                Map.of("role", "user", "text", "maybe I like tea"))), true));
         assertThat(prepare(source)).singleElement().satisfies(memory -> {
             assertThat(memory.memoryText()).isEqualTo("above threshold fact");
             assertThat(memory.judgeScore()).isEqualTo(81);
         });
 
         UUID rejected = UUID.randomUUID();
-        process(new IncomingEvent(rejected, "user:demo", Map.of("message", "remember reject this note"), true));
+        process(new IncomingEvent(rejected, "user:demo", Map.of("message", "reject this note"), true));
         assertThat(prepare(rejected)).isEmpty();
         assertThat(jdbc.sql("SELECT preparation_status FROM transcripts WHERE source_event_id = ?")
                 .param(UuidBytes.encode(rejected)).query(String.class).single()).isEqualTo("NO_MEMORY");
@@ -227,7 +227,7 @@ class MemoryFlowTest {
     @Test
     void invalidJudgeScoreLeavesTranscriptReadyForRetry() {
         UUID source = UUID.randomUUID();
-        process(new IncomingEvent(source, "user:demo", Map.of("message", "remember invalid judge output"), true));
+        process(new IncomingEvent(source, "user:demo", Map.of("message", "invalid judge output"), true));
         assertThatThrownBy(() -> prepare(source)).hasRootCauseMessage(
                 "Candidate judge must return an integer score between 0 and 100");
         assertThat(memories.findByTranscript(transcripts.findBySourceEventId(source).orElseThrow().transcriptId())).isEmpty();
@@ -239,7 +239,7 @@ class MemoryFlowTest {
     void preparationRollsBackMemoryAndHandoffTogether() {
         UUID source = UUID.randomUUID();
         var transcript = process(new IncomingEvent(source, "user:demo",
-                Map.of("message", "remember atomic preparation"), true));
+                Map.of("message", "atomic preparation"), true));
         assertThatThrownBy(() -> transaction(connection -> {
             preparation.process(connection, transcript.transcriptId(), (topic, key, value) -> {
                 throw new IllegalStateException("simulated embedding handoff failure");
@@ -261,7 +261,7 @@ class MemoryFlowTest {
         var stored = memories.findByTranscript(transcript.transcriptId());
         assertThat(stored).singleElement().satisfies(memory -> {
             assertThat(memory.transcriptId()).isEqualTo(transcript.transcriptId());
-            assertThat(memory.evidence()).isEqualTo("remember atomic preparation");
+            assertThat(memory.evidence()).isEqualTo("atomic preparation");
             assertThat(memory.judgeScore()).isEqualTo(90);
         });
         assertThat(published).singleElement().isInstanceOfSatisfying(
@@ -271,9 +271,9 @@ class MemoryFlowTest {
 
     @Test
     void admittedMemoriesReachSearch() throws Exception {
-        Memory memory = memory("user:demo", "remember I prefer dark mode");
-        assertThat(search.search(new MemorySearchRequest("dark mode", 5)))
-                .noneMatch(hit -> hit.memoryText().equals("I prefer dark mode"));
+        Memory memory = memory("user:demo", "My OKafka events use OSON");
+        assertThat(search.search(new MemorySearchRequest("OKafka OSON", 5)))
+                .noneMatch(hit -> hit.memoryText().equals("My OKafka events use OSON"));
         assertThat(jdbc.sql("""
                 SELECT VSIZE(m.id) FROM event_memories m WHERE m.id = ?
                 """).param(UuidBytes.encode(memory.memoryId()))
@@ -281,27 +281,27 @@ class MemoryFlowTest {
 
         embed(memory.memoryId());
         assertThat(hasEmbedding(memory)).isTrue();
-        assertThat(search.search(new MemorySearchRequest("dark mode", 5)))
+        assertThat(search.search(new MemorySearchRequest("OKafka OSON", 5)))
                 .anySatisfy(hit -> {
-                    assertThat(hit.memoryText()).isEqualTo("I prefer dark mode");
+                    assertThat(hit.memoryText()).isEqualTo("My OKafka events use OSON");
                     assertThat(hit.vectorScore()).isPositive();
                     assertThat(hit.textScore()).isPositive();
                 });
         assertThat(search.search(new MemorySearchRequest("night theme", 5)))
                 .anySatisfy(hit -> {
-                    assertThat(hit.memoryText()).isEqualTo("I prefer dark mode");
+                    assertThat(hit.memoryText()).isEqualTo("My OKafka events use OSON");
                     assertThat(hit.textScore()).isZero();
                 });
         mvc.perform(post("/api/memories/search").contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"query\":\"dark mode\",\"limit\":5,\"ownerScope\":\"user:other\"}"))
+                        .content("{\"query\":\"OKafka OSON\",\"limit\":5,\"ownerScope\":\"user:other\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].memoryText").value("I prefer dark mode"))
+                .andExpect(jsonPath("$[0].memoryText").value("My OKafka events use OSON"))
                 .andExpect(jsonPath("$[0].eventPayload").doesNotExist());
     }
 
     @Test
     void embeddingUpdateCanReplaceAnExistingVector() {
-        Memory memory = memory("user:demo", "remember replaceable embedding");
+        Memory memory = memory("user:demo", "replaceable embedding");
         embed(memory.memoryId());
         float[] replacement = {0.25f, 0.5f, 0.75f};
         transaction(connection -> {
@@ -321,8 +321,8 @@ class MemoryFlowTest {
 
     @Test
     void failedEmbeddingRollsBackAndCanBeRetried() {
-        Memory failed = memory("user:demo", "remember retryable memory");
-        Memory other = memory("user:demo", "remember independent memory");
+        Memory failed = memory("user:demo", "retryable memory");
+        Memory other = memory("user:demo", "independent memory");
         String hex = failed.memoryId().toString().replace("-", "");
         jdbc.sql("""
                 CREATE OR REPLACE TRIGGER fail_one_embedding
@@ -347,21 +347,21 @@ class MemoryFlowTest {
 
     @Test
     void searchExcludesOtherOwnersExpiredAndInactive() {
-        Memory foreign = embeddedMemory("user:other", "dark mode foreign");
-        Memory expired = embeddedMemory("user:demo", "dark mode expired");
-        Memory inactive = embeddedMemory("user:demo", "dark mode inactive");
+        Memory foreign = embeddedMemory("user:other", "OKafka OSON foreign");
+        Memory expired = embeddedMemory("user:demo", "OKafka OSON expired");
+        Memory inactive = embeddedMemory("user:demo", "OKafka OSON inactive");
         jdbc.sql("UPDATE event_memories SET expires_at = SYSTIMESTAMP - INTERVAL '1' DAY WHERE id = ?")
                 .param(UuidBytes.encode(expired.memoryId())).update();
         jdbc.sql("UPDATE event_memories SET status = 'inactive' WHERE id = ?")
                 .param(UuidBytes.encode(inactive.memoryId())).update();
-        var hits = search.search(new MemorySearchRequest("dark mode", 50));
+        var hits = search.search(new MemorySearchRequest("OKafka OSON", 50));
         assertThat(hits).noneMatch(hit -> hit.memoryText().contains("foreign")
                 || hit.memoryText().contains("expired") || hit.memoryText().contains("inactive"));
         assertThat(hasEmbedding(foreign)).isTrue();
     }
 
     private Memory embeddedMemory(String owner, String text) {
-        Memory memory = memory(owner, "remember " + text);
+        Memory memory = memory(owner, text);
         embed(memory.memoryId());
         return memory;
     }

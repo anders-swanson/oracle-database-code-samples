@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/** Run only with the oci-smoke Maven profile and OCI_COMPARTMENT_ID. */
+/** Live OCI checks, enabled when OCI_COMPARTMENT_ID is set. */
 @SpringBootTest(properties = {
         "memory.background-processing.enabled=false",
         "spring.datasource.oracleucp.initial-pool-size=0",
@@ -42,11 +42,11 @@ class OciGenAiSmokeTest {
     @Test
     void extractsDurableFactsAsJson() {
         var transcript = new Transcript(1, UUID.randomUUID(), "user:demo",
-                Map.of("message", "Remember my favorite color is amber"), OffsetDateTime.now());
+                Map.of("message", "My Oracle AI Database application stores UUIDs as RAW(16)."), OffsetDateTime.now());
         var facts = extractor.extract(transcript);
         assertThat(facts).anySatisfy(fact -> {
-            assertThat(fact.candidateText()).containsIgnoringCase("amber");
-            assertThat(judge.score(transcript, fact)).isBetween(0, 100);
+            assertThat(fact.candidateText()).containsIgnoringCase("RAW");
+            assertThat(judge.score(transcript, fact)).isGreaterThan(70).isLessThanOrEqualTo(100);
         });
     }
 }

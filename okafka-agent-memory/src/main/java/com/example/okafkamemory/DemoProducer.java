@@ -20,7 +20,9 @@ public final class DemoProducer {
     }
 
     public static void main(String[] args) throws Exception {
-        String fact = args.length == 0 ? "I prefer dark mode" : String.join(" ", args).trim();
+        String fact = args.length == 0
+                ? "My OKafka consumers use consumer.getDBConnection() for transactional writes"
+                : String.join(" ", args).trim();
         if (fact.isBlank()) throw new IllegalArgumentException("A fact is required");
         // The producer publishes only; the running application consumes and processes memories.
         try (ConfigurableApplicationContext context = new SpringApplicationBuilder(MemoryApplication.class)
@@ -35,9 +37,8 @@ public final class DemoProducer {
     }
 
     public static UUID publish(Properties base, String topic, String fact) throws Exception {
-        String message = fact.startsWith("remember ") ? fact : "remember " + fact;
         UUID sourceEventId = UUID.randomUUID();
-        Map<String, Object> payload = Map.of("message", message);
+        Map<String, Object> payload = Map.of("message", fact);
         Properties producerProperties = new Properties();
         producerProperties.putAll(base);
         producerProperties.put("enable.idempotence", "true");

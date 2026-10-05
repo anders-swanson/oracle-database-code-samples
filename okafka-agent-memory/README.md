@@ -1,6 +1,6 @@
 ---
 name: okafka-agent-memory
-description: Build durable, owner-scoped agent memory from OKafka events with Oracle AI Database and Spring AI.
+description: Build durable, owner-scoped agent memory from OKafka events with Oracle AI Database and OCI Generative AI.
 tags:
   - Java
   - OKafka
@@ -12,127 +12,312 @@ tags:
 
 # OKafka event-to-memory lab
 
-Send one fact through OKafka, watch it become a memory, then search it. OCI Generative AI extracts facts, judges candidates, and generates embeddings, using credentials from `~/.oci/config`. OKafka uses Oracle AI Database TxEventQ; there is no separate Kafka broker.
+Publish a transcript through OKafka, extract useful facts with OCI Generative AI, and search the resulting memories in Oracle AI Database. The lab uses three event consumers, two durable tables, and Spring AI chat and embedding models. OKafka delivers events through Oracle AI Database Transactional Event Queues (TxEventQ).
 
-## Start → send → search
+An accepted transcript does not automatically become a memory. The model may extract no useful facts, or the judge may reject every candidate. Those transcripts finish as `NO_MEMORY`; they do not emit embedding events.
 
-Use Java 21 or later, Maven, Docker, and OCI credentials with access to Generative AI in a region offering the configured chat and embedding models. Run these commands from this module directory. Start the database and leave the application running in a second terminal:
+## Run the lab
+
+You need Java 21 or later, Maven, Docker, and OCI credentials in `~/.oci/config`. The configured OCI profile must have access to the compartment and the chat and embedding models in its region. The checked-in defaults select:
+
+| Setting | Default |
+| --- | --- |
+| OCI authentication / profile | File authentication, `~/.oci/config`, `DEFAULT` |
+| Chat model | `cohere.command-a-03-2025` |
+| Embedding model / dimensions | `cohere.embed-v4.0`, 1536 |
+| Admission threshold | 70; only scores **greater than 70** are admitted |
+| Oracle AI Database connection | `localhost:1521/FREEPDB1`, `TESTUSER` / `Welcome123#` |
+| Search API / owner scope | `http://localhost:8080`, `user:demo` |
+
+Run the following commands from `okafka-agent-memory/`. In the application terminal, export your compartment ID, start the database, and leave the application running:
 
 ```sh
 export OCI_COMPARTMENT_ID=YOUR_COMPARTMENT_OCID
-docker compose up -d --wait
+docker compose up -d --wait --force-recreate
 mvn spring-boot:run
 ```
 
-In a third terminal, publish a fact. This producer runs as a separate process and exits after publishing; the application in the second terminal consumes the event and builds the memory. The command prints its source event ID:
+Compose uses `container-registry.oracle.com/database/free:latest`, the official Oracle AI Database Free image. Its startup script creates `TESTUSER`, grants OKafka access, and installs the schema. `ORACLE_PWD` sets the administrator password (default `Welcome12345`); the lab user retains `Welcome123#`. Its health check verifies that the lab tables and required columns can be queried. The application creates its three topics and starts the consumers.
+
+Database files live in the container with no persistent Docker volume or host data directory. The read-only mounts contain initialization scripts only. `--force-recreate` creates a clean database each time you run the startup command.
+
+In another terminal, also export the compartment ID before starting the producer:
 
 ```sh
-mvn -q exec:java -Dexec.mainClass=com.example.okafkamemory.DemoProducer -Dexec.args='I prefer dark mode'
+export OCI_COMPARTMENT_ID=YOUR_COMPARTMENT_OCID
+mvn -q exec:java \
+  -Dexec.mainClass=com.example.okafkamemory.DemoProducer \
+  -Dexec.args='My Oracle AI Database application stores UUIDs as RAW(16).'
 ```
 
-Search until the embedding consumer has added the vector:
+The producer prints a source event UUID and exits. It wraps the text in `{"message":"My Oracle AI Database application stores UUIDs as RAW(16)."}`, uses owner scope `user:demo`, grants storage permission, and sends an OSON `IncomingEvent`. Each invocation generates a new source UUID. The producer disables background processing in its own process; the separately running application processes the event.
+
+Search after the embedding is stored:
 
 ```sh
 curl -s http://localhost:8080/api/memories/search \
   -H 'Content-Type: application/json' \
-  -d '{"query":"dark mode","limit":5}'
+  -d '{"query":"Oracle AI Database UUID RAW(16)","limit":5}'
 ```
 
-The response should include the dark-mode preference with vector, text, and recency scores. OCI may rephrase the extracted fact. If the first search returns `[]`, wait a moment and repeat it. Try another fact by changing `-Dexec.args`; the producer adds `remember ` to make the request explicit.
+The response contains `memoryId`, `memoryText`, `metadata`, and total, vector, text, and recency scores. The model can rephrase the fact. If the response is empty, inspect the transcript state before assuming that processing failed: an embedding may still be pending, or the transcript may have finished as `NO_MEMORY`.
 
-`memory.background-processing.enabled` defaults to `true` and starts all three OKafka stage consumers. The producer sets it to `false` in its own process so it only publishes events. This setting does not affect the separately running application or disable the search API.
+The HTTP API exposes search only. Creation happens through incoming OKafka events.
 
-## Follow the events
+## Explore memory creation and rejection
 
-Each stage has an OKafka consumer and publishes the next event after completing its work:
+Keep the application running while publishing these examples. All of them enter through `MEMORY_INCOMING`; the application decides which candidates become memories. Text examples describe the intended model behavior, not fixed scores or guaranteed row counts.
 
-| Topic | Event | Consumer action |
+### Create technical memories
+
+Admission is scoped to useful, specific technical knowledge and project context about OKafka and Oracle AI Database. No command prefix is required. Publish facts such as:
+
+```sh
+mvn -q exec:java -Dexec.mainClass=com.example.okafkamemory.DemoProducer \
+  -Dexec.args='OKafka delivers events through Oracle AI Database Transactional Event Queues (TxEventQ).'
+
+mvn -q exec:java -Dexec.mainClass=com.example.okafkamemory.DemoProducer \
+  -Dexec.args='My OKafka consumers use consumer.getDBConnection() for transactional writes.'
+
+mvn -q exec:java -Dexec.mainClass=com.example.okafkamemory.DemoProducer \
+  -Dexec.args='My Oracle AI Database application stores UUIDs as RAW(16).'
+
+mvn -q exec:java -Dexec.mainClass=com.example.okafkamemory.DemoProducer \
+  -Dexec.args='My Oracle AI Database vector search uses the same embedding model for stored vectors and queries.'
+
+mvn -q exec:java -Dexec.mainClass=com.example.okafkamemory.DemoProducer \
+  -Dexec.args='My application uses OKafka with TxEventQ. My Oracle AI Database application stores UUIDs as RAW(16).'
+```
+
+| Input | Intended memory | What to inspect |
 | --- | --- | --- |
-| `MEMORY_INCOMING` | `IncomingEvent` with the transcript payload | Log a warning and drop events that fail prerequisites. Store accepted transcripts once per source ID and publish `TranscriptReady` only for new rows. |
-| `MEMORY_TRANSCRIPTS` | `TranscriptReady(transcriptId)` | Use OCI to extract facts and judge each against the source transcript. Persist admitted memories with evidence, judge scores, and transcript provenance, then publish one `MemoryReadyForEmbedding` per memory. |
-| `MEMORY_EMBEDDINGS` | `MemoryReadyForEmbedding(memoryId)` | Use OCI to embed the stored memory text, save or replace its vector. |
+| OKafka and TxEventQ | Durable knowledge about queue technology | A `DONE` transcript with supported technical context |
+| Consumer connection | Transaction implementation decision | Evidence and a memory about `consumer.getDBConnection()` |
+| UUID storage | Oracle AI Database data representation | A memory about UUIDs and `RAW(16)` |
+| Embedding model consistency | Vector search implementation | The relationship between stored vectors and query embeddings |
+| Queue context plus UUID storage | Multiple technical facts | Separate candidates; each admitted memory receives its own UUID and embedding event |
 
-Internal events carry IDs; consumers load the corresponding rows. No worker scans SQL tables for ready work. Configure the incoming topic with `memory.intake.topic` and the other topics with `memory.events.*`. Each topic has one partition in this lab and a consumer group named `<topic>_PROCESSOR`.
+Search with a request such as `{"query":"OKafka transaction connection","limit":5}`. Search ranks eligible memories and can return other technical facts as well.
 
-Each stage creates a transactional producer on `consumer.getDBConnection()`. The same connection backs its `JdbcClient`. One `producer.commitTransaction()` atomically commits consumption of the input, database changes, and all next-stage events. `abortTransaction()` rolls them all back together. This is exactly-once processing of the database and queue effects at each stage. OCI calls can repeat after rollback; they are outside the database's atomic guarantee.
+There is no semantic deduplication or automatic replacement of previous facts. Publishing the same text twice with different source UUIDs can create two memories. Publishing a changed implementation decision does not deactivate the earlier memory.
 
-Each repository has a `from(Connection)` factory, for example `JdbcTranscriptRepository.from(connection)` or `JdbcMemoryRepository.from(connection)`. These factories use the caller's connection without committing, rolling back, or closing it. The `JdbcClient` constructors also remain available for pooled access, including the search API.
+### See transcripts finish without a memory
 
-A failed stage event is rolled back and retried after a one-second pause. Other stages keep running, but a repeatedly failing event can block later events on its stage's partition. This example has no dead-letter or human-review workflow.
+Unrelated preferences, generic development context, greetings, temporary requests, uncertain speculation, and vague aspirations are excluded:
 
-## Inspect the two durable tables
+```sh
+mvn -q exec:java -Dexec.mainClass=com.example.okafkamemory.DemoProducer \
+  -Dexec.args='My favorite color is teal and I prefer dark mode.'
 
-| Table | What to look for |
+mvn -q exec:java -Dexec.mainClass=com.example.okafkamemory.DemoProducer \
+  -Dexec.args='I use Java for my backend projects.'
+
+mvn -q exec:java -Dexec.mainClass=com.example.okafkamemory.DemoProducer \
+  -Dexec.args='Please check my OKafka queue today.'
+
+mvn -q exec:java -Dexec.mainClass=com.example.okafkamemory.DemoProducer \
+  -Dexec.args='Maybe OKafka uses a separate Kafka broker, but I am not sure.'
+```
+
+| Reason | Example | Intended behavior |
+| --- | --- | --- |
+| Unrelated personal preference | Favorite colors, dark mode, concise explanations | Exclude details that do not supply domain knowledge |
+| Unrelated development context | `I use Java for my backend projects` | Exclude generic context with no connection to OKafka or Oracle AI Database |
+| Greeting | `hello` | Extract no durable fact |
+| Temporary request | `Please check my OKafka queue today` | Exclude one-time tasks even when they mention the domain |
+| Uncertain speculation | `Maybe OKafka uses a separate Kafka broker, but I am not sure` | Extract nothing useful or assign a low admission score |
+| Vague aspiration | `I want resilient OKafka memory processing` | Exclude wishes without specific technical context |
+| Assistant claim | Only an assistant states that the user stores UUIDs as `RAW(16)` | Do not use assistant content as user evidence |
+| Sensitive secret | `My Oracle AI Database demo password is fake-demo-password` | Exclude secrets even when related to the domain |
+
+For a mixed input such as `My Oracle AI Database application stores UUIDs as RAW(16). My favorite color is teal.`, retain only the UUID storage fact as memory. The original accepted transcript still contains both statements.
+
+For these inputs, intake can still store a transcript. If extraction returns no candidates, or every candidate is skipped or rejected, the committed state is `NO_MEMORY` with no memory rows and no embedding handoff. A transcript with some admitted and some rejected candidates becomes `DONE` and stores only the admitted candidates.
+
+The model's output and scores can vary between runs. A score of 70 is rejected at the default threshold, while 71 is admitted. Scores are not a fixed mapping from phrases. Rejected candidates and their scores are not stored, so `NO_MEMORY` alone does not tell you whether extraction returned nothing or the judge rejected all candidates.
+
+**An accepted transcript retains its original payload, even when a secret or another candidate is excluded from memory.** Model instructions do not provide deterministic secret filtering. Use fabricated data in these examples; an application that must exclude sensitive source data needs to enforce that before publication or intake.
+
+### Publish events that fail intake prerequisites
+
+`DemoProducer` always supplies storage permission, a valid owner, and a payload. To exercise the other event fields, use this JShell producer from the module directory. It sends real OSON events to the running lab and prints the UUID for each event; it does not insert table rows directly.
+
+```sh
+mvn -q compile dependency:build-classpath -Dmdep.outputFile=target/classpath.txt
+jshell --class-path "target/classes:$(cat target/classpath.txt)" <<'JAVA'
+import com.example.okafkamemory.intake.IncomingEvent;
+import com.oracle.spring.json.jsonb.JSONB;
+import com.oracle.spring.json.kafka.OSONKafkaSerializationFactory;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.oracle.okafka.clients.producer.KafkaProducer;
+import java.util.*;
+
+var properties = new Properties();
+properties.put("bootstrap.servers", "localhost:1521");
+properties.put("oracle.service.name", "freepdb1");
+properties.put("security.protocol", "PLAINTEXT");
+properties.put("oracle.net.tns_admin", ".");
+properties.put("enable.idempotence", "true");
+
+var duplicateId = UUID.randomUUID();
+var events = List.of(
+    new IncomingEvent(UUID.randomUUID(), "user:demo",
+        Map.of("message", "My Oracle AI Database application stores UUIDs as RAW(16)."), false),
+    new IncomingEvent(UUID.randomUUID(), " ",
+        Map.of("message", "My application uses OKafka with TxEventQ."), true),
+    new IncomingEvent(UUID.randomUUID(), "user:demo", null, true),
+    new IncomingEvent(UUID.randomUUID(), "user:demo", Map.of(), true),
+    new IncomingEvent(UUID.randomUUID(), "user:demo",
+        Map.of("messages", List.of(Map.of("role", "assistant",
+            "text", "The user stores Oracle AI Database UUIDs as RAW(16)."))), true),
+    new IncomingEvent(duplicateId, "user:demo",
+        Map.of("message", "My OKafka events use OSON serialization."), true),
+    new IncomingEvent(duplicateId, "user:demo",
+        Map.of("message", "My OKafka events use plain text serialization."), true)
+);
+
+try (var producer = new KafkaProducer<String, IncomingEvent>(properties,
+        new StringSerializer(),
+        new OSONKafkaSerializationFactory(JSONB.createDefault()).createSerializer())) {
+    for (var event : events) {
+        producer.send(new ProducerRecord<>("MEMORY_INCOMING",
+                event.sourceEventId().toString(), event)).get();
+        System.out.println(event.sourceEventId() + " " + event);
+    }
+}
+/exit
+JAVA
+```
+
+The connection settings match the checked-in `ojdbc.properties`. Change the topic or connection properties in this snippet if you configured different values for the application.
+
+| Event in the snippet | Result |
 | --- | --- |
-| `transcripts` | The accepted JSON payload, numeric ID, and `READY`, `DONE`, or `NO_MEMORY` preparation state. |
-| `event_memories` | Admitted text, transcript provenance, evidence, judge score, and vector. A null vector is durable but excluded from search. |
+| `storageAllowed=false` | Log `STORAGE_NOT_ALLOWED`, acknowledge the event, and store no transcript or memory |
+| Blank `ownerScope` | Log `MISSING_OWNER_SCOPE`, acknowledge the event, and store no transcript or memory |
+| Null `transcriptPayload` | Log `EMPTY_TRANSCRIPT`, acknowledge the event, and store no transcript or memory |
+| Empty object `{}` | Accepted by intake; only null payloads are rejected by this rule. Extraction should find no facts and finish as `NO_MEMORY` |
+| Assistant-only transcript | Accepted by intake; the model is instructed to ignore the assistant's claim |
+| Two allowed events with the same UUID | Store only the first payload and emit its transcript handoff once; the second payload does not overwrite it |
 
-Inspect them with SQL*Plus in the database container. Use `RAWTOHEX(source_event_id)` to inspect the UUID as 32 hexadecimal characters without hyphens:
+Intake checks permission first, then owner scope, then payload. When more than one prerequisite fails, the warning reports the first reason. Dropped IDs are not retained, so a later valid event may reuse a dropped ID. An accepted ID is protected by the transcript's unique constraint.
+
+A missing or malformed UUID, an OSON payload with the wrong type, or a Kafka key that does not match its event ID is a processing failure, not one of these acknowledged policy drops. Correct producers use a UUID, an object-valued payload, and the canonical UUID string as the incoming key.
+
+### Inspect each result
+
+Connect to SQL*Plus in the running container:
 
 ```sh
 docker compose exec oracle-free sqlplus 'TESTUSER/Welcome123#@//localhost:1521/FREEPDB1'
 ```
 
+Paste the UUID printed by a producer into this query:
+
 ```sql
-SELECT transcript_id, RAWTOHEX(source_event_id) AS source_event_id, preparation_status FROM transcripts;
-SELECT RAWTOHEX(id), transcript_id, owner_scope, memory_text, judge_score, VECTOR_DIMENSION_COUNT(embedding) AS dimensions FROM event_memories;
-EXIT;
+SET LINESIZE 220
+SET LONG 10000
+DEFINE source_event_id = 'PASTE_SOURCE_EVENT_UUID'
+
+SELECT t.transcript_id, t.preparation_status,
+       RAWTOHEX(m.id) AS memory_id, m.memory_text, m.judge_score,
+       VECTOR_DIMENSION_COUNT(m.embedding) AS dimensions
+FROM transcripts t
+LEFT JOIN event_memories m ON m.transcript_id = t.transcript_id
+WHERE t.source_event_id = HEXTORAW(REPLACE('&source_event_id', '-', ''))
+ORDER BY m.id;
 ```
 
-The two tables retain provenance and processing state; the topics deliver the work. Preparation stores admitted memories and their embedding handoffs in the same transaction. Embedding readiness is represented only by the memory's vector: search excludes null vectors. The embedding stage updates the memory directly by its memory ID and can replace an existing vector. Extraction and judging use separate calls to the configured Spring AI `ChatModel`. The judge scores each candidate from 0 to 100 using the source transcript, supporting evidence, attribution, durability, usefulness, and sensitivity. It replaces exact evidence matching, keyword secret filtering, and prefix-based curation. This is a model judgment, not a guaranteed secret detector.
+| Observation | Meaning |
+| --- | --- |
+| No transcript row, plus a drop warning | Intake rejected the event before storing it |
+| `READY` | The transcript is awaiting preparation or its preparation transaction was rolled back |
+| `NO_MEMORY`, null memory columns | Preparation completed without an admitted memory; no embedding event is expected |
+| `DONE`, memory row, null dimensions | A memory was admitted, but its embedding has not committed yet |
+| `DONE`, dimensions 1536 | The default model's embedding has committed; the memory can participate in search if its scope, status, and expiry also qualify |
 
-Configure admission in `application.yml`:
+A missing row by itself is not proof of a policy rejection: the event may still be waiting, or a consumer may have failed. Check the application logs for the drop warning, rollback, or stopped-stage error. The source UUID is stored as `RAW(16)`; `RAWTOHEX` displays 32 hexadecimal characters without hyphens.
 
-```yaml
-memory:
-  candidates:
-    score-threshold: 70
-```
+Memories belonging to another owner, marked `inactive`, expired, missing an embedding, or having the wrong embedding dimensions are excluded from search. Their table rows remain stored. This is retrieval filtering, not candidate rejection or deletion.
 
-Only scores **strictly greater** than the threshold are persisted; a score of 70 is rejected at the default setting, and 71 is admitted. The threshold must be between 0 and 100. Admitted memories retain their score in `event_memories.judge_score`. Low-scoring candidates are discarded; when none pass, the transcript becomes `NO_MEMORY`. Missing, malformed, fractional, or out-of-range judge scores fail preparation and leave its event eligible for retry. The embedding consumer uses the separate Spring AI `EmbeddingModel` to generate retrieval vectors.
+## How the pipeline works
 
-The former candidate table and `MEMORY_CANDIDATES` topic are no longer used. Existing data requires merging evidence, judge scores, and transcript links into memory rows. Old embedding events carrying `candidateId` must be replaced with events carrying the corresponding `memoryId`, or use a disposable reset and republication.
+| Topic | Event | Work committed by its consumer |
+| --- | --- | --- |
+| `MEMORY_INCOMING` | `IncomingEvent(sourceEventId, ownerScope, transcriptPayload, storageAllowed)` | Apply intake prerequisites; store a new accepted transcript and publish `TranscriptReady(transcriptId)` |
+| `MEMORY_TRANSCRIPTS` | `TranscriptReady(transcriptId)` | Extract candidates, judge each, store admitted memories, set `DONE` or `NO_MEMORY`, and publish one `MemoryReadyForEmbedding(memoryId)` per admitted memory |
+| `MEMORY_EMBEDDINGS` | `MemoryReadyForEmbedding(memoryId)` | Embed the stored memory text and update its vector |
 
-## Verify and reset
+There is no separate candidate topic or candidate table. Candidates exist during preparation; only admitted memories are persisted. Internal events carry IDs, and consumers load the corresponding rows. Work is delivered by events, not by scanning SQL tables for ready rows.
 
-` mvn test` runs the sample with Oracle AI Database Free in Testcontainers, including a real OKafka producer-to-search path. It uses its own database and calls OCI for extraction, judging, and embeddings, so export `OCI_COMPARTMENT_ID` first. Deterministic persistence tests use test-only model fixtures. Integration tests also verify atomic input/output handoffs and event redelivery after a failed embedding write.
+`transcripts` stores the source UUID, owner scope, native JSON payload, and preparation state. `event_memories` stores its own UUID, transcript link, owner scope, evidence, memory text, judge score, embedding, status, and optional expiry. Transcript IDs are generated numeric values; source and memory IDs are Java UUIDs stored as `RAW(16)`.
+
+Each stage uses `consumer.getDBConnection()` for both repository writes and a transactional OKafka producer. `commitTransaction()` commits consumption, relational writes, and emitted next-stage events together. `abortTransaction()` rolls them back together. The `from(Connection)` repository factories preserve ownership of that connection. Pooled UCP connections serve independent reads such as search.
+
+The atomic guarantee covers the database and queue effects of a stage. OCI requests can repeat after rollback. A stage retries a handler failure after a one-second pause; a poll, setup, or rollback failure can stop the consumer and is logged as such. Each topic has one partition, and a repeatedly failing event can block later events on that stage. The lab has no dead-letter workflow.
+
+Candidate objects with null or blank text/evidence are skipped. Candidates scoring at or below the threshold are discarded. Invalid model JSON or a missing, fractional, or out-of-range judge score fails the preparation transaction; the transcript remains eligible for retry rather than being committed as `NO_MEMORY`. A failed embedding update leaves the admitted row's vector null until its event succeeds. Replaying an embedding event can replace an existing vector.
+
+Configuration lives in [application.yml](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/main/resources/application.yml). The incoming topic is `memory.intake.topic`; the remaining topics are `memory.events.transcripts` and `memory.events.embeddings`. Each consumer uses group `<topic>_PROCESSOR`, disables auto-commit, and processes at most one record per poll. `memory.background-processing.enabled=false` disables the stage consumers.
+
+## Search behavior
+
+The search request accepts `query` and `limit` (1–50). The owner is fixed by trusted configuration, `memory.retrieval.owner-scope`; callers do not select it in the request. The API returns admitted memory text and scores, not source transcripts or evidence.
+
+Search embeds the query with the same configured model, filters eligible rows, and ranks them using cosine vector similarity, lexical matches, and recency. The default weights are 0.5, 0.35, and 0.15; recency has a 30-day half-life. There is no minimum similarity cutoff.
+
+The lab assumes one embedding model for both stored vectors and queries and does not record model versions per row. After changing the embedding model, re-embed all memories before searching, even if the dimensions stay the same. There is no automatic re-embedding job; disposable lab data can be reset and republished.
+
+## Run the tests
+
+From the module directory, run the deterministic tests without OCI calls:
 
 ```sh
- mvn test
+env -u OCI_COMPARTMENT_ID mvn test
 ```
 
-Run `mvn test` for deterministic database tests without OCI calls. These tests still require Docker.
+Docker is still required for the database tests. Test-only chat and embedding fixtures exercise persistence, filtering, candidate thresholds, and retrieval. Without `OCI_COMPARTMENT_ID`, the live pipeline and OCI smoke test classes are skipped.
 
-Stop the app with Ctrl-C and the database with `docker compose down`. Compose retains its volume between runs. The schema uses `RAW(16)` source event IDs, a native `JSON` transcript column, and a required `event_memories.judge_score` column. It is incompatible with earlier schemas with a separate candidate table, without judge scores, or with CLOB transcripts, VARCHAR2 source IDs, per-memory embedding model columns, SQL-polled retry fields, or ten tables. To discard **disposable demo data** and create a clean schema, run:
-
-```sh
-docker compose down --volumes
-docker compose up -d --wait
-```
-
-Preserving earlier data requires a separate migration and publication of missing stage events; existing READY rows from the SQL polling design will not be scanned automatically. The reset command deletes this Compose project's database volume.
-
-## Use another local Oracle AI Database Free instance
-
-The checked-in defaults connect to `localhost:1521/FREEPDB1` as `TESTUSER` using the sample password in `application.yml` and `ojdbc.properties`. Create that user in your local instance, apply `src/test/resources/okafka.sql` from a SYS session, then run `src/main/resources/db/schema.sql` as `TESTUSER`. Start the app from this directory so OKafka can read `ojdbc.properties`. Change the Spring datasource and OKafka connection properties together when using another host.
-
-The event contract is `IncomingEvent(sourceEventId, ownerScope, transcriptPayload, storageAllowed)`. `transcriptPayload` is a JSON object mapped to `Map<String, Object>`, for example `{"message":"remember I prefer dark mode"}`. The OSON consumer deserializes the complete event, including its structured payload. Intake stores that payload as OSON in `transcripts.event_payload`, a native `JSON` column; the repository maps it back to a Java map without converting through JSON text. Candidate preparation sends the structured transcript and each extracted candidate to the LLM judge. JSON text is generated only when building the model prompt. Older events containing a JSON string in `transcriptPayload` must be republished with an object payload.
-
-`sourceEventId` is a required Java `UUID`, serialized as a UUID string in JSON and stored as `RAW(16)` in `transcripts`. The OKafka key must equal its canonical hyphenated UUID string. Reusing an accepted source ID leaves its original transcript unchanged and emits no additional handoff. Events without storage permission, an owner scope, or a transcript payload are logged with their ID and rejection reason, then acknowledged without writing a row. Dropped IDs are not retained, so a later allowed event can use the same ID. The search request accepts only `query` and `limit`; owner scope is fixed by trusted local configuration as `user:demo`. Source transcripts are never returned by the API. The sample demonstrates atomic consume/write/publish transactions at each stage, plus local identity scoping. OCI extraction and embedding can be retried; exactly-once database and queue effects do not imply exactly-once model calls. Production authentication is outside this lab.
-
-## OCI Generative AI configuration
-
-`application.yml` selects OCI GenAI chat and embedding models with file authentication, the `DEFAULT` profile, and the region from `~/.oci/config`. Both models use `OCI_COMPARTMENT_ID`. The lab assumes one embedding model for all stored memories and search queries; it does not track model names or versions per row. Embedding dimensions come directly from the Spring AI configuration.
-
-**If you change embedding models, re-embed all existing memory data before using search, even when the new model has the same dimensions.** Vectors from different models are not interchangeable. The lab does not automatically re-embed existing data; for disposable lab data, reset the database volume and republish your facts.
-
-The [Oracle Spring AI chat guide](https://oracle.github.io/spring-cloud-oracle/site/docs/spring-ai/oci-genai-chat/), [embedding guide](https://oracle.github.io/spring-cloud-oracle/site/docs/spring-ai/oci-genai-embeddings/), and [OCI model catalog](https://docs.oracle.com/en-us/iaas/Content/generative-ai/pretrained-models.htm) describe provider settings and regional availability.
-
-To check live OCI chat and embeddings without starting a database:
+Run all tests, including the real OCI pipeline, with the compartment set:
 
 ```sh
-export OCI_COMPARTMENT_ID=<YOUR_COMPARTMENT_OCID>
+export OCI_COMPARTMENT_ID=YOUR_COMPARTMENT_OCID
 mvn test
 ```
 
-Production identity, retention, deletion, and review workflows are outside this lab.
+The pipeline tests provision their own Oracle AI Database Free container. They verify producer-to-search processing, intake rollback and redelivery, atomic consume/write/publish handoffs, and embedding failure followed by redelivery through the full incoming-event path. They also publish the documented creation and rejection examples, verify intake drop reasons, reuse a rejected ID, and check duplicate source IDs. The examples assert domain facts are admitted, irrelevant inputs finish as `NO_MEMORY`, and mixed transcripts retain only the relevant facts. All use real OCI extraction, judging, and embeddings through the incoming event path. Inputs live in [memory-pipeline-examples.json](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/test/resources/memory-pipeline-examples.json). These tests do not use the Compose database.
+
+To check only OCI chat, extraction, judging, and embeddings without provisioning a database:
+
+```sh
+export OCI_COMPARTMENT_ID=YOUR_COMPARTMENT_OCID
+mvn -Dtest=OciGenAiSmokeTest test
+```
+
+From the repository root, the full module command is `mvn -pl okafka-agent-memory -am test`.
+
+## Stop, reset, or use another instance
+
+Stop the application with Ctrl-C and remove the database container with `docker compose down`. Removing the container discards all lab data.
+
+To initialize a fresh lab:
+
+```sh
+docker compose down
+docker compose up -d --wait --force-recreate
+```
+
+The prebuilt image runs the lab script through `/opt/oracle/scripts/startup`; the setup hook is skipped for its existing database. The script creates the user and schema when absent and reapplies grants on subsequent starts. `docker compose stop` followed by `start`, or `restart`, reuses the same container and retains its data; recreate the container for a clean setup.
+
+To use another local Oracle AI Database Free instance, provision the sample user, apply [okafka.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/test/resources/okafka.sql) from a SYS session in the target PDB, then apply [schema.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/main/resources/db/schema.sql) as that user. Update the Spring datasource settings and the OKafka host, service, and `ojdbc.properties` credentials together. Start the app from the module directory so its default `oracle.net.tns_admin=.` resolves correctly.
+
+Production authentication, retention, deletion, and human review are outside this lab. The owner scope is a local demonstration of isolation, not an authentication system.
+
+## Code to explore
+
+- [DemoProducer](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/main/java/com/example/okafkamemory/DemoProducer.java): publishes incoming OSON events.
+- [IntakePolicy](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/main/java/com/example/okafkamemory/intake/IntakePolicy.java): deterministic intake prerequisites.
+- [CandidatePreparationService](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/main/java/com/example/okafkamemory/candidate/CandidatePreparationService.java): extraction, admission, persistence, and embedding handoffs.
+- [TransactionalEventConsumer](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/main/java/com/example/okafkamemory/events/TransactionalEventConsumer.java): transaction ownership and retries.
+- [MemoryPipelineTest](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/test/java/com/example/okafkamemory/MemoryPipelineTest.java): full event path and failure recovery tests.

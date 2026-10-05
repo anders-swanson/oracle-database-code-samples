@@ -19,7 +19,7 @@ class IncomingEventTest {
     @Test
     void sourceEventUuidAndStructuredPayloadSurviveOsonSerialization() {
         var event = new IncomingEvent(UUID.randomUUID(), "user:demo", Map.of("messages", List.of(
-                Map.of("role", "user", "text", "remember I prefer \"dark\" mode\nwith tabs"))), true);
+                Map.of("role", "user", "text", "My OKafka events use \"OSON\" serialization\nwith tabs"))), true);
         var factory = new OSONKafkaSerializationFactory(JSONB.createDefault());
         try (var serializer = factory.createSerializer();
              var deserializer = factory.createDeserializer(IncomingEvent.class)) {

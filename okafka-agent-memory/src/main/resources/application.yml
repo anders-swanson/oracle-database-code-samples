@@ -39,6 +39,7 @@ memory:
     score-threshold: 70
   retrieval:
     owner-scope: user:demo
+    minimum-relevance: 0.5
     vector-weight: 0.5
     text-weight: 0.35
     recency-weight: 0.15

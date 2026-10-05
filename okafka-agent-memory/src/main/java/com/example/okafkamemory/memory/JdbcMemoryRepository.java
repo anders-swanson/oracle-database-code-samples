@@ -39,6 +39,43 @@ public class JdbcMemoryRepository {
                 .update();
     }
 
+    /** Exact text deduplication within the single-partition preparation stage. */
+    public boolean containsActiveText(String ownerScope, String text) {
+        return jdbc.sql("""
+                SELECT COUNT(*) FROM event_memories
+                WHERE owner_scope = ? AND status = 'active'
+                  AND (expires_at IS NULL OR expires_at > SYSTIMESTAMP)
+                  AND DBMS_LOB.COMPARE(memory_text, ?) = 0
+                """).param(1, ownerScope).param(2, text, Types.CLOB)
+                .query(Integer.class).single() > 0;
+    }
+
+    public boolean isActiveOwner(UUID memoryId, String ownerScope) {
+        return jdbc.sql("""
+                SELECT COUNT(*) FROM event_memories
+                WHERE id = ? AND owner_scope = ? AND status = 'active'
+                  AND (expires_at IS NULL OR expires_at > SYSTIMESTAMP)
+                """).param(1, UuidBytes.encode(memoryId)).param(2, ownerScope)
+                .query(Integer.class).single() == 1;
+    }
+
+    /** Called after embedding: replacement and deactivation commit together. */
+    public void supersedeFor(UUID replacementId) {
+        var correction = jdbc.sql("""
+                SELECT m.owner_scope, JSON_VALUE(t.event_payload, '$.supersedesMemoryId') AS target_id
+                FROM event_memories m JOIN transcripts t ON t.transcript_id = m.transcript_id
+                WHERE m.id = ? AND m.status = 'active' AND m.embedding IS NOT NULL
+                  AND (m.expires_at IS NULL OR m.expires_at > SYSTIMESTAMP)
+                """).param(UuidBytes.encode(replacementId))
+                .query((rs, row) -> new Correction(rs.getString("owner_scope"), rs.getString("target_id")))
+                .optional();
+        correction.filter(value -> value.targetId() != null).ifPresent(value ->
+                jdbc.sql("UPDATE event_memories SET status = 'inactive' WHERE id = ? AND owner_scope = ? AND id <> ?")
+                        .param(1, UuidBytes.encode(UUID.fromString(value.targetId())))
+                        .param(2, value.ownerScope())
+                        .param(3, UuidBytes.encode(replacementId)).update());
+    }
+
     public List<Memory> findByTranscript(long transcriptId) {
         return jdbc.sql("""
                 SELECT id, transcript_id, owner_scope, evidence, memory_text, judge_score
@@ -65,5 +102,8 @@ public class JdbcMemoryRepository {
                 .param(1, vector, OracleType.VECTOR.getVendorTypeNumber())
                 .param(2, UuidBytes.encode(memoryId))
                 .update();
+    }
+
+    private record Correction(String ownerScope, String targetId) {
     }
 }

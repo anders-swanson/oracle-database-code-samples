@@ -2,6 +2,8 @@ package com.example.okafkamemory.intake;
 
 import com.example.okafkamemory.events.EventPublisher;
 import com.example.okafkamemory.events.TranscriptReady;
+import com.example.okafkamemory.memory.JdbcMemoryRepository;
+
 import com.example.okafkamemory.transcript.JdbcTranscriptRepository;
 import com.example.okafkamemory.transcript.TranscriptDraft;
 import org.slf4j.Logger;
@@ -9,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
+import java.util.UUID;
 
 @Service
 public class IntakeService {
@@ -32,6 +35,23 @@ public class IntakeService {
         }
         if (connection.getAutoCommit()) {
             throw new IllegalArgumentException("Intake requires a connection with auto-commit disabled");
+        }
+        Object supersedes = event.transcriptPayload().get("supersedesMemoryId");
+        if (supersedes != null) {
+            UUID target;
+            try {
+                target = UUID.fromString(supersedes.toString());
+                if (!target.toString().equalsIgnoreCase(supersedes.toString())) {
+                    throw new IllegalArgumentException("Noncanonical UUID");
+                }
+            } catch (IllegalArgumentException invalidId) {
+                log.warn("At the intake stage: rejected incoming event {} because INVALID_SUPERSESSION_ID.", event.sourceEventId());
+                return;
+            }
+            if (!JdbcMemoryRepository.from(connection).isActiveOwner(target, event.ownerScope())) {
+                log.warn("At the intake stage: rejected incoming event {} because SUPERSESSION_TARGET_NOT_ACTIVE_OR_OWNED.", event.sourceEventId());
+                return;
+            }
         }
         var transcripts = JdbcTranscriptRepository.from(connection);
         var inserted = transcripts.insertIfAbsent(new TranscriptDraft(

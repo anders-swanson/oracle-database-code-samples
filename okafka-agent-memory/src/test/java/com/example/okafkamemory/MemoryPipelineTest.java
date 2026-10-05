@@ -19,6 +19,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -94,6 +95,12 @@ class MemoryPipelineTest {
             }
         }
         return oracle.getOraclePort();
+    }
+
+    @BeforeEach
+    void isolateActiveMemories() {
+        // Tests share a container, but each must start with its own active corpus.
+        jdbc.sql("UPDATE event_memories SET status = 'inactive' WHERE owner_scope = 'user:demo'").update();
     }
 
     @AfterAll
@@ -314,7 +321,7 @@ class MemoryPipelineTest {
             UUID id = rejected.get(index).sourceEventId();
             assertThat(transcriptCount(id)).isZero();
             assertThat(storedMemories(id)).isEmpty();
-            assertThat(output.getOut()).contains("Dropping incoming event " + id + ": " + reasons.get(index));
+            assertThat(output.getOut()).contains("rejected incoming event " + id + " because " + reasons.get(index));
         }
         publishIncoming(new IncomingEvent(denied.sourceEventId(), "user:demo",
                 Map.of("message", "My OKafka consumers use consumer.getDBConnection() for transactional writes."), true));
@@ -340,6 +347,25 @@ class MemoryPipelineTest {
         assertThat(new JdbcTranscriptRepository(jdbc).findBySourceEventId(id).orElseThrow().eventPayload())
                 .isEqualTo(original);
         assertThat(storedMemories(id)).containsExactlyElementsOf(memories);
+    }
+
+    @Test
+    void correctionEventSupersedesTheOriginalAfterEmbedding() throws Exception {
+        UUID originalSource = DemoProducer.publish(okafkaProperties, topics.incoming(),
+                "My Oracle AI Database ledger application stores UUIDs as VARCHAR2(36).");
+        assertThat(awaitPreparation(originalSource)).isEqualTo("DONE");
+        UUID originalMemory = awaitEmbeddedMemories(originalSource).getFirst().id();
+        UUID correctionSource = DemoProducer.publish(okafkaProperties, topics.incoming(),
+                "My Oracle AI Database ledger application now stores UUIDs as RAW(16).", originalMemory);
+        assertThat(awaitPreparation(correctionSource)).isEqualTo("DONE");
+        var replacements = awaitEmbeddedMemories(correctionSource);
+        assertThat(jdbc.sql("SELECT status FROM event_memories WHERE id = ?")
+                .param(UuidBytes.encode(originalMemory)).query(String.class).single()).isEqualTo("inactive");
+        assertThat(search.search(new MemorySearchRequest("ledger UUID RAW(16)", 50)))
+                .extracting(MemorySearchResult::memoryId)
+                .doesNotContain(originalMemory)
+                .containsAll(replacements.stream().map(StoredMemory::id).toList());
+        assertThat(search.search(new MemorySearchRequest("Suggest a recipe for chocolate cake", 50))).isEmpty();
     }
 
     private static Stream<PipelineExample> documentedExamples() throws Exception {

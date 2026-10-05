@@ -16,6 +16,8 @@ Publish a transcript through OKafka, extract useful facts with OCI Generative AI
 
 An accepted transcript does not automatically become a memory. The model may extract no useful facts, or the judge may reject every candidate. Those transcripts finish as `NO_MEMORY`; they do not emit embedding events.
 
+The lab is intended as a sample agent memory workflow that can be connected to agents via hooks & skills for memory creation, curation, and retrieval.
+
 ## Run the lab
 
 You need Java 21 or later, Maven, Docker, and OCI credentials in `~/.oci/config`. The configured OCI profile must have access to the compartment and the chat and embedding models in its region. The checked-in defaults select:
@@ -33,7 +35,7 @@ Run the following commands from `okafka-agent-memory/`. In the application termi
 
 ```sh
 export OCI_COMPARTMENT_ID=YOUR_COMPARTMENT_OCID
-docker compose up -d --wait --force-recreate
+docker compose up -d
 mvn spring-boot:run
 ```
 
@@ -99,7 +101,49 @@ mvn -q exec:java -Dexec.mainClass=com.example.okafkamemory.DemoProducer \
 
 Search with a request such as `{"query":"OKafka transaction connection","limit":5}`. Search ranks eligible memories and can return other technical facts as well.
 
-There is no semantic deduplication or automatic replacement of previous facts. Publishing the same text twice with different source UUIDs can create two memories. Publishing a changed implementation decision does not deactivate the earlier memory.
+Regular publication suppresses candidates whose trimmed memory text exactly matches an active, unexpired memory for the same owner, even when the source UUID is new. The transcript still finishes as `DONE`; it can have no new memory rows or embedding events because an existing memory already represents the fact. This is exact text deduplication within the single-partition preparation stage, not semantic deduplication: model paraphrases can still create duplicates. Corrections deliberately keep their own memory rows and provenance.
+
+### Correct an implementation decision
+
+Corrections explicitly name the old memory UUID. First publish an implementation decision:
+
+```sh
+mvn -q exec:java -Dexec.mainClass=com.example.okafkamemory.DemoProducer \
+  -Dexec.args='My Oracle AI Database ledger application stores UUIDs as VARCHAR2(36).'
+```
+
+Wait for its embedding, then search for the old decision:
+
+```sh
+curl -s http://localhost:8080/api/memories/search \
+  -H 'Content-Type: application/json' \
+  -d '{"query":"ledger UUID VARCHAR2(36)","limit":5}'
+```
+
+Copy the `memoryId` of that decision and publish its replacement:
+
+```sh
+mvn -q exec:java -Dexec.mainClass=com.example.okafkamemory.DemoProducer \
+  -Dexec.args='--supersedes=PASTE_OLD_MEMORY_UUID My Oracle AI Database ledger application now stores UUIDs as RAW(16).'
+```
+
+The producer adds `supersedesMemoryId` to the transcript payload alongside `message`. Intake rejects malformed IDs and targets that are missing, inactive, expired, or owned by someone else. A valid correction follows the same extraction and admission rules as ordinary input. If it is rejected by the model, the old memory remains active.
+
+The old memory stays active while the replacement is waiting for an embedding. The embedding transaction stores the replacement vector and marks the old row `inactive` together. A rollback preserves the old active row and leaves the replacement vector uncommitted. If a correction admits several facts, the first successfully embedded replacement deactivates the named old memory.
+
+Search again with `{"query":"ledger UUID RAW(16)","limit":5}`. The new memory should appear and the old UUID should be excluded. To inspect both versions and the correction link:
+
+```sql
+SELECT RAWTOHEX(m.id) AS memory_id, m.memory_text, m.status,
+       JSON_VALUE(t.event_payload, '$.supersedesMemoryId') AS supersedes_memory_id,
+       VECTOR_DIMENSION_COUNT(m.embedding) AS dimensions
+FROM event_memories m
+JOIN transcripts t ON t.transcript_id = m.transcript_id
+WHERE m.owner_scope = 'user:demo'
+ORDER BY m.created_at;
+```
+
+Old rows and source transcripts remain available as history. The lab does not infer contradictions or automatically decide which fact another statement replaces.
 
 ### See transcripts finish without a memory
 
@@ -167,6 +211,7 @@ ORDER BY m.id;
 | No transcript row, plus a drop warning | Intake rejected the event before storing it |
 | `READY` | The transcript is awaiting preparation or its preparation transaction was rolled back |
 | `NO_MEMORY`, null memory columns | Preparation completed without an admitted memory; no embedding event is expected |
+| `DONE`, null memory columns, plus a duplicate warning | Admitted text already exists for this owner; no new memory or embedding event was needed |
 | `DONE`, memory row, null dimensions | A memory was admitted, but its embedding has not committed yet |
 | `DONE`, dimensions 1536 | The default model's embedding has committed; the memory can participate in search if its scope, status, and expiry also qualify |
 
@@ -196,9 +241,27 @@ Configuration lives in [application.yml](https://github.com/anders-swanson/oracl
 
 ## Search behavior
 
-The search request accepts `query` and `limit` (1–50). The owner is fixed by trusted configuration, `memory.retrieval.owner-scope`; callers do not select it in the request. The API returns admitted memory text and scores, not source transcripts or evidence.
+The search request accepts `query` and `limit` (1–50). Queries must contain 1–32 distinct Unicode letter/number terms and be at most 1,024 Java string characters long, including whitespace. Invalid requests return HTTP 400 before calling OCI. Punctuation-only queries are rejected. The owner is fixed by trusted configuration, `memory.retrieval.owner-scope`; callers do not select it in the request. The API returns admitted memory text and scores, not source transcripts or evidence.
 
-Search embeds the query with the same configured model, filters eligible rows, and ranks them using cosine vector similarity, lexical matches, and recency. The default weights are 0.5, 0.35, and 0.15; recency has a 30-day half-life. There is no minimum similarity cutoff.
+Search embeds the query with the same configured model, filters eligible rows, and ranks them using cosine vector similarity, lexical matches, and recency. The default weights are 0.5, 0.35, and 0.15; recency has a 30-day half-life.
+
+Lexical score is the fraction of distinct query terms present as whole terms in the memory. Matching ignores case and supports Unicode letters and numbers. Repeated terms count once: `RAW RAW RAW` scores 1/3 for `RAW UUID VECTOR`, while `draw` does not match `RAW`. Lexical scoring runs in Java over the returned memory text, so query text never becomes a SQL regular expression.
+
+Before ranking, search requires relevance of at least `memory.retrieval.minimum-relevance` (default **0.50**):
+
+```text
+vector_score = (1 + cosine_similarity) / 2
+relevance = (vector_weight * vector_score + text_weight * text_score)
+            / (vector_weight + text_weight)
+```
+
+Recency affects ordering only after a memory qualifies. It cannot push an unrelated memory over the relevance cutoff. If nothing qualifies, the API returns `[]`; a strong semantic match can qualify without lexical overlap.
+
+The default was checked with the live `cohere.embed-v4.0` model against four technical memories, six relevant queries (including paraphrases), and four unrelated queries in [memory-search-examples.json](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/test/resources/memory-search-examples.json). The observed maximum unrelated relevance was 0.4642 and minimum relevant relevance was 0.5200. This small calibration set is not a general quality guarantee. Recheck the cutoff when changing the embedding model, weights, or memory domain:
+
+```sh
+mvn -Dtest=OciSearchRelevanceTest test
+```
 
 The lab assumes one embedding model for both stored vectors and queries and does not record model versions per row. After changing the embedding model, re-embed all memories before searching, even if the dimensions stay the same. There is no automatic re-embedding job; disposable lab data can be reset and republished.
 
@@ -210,7 +273,7 @@ From the module directory, run the deterministic tests without OCI calls:
 env -u OCI_COMPARTMENT_ID mvn test
 ```
 
-Docker is still required for the database tests. Test-only chat and embedding fixtures exercise persistence, filtering, candidate thresholds, and retrieval. Without `OCI_COMPARTMENT_ID`, the live pipeline and OCI smoke test classes are skipped.
+Docker is still required for the database tests. Test-only chat and embedding fixtures exercise persistence, filtering, candidate thresholds, and retrieval. Without `OCI_COMPARTMENT_ID`, the live pipeline, OCI smoke, and relevance calibration test classes are skipped. Deterministic tests cover whole-term lexical scores, query bounds before model calls, relevance abstention, exact duplicate suppression, correction ownership, and rollback of supersession with embedding.
 
 Run all tests, including the real OCI pipeline, with the compartment set:
 
@@ -219,7 +282,7 @@ export OCI_COMPARTMENT_ID=YOUR_COMPARTMENT_OCID
 mvn test
 ```
 
-The pipeline tests provision their own Oracle AI Database Free container. They verify producer-to-search processing, intake rollback and redelivery, atomic consume/write/publish handoffs, and embedding failure followed by redelivery through the full incoming-event path. They also publish the documented creation and rejection examples, verify intake drop reasons, reuse a rejected ID, and check duplicate source IDs. The examples assert domain facts are admitted, irrelevant inputs finish as `NO_MEMORY`, and mixed transcripts retain only the relevant facts. All use real OCI extraction, judging, and embeddings through the incoming event path. Inputs live in [memory-pipeline-examples.json](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/test/resources/memory-pipeline-examples.json). These tests do not use the Compose database.
+The pipeline tests provision their own Oracle AI Database Free container. They verify producer-to-search processing, intake rollback and redelivery, atomic consume/write/publish handoffs, and embedding failure followed by redelivery through the full incoming-event path. They also publish the documented creation and rejection examples, verify intake drop reasons, reuse a rejected ID, check duplicate source IDs, and exercise the correction-to-search flow. Each pipeline test deactivates earlier test memories to keep exact deduplication from reusing another test's rows. The examples assert domain facts are admitted, irrelevant inputs finish as `NO_MEMORY`, and mixed transcripts retain only the relevant facts. All use real OCI extraction, judging, and embeddings through the incoming event path. Inputs live in [memory-pipeline-examples.json](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/okafka-agent-memory/src/test/resources/memory-pipeline-examples.json). These tests do not use the Compose database.
 
 To check only OCI chat, extraction, judging, and embeddings without provisioning a database:
 
@@ -238,7 +301,7 @@ To initialize a fresh lab:
 
 ```sh
 docker compose down
-docker compose up -d --wait --force-recreate
+docker compose up -d
 ```
 
 The prebuilt image runs the lab script through `/opt/oracle/scripts/startup`; the setup hook is skipped for its existing database. The script creates the user and schema when absent and reapplies grants on subsequent starts. `docker compose stop` followed by `start`, or `restart`, reuses the same container and retains its data; recreate the container for a clean setup.

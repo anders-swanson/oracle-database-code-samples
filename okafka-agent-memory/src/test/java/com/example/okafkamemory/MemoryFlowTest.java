@@ -8,6 +8,8 @@ import oracle.sql.VECTOR;
 import com.example.okafkamemory.intake.IncomingEvent;
 import com.example.okafkamemory.intake.IntakeService;
 import com.example.okafkamemory.retrieval.MemorySearchRequest;
+import com.example.okafkamemory.retrieval.MemorySearchRepository;
+import com.example.okafkamemory.retrieval.MemorySearchTerms;
 import com.example.okafkamemory.retrieval.MemorySearchService;
 import com.example.okafkamemory.transcript.JdbcTranscriptRepository;
 import com.example.okafkamemory.transcript.TranscriptRepository;
@@ -287,11 +289,7 @@ class MemoryFlowTest {
                     assertThat(hit.vectorScore()).isPositive();
                     assertThat(hit.textScore()).isPositive();
                 });
-        assertThat(search.search(new MemorySearchRequest("night theme", 5)))
-                .anySatisfy(hit -> {
-                    assertThat(hit.memoryText()).isEqualTo("My OKafka events use OSON");
-                    assertThat(hit.textScore()).isZero();
-                });
+        assertThat(search.search(new MemorySearchRequest("night theme", 5))).isEmpty();
         mvc.perform(post("/api/memories/search").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"query\":\"OKafka OSON\",\"limit\":5,\"ownerScope\":\"user:other\"}"))
                 .andExpect(status().isOk())
@@ -358,6 +356,78 @@ class MemoryFlowTest {
         assertThat(hits).noneMatch(hit -> hit.memoryText().contains("foreign")
                 || hit.memoryText().contains("expired") || hit.memoryText().contains("inactive"));
         assertThat(hasEmbedding(foreign)).isTrue();
+    }
+
+    @Test
+    void lexicalScoresCountDistinctWholeTermsWithoutRegexLimits() {
+        Memory repeated = embeddedMemory("user:lexical", "RAW RAW RAW");
+        Memory substring = embeddedMemory("user:lexical", "draw UUID");
+        Memory unicode = embeddedMemory("user:lexical", "café CAFÉ 東京");
+        var repository = new MemorySearchRepository(jdbc);
+        float[] vector = new float[1536];
+        vector[0] = 1;
+        var hits = repository.find("user:lexical", vector,
+                MemorySearchTerms.queryTerms("raw RAW uuid vector"));
+        assertThat(hits).filteredOn(hit -> hit.memoryId().equals(repeated.memoryId()))
+                .singleElement().satisfies(hit -> assertThat(hit.textScore()).isEqualTo(1.0 / 3));
+        assertThat(hits).filteredOn(hit -> hit.memoryId().equals(substring.memoryId()))
+                .singleElement().satisfies(hit -> assertThat(hit.textScore()).isEqualTo(1.0 / 3));
+        assertThat(repository.find("user:lexical", vector,
+                MemorySearchTerms.queryTerms("CAFÉ 東京")))
+                .filteredOn(hit -> hit.memoryId().equals(unicode.memoryId()))
+                .singleElement().satisfies(hit -> assertThat(hit.textScore()).isEqualTo(1));
+        assertThat(search.search(new MemorySearchRequest("z".repeat(600), 5))).isEmpty();
+    }
+
+    @Test
+    void correctionSupersedesOnlyAfterItsEmbeddingCommitsAndDuplicatesAreSkipped() {
+        Memory original = embeddedMemory("user:demo", "My Oracle AI Database application stores UUIDs as VARCHAR2");
+        UUID duplicate = UUID.randomUUID();
+        process(new IncomingEvent(duplicate, "user:demo", Map.of("message", original.memoryText()), true));
+        assertThat(prepare(duplicate)).isEmpty();
+        assertThat(memories.containsActiveText("user:demo", original.memoryText())).isTrue();
+
+        UUID source = UUID.randomUUID();
+        process(new IncomingEvent(source, "user:demo", Map.of(
+                "message", "My Oracle AI Database application stores UUIDs as RAW(16)",
+                "supersedesMemoryId", original.memoryId().toString()), true));
+        Memory replacement = prepare(source).getFirst();
+        assertThat(memories.isActiveOwner(original.memoryId(), "user:demo")).isTrue();
+        assertThatThrownBy(() -> transaction(connection -> {
+            embeddings.embed(connection, replacement.memoryId());
+            throw new IllegalStateException("simulated failure after supersession");
+        })).hasRootCauseMessage("simulated failure after supersession");
+        assertThat(memories.isActiveOwner(original.memoryId(), "user:demo")).isTrue();
+        assertThat(hasEmbedding(replacement)).isFalse();
+        embed(replacement.memoryId());
+        assertThat(memories.isActiveOwner(original.memoryId(), "user:demo")).isFalse();
+        assertThat(search.search(new MemorySearchRequest("Oracle AI Database UUIDs", 50)))
+                .noneMatch(hit -> hit.memoryId().equals(original.memoryId()))
+                .anyMatch(hit -> hit.memoryId().equals(replacement.memoryId()));
+    }
+
+    @Test
+    void rejectedCorrectionsKeepTheOriginalAndCannotTargetOtherOwners() {
+        Memory original = embeddedMemory("user:correction", "Oracle AI Database original correction fact");
+        UUID rejected = UUID.randomUUID();
+        process(new IncomingEvent(rejected, "user:correction", Map.of("message", "reject correction",
+                "supersedesMemoryId", original.memoryId().toString()), true));
+        assertThat(prepare(rejected)).isEmpty();
+        assertThat(memories.isActiveOwner(original.memoryId(), "user:correction")).isTrue();
+        assertThat(process(new IncomingEvent(UUID.randomUUID(), "user:other", Map.of("message", "replacement",
+                "supersedesMemoryId", original.memoryId().toString()), true))).isNull();
+        assertThat(process(new IncomingEvent(UUID.randomUUID(), "user:correction", Map.of("message", "replacement",
+                "supersedesMemoryId", "not-a-uuid"), true))).isNull();
+    }
+
+    @Test
+    void invalidSearchQueriesReturnBadRequest() throws Exception {
+        mvc.perform(post("/api/memories/search").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"query\":\"" + "x".repeat(1025) + "\",\"limit\":5}"))
+                .andExpect(status().isBadRequest());
+        mvc.perform(post("/api/memories/search").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"query\":\"!!!\",\"limit\":5}"))
+                .andExpect(status().isBadRequest());
     }
 
     private Memory embeddedMemory(String owner, String text) {

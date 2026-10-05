@@ -69,12 +69,19 @@ public class CandidatePreparationService {
             return;
         }
         var memories = JdbcMemoryRepository.from(connection);
+        int stored = 0;
         for (Memory memory : admitted) {
+            if (transcript.eventPayload().get("supersedesMemoryId") == null
+                    && memories.containsActiveText(memory.ownerScope(), memory.memoryText())) {
+                log.info("At the candidate preparation stage: skipped duplicate memory text for transcript {}.", transcriptId);
+                continue;
+            }
             memories.store(memory);
+            stored++;
             publisher.publish(embeddingTopic, memory.memoryId().toString(),
                     new MemoryReadyForEmbedding(memory.memoryId()));
         }
         log.info("At the candidate preparation stage: saved {} accepted memory candidate(s) for transcript {} and sent them to the embedding stage; awaiting transaction commit.",
-                admitted.size(), transcriptId);
+                stored, transcriptId);
     }
 }

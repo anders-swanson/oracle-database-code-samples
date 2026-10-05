@@ -10,6 +10,7 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
@@ -20,9 +21,15 @@ public final class DemoProducer {
     }
 
     public static void main(String[] args) throws Exception {
-        String fact = args.length == 0
+        UUID supersedes = args.length > 0 && args[0].startsWith("--supersedes=")
+                ? UUID.fromString(args[0].substring("--supersedes=".length())) : null;
+        String[] factArgs = supersedes == null ? args : Arrays.copyOfRange(args, 1, args.length);
+        if (supersedes != null && factArgs.length == 0) {
+            throw new IllegalArgumentException("A correction fact is required");
+        }
+        String fact = factArgs.length == 0
                 ? "My OKafka consumers use consumer.getDBConnection() for transactional writes"
-                : String.join(" ", args).trim();
+                : String.join(" ", factArgs).trim();
         if (fact.isBlank()) throw new IllegalArgumentException("A fact is required");
         // The producer publishes only; the running application consumes and processes memories.
         try (ConfigurableApplicationContext context = new SpringApplicationBuilder(MemoryApplication.class)
@@ -32,13 +39,18 @@ public final class DemoProducer {
                 .run()) {
             Properties base = context.getBean("intakeOkafkaProperties", Properties.class);
             String topic = context.getEnvironment().getRequiredProperty("memory.intake.topic");
-            System.out.println("Published source event: " + publish(base, topic, fact));
+            System.out.println("Published source event: " + publish(base, topic, fact, supersedes));
         }
     }
 
     public static UUID publish(Properties base, String topic, String fact) throws Exception {
+        return publish(base, topic, fact, null);
+    }
+
+    public static UUID publish(Properties base, String topic, String fact, UUID supersedes) throws Exception {
         UUID sourceEventId = UUID.randomUUID();
-        Map<String, Object> payload = Map.of("message", fact);
+        Map<String, Object> payload = supersedes == null ? Map.of("message", fact)
+                : Map.of("message", fact, "supersedesMemoryId", supersedes.toString());
         Properties producerProperties = new Properties();
         producerProperties.putAll(base);
         producerProperties.put("enable.idempotence", "true");

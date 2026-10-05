@@ -8,22 +8,24 @@ import org.springframework.ai.embedding.EmbeddingResponse;
 
 import java.util.stream.IntStream;
 
-/** Constant test vectors isolate persistence, filtering, and retry behavior from OCI. */
+/** Word-count vectors make lexical overlap deterministic without OCI calls. */
 record FixtureEmbeddingModel(int dimensions) implements EmbeddingModel {
     @Override
     public EmbeddingResponse call(EmbeddingRequest request) {
         return new EmbeddingResponse(IntStream.range(0, request.getInstructions().size())
-                .mapToObj(index -> new Embedding(vector(), index)).toList());
+                .mapToObj(index -> new Embedding(vector(request.getInstructions().get(index)), index)).toList());
     }
 
     @Override
     public float[] embed(Document document) {
-        return vector();
+        return vector(document.getText());
     }
 
-    private float[] vector() {
+    private float[] vector(String text) {
         float[] vector = new float[dimensions];
-        vector[0] = 1;
+        for (String term : text.toLowerCase(java.util.Locale.ROOT).split("[^\\p{L}\\p{N}]+")) {
+            if (!term.isBlank()) vector[Math.floorMod(term.hashCode(), dimensions)]++;
+        }
         return vector;
     }
 }

@@ -31,6 +31,7 @@ public class MemoryEmbeddingService {
                 throw new IllegalStateException("Embedding dimension must be " + dimensions);
             }
             memories.updateEmbedding(memoryId, vector);
+            memories.supersedeFor(memoryId);
             log.info("At the embedding stage: saved an embedding with {} dimensions for memory {}; awaiting transaction commit.", vector.length, memoryId);
         }, () -> log.info("At the embedding stage: skipped memory {} because no memory text was found.", memoryId));
     }

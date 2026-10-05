@@ -1,0 +1,20 @@
+{
+  "memories": [
+    "My Oracle AI Database application stores UUIDs as RAW(16).",
+    "My OKafka consumers use consumer.getDBConnection() for transactional writes.",
+    "OKafka delivers events through Oracle AI Database Transactional Event Queues (TxEventQ).",
+    "My Oracle AI Database vector search uses the same embedding model for stored vectors and queries."
+  ],
+  "queries": [
+    {"query": "Oracle AI Database UUID RAW(16)", "relevantMemory": 0},
+    {"query": "How do I represent unique identifiers in my database?", "relevantMemory": 0},
+    {"query": "OKafka transaction connection", "relevantMemory": 1},
+    {"query": "How does my event consumer persist changes atomically?", "relevantMemory": 1},
+    {"query": "OKafka TxEventQ", "relevantMemory": 2},
+    {"query": "embedding model queries", "relevantMemory": 3},
+    {"query": "What is the weather forecast for tomorrow?", "relevantMemory": null},
+    {"query": "Suggest a recipe for chocolate cake", "relevantMemory": null},
+    {"query": "Which beach should I visit on vacation?", "relevantMemory": null},
+    {"query": "night theme", "relevantMemory": null}
+  ]
+}

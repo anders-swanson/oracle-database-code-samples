@@ -3,17 +3,9 @@ CREATE TABLE transcripts (
     transcript_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     source_event_id RAW(16) NOT NULL UNIQUE CHECK (VSIZE(source_event_id) = 16),
     owner_scope VARCHAR2(256 CHAR) NOT NULL,
-    event_payload CLOB NOT NULL CHECK (event_payload IS JSON STRICT),
+    event_payload JSON NOT NULL,
     preparation_status VARCHAR2(16 CHAR) DEFAULT 'READY' NOT NULL
         CHECK (preparation_status IN ('READY', 'DONE', 'NO_MEMORY')),
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT SYSTIMESTAMP NOT NULL
-);
-
-CREATE TABLE intake_outcomes (
-    source_event_id RAW(16) PRIMARY KEY CHECK (VSIZE(source_event_id) = 16),
-    outcome VARCHAR2(16 CHAR) NOT NULL CHECK (outcome IN ('PENDING', 'FILTERED', 'ACCEPTED')),
-    reason VARCHAR2(64 CHAR),
-    transcript_id NUMBER REFERENCES transcripts(transcript_id),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT SYSTIMESTAMP NOT NULL
 );
 
@@ -23,8 +15,9 @@ CREATE TABLE candidate_work (
     transcript_id NUMBER NOT NULL REFERENCES transcripts(transcript_id),
     evidence CLOB NOT NULL,
     candidate_text CLOB NOT NULL,
+    judge_score NUMBER(3) NOT NULL CHECK (judge_score BETWEEN 0 AND 100),
     status VARCHAR2(24 CHAR) DEFAULT 'READY' NOT NULL
-        CHECK (status IN ('READY', 'REVIEW', 'REJECTED', 'PENDING_EMBEDDING', 'COMPLETE')),
+        CHECK (status IN ('READY', 'PENDING_EMBEDDING', 'COMPLETE')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT SYSTIMESTAMP NOT NULL
 );
 

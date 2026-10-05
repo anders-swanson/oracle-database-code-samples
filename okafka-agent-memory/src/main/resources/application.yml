@@ -35,6 +35,8 @@ spring:
       min-pool-size: 1
       max-pool-size: 10
 memory:
+  candidates:
+    score-threshold: 70
   retrieval:
     owner-scope: user:demo
     vector-weight: 0.5

@@ -1,11 +1,13 @@
 package com.example.okafkamemory.memory;
 
 import com.example.okafkamemory.UuidBytes;
+import com.example.okafkamemory.persistence.SingleConnectionJdbcClientFactory;
 import com.example.okafkamemory.candidate.CandidateWork;
 import oracle.jdbc.OracleType;
 import oracle.sql.VECTOR;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Optional;
@@ -13,6 +15,11 @@ import java.util.UUID;
 
 public class JdbcMemoryRepository {
     private final JdbcClient jdbc;
+
+    /** Uses the caller's connection without committing or closing it. */
+    public static JdbcMemoryRepository from(Connection connection) {
+        return new JdbcMemoryRepository(SingleConnectionJdbcClientFactory.create(connection));
+    }
 
     public JdbcMemoryRepository(JdbcClient jdbc) {
         this.jdbc = jdbc;

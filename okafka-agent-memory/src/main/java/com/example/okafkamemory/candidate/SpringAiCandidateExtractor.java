@@ -8,6 +8,7 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class SpringAiCandidateExtractor implements CandidateExtractor {
             """;
 
     private final ChatModel chatModel;
+    private final ObjectMapper json = new ObjectMapper();
     private final BeanOutputConverter<List<ExtractedCandidate>> outputConverter =
             new BeanOutputConverter<>(new ParameterizedTypeReference<>() {});
 
@@ -31,7 +33,8 @@ public class SpringAiCandidateExtractor implements CandidateExtractor {
     @Override
     public List<ExtractedCandidate> extract(Transcript transcript) {
         String response = chatModel.call(new Prompt(
-                new SystemMessage(INSTRUCTIONS + outputConverter.getFormat()), new UserMessage(transcript.eventPayload())))
+                new SystemMessage(INSTRUCTIONS + outputConverter.getFormat()),
+                new UserMessage(json.writeValueAsString(transcript.eventPayload()))))
                 .getResult().getOutput().getText();
         try {
             return outputConverter.convert(response);

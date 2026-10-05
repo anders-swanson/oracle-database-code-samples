@@ -6,21 +6,26 @@ import com.example.okafkamemory.candidate.CandidateWorkRepository;
 import com.example.okafkamemory.curation.CurationService;
 import com.example.okafkamemory.embedding.MemoryEmbeddingService;
 import com.example.okafkamemory.intake.IncomingEvent;
-import com.example.okafkamemory.intake.IntakeResult;
 import com.example.okafkamemory.intake.IntakeService;
 import com.example.okafkamemory.retrieval.MemorySearchRequest;
 import com.example.okafkamemory.retrieval.MemorySearchService;
 import com.example.okafkamemory.transcript.JdbcTranscriptRepository;
 import com.example.okafkamemory.transcript.TranscriptRepository;
+import com.example.okafkamemory.transcript.Transcript;
+import com.oracle.spring.json.jsonb.JSONB;
+import com.oracle.spring.json.kafka.OSONKafkaSerializationFactory;
 import com.oracle.spring.testcontainers.OracleContainer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +38,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
 import javax.sql.DataSource;
 
@@ -44,6 +51,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(properties = {
         "memory.background-processing.enabled=false",
+        "memory.candidates.score-threshold=80",
         "spring.ai.model.chat=none",
         "spring.ai.model.embedding=none",
         "spring.ai.oci.genai.chat.compartment-id=test-compartment",
@@ -53,6 +61,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(MemoryFlowTest.Models.class)
 @AutoConfigureMockMvc
 @Testcontainers
+@ExtendWith(OutputCaptureExtension.class)
 @Sql(scripts = "/db/schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class MemoryFlowTest {
     @TestConfiguration(proxyBeanMethods = false)
@@ -90,51 +99,106 @@ class MemoryFlowTest {
     }
 
     @Test
+    void intakeDropsFilteredEventsAndPublishesAcceptedDuplicatesOnlyOnce(CapturedOutput output) {
+        var filtered = List.of(
+                new IncomingEvent(UUID.randomUUID(), "user:demo", Map.of("secret", "do not log this"), false),
+                new IncomingEvent(UUID.randomUUID(), " ", Map.of("message", "hello"), true),
+                new IncomingEvent(UUID.randomUUID(), "user:demo", null, true));
+        var published = new ArrayList<Object>();
+        for (IncomingEvent event : filtered) {
+            transaction(connection -> {
+                intake.process(connection, event, (topic, key, value) -> published.add(value), "transcripts");
+                return null;
+            });
+            assertThat(transcripts.findBySourceEventId(event.sourceEventId())).isEmpty();
+        }
+        assertThat(published).isEmpty();
+        assertThat(output.getOut()).contains("WARN", "STORAGE_NOT_ALLOWED", "MISSING_OWNER_SCOPE", "EMPTY_TRANSCRIPT")
+                .doesNotContain("do not log this");
+
+        // A dropped ID has no durable rejection; a later allowed event can use it.
+        UUID source = filtered.getFirst().sourceEventId();
+        for (String message : List.of("remember first fact", "remember changed fact")) {
+            transaction(connection -> {
+                intake.process(connection, new IncomingEvent(source, "user:demo", Map.of("message", message), true),
+                        (topic, key, value) -> published.add(value), "transcripts");
+                return null;
+            });
+        }
+        assertThat(published).hasSize(1);
+        assertThat(transcripts.findBySourceEventId(source).orElseThrow().eventPayload())
+                .containsEntry("message", "remember first fact");
+    }
+
+    @Test
+    void structuredTranscriptSurvivesOsonAndNativeJsonStorage() {
+        String evidence = "remember I prefer \"dark\" mode\nwith tabs";
+        var payload = Map.<String, Object>of("messages", List.of(
+                Map.of("role", "user", "text", evidence)));
+        var event = new IncomingEvent(UUID.randomUUID(), "user:demo", payload, true);
+        var factory = new OSONKafkaSerializationFactory(JSONB.createDefault());
+        try (var serializer = factory.createSerializer();
+             var deserializer = factory.createDeserializer(IncomingEvent.class)) {
+            var received = deserializer.deserialize("MEMORY_INCOMING",
+                    serializer.serialize("MEMORY_INCOMING", event));
+            var result = process(received);
+            assertThat(transcripts.findById(result.transcriptId()).orElseThrow().eventPayload())
+                    .isEqualTo(payload);
+            assertThat(jdbc.sql("""
+                    SELECT JSON_VALUE(event_payload, '$.messages[0].text')
+                    FROM transcripts WHERE transcript_id = ?
+                    """).param(result.transcriptId()).query(String.class).single()).isEqualTo(evidence);
+            assertThat(jdbc.sql("""
+                    SELECT data_type FROM user_tab_columns
+                    WHERE table_name = 'TRANSCRIPTS' AND column_name = 'EVENT_PAYLOAD'
+                    """).query(String.class).single()).isEqualTo("JSON");
+            assertThat(prepare(event.sourceEventId())).singleElement()
+                    .satisfies(candidate -> assertThat(candidate.evidence()).isEqualTo(evidence));
+        }
+    }
+
+    @Test
     void intakeAndPreparationKeepOnlyAllowedFacts() {
         UUID filteredId = UUID.randomUUID();
         UUID duplicateId = UUID.randomUUID();
         UUID zeroId = UUID.randomUUID();
         UUID multiId = UUID.randomUUID();
         var filtered = process(new IncomingEvent(filteredId, "user:demo",
-                "{\"secret\":\"must not be stored\"}", false));
-        assertThat(filtered.outcome()).isEqualTo(IntakeResult.Outcome.FILTERED);
-        assertThat(filtered.transcriptId()).isNull();
+                Map.of("secret", "must not be stored"), false));
+        assertThat(filtered).isNull();
         assertThat(jdbc.sql("SELECT COUNT(*) FROM transcripts WHERE source_event_id = ?")
                 .param(UuidBytes.encode(filteredId))
                 .query(Integer.class).single()).isZero();
 
         var first = process(new IncomingEvent(duplicateId, "user:demo",
-                "{\"message\":\"remember first fact\"}", true));
+                Map.of("message", "remember first fact"), true));
         var duplicate = process(new IncomingEvent(duplicateId, "user:other",
-                "{\"message\":\"remember different fact\"}", true));
+                Map.of("message", "remember different fact"), true));
         assertThat(duplicate).isEqualTo(first);
         assertThat(transcripts.findBySourceEventId(duplicateId).orElseThrow().sourceEventId())
                 .isEqualTo(duplicateId);
-        for (String table : List.of("intake_outcomes", "transcripts")) {
-            assertThat(jdbc.sql("SELECT VSIZE(source_event_id) FROM " + table + " WHERE source_event_id = ?")
-                    .param(UuidBytes.encode(duplicateId)).query(Integer.class).single()).isEqualTo(16);
-        }
+        assertThat(jdbc.sql("SELECT VSIZE(source_event_id) FROM transcripts WHERE source_event_id = ?")
+                .param(UuidBytes.encode(duplicateId)).query(Integer.class).single()).isEqualTo(16);
         assertThatThrownBy(() -> jdbc.sql(
-                "INSERT INTO intake_outcomes (source_event_id, outcome) VALUES (?, 'FILTERED')")
+                "INSERT INTO transcripts (source_event_id, owner_scope, event_payload) VALUES (?, 'user:demo', '{}')")
                 .param(new byte[15]).update())
                 .isInstanceOf(org.springframework.dao.DataIntegrityViolationException.class);
         assertThat(transcripts.findById(first.transcriptId()).orElseThrow().eventPayload())
-                .contains("first fact");
+                .containsEntry("message", "remember first fact");
         assertThat(jdbc.sql("SELECT COUNT(*) FROM transcripts WHERE source_event_id = ?")
                 .param(UuidBytes.encode(duplicateId))
                 .query(Integer.class).single()).isEqualTo(1);
 
-        process(new IncomingEvent(zeroId, "user:demo", "{\"message\":\"hello\"}", true));
+        process(new IncomingEvent(zeroId, "user:demo", Map.of("message", "hello"), true));
         assertThat(prepare(zeroId)).isEmpty();
         assertThat(jdbc.sql("SELECT preparation_status FROM transcripts WHERE source_event_id = ?")
                 .param(UuidBytes.encode(zeroId))
                 .query(String.class).single()).isEqualTo("NO_MEMORY");
 
-        process(new IncomingEvent(multiId, "user:demo", """
-                {"messages":[{"role":"user","text":"remember first fact"},
-                             {"role":"user","text":"remember second fact"},
-                             {"role":"user","text":"remember my password is hunter2"}]}
-                """, true));
+        process(new IncomingEvent(multiId, "user:demo", Map.of("messages", List.of(
+                Map.of("role", "user", "text", "remember first fact"),
+                Map.of("role", "user", "text", "remember second fact"),
+                Map.of("role", "user", "text", "remember my password is hunter2"))), true));
         List<CandidateWork> found = prepare(multiId);
         assertThat(found).hasSize(2);
         assertThat(found).extracting(CandidateWork::candidateText)
@@ -143,15 +207,39 @@ class MemoryFlowTest {
     }
 
     @Test
-    void decisionsAndSearchUseFourTablePath() throws Exception {
+    void onlyCandidatesAboveConfiguredJudgeThresholdArePersisted() {
+        UUID source = UUID.randomUUID();
+        process(new IncomingEvent(source, "user:demo", Map.of("messages", List.of(
+                Map.of("role", "user", "text", "remember threshold fact"),
+                Map.of("role", "user", "text", "remember above threshold fact"),
+                Map.of("role", "user", "text", "remember maybe I like tea"))), true));
+        assertThat(prepare(source)).singleElement().satisfies(candidate -> {
+            assertThat(candidate.candidateText()).isEqualTo("above threshold fact");
+            assertThat(candidate.judgeScore()).isEqualTo(81);
+        });
+
+        UUID rejected = UUID.randomUUID();
+        process(new IncomingEvent(rejected, "user:demo", Map.of("message", "remember reject this note"), true));
+        assertThat(prepare(rejected)).isEmpty();
+        assertThat(jdbc.sql("SELECT preparation_status FROM transcripts WHERE source_event_id = ?")
+                .param(UuidBytes.encode(rejected)).query(String.class).single()).isEqualTo("NO_MEMORY");
+    }
+
+    @Test
+    void invalidJudgeScoreLeavesTranscriptReadyForRetry() {
+        UUID source = UUID.randomUUID();
+        process(new IncomingEvent(source, "user:demo", Map.of("message", "remember invalid judge output"), true));
+        assertThatThrownBy(() -> prepare(source)).hasRootCauseMessage(
+                "Candidate judge must return an integer score between 0 and 100");
+        assertThat(candidates.findCandidates(source)).isEmpty();
+        assertThat(jdbc.sql("SELECT preparation_status FROM transcripts WHERE source_event_id = ?")
+                .param(UuidBytes.encode(source)).query(String.class).single()).isEqualTo("READY");
+    }
+
+    @Test
+    void admittedCandidatesReachSearch() throws Exception {
         CandidateWork promoted = candidate("user:demo", "remember I prefer dark mode");
-        CandidateWork review = candidate("user:demo", "remember maybe I like tea");
-        CandidateWork rejected = candidate("user:demo", "remember reject this note");
         curate(promoted.candidateId());
-        curate(review.candidateId());
-        curate(rejected.candidateId());
-        assertThat(candidateStatus(review)).isEqualTo("REVIEW");
-        assertThat(candidateStatus(rejected)).isEqualTo("REJECTED");
         assertThat(candidateStatus(promoted)).isEqualTo("PENDING_EMBEDDING");
         assertThat(search.search(new MemorySearchRequest("dark mode", 5)))
                 .noneMatch(hit -> hit.memoryText().equals("I prefer dark mode"));
@@ -232,7 +320,7 @@ class MemoryFlowTest {
 
     private CandidateWork candidate(String owner, String message) {
         UUID source = UUID.randomUUID();
-        process(new IncomingEvent(source, owner, "{\"message\":\"" + message + "\"}", true));
+        process(new IncomingEvent(source, owner, Map.of("message", message), true));
         return prepare(source).getFirst();
     }
 
@@ -241,8 +329,12 @@ class MemoryFlowTest {
                 .param(UuidBytes.encode(candidate.candidateId())).query(String.class).single();
     }
 
-    private IntakeResult process(IncomingEvent event) {
-        return transaction(connection -> intake.process(connection, event, (topic, key, value) -> {}, "transcripts"));
+    private Transcript process(IncomingEvent event) {
+        transaction(connection -> {
+            intake.process(connection, event, (topic, key, value) -> {}, "transcripts");
+            return null;
+        });
+        return transcripts.findBySourceEventId(event.sourceEventId()).orElse(null);
     }
 
     private List<CandidateWork> prepare(UUID sourceEventId) {

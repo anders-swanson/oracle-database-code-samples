@@ -118,12 +118,10 @@ class MemoryPipelineIT {
         String topic = "MEMORY_INCOMING_RETRY_TEST";
         OkafkaIntakeConfiguration.ensureTopic(okafkaProperties, topic);
         jdbc.sql("""
-                CREATE OR REPLACE TRIGGER fail_intake_completion
-                BEFORE UPDATE OF outcome ON intake_outcomes FOR EACH ROW
+                CREATE OR REPLACE TRIGGER fail_transcript_insert
+                AFTER INSERT ON transcripts FOR EACH ROW
                 BEGIN
-                    IF :NEW.outcome = 'ACCEPTED' THEN
-                        RAISE_APPLICATION_ERROR(-20004, 'simulated failure after transcript insert');
-                    END IF;
+                    RAISE_APPLICATION_ERROR(-20004, 'simulated transcript insert failure');
                 END;
                 """).update();
 
@@ -133,12 +131,11 @@ class MemoryPipelineIT {
             failed.start();
             sourceEventId = DemoProducer.publish(okafkaProperties, topic, "retry this fact");
             await(() -> failed.failure() != null);
-            assertThat(receiptCount(sourceEventId)).isZero();
             assertThat(jdbc.sql("SELECT COUNT(*) FROM transcripts WHERE source_event_id = ?")
                     .param(UuidBytes.encode(sourceEventId)).query(Integer.class).single()).isZero();
         } finally {
             failed.stop();
-            jdbc.sql("DROP TRIGGER fail_intake_completion").update();
+            jdbc.sql("DROP TRIGGER fail_transcript_insert").update();
         }
 
         var retried = intakeConsumer(topic, "MEMORY_INTAKE_RETRY_TEST");
@@ -146,7 +143,7 @@ class MemoryPipelineIT {
             retried.start();
             await(() -> retried.processedRecords() == 1);
             assertThat(retried.failure()).isNull();
-            assertThat(jdbc.sql("SELECT transcript_id FROM intake_outcomes WHERE source_event_id = ?")
+            assertThat(jdbc.sql("SELECT transcript_id FROM transcripts WHERE source_event_id = ?")
                     .param(UuidBytes.encode(sourceEventId)).query(Long.class).single()).isPositive();
             assertThat(jdbc.sql("SELECT COUNT(*) FROM transcripts WHERE source_event_id = ?")
                     .param(UuidBytes.encode(sourceEventId)).query(Integer.class).single()).isEqualTo(1);
@@ -178,12 +175,10 @@ class MemoryPipelineIT {
                 producer.initTransactions();
                 producer.beginTransaction();
                 intakeService.process(consumer.getDBConnection(), event, publisher(producer), output);
-                assertThat(receiptCount(id)).isZero();
                 assertThat(transcriptCount(id)).isZero();
                 producer.abortTransaction();
             }
         }
-        assertThat(receiptCount(id)).isZero();
         assertThat(transcriptCount(id)).isZero();
 
         try (var consumer = newConsumer(group)) {
@@ -197,7 +192,6 @@ class MemoryPipelineIT {
                 producer.commitTransaction();
             }
         }
-        assertThat(receiptCount(id)).isEqualTo(1);
         try (var outputConsumer = com.example.okafkamemory.events.MemoryPipelineConfiguration.consumer(
                 okafkaProperties, output, TranscriptReady.class)) {
             outputConsumer.subscribe(java.util.List.of(output));
@@ -245,11 +239,6 @@ class MemoryPipelineIT {
                 ON c.candidate_id = m.candidate_id JOIN transcripts t ON t.transcript_id = c.transcript_id
                 WHERE t.source_event_id = ? AND m.embedding IS NOT NULL AND c.status = 'COMPLETE'
                 """).param(UuidBytes.encode(id)).query(Integer.class).single() == 1);
-    }
-
-    private int receiptCount(UUID sourceEventId) {
-        return jdbc.sql("SELECT COUNT(*) FROM intake_outcomes WHERE source_event_id = ?")
-                .param(UuidBytes.encode(sourceEventId)).query(Integer.class).single();
     }
 
     private int transcriptCount(UUID sourceEventId) {

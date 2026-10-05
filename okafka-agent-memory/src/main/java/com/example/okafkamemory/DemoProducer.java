@@ -9,7 +9,6 @@ import org.oracle.okafka.clients.producer.KafkaProducer;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
-import tools.jackson.databind.ObjectMapper;
 
 import java.util.Map;
 import java.util.Properties;
@@ -38,7 +37,7 @@ public final class DemoProducer {
     public static UUID publish(Properties base, String topic, String fact) throws Exception {
         String message = fact.startsWith("remember ") ? fact : "remember " + fact;
         UUID sourceEventId = UUID.randomUUID();
-        String payload = new ObjectMapper().writeValueAsString(Map.of("message", message));
+        Map<String, Object> payload = Map.of("message", message);
         Properties producerProperties = new Properties();
         producerProperties.putAll(base);
         producerProperties.put("enable.idempotence", "true");

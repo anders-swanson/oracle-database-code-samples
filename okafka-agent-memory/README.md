@@ -12,7 +12,7 @@ tags:
 
 # OKafka event-to-memory lab
 
-Send one fact through OKafka, watch it become a memory, then search it. OCI Generative AI extracts facts and generates embeddings, using credentials from `~/.oci/config`. OKafka uses Oracle AI Database TxEventQ; there is no separate Kafka broker.
+Send one fact through OKafka, watch it become a memory, then search it. OCI Generative AI extracts facts, judges candidates, and generates embeddings, using credentials from `~/.oci/config`. OKafka uses Oracle AI Database TxEventQ; there is no separate Kafka broker.
 
 ## Start → send → search
 
@@ -48,24 +48,25 @@ Each stage has an OKafka consumer and publishes the next event after completing 
 
 | Topic | Event | Consumer action |
 | --- | --- | --- |
-| `MEMORY_INCOMING` | `IncomingEvent` with the transcript payload | Record the accepted or filtered receipt. For accepted events, store the transcript and publish `TranscriptReady`. |
-| `MEMORY_TRANSCRIPTS` | `TranscriptReady(transcriptId)` | Use OCI to extract facts, validate their evidence, persist zero or more candidates, and publish one `CandidateReady` per candidate. |
-| `MEMORY_CANDIDATES` | `CandidateReady(candidateId)` | Apply the lab's curation policy. Promoted candidates become memory rows and publish `MemoryReadyForEmbedding`; rejected or review candidates stop here. |
+| `MEMORY_INCOMING` | `IncomingEvent` with the transcript payload | Log a warning and drop events that fail prerequisites. Store accepted transcripts once per source ID and publish `TranscriptReady` only for new rows. |
+| `MEMORY_TRANSCRIPTS` | `TranscriptReady(transcriptId)` | Use OCI to extract facts and judge each against the source transcript. Persist only candidates scoring above the configured threshold and publish one `CandidateReady` per admitted candidate. |
+| `MEMORY_CANDIDATES` | `CandidateReady(candidateId)` | Promote admitted candidates to memory rows and publish `MemoryReadyForEmbedding`. |
 | `MEMORY_EMBEDDINGS` | `MemoryReadyForEmbedding(candidateId)` | Use OCI to embed the stored memory text, save its vector, and mark the candidate complete. |
 
 Internal events carry IDs; consumers load the corresponding rows. No worker scans SQL tables for ready work. Configure the incoming topic with `memory.intake.topic` and the other topics with `memory.events.*`. Each topic has one partition in this lab and a consumer group named `<topic>_PROCESSOR`.
 
 Each stage creates a transactional producer on `consumer.getDBConnection()`. The same connection backs its `JdbcClient`. One `producer.commitTransaction()` atomically commits consumption of the input, database changes, and all next-stage events. `abortTransaction()` rolls them all back together. This is exactly-once processing of the database and queue effects at each stage. OCI calls can repeat after rollback; they are outside the database's atomic guarantee.
 
+Each repository has a `from(Connection)` factory, for example `JdbcTranscriptRepository.from(connection)` or `CandidateWorkRepository.from(connection)`. These factories use the caller's connection without committing, rolling back, or closing it. The `JdbcClient` constructors also remain available for pooled access, including the search API.
+
 A failed stage event is rolled back and retried after a one-second pause. Other stages keep running, but a repeatedly failing event can block later events on its stage's partition. This example has no dead-letter or human-review workflow.
 
-## Inspect the four durable states
+## Inspect the three durable tables
 
 | Table | What to look for |
 | --- | --- |
-| `intake_outcomes` | The source event ID and `ACCEPTED` or `FILTERED` receipt. Filtered events keep no transcript. |
 | `transcripts` | The accepted JSON payload, numeric ID, and `READY`, `DONE`, or `NO_MEMORY` preparation state. |
-| `candidate_work` | Each extracted fact, its evidence, and its `READY`, `REVIEW`, `REJECTED`, `PENDING_EMBEDDING`, or `COMPLETE` state. |
+| `candidate_work` | Each admitted fact, its evidence, its `judge_score`, and its `READY`, `PENDING_EMBEDDING`, or `COMPLETE` state. |
 | `event_memories` | Immutable promoted text and its vector. A null vector is durable but excluded from search. |
 
 Inspect them with SQL*Plus in the database container. Use `RAWTOHEX(source_event_id)` to inspect the UUID as 32 hexadecimal characters without hyphens:
@@ -75,18 +76,27 @@ docker compose exec oracle-free sqlplus 'TESTUSER/Welcome123#@//localhost:1521/F
 ```
 
 ```sql
-SELECT RAWTOHEX(source_event_id) AS source_event_id, outcome, reason, transcript_id FROM intake_outcomes;
 SELECT transcript_id, RAWTOHEX(source_event_id) AS source_event_id, preparation_status FROM transcripts;
-SELECT RAWTOHEX(candidate_id), transcript_id, status FROM candidate_work;
+SELECT RAWTOHEX(candidate_id), transcript_id, judge_score, status FROM candidate_work;
 SELECT RAWTOHEX(id), owner_scope, memory_text, VECTOR_DIMENSION_COUNT(embedding) AS dimensions FROM event_memories;
 EXIT;
 ```
 
-The four tables retain provenance and processing state; the topics deliver the work. A promoted memory has a null vector until its embedding event succeeds, so search excludes it during that interval. Curation uses demonstration prefix rules: `maybe ` puts a candidate in `REVIEW`, `reject ` puts it in `REJECTED`, and other candidates are promoted. OCI may rephrase extracted text, so these prefixes are not a production admission policy.
+The three tables retain provenance and processing state; the topics deliver the work. A promoted memory has a null vector until its embedding event succeeds, so search excludes it during that interval. Extraction and judging use separate calls to the configured Spring AI `ChatModel`. The judge scores each candidate from 0 to 100 using the source transcript, supporting evidence, attribution, durability, usefulness, and sensitivity. It replaces exact evidence matching, keyword secret filtering, and prefix-based curation. This is a model judgment, not a guaranteed secret detector.
+
+Configure admission in `application.yml`:
+
+```yaml
+memory:
+  candidates:
+    score-threshold: 70
+```
+
+Only scores **strictly greater** than the threshold are persisted; a score of 70 is rejected at the default setting, and 71 is admitted. The threshold must be between 0 and 100. Admitted candidates retain their score in `candidate_work.judge_score`. Low-scoring candidates are discarded; when none pass, the transcript becomes `NO_MEMORY`. Missing, malformed, fractional, or out-of-range judge scores fail preparation and leave its event eligible for retry. The later curation consumer promotes admitted candidates, and the embedding consumer uses the separate Spring AI `EmbeddingModel` to generate retrieval vectors.
 
 ## Verify and reset
 
-`mvn verify` runs the sample with Oracle AI Database Free in Testcontainers, including a real OKafka producer-to-search path. It uses its own database and calls OCI for chat and embeddings, so export `OCI_COMPARTMENT_ID` first. Deterministic persistence tests use test-only model fixtures. Integration tests also verify atomic input/output handoffs and event redelivery after a failed embedding write.
+`mvn verify` runs the sample with Oracle AI Database Free in Testcontainers, including a real OKafka producer-to-search path. It uses its own database and calls OCI for extraction, judging, and embeddings, so export `OCI_COMPARTMENT_ID` first. Deterministic persistence tests use test-only model fixtures. Integration tests also verify atomic input/output handoffs and event redelivery after a failed embedding write.
 
 ```sh
 mvn verify
@@ -94,7 +104,7 @@ mvn verify
 
 Run `mvn test` for deterministic database tests without OCI calls. These tests still require Docker.
 
-Stop the app with Ctrl-C and the database with `docker compose down`. Compose retains its volume between runs. The schema uses `RAW(16)` source event IDs and is incompatible with earlier schemas with VARCHAR2 source IDs, per-memory embedding model columns, SQL-polled retry fields, or ten tables. To discard **disposable demo data** and create a clean schema, run:
+Stop the app with Ctrl-C and the database with `docker compose down`. Compose retains its volume between runs. The schema uses `RAW(16)` source event IDs, a native `JSON` transcript column, and a required `candidate_work.judge_score` column. It is incompatible with earlier schemas without judge scores or with CLOB transcripts, VARCHAR2 source IDs, per-memory embedding model columns, SQL-polled retry fields, or ten tables. To discard **disposable demo data** and create a clean schema, run:
 
 ```sh
 docker compose down --volumes
@@ -107,7 +117,9 @@ Preserving earlier data requires a separate migration and publication of missing
 
 The checked-in defaults connect to `localhost:1521/FREEPDB1` as `TESTUSER` using the sample password in `application.yml` and `ojdbc.properties`. Create that user in your local instance, apply `src/test/resources/okafka.sql` from a SYS session, then run `src/main/resources/db/schema.sql` as `TESTUSER`. Start the app from this directory so OKafka can read `ojdbc.properties`. Change the Spring datasource and OKafka connection properties together when using another host.
 
-The event contract is `IncomingEvent(sourceEventId, ownerScope, transcriptPayload, storageAllowed)`. `sourceEventId` is a required Java `UUID`, serialized as a UUID string in JSON and stored as `RAW(16)` in both `intake_outcomes` and `transcripts`. The OKafka key must equal its canonical hyphenated UUID string. Reusing an ID returns its original intake outcome. The search request accepts only `query` and `limit`; owner scope is fixed by trusted local configuration as `user:demo`. Source transcripts are never returned by the API. The sample demonstrates atomic consume/write/publish transactions at each stage, plus local identity scoping. OCI extraction and embedding can be retried; exactly-once database and queue effects do not imply exactly-once model calls. Production authentication is outside this lab.
+The event contract is `IncomingEvent(sourceEventId, ownerScope, transcriptPayload, storageAllowed)`. `transcriptPayload` is a JSON object mapped to `Map<String, Object>`, for example `{"message":"remember I prefer dark mode"}`. The OSON consumer deserializes the complete event, including its structured payload. Intake stores that payload as OSON in `transcripts.event_payload`, a native `JSON` column; the repository maps it back to a Java map without converting through JSON text. Candidate preparation sends the structured transcript and each extracted candidate to the LLM judge. JSON text is generated only when building the model prompt. Older events containing a JSON string in `transcriptPayload` must be republished with an object payload.
+
+`sourceEventId` is a required Java `UUID`, serialized as a UUID string in JSON and stored as `RAW(16)` in `transcripts`. The OKafka key must equal its canonical hyphenated UUID string. Reusing an accepted source ID leaves its original transcript unchanged and emits no additional handoff. Events without storage permission, an owner scope, or a transcript payload are logged with their ID and rejection reason, then acknowledged without writing a row. Dropped IDs are not retained, so a later allowed event can use the same ID. The search request accepts only `query` and `limit`; owner scope is fixed by trusted local configuration as `user:demo`. Source transcripts are never returned by the API. The sample demonstrates atomic consume/write/publish transactions at each stage, plus local identity scoping. OCI extraction and embedding can be retried; exactly-once database and queue effects do not imply exactly-once model calls. Production authentication is outside this lab.
 
 ## OCI Generative AI configuration
 

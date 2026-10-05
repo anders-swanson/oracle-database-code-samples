@@ -5,9 +5,9 @@ import java.util.UUID;
 
 public interface TranscriptRepository {
     /**
-     * Stores a transcript once per source event ID and returns the existing row on a retry.
+     * Returns the newly inserted transcript, or empty when the source event ID already exists.
      */
-    Transcript storeIfAbsent(TranscriptDraft draft);
+    Optional<Transcript> insertIfAbsent(TranscriptDraft draft);
 
     Optional<Transcript> findById(long transcriptId);
 

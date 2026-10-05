@@ -21,6 +21,15 @@ public class FixtureChatModel implements ChatModel {
     public ChatResponse call(Prompt prompt) {
         try {
             JsonNode transcript = objectMapper.readTree(prompt.getUserMessage().getText());
+            if (prompt.getSystemMessage().getText().contains("memory candidate judge")) {
+                String text = transcript.path("candidate").path("candidateText").asText();
+                int score = text.contains("password") || text.startsWith("reject ") ? 10
+                        : text.startsWith("maybe ") ? 40
+                        : text.equals("threshold fact") ? 80
+                        : text.equals("above threshold fact") ? 81
+                        : text.equals("invalid judge output") ? 101 : 90;
+                return response("{\"score\":" + score + "}");
+            }
             List<ExtractedCandidate> candidates = new ArrayList<>();
             addCandidate(transcript.path("message"), candidates);
             for (JsonNode message : transcript.path("messages")) {
@@ -29,10 +38,14 @@ public class FixtureChatModel implements ChatModel {
                 }
             }
             String json = objectMapper.writeValueAsString(candidates);
-            return new ChatResponse(List.of(new Generation(new AssistantMessage(json))));
+            return response(json);
         } catch (Exception invalidTranscript) {
             throw new IllegalArgumentException("Transcript must be JSON", invalidTranscript);
         }
+    }
+
+    private static ChatResponse response(String text) {
+        return new ChatResponse(List.of(new Generation(new AssistantMessage(text))));
     }
 
     private static void addCandidate(JsonNode message, List<ExtractedCandidate> candidates) {

@@ -1,6 +1,7 @@
 package com.example.okafkamemory;
 
 import com.example.okafkamemory.candidate.CandidateExtractor;
+import com.example.okafkamemory.candidate.SpringAiCandidateJudge;
 import com.example.okafkamemory.transcript.Transcript;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 })
 class OciGenAiSmokeIT {
     @Autowired CandidateExtractor extractor;
+    @Autowired SpringAiCandidateJudge judge;
     @Autowired ChatModel chat;
     @Autowired EmbeddingModel embeddings;
     @Value("${spring.ai.oci.genai.embedding.dimensions}") int dimensions;
@@ -36,11 +39,12 @@ class OciGenAiSmokeIT {
 
     @Test
     void extractsDurableFactsAsJson() {
-        var facts = extractor.extract(new Transcript(1, UUID.randomUUID(), "user:demo",
-                "{\"message\":\"Remember my favorite color is amber\"}", OffsetDateTime.now()));
+        var transcript = new Transcript(1, UUID.randomUUID(), "user:demo",
+                Map.of("message", "Remember my favorite color is amber"), OffsetDateTime.now());
+        var facts = extractor.extract(transcript);
         assertThat(facts).anySatisfy(fact -> {
             assertThat(fact.candidateText()).containsIgnoringCase("amber");
-            assertThat("Remember my favorite color is amber").contains(fact.evidence());
+            assertThat(judge.score(transcript, fact)).isBetween(0, 100);
         });
     }
 }

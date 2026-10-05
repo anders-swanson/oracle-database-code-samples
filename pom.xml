@@ -67,6 +67,7 @@
         <module>json/jpa-duality-views</module>
         <module>json/mongodb-duality-views</module>
         <module>langchain4j-agent-memory</module>
+        <module>okafka-agent-memory</module>
         <module>migrate-kafka-to-oracle/kafka-app</module>
         <module>migrate-kafka-to-oracle/kafka-app-step-1</module>
         <module>migrate-kafka-to-oracle/kafka-app-step-2</module>

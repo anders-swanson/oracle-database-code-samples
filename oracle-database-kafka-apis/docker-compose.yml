@@ -1,0 +1,25 @@
+# Oracle AI Database and Grafana LGTM for the OKafka metrics sample.
+services:
+  oracle:
+    image: gvenzl/oracle-free:23.26.3-slim-faststart
+    environment:
+      ORACLE_PASSWORD: "Welcome123#"
+      APP_USER: TESTUSER
+      APP_USER_PASSWORD: "Welcome123#"
+    ports:
+      - "127.0.0.1:1521:1521"
+    volumes:
+      - ./src/test/resources/okafka.sql:/container-entrypoint-initdb.d/okafka.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  grafana-lgtm:
+    image: grafana/otel-lgtm:latest
+    ports:
+      - "127.0.0.1:3000:3000" # Grafana
+      - "127.0.0.1:4317:4317" # OTLP gRPC
+      - "127.0.0.1:4318:4318" # OTLP HTTP

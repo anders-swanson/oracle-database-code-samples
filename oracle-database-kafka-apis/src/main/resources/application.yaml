@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: okafka-metrics-sample
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics
+  opentelemetry:
+    # Spring Boot defaults service.name to spring.application.name and honors OTEL_SERVICE_NAME.
+    # It also maps OTEL_EXPORTER_OTLP_* environment variables to the endpoints below.
+    tracing:
+      export:
+        otlp:
+          endpoint: http://localhost:4318/v1/traces
+    logging:
+      export:
+        otlp:
+          endpoint: http://localhost:4318/v1/logs
+  # OKafka client and Actuator metrics share Spring Boot's Micrometer OTLP registry.
+  otlp:
+    metrics:
+      export:
+        # The Java application runs on the host; Compose publishes LGTM's OTLP HTTP port here.
+        url: http://localhost:4318/v1/metrics
+        step: 10s
+  tracing:
+    sampling:
+      probability: 1
+    export:
+      otlp:
+        enabled: true
+  logging:
+    export:
+      otlp:
+        enabled: true

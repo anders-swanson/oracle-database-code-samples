@@ -17,9 +17,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>ords-testcontainers</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.oracle.database.spring</groupId>
+            <artifactId>oracle-spring-boot-testcontainers</artifactId>
+            <version>${oracle.starters.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

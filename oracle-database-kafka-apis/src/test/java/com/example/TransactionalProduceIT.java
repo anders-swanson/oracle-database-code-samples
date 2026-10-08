@@ -7,8 +7,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Stream;
 
 import com.oracle.spring.testcontainers.OracleContainer;
@@ -94,7 +92,7 @@ public class TransactionalProduceIT {
 
         // The producer will process 15 records before failing,
         // aborting the transaction.
-        try (TransationalProducer producer = new TransationalProducer(
+        try (TransactionalProducer producer = new TransactionalProducer(
                 okafkaProducer,
                 topicName,
                 limit)) {

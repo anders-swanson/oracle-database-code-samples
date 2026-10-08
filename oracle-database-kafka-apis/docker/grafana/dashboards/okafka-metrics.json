@@ -1,7 +1,7 @@
 {
   "uid": "okafka-metrics-sample",
   "title": "OKafka Metrics Sample",
-  "description": "Producer, consumer, and JVM metrics for the Oracle AI Database OKafka sample.",
+  "description": "Native OKafka producer transaction, consumer, and Actuator metrics for the Oracle AI Database sample.",
   "tags": [
     "okafka",
     "oracle-ai-database",
@@ -35,7 +35,7 @@
   "panels": [
     {
       "id": 1,
-      "title": "Records produced",
+      "title": "Producer commit time",
       "type": "stat",
       "gridPos": {
         "x": 0,
@@ -47,23 +47,23 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "Cumulative producer count for the current application run.",
+      "description": "Cumulative time spent in the producer's commitTransaction calls, as reported by OKafka. This measures API call time, not the number of committed or aborted records.",
       "fieldConfig": {
         "defaults": {
-          "unit": "short",
+          "unit": "ns",
           "min": 0,
           "color": {
             "mode": "palette-classic"
           },
-          "decimals": 0
+          "decimals": 2
         },
         "overrides": []
       },
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(max without (topic) (kafka_producer_record_send_total{service_name=\"$service\",client_id=\"metrics-producer\"}))",
-          "legendFormat": "Produced",
+          "expr": "sum(kafka_producer_txn_commit_time_ns_total{service_name=\"$service\",client_id=\"metrics-producer\"})",
+          "legendFormat": "Commit time",
           "datasource": {
             "type": "prometheus",
             "uid": "prometheus"
@@ -88,7 +88,7 @@
     },
     {
       "id": 2,
-      "title": "Records consumed",
+      "title": "Producer abort time",
       "type": "stat",
       "gridPos": {
         "x": 6,
@@ -100,23 +100,23 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "Records fetched by the consumer. Client and topic series are deduplicated; this is not a consumer-lag metric.",
+      "description": "Cumulative time spent in the producer's abortTransaction calls, as reported by OKafka. This measures API call time, not the number of committed or aborted records.",
       "fieldConfig": {
         "defaults": {
-          "unit": "short",
+          "unit": "ns",
           "min": 0,
           "color": {
             "mode": "palette-classic"
           },
-          "decimals": 0
+          "decimals": 2
         },
         "overrides": []
       },
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(max without (topic) (kafka_consumer_fetch_manager_records_consumed_total{service_name=\"$service\",client_id=\"metrics-consumer\"}))",
-          "legendFormat": "Consumed",
+          "expr": "sum(kafka_producer_txn_abort_time_ns_total{service_name=\"$service\",client_id=\"metrics-producer\"})",
+          "legendFormat": "Abort time",
           "datasource": {
             "type": "prometheus",
             "uid": "prometheus"
@@ -141,7 +141,7 @@
     },
     {
       "id": 3,
-      "title": "Producer record errors",
+      "title": "Consumer fetches",
       "type": "stat",
       "gridPos": {
         "x": 12,
@@ -153,7 +153,7 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "Cumulative record errors reported by the producer.",
+      "description": "Native consumer fetch count, including records fetched again after rollback. Client and topic series are deduplicated. This is not a count of committed SQL updates.",
       "fieldConfig": {
         "defaults": {
           "unit": "short",
@@ -168,8 +168,8 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(max without (topic) (kafka_producer_record_error_total{service_name=\"$service\",client_id=\"metrics-producer\"}))",
-          "legendFormat": "Errors",
+          "expr": "sum(max without (topic) (kafka_consumer_fetch_manager_records_consumed_total{service_name=\"$service\",client_id=\"metrics-consumer\"}))",
+          "legendFormat": "Fetched",
           "datasource": {
             "type": "prometheus",
             "uid": "prometheus"
@@ -194,7 +194,7 @@
     },
     {
       "id": 4,
-      "title": "Time since last consumer poll",
+      "title": "Seconds since poll",
       "type": "stat",
       "gridPos": {
         "x": 18,
@@ -247,7 +247,7 @@
     },
     {
       "id": 5,
-      "title": "Message throughput",
+      "title": "Consumer fetch throughput",
       "type": "timeseries",
       "gridPos": {
         "x": 0,
@@ -259,7 +259,7 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "Rates need multiple exports. The continuous workload targets two records per second; the startup burst can temporarily raise the rate.",
+      "description": "Native consumer fetch rate. The continuous workload targets two records per second. Rollback and redelivery can temporarily increase the fetch rate.",
       "fieldConfig": {
         "defaults": {
           "unit": "ops",
@@ -273,20 +273,8 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(max without (topic) (rate(kafka_producer_record_send_total{service_name=\"$service\",client_id=\"metrics-producer\"}[$__rate_interval])))",
-          "legendFormat": "Produced / second",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "range": true,
-          "instant": false,
-          "interval": "10s"
-        },
-        {
-          "refId": "B",
           "expr": "sum(max without (topic) (rate(kafka_consumer_fetch_manager_records_consumed_total{service_name=\"$service\",client_id=\"metrics-consumer\"}[$__rate_interval])))",
-          "legendFormat": "Consumed / second",
+          "legendFormat": "Fetched / second",
           "datasource": {
             "type": "prometheus",
             "uid": "prometheus"
@@ -310,7 +298,7 @@
     },
     {
       "id": 6,
-      "title": "Cumulative record counts",
+      "title": "Producer transaction time",
       "type": "timeseries",
       "gridPos": {
         "x": 12,
@@ -322,10 +310,10 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "Counters reset when the application restarts. Topic and client totals are deduplicated.",
+      "description": "Cumulative time in beginTransaction, commitTransaction, and abortTransaction, reported directly by OKafka. These counters reset when the client restarts.",
       "fieldConfig": {
         "defaults": {
-          "unit": "short",
+          "unit": "ns",
           "min": 0,
           "color": {
             "mode": "palette-classic"
@@ -336,8 +324,8 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(max without (topic) (kafka_producer_record_send_total{service_name=\"$service\",client_id=\"metrics-producer\"}))",
-          "legendFormat": "Produced",
+          "expr": "sum(kafka_producer_txn_begin_time_ns_total{service_name=\"$service\",client_id=\"metrics-producer\"})",
+          "legendFormat": "Begin time",
           "datasource": {
             "type": "prometheus",
             "uid": "prometheus"
@@ -348,8 +336,20 @@
         },
         {
           "refId": "B",
-          "expr": "sum(max without (topic) (kafka_consumer_fetch_manager_records_consumed_total{service_name=\"$service\",client_id=\"metrics-consumer\"}))",
-          "legendFormat": "Consumed",
+          "expr": "sum(kafka_producer_txn_commit_time_ns_total{service_name=\"$service\",client_id=\"metrics-producer\"})",
+          "legendFormat": "Commit time",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "range": true,
+          "instant": false,
+          "interval": "10s"
+        },
+        {
+          "refId": "C",
+          "expr": "sum(kafka_producer_txn_abort_time_ns_total{service_name=\"$service\",client_id=\"metrics-producer\"})",
+          "legendFormat": "Abort time",
           "datasource": {
             "type": "prometheus",
             "uid": "prometheus"

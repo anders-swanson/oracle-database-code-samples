@@ -48,10 +48,44 @@ To run all the Transactional Event Queue Kafka API tests and check their results
 
 ### OKafka metrics, tracing, and logs with Spring Boot Actuator and OpenTelemetry
 
-The `com.example.metrics` package contains a Spring Boot sample for `kafka-clients` metrics, tracing, and logs with OKafka. The sample exporter OpenTelemetry observability data on OKafka producers and consumers, so you can see how these components are functioning in real time.
+The `com.example.metrics` package contains a Spring Boot sample for `kafka-clients` metrics, tracing, and logs with OKafka. The sample exports OpenTelemetry observability data from transactional OKafka producers and consumers, so you can see how these components are functioning in real time.
 
-After verifying ten records at startup, the sample schedules a sensor reading every 500 ms and keeps
-polling and committing consumed records. Stop the application with Ctrl+C to end the workload.
+These metrics are useful for monitoring applications using Oracle AI Database's Kafka Java APIs.
+
+The sample combines Kafka Java API operations and SQL in Oracle AI Database transactions, with
+metrics, traces, and correlated logs showing the work. No separate Kafka broker is required.
+
+The scheduled producer and polling consumer demonstrate these transaction outcomes:
+
+1. Send a reading and insert its row, then call `abortTransaction()`. Neither the event nor the row is committed.
+2. Publish a reading every 500 ms and insert its row using `producer.getDBConnection()`, then call
+   `commitTransaction()` to commit the events and SQL together.
+3. Poll the readings and update their `consumed_at` timestamps using `consumer.getDBConnection()`,
+   then roll back that connection. The updates disappear and the readings remain available for consumption.
+4. Poll again and call `commitSync()` after the SQL updates, committing consumption and the updates together.
+
+[MetricsSample](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-database-kafka-apis/src/main/java/com/example/metrics/MetricsSample.java)
+uses only the scheduled producer to publish readings. The application thread polls and consumes
+them continuously, rolling back its first nonempty batch before committing subsequent batches. SQL runs through the
+client's own database connection; no separate JDBC connection or distributed transaction manager
+participates in those transactions. Stop the application with Ctrl+C to end the workload.
+
+The startup SQL creates `OKAFKA_METRICS_READINGS` before the application starts. Rows are keyed
+by a run ID and reading, so restarting the application preserves earlier runs. The current run ID is
+printed in the startup logs. Connect as `TESTUSER` to inspect committed state:
+
+```sql
+select run_id, count(*) as produced, count(consumed_at) as consumed
+from OKAFKA_METRICS_READINGS
+group by run_id;
+
+select run_id, reading, produced_at, consumed_at
+from OKAFKA_METRICS_READINGS
+where reading = 'sensor-reading-aborted';
+```
+
+The second query returns no rows: the first scheduled producer transaction was aborted.
+These guarantees cover the queue operations and SQL performed in the same Oracle AI Database transaction.
 
 The [MetricsApplication](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-database-kafka-apis/src/main/java/com/example/metrics/MetricsApplication.java)
 registers Micrometer `KafkaClientMetrics` binders for OKafka's standard `metrics()` API. Spring Boot
@@ -65,8 +99,11 @@ while metrics use Micrometer's registry directly. No custom OpenTelemetry SDK me
 exporter, or Kafka instrumentation dependency is needed. See
 [Spring Boot's OpenTelemetry documentation](https://docs.spring.io/spring-boot/reference/actuator/observability.html#actuator.observability.opentelemetry.support).
 The Kafka binders instrument client metrics. A Micrometer observation creates an `okafka.sample`
-span around the startup workload and an `okafka.reading` span around each scheduled publish/consume
-cycle; Spring request observations also create spans.
+span around each consumer poll and an `okafka.reading` span around each scheduled publish. Nested `okafka.producer.transaction` and `okafka.consumer.transaction` spans use Micrometer's
+`Tracer` to show transaction outcomes (`committed`, `aborted`, or `rolled_back`). Failed operations
+carry the `failed` outcome, and empty polls carry the `empty` outcome. These transaction spans do not
+register metrics; the Kafka binders export the metrics exposed by the OKafka clients.
+Spring request observations also create spans.
 The local sample samples every trace (`management.tracing.sampling.probability=1`). It does not
 propagate trace context through individual Kafka messages.
 
@@ -86,16 +123,16 @@ Run these commands from `oracle-database-kafka-apis/`.
    OpenTelemetry Collector, Prometheus for metrics, and Grafana with preconfigured data sources:
 
 ```shell
-docker compose up -d
+docker compose up -d --wait
 ```
 
-   Compose uses `container-registry.oracle.com/database/free:latest`. Its
+   Compose uses `container-registry.oracle.com/database/free:latest-lite`. Its
    [startup script](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-database-kafka-apis/docker/init.sql)
    creates the `USERS` tablespace and `TESTUSER` with password `Welcome123#` in `FREEPDB1`, then runs the mounted
    [okafka.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-database-kafka-apis/src/test/resources/okafka.sql)
-   to grant TxEventQ privileges. `ORACLE_PWD` sets the administrator password. The startup script
+   to grant TxEventQ privileges and create `OKAFKA_METRICS_READINGS` if it is missing. `ORACLE_PWD` sets the administrator password. The startup script
    also runs on subsequent starts and preserves an existing user. The health check verifies that
-   `TESTUSER` can connect and query a required OKafka view. The database listens on `localhost:1521`.
+   `TESTUSER` can connect and query a required OKafka view and the readings table. The database listens on `localhost:1521`.
 
 2. Run the sample against the Compose database:
 
@@ -116,8 +153,8 @@ curl http://localhost:8080/actuator/metrics
 
 Open [Grafana](http://localhost:3000) and sign in with `admin` / `admin`. Compose provisions the
 [OKafka Metrics Sample dashboard](http://localhost:3000/d/okafka-metrics-sample) and sets it as the
-home dashboard. It shows produced/consumed totals, throughput, producer errors, time since the last
-consumer poll, JVM memory, and CPU usage. The **Service name** field defaults to `okafka-metrics-sample`;
+home dashboard. It shows native producer begin/commit/abort timings, consumer fetch counts and
+throughput, time since the last consumer poll, JVM memory, and CPU usage. The **Service name** field defaults to `okafka-metrics-sample`;
 change it if you set `OTEL_SERVICE_NAME`. Rates need multiple exports, so allow about a minute for
 the throughput panels to populate. The dashboard refreshes every ten seconds.
 
@@ -129,7 +166,7 @@ can also be imported into another Grafana instance using a Prometheus data sourc
 
 In **Explore**, select
 the **Prometheus** data source and query `kafka_consumer_fetch_manager_records_consumed_total` or
-`kafka_producer_record_send_total`. Prometheus converts the OpenTelemetry metric names from dots to
+`kafka_producer_txn_commit_time_ns_total`. Prometheus converts the OpenTelemetry metric names from dots to
 underscores. Actuator JVM metrics are available in the same data source.
 
 For traces, select **Tempo** and use TraceQL `{resource.service.name = "okafka-metrics-sample"}`
@@ -161,14 +198,21 @@ Metrics:
 
 | Example metric | Meaning |
 | --- | --- |
-| `kafka.producer.record.send.total` | Records sent by the producer |
-| `kafka.producer.record.error.total` | Producer record errors |
-| `kafka.producer.buffer.available.bytes` | Available producer buffer memory |
-| `kafka.producer.flush.time.ns.total` | Cumulative time spent flushing, in nanoseconds |
-| `kafka.consumer.fetch.manager.records.consumed.total` | Records fetched by the consumer |
+| `kafka.producer.txn.begin.time.ns.total` | Cumulative time spent beginning transactions, in nanoseconds |
+| `kafka.producer.txn.commit.time.ns.total` | Cumulative time spent committing transactions, in nanoseconds |
+| `kafka.producer.txn.abort.time.ns.total` | Cumulative time spent aborting transactions, in nanoseconds |
+| `kafka.consumer.fetch.manager.records.consumed.total` | Consumer fetches, including records fetched again after rollback |
 | `kafka.consumer.fetch.manager.bytes.consumed.total` | Bytes fetched by the consumer |
 | `kafka.consumer.fetch.manager.fetch.latency.avg` | Average fetch latency |
 | `kafka.consumer.last.poll.seconds.ago` | Seconds since the last poll |
+
+The transactional producer exposes transaction timings rather than the asynchronous producer's
+send/error/buffer metrics. It sends synchronously, so the sample does not call `flush()`.
+Producer transaction timings measure time spent in the native transaction API calls; they do not
+count messages or include all SQL processing time. Consumer fetch counters include records fetched
+again after rollback and can exceed committed counts. The sample registers no custom counters for
+transaction outcomes or committed readings. Use the SQL queries against `OKAFKA_METRICS_READINGS`
+to inspect committed business state, and use transaction spans to distinguish commit, abort, and rollback.
 
 Client IDs (`metrics-producer` and `metrics-consumer`) identify the clients; topic tags are included
 where the client exposes them. The Micrometer binder selects the most detailed available dimensions to
@@ -181,8 +225,12 @@ mvn test -Dtest=MetricsInstrumentationTest
 ```
 
 This test provisions Oracle AI Database Free, runs the Spring Boot sample, decodes actual OTLP HTTP
-protobuf requests, and verifies producer and consumer counts, flush timing, client tags, and the
-service resource. It also verifies Actuator JVM metrics over OTLP and checks the Actuator metrics
+protobuf requests, and verifies native producer begin/commit/abort timings, consumer fetches, client tags,
+and the service resource. It also checks that the producer exposes these native transaction metrics
+through its `metrics()` API. It also verifies Actuator JVM metrics over OTLP and checks the Actuator metrics
 endpoint. It verifies the sample span and an exported log record with matching trace and span IDs.
+It waits for produced and consumed readings through an independent JDBC connection without requiring
+a fixed record count, and checks the
+producer abort, consumer rollback, and committed transaction spans.
 The test supplies its own local OTLP receiver, so it does not require a running Collector. Run `mvn verify` to include the existing
 transactional messaging tests.

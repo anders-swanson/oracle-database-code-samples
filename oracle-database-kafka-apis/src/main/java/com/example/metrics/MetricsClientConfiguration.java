@@ -2,8 +2,6 @@ package com.example.metrics;
 
 import java.util.Properties;
 
-import org.apache.kafka.clients.consumer.Consumer;
-import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.oracle.okafka.clients.consumer.KafkaConsumer;
@@ -26,19 +24,21 @@ public class MetricsClientConfiguration {
         return properties;
     }
 
-    @Bean(destroyMethod = "close")
-    Producer<String, String> metricsProducer(Properties okafkaConnectionProperties) {
+    @Bean(initMethod = "initTransactions", destroyMethod = "close")
+    KafkaProducer<String, String> metricsProducer(Properties okafkaConnectionProperties) {
         var properties = new Properties();
         properties.putAll(okafkaConnectionProperties);
         properties.put("client.id", "metrics-producer");
         properties.put("enable.idempotence", "true");
+        properties.put("oracle.transactional.producer", "true");
         properties.put("key.serializer", StringSerializer.class.getName());
         properties.put("value.serializer", StringSerializer.class.getName());
         return new KafkaProducer<>(properties);
     }
 
-    @Bean(destroyMethod = "close")
-    Consumer<String, String> metricsConsumer(Properties okafkaConnectionProperties) {
+    // The polling application thread closes the consumer after it stops.
+    @Bean(destroyMethod = "")
+    KafkaConsumer<String, String> metricsConsumer(Properties okafkaConnectionProperties) {
         var properties = new Properties();
         properties.putAll(okafkaConnectionProperties);
         properties.put("client.id", "metrics-consumer");

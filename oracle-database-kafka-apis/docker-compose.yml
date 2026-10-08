@@ -13,7 +13,7 @@ services:
       test:
         - CMD-SHELL
         - >-
-          printf 'WHENEVER SQLERROR EXIT FAILURE\nSELECT 1 FROM user_queue_partition_assignment_table WHERE 1 = 0;\nEXIT;\n'
+          printf 'WHENEVER SQLERROR EXIT FAILURE\nSELECT 1 FROM user_queue_partition_assignment_table WHERE 1 = 0;\nSELECT 1 FROM OKAFKA_METRICS_READINGS WHERE 1 = 0;\nEXIT;\n'
           | sqlplus -L -s 'TESTUSER/Welcome123#@//localhost:1521/FREEPDB1' > /dev/null
       interval: 10s
       timeout: 10s

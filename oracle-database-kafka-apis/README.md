@@ -19,7 +19,7 @@ The following articles describe using Kafka Java APIs with Oracle AI Database Tr
 
 ### Running the Oracle AI Database Kafka API tests
 
-The tests in this package demonstrate using the Kafka Java Client for Oracle AI Database Transactional Event Queues to produce and consume messages. The tests use a containerized Oracle AI Database instance with Testcontainers to run locally on a Docker-compatible environment with Java 21.
+The tests in this package demonstrate using the Kafka Java Client for Oracle AI Database Transactional Event Queues to produce and consume messages. The tests use `oracle-spring-boot-testcontainers` with the official Oracle AI Database Free image (`container-registry.oracle.com/database/free:latest-lite`) to run locally on a Docker-compatible environment with Java 21. The JUnit Testcontainers extension starts and stops each test class's container.
 
 Prerequisites:
 - Java 21
@@ -120,6 +120,8 @@ home dashboard. It shows produced/consumed totals, throughput, producer errors, 
 consumer poll, JVM memory, and CPU usage. The **Service name** field defaults to `okafka-metrics-sample`;
 change it if you set `OTEL_SERVICE_NAME`. Rates need multiple exports, so allow about a minute for
 the throughput panels to populate. The dashboard refreshes every ten seconds.
+
+![dashboard](images/dashboard.png)
 
 The dashboard's
 [JSON source](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-database-kafka-apis/docker/grafana/dashboards/okafka-metrics.json)

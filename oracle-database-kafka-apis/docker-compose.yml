@@ -1,7 +1,7 @@
 # Oracle AI Database and Grafana LGTM for the OKafka metrics sample.
 services:
   oracle:
-    image: container-registry.oracle.com/database/free:latest
+    image: container-registry.oracle.com/database/free:latest-lite
     environment:
       ORACLE_PWD: "Welcome123#"
     ports:

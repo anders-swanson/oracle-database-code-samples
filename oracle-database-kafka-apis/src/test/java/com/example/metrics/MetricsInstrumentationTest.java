@@ -5,7 +5,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import com.oracle.spring.testcontainers.OracleContainer;
 import com.sun.net.httpserver.HttpServer;
 import io.opentelemetry.proto.collector.logs.v1.ExportLogsServiceRequest;
 import io.opentelemetry.proto.collector.metrics.v1.ExportMetricsServiceRequest;
@@ -21,11 +21,9 @@ import io.opentelemetry.proto.logs.v1.LogRecord;
 import io.opentelemetry.proto.trace.v1.Span;
 import io.opentelemetry.proto.metrics.v1.Metric;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.oracle.OracleContainer;
 import org.testcontainers.utility.MountableFile;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,13 +31,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 class MetricsInstrumentationTest {
     @Container
-    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.3-slim-faststart")
-            .withStartupTimeout(Duration.ofMinutes(3))
+    static final OracleContainer oracle = new OracleContainer()
             .withUsername("testuser")
             .withPassword("Welcome123#");
-
-    @TempDir
-    Path tnsAdmin;
 
     @Test
     void exportsMetricsTracesAndCorrelatedLogsThroughOtlp() throws Exception {
@@ -47,7 +41,6 @@ class MetricsInstrumentationTest {
         var grants = oracle.execInContainer("sqlplus", "-s", "sys / as sysdba", "@/tmp/okafka.sql");
         assertThat(grants.getExitCode()).isZero();
         assertThat(grants.getStdout()).doesNotContain("ORA-");
-        Files.writeString(tnsAdmin.resolve("ojdbc.properties"), "user=testuser\npassword=Welcome123#\n");
 
         var requests = new LinkedBlockingQueue<ExportMetricsServiceRequest>();
         var traceRequests = new LinkedBlockingQueue<ExportTraceServiceRequest>();
@@ -80,7 +73,7 @@ class MetricsInstrumentationTest {
         try (var context = new SpringApplicationBuilder(MetricsApplication.class)
                 .run("--server.port=0",
                         "--okafka.bootstrap-servers=" + oracle.getHost() + ":" + oracle.getMappedPort(1521),
-                        "--okafka.tns-admin=" + tnsAdmin,
+                        "--okafka.tns-admin=" + Path.of("src/test/resources").toAbsolutePath(),
                         "--management.otlp.metrics.export.url=" + endpoint,
                         "--management.otlp.metrics.export.step=1s",
                         "--management.opentelemetry.tracing.export.otlp.endpoint=" + endpoint.replace("/metrics", "/traces"),

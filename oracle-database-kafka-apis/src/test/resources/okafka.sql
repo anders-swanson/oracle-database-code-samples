@@ -1,3 +1,6 @@
+whenever sqlerror exit failure rollback
+whenever oserror exit failure rollback
+
 alter session set container=freepdb1;
 
 -- This user is created by Testcontainers or the Compose startup script.

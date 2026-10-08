@@ -6,11 +6,11 @@ import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Stream;
 
+import com.oracle.spring.testcontainers.OracleContainer;
 import oracle.jdbc.pool.OracleDataSource;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.Consumer;
@@ -20,14 +20,13 @@ import org.junit.jupiter.api.Test;
 import org.oracle.okafka.clients.consumer.KafkaConsumer;
 import org.oracle.okafka.clients.producer.KafkaProducer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.oracle.OracleContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.MountableFile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Testcontainers
 public class TransactionalConsumeIT {
-    // Oracle Databse 26ai Free container image
-    private static final String oracleImage = "gvenzl/oracle-free:23.26.3-slim-faststart";
     private static final String testUser = "testuser";
     private static final String testPassword = "Welcome123#";
     private final String topicName = "TEST";
@@ -37,9 +36,10 @@ public class TransactionalConsumeIT {
     @BeforeAll
     static void setUp() throws Exception {
         // Configure the Oracle AI Database container with the TxEventQ test user.
-        oracleContainer.start();
         oracleContainer.copyFileToContainer(MountableFile.forClasspathResource("okafka.sql"), "/tmp/init.sql");
-        oracleContainer.execInContainer("sqlplus", "sys / as sysdba", "@/tmp/init.sql");
+        var grants = oracleContainer.execInContainer("sqlplus", "-s", "sys / as sysdba", "@/tmp/init.sql");
+        assertThat(grants.getExitCode()).isZero();
+        assertThat(grants.getStdout()).doesNotContain("ORA-");
 
         // Configure a datasource for the Oracle AI Database container.
         // The datasource is used to demonstrate TxEventQ table duality.
@@ -62,8 +62,7 @@ public class TransactionalConsumeIT {
     }
 
     @Container
-    private static final OracleContainer oracleContainer = new OracleContainer(oracleImage)
-            .withStartupTimeout(Duration.ofMinutes(3)) // allow possible slow startup
+    private static final OracleContainer oracleContainer = new OracleContainer()
             .withUsername(testUser)
             .withPassword(testPassword);
 

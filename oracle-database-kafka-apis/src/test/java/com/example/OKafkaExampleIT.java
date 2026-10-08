@@ -7,13 +7,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
-import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.stream.Stream;
 
+import com.oracle.spring.testcontainers.OracleContainer;
 import oracle.jdbc.pool.OracleDataSource;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.Consumer;
@@ -24,20 +24,16 @@ import org.oracle.okafka.clients.consumer.KafkaConsumer;
 import org.oracle.okafka.clients.producer.KafkaProducer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.oracle.OracleContainer;
 import org.testcontainers.utility.MountableFile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Running this test requires a local environment capable of running containers.
- * I suggest pre-pulling the gvenzl/oracle-free:23.26.3-slim-faststart image for
- * fast test startup.
+ * Uses the official Oracle AI Database Free image through Oracle Spring Testcontainers.
  */
 @Testcontainers
 public class OKafkaExampleIT {
-    // Oracle Databse 26ai Free container image
-    private static final String oracleImage = "gvenzl/oracle-free:23.26.3-slim-faststart";
     private static final String testUser = "testuser";
     private static final String testPassword = "Welcome123#";
     private final String topicName = "TXEVENTQ_EXAMPLE";
@@ -45,17 +41,17 @@ public class OKafkaExampleIT {
     private static OracleDataSource dataSource;
 
     @Container
-    private static final OracleContainer oracleContainer = new OracleContainer(oracleImage)
-            .withStartupTimeout(Duration.ofMinutes(3)) // allow possible slow startup
+    private static final OracleContainer oracleContainer = new OracleContainer()
             .withUsername(testUser)
             .withPassword(testPassword);
 
     @BeforeAll
     static void setUp() throws Exception {
         // Configure the Oracle AI Database container with the TxEventQ test user.
-        oracleContainer.start();
         oracleContainer.copyFileToContainer(MountableFile.forClasspathResource("okafka.sql"), "/tmp/init.sql");
-        oracleContainer.execInContainer("sqlplus", "sys / as sysdba", "@/tmp/init.sql");
+        var grants = oracleContainer.execInContainer("sqlplus", "-s", "sys / as sysdba", "@/tmp/init.sql");
+        assertThat(grants.getExitCode()).isZero();
+        assertThat(grants.getStdout()).doesNotContain("ORA-");
 
         // Configure a datasource for the Oracle AI Database container.
         // The datasource is used to demonstrate TxEventQ table duality.

@@ -1,0 +1,9 @@
+apiVersion: 1
+
+providers:
+  - name: OKafka sample
+    folder: Oracle AI Database
+    type: file
+    updateIntervalSeconds: 10
+    options:
+      path: /otel-lgtm/grafana/conf/provisioning/dashboards/okafka

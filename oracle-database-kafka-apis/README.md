@@ -50,6 +50,9 @@ To run all the Transactional Event Queue Kafka API tests and check their results
 
 The `com.example.metrics` package contains a Spring Boot sample for `kafka-clients` metrics, tracing, and logs with OKafka. The sample exporter OpenTelemetry observability data on OKafka producers and consumers, so you can see how these components are functioning in real time.
 
+After verifying ten records at startup, the sample schedules a sensor reading every 500 ms and keeps
+polling and committing consumed records. Stop the application with Ctrl+C to end the workload.
+
 The [MetricsApplication](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-database-kafka-apis/src/main/java/com/example/metrics/MetricsApplication.java)
 registers Micrometer `KafkaClientMetrics` binders for OKafka's standard `metrics()` API. Spring Boot
 binds these to the same `MeterRegistry` as Actuator's JVM and application metrics and exports them
@@ -62,7 +65,8 @@ while metrics use Micrometer's registry directly. No custom OpenTelemetry SDK me
 exporter, or Kafka instrumentation dependency is needed. See
 [Spring Boot's OpenTelemetry documentation](https://docs.spring.io/spring-boot/reference/actuator/observability.html#actuator.observability.opentelemetry.support).
 The Kafka binders instrument client metrics. A Micrometer observation creates an `okafka.sample`
-span around the startup produce/consume workload; Spring request observations also create spans.
+span around the startup workload and an `okafka.reading` span around each scheduled publish/consume
+cycle; Spring request observations also create spans.
 The local sample samples every trace (`management.tracing.sampling.probability=1`). It does not
 propagate trace context through individual Kafka messages.
 
@@ -85,9 +89,13 @@ Run these commands from `oracle-database-kafka-apis/`.
 docker compose up -d
 ```
 
-   Compose creates `TESTUSER` with password `Welcome123#` in `FREEPDB1`, then runs the mounted
+   Compose uses `container-registry.oracle.com/database/free:latest`. Its
+   [startup script](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-database-kafka-apis/docker/init.sql)
+   creates the `USERS` tablespace and `TESTUSER` with password `Welcome123#` in `FREEPDB1`, then runs the mounted
    [okafka.sql](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-database-kafka-apis/src/test/resources/okafka.sql)
-   to grant TxEventQ privileges during database initialization. The database listens on `localhost:1521`.
+   to grant TxEventQ privileges. `ORACLE_PWD` sets the administrator password. The startup script
+   also runs on subsequent starts and preserves an existing user. The health check verifies that
+   `TESTUSER` can connect and query a required OKafka view. The database listens on `localhost:1521`.
 
 2. Run the sample against the Compose database:
 
@@ -97,19 +105,7 @@ mvn spring-boot:run
 
 `MetricsApplication` defaults `okafka.tns-admin` to `src/test/resources`, which contains
 `ojdbc.properties` with the Compose user's credentials. The path is relative to the working directory,
-so run the application from `oracle-database-kafka-apis/`. For another wallet or credentials directory,
-supply `okafka.tns-admin` in application configuration, the `OKAFKA_TNS_ADMIN` environment variable,
-or a command-line argument:
-
-```shell
-mvn spring-boot:run \
-  -Dspring-boot.run.arguments="--okafka.tns-admin=/path/to/wallet"
-```
-
-The sample uses local `PLAINTEXT` connectivity. It creates `OKAFKA_METRICS_SAMPLE` if needed, uses
-consumer group `METRICS_SAMPLE_GROUP`, and commits records after processing. Run one instance at a time
-because instances share the topic and consumer group. These objects remain in Oracle AI Database after
-the sample exits.
+so run the application from `oracle-database-kafka-apis/`.
 
 3. Inspect Actuator in another terminal:
 
@@ -118,7 +114,18 @@ curl http://localhost:8080/actuator/health
 curl http://localhost:8080/actuator/metrics
 ```
 
-Open [Grafana](http://localhost:3000) and sign in with `admin` / `admin`. In **Explore**, select
+Open [Grafana](http://localhost:3000) and sign in with `admin` / `admin`. Compose provisions the
+[OKafka Metrics Sample dashboard](http://localhost:3000/d/okafka-metrics-sample) and sets it as the
+home dashboard. It shows produced/consumed totals, throughput, producer errors, time since the last
+consumer poll, JVM memory, and CPU usage. The **Service name** field defaults to `okafka-metrics-sample`;
+change it if you set `OTEL_SERVICE_NAME`. Rates need multiple exports, so allow about a minute for
+the throughput panels to populate. The dashboard refreshes every ten seconds.
+
+The dashboard's
+[JSON source](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-database-kafka-apis/docker/grafana/dashboards/okafka-metrics.json)
+can also be imported into another Grafana instance using a Prometheus data source with UID `prometheus`.
+
+In **Explore**, select
 the **Prometheus** data source and query `kafka_consumer_fetch_manager_records_consumed_total` or
 `kafka_producer_record_send_total`. Prometheus converts the OpenTelemetry metric names from dots to
 underscores. Actuator JVM metrics are available in the same data source.
@@ -132,14 +139,11 @@ Grafana uses port 3000; OTLP gRPC and HTTP use ports 4317 and 4318. All three ar
 Metrics, traces, and logs use OTLP HTTP on `http://localhost:4318` with the respective
 `/v1/metrics`, `/v1/traces`, and `/v1/logs` paths. See [Grafana's Docker LGTM documentation](https://grafana.com/docs/opentelemetry/docker-lgtm/).
 
-The default export interval is ten seconds. Counters retain the sample totals; rate metrics can fall
-back toward zero after the startup workload finishes. Stop the sample with Ctrl+C; Spring closes the
-clients, metric binders, OTLP registry, and OpenTelemetry exporters.
-
-Stop both services with `docker compose down -v`. This removes the sample database's anonymous volume;
-the sample does not persist database or LGTM data across this cleanup.
+When you're done, remove both container services with `docker compose down`.
 
 #### Configuration and available metrics
+
+Configuration used:
 
 | Property | Default | Purpose |
 | --- | --- | --- |
@@ -151,21 +155,7 @@ the sample does not persist database or LGTM data across this cleanup.
 | `management.tracing.sampling.probability` | `1` | Sample every trace in this local demo |
 | `spring.application.name` | `okafka-metrics-sample` | Default service identity; `OTEL_SERVICE_NAME` overrides the telemetry service name |
 
-Set `OTEL_EXPORTER_OTLP_ENDPOINT` to a base URL such as `http://collector:4318` to change all three
-signal endpoints. `OTEL_EXPORTER_OTLP_METRICS_ENDPOINT`, `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT`, and
-`OTEL_EXPORTER_OTLP_LOGS_ENDPOINT` override individual endpoints and must include the corresponding
-`/v1/...` path.
-Spring Boot maps these environment variables directly, including appending signal paths to a base
-endpoint with or without a trailing slash. Use an HTTP endpoint on port 4318 for this sample;
-Micrometer's OTLP metric registry exports over HTTP. `OTEL_SERVICE_NAME` changes the service identity
-for metrics, traces, and logs; an explicit `management.opentelemetry.resource-attributes.service.name`
-setting takes precedence. See
-[Spring Boot's OpenTelemetry environment variable mapping](https://docs.spring.io/spring-boot/reference/actuator/observability.html#actuator.observability.opentelemetry.environment-variables).
-For example, set `--management.otlp.metrics.export.url=http://collector:4318/v1/metrics` for another
-Collector. Other Micrometer OTLP exporter settings apply to all metrics. Setting
-`management.otlp.metrics.export.enabled=false` disables metric export while keeping Actuator metrics.
-Use `management.tracing.export.otlp.enabled=false` or `management.logging.export.otlp.enabled=false`
-to disable trace or log export individually.
+Metrics:
 
 | Example metric | Meaning |
 | --- | --- |
@@ -181,11 +171,6 @@ to disable trace or log export individually.
 Client IDs (`metrics-producer` and `metrics-consumer`) identify the clients; topic tags are included
 where the client exposes them. The Micrometer binder selects the most detailed available dimensions to
 avoid counting both client totals and per-topic totals for the same records.
-
-The sample uses OKafka 23.26.1.0 and Kafka clients 3.9.2 with Spring Boot's managed Micrometer versions. A declared metric is not proof that
-OKafka updates it: consumer commit-sync timing and producer transaction-init timing have no recording
-calls in the inspected client bytecode. Consumer lag is not verified. Cumulative duration metrics do
-not provide latency percentiles, and fetch counts do not measure successful application processing.
 
 #### Verify metric export
 

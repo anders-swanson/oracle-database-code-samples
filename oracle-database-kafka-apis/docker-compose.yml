@@ -1,24 +1,32 @@
 # Oracle AI Database and Grafana LGTM for the OKafka metrics sample.
 services:
   oracle:
-    image: gvenzl/oracle-free:23.26.3-slim-faststart
+    image: container-registry.oracle.com/database/free:latest
     environment:
-      ORACLE_PASSWORD: "Welcome123#"
-      APP_USER: TESTUSER
-      APP_USER_PASSWORD: "Welcome123#"
+      ORACLE_PWD: "Welcome123#"
     ports:
       - "127.0.0.1:1521:1521"
     volumes:
-      - ./src/test/resources/okafka.sql:/container-entrypoint-initdb.d/okafka.sql:ro
+      - ./docker/init.sql:/opt/oracle/scripts/startup/01-metrics.sql:ro
+      - ./src/test/resources/okafka.sql:/opt/oracle/scripts/okafka.sql:ro
     healthcheck:
-      test: ["CMD", "healthcheck.sh"]
+      test:
+        - CMD-SHELL
+        - >-
+          printf 'WHENEVER SQLERROR EXIT FAILURE\nSELECT 1 FROM user_queue_partition_assignment_table WHERE 1 = 0;\nEXIT;\n'
+          | sqlplus -L -s 'TESTUSER/Welcome123#@//localhost:1521/FREEPDB1' > /dev/null
       interval: 10s
-      timeout: 5s
-      retries: 20
-      start_period: 30s
+      timeout: 10s
+      retries: 60
+      start_period: 60s
 
   grafana-lgtm:
     image: grafana/otel-lgtm:latest
+    environment:
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /otel-lgtm/grafana/conf/provisioning/dashboards/okafka/okafka-metrics.json
+    volumes:
+      - ./docker/grafana/dashboards.yaml:/otel-lgtm/grafana/conf/provisioning/dashboards/okafka.yaml:ro
+      - ./docker/grafana/dashboards:/otel-lgtm/grafana/conf/provisioning/dashboards/okafka:ro
     ports:
       - "127.0.0.1:3000:3000" # Grafana
       - "127.0.0.1:4317:4317" # OTLP gRPC

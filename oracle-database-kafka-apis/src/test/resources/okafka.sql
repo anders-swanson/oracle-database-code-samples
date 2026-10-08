@@ -1,7 +1,6 @@
 alter session set container=freepdb1;
 
--- This user is created by Testcontainers or Docker Compose's APP_USER setting.
--- create user TESTUSER identified by Welcome123#;
+-- This user is created by Testcontainers or the Compose startup script.
 grant aq_user_role to TESTUSER;
 grant execute on dbms_aq to  TESTUSER;
 grant execute on dbms_aqadm to TESTUSER;

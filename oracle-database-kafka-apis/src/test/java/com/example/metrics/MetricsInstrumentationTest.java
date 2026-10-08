@@ -93,7 +93,7 @@ class MetricsInstrumentationTest {
                     !(metrics.stream().anyMatch(metric ->
                             metric.getName().equals("kafka.consumer.fetch.manager.records.consumed.total")
                                     && metric.getSum().getDataPointsList().stream().anyMatch(point ->
-                                    point.getAsDouble() == MetricsSample.MESSAGE_COUNT))
+                                    point.getAsDouble() > MetricsSample.MESSAGE_COUNT))
                             && metrics.stream().anyMatch(metric -> metric.getName().equals("jvm.memory.used")))) {
                 var request = requests.poll(1, TimeUnit.SECONDS);
                 if (request == null) {
@@ -111,7 +111,7 @@ class MetricsInstrumentationTest {
             assertThat(metrics).anySatisfy(metric -> {
                 assertThat(metric.getName()).isEqualTo("kafka.consumer.fetch.manager.records.consumed.total");
                 assertThat(metric.getSum().getDataPointsList()).anySatisfy(point -> {
-                    assertThat(point.getAsDouble()).isEqualTo(MetricsSample.MESSAGE_COUNT);
+                    assertThat(point.getAsDouble()).isGreaterThan(MetricsSample.MESSAGE_COUNT);
                     assertThat(point.getAttributesList()).anySatisfy(attribute -> {
                         assertThat(attribute.getKey()).isEqualTo("client.id");
                         assertThat(attribute.getValue().getStringValue()).isEqualTo("metrics-consumer");
@@ -121,7 +121,7 @@ class MetricsInstrumentationTest {
             assertThat(metrics).anySatisfy(metric -> {
                 assertThat(metric.getName()).isEqualTo("kafka.producer.record.send.total");
                 assertThat(metric.getSum().getDataPointsList()).anySatisfy(point ->
-                        assertThat(point.getAsDouble()).isEqualTo(MetricsSample.MESSAGE_COUNT));
+                        assertThat(point.getAsDouble()).isGreaterThan(MetricsSample.MESSAGE_COUNT));
             });
             assertThat(metrics).anySatisfy(metric -> {
                 assertThat(metric.getName()).isEqualTo("kafka.producer.flush.time.ns.total");
@@ -131,7 +131,9 @@ class MetricsInstrumentationTest {
 
             List<Span> spans = new ArrayList<>();
             deadline = System.nanoTime() + Duration.ofSeconds(10).toNanos();
-            while (System.nanoTime() < deadline && spans.stream().noneMatch(span -> span.getName().equals("okafka.sample"))) {
+            while (System.nanoTime() < deadline &&
+                    !(spans.stream().anyMatch(span -> span.getName().equals("okafka.sample"))
+                            && spans.stream().anyMatch(span -> span.getName().equals("okafka.reading")))) {
                 var request = traceRequests.poll(1, TimeUnit.SECONDS);
                 if (request != null) {
                     request.getResourceSpansList().forEach(resourceSpans -> {
@@ -146,6 +148,10 @@ class MetricsInstrumentationTest {
             var sampleSpan = spans.stream().filter(span -> span.getName().equals("okafka.sample")).findFirst().orElseThrow();
             assertThat(sampleSpan.getTraceId().size()).isEqualTo(16);
             assertThat(sampleSpan.getSpanId().size()).isEqualTo(8);
+            assertThat(spans).anySatisfy(span -> {
+                assertThat(span.getName()).isEqualTo("okafka.reading");
+                assertThat(span.getTraceId().size()).isEqualTo(16);
+            });
 
             List<LogRecord> logs = new ArrayList<>();
             deadline = System.nanoTime() + Duration.ofSeconds(10).toNanos();

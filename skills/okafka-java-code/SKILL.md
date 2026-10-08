@@ -39,7 +39,7 @@ Load only the reference needed for the current task:
 - For consumers, set deserializers, `group.id`, `enable.auto.commit=false`, `auto.offset.reset=earliest` when consuming preexisting test records, and commit only after processing succeeds.
 - In Spring apps, prefer raw `KafkaProducer` and `KafkaConsumer` beans with lifecycle ownership in configuration. Put `destroyMethod="close"` on raw clients when Spring owns shutdown; for a long-running polling thread that owns final close, set the consumer bean `destroyMethod=""` and stop the thread cooperatively.
 - For transactional flows, wrap `beginTransaction()`/`commitTransaction()`/`abortTransaction()` around both `send(...)` and SQL work done through `producer.getDBConnection()`. For consumer transactions, write through `consumer.getDBConnection()` and call `commitSync()` only after database work succeeds.
-- Use source examples as patterns, not exact text. Correct sample-specific typos such as `TransationalProducer` when creating new code.
+- Use source examples as patterns, not exact text. Correct sample-specific typos such as `TransactionalProducer` when creating new code.
 
 ## Validation
 

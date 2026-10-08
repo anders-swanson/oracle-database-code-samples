@@ -27,7 +27,7 @@ management:
         step: 10s
   tracing:
     sampling:
-      probability: 1
+      probability: 0.1
     export:
       otlp:
         enabled: true

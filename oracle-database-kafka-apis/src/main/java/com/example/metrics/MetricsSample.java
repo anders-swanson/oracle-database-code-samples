@@ -1,18 +1,22 @@
 package com.example.metrics;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import com.example.AdminUtil;
 import io.micrometer.observation.Observation;
 import io.micrometer.observation.ObservationRegistry;
-import io.micrometer.tracing.Tracer;
+import io.micrometer.observation.transport.ReceiverContext;
+import io.micrometer.observation.transport.SenderContext;
 import jakarta.annotation.PreDestroy;
 import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.oracle.okafka.clients.consumer.KafkaConsumer;
 import org.oracle.okafka.clients.producer.KafkaProducer;
@@ -34,9 +38,9 @@ public class MetricsSample implements ApplicationRunner {
     private final KafkaConsumer<String, String> consumer;
     private final EventRecorder eventRecorder;
     private final ObservationRegistry observationRegistry;
-    private final Tracer tracer;
     // Identify this run's messages without adding a high-cardinality metric tag.
     private final String runId = UUID.randomUUID().toString();
+    private final Random random = new Random();
     private int nextReading;
     private boolean rolledBack;
     private volatile boolean running = true;
@@ -46,15 +50,13 @@ public class MetricsSample implements ApplicationRunner {
                          KafkaProducer<String, String> metricsProducer,
                          KafkaConsumer<String, String> metricsConsumer,
                          EventRecorder eventRecorder,
-                         ObservationRegistry observationRegistry,
-                         Tracer tracer
+                         ObservationRegistry observationRegistry
     ) {
         this.connectionProperties = okafkaConnectionProperties;
         this.producer = metricsProducer;
         this.consumer = metricsConsumer;
         this.eventRecorder = eventRecorder;
         this.observationRegistry = observationRegistry;
-        this.tracer = tracer;
     }
 
     @Override
@@ -70,7 +72,7 @@ public class MetricsSample implements ApplicationRunner {
 
             // Main thread consumes records for the duration of the sample.
             while (running) {
-                Observation.createNotStarted("okafka.sample", observationRegistry).observeChecked(this::consume);
+                consume();
             }
         } finally {
             ready = false;
@@ -85,14 +87,10 @@ public class MetricsSample implements ApplicationRunner {
             return;
         }
         try {
-            Observation.createNotStarted("okafka.reading", observationRegistry).observeChecked(() -> {
-                if (nextReading == 0) {
-                    produce("sensor-reading-aborted", false);
-                    log.info("Aborted producer transaction");
-                }
-                produce("sensor-reading-" + nextReading++, true);
-                log.info("Published a sensor reading");
-            });
+            // Randomly publish an "abort" event to test consumer transaction & replay
+            String reading = random.nextDouble() > 0.9
+                    ? "sensor-reading-aborted" : "sensor-reading-" + nextReading++;
+            produce(reading);
         } catch (InterruptedException exception) {
             Thread.currentThread().interrupt();
         } catch (Exception exception) {
@@ -100,20 +98,23 @@ public class MetricsSample implements ApplicationRunner {
         }
     }
 
-    private void produce(String value, boolean commit) throws Exception {
-        var span = tracer.nextSpan().name("okafka.producer.transaction").start();
-        try (var ignored = tracer.withSpan(span)) {
+    private void produce(String value) throws Exception {
+        var record = new ProducerRecord<>(TOPIC, runId, value);
+        // Spring's tracing handler injects context into the Kafka headers on observation start.
+        var context = new SenderContext<ProducerRecord<String, String>>((carrier, key, headerValue) ->
+                carrier.headers().add(key, headerValue.getBytes(StandardCharsets.UTF_8)));
+        context.setCarrier(record);
+        Observation.createNotStarted("okafka.produce", () -> context, observationRegistry).observeChecked(() -> {
             producer.beginTransaction();
             try {
                 Connection connection = producer.getDBConnection();
-                producer.send(new ProducerRecord<>(TOPIC, runId, value)).get(30, TimeUnit.SECONDS);
-                eventRecorder.recordProduced(connection, runId, value);
-                if (commit) {
-                    producer.commitTransaction();
-                } else {
-                    producer.abortTransaction();
+                producer.send(record).get(30, TimeUnit.SECONDS);
+                // Failure markers have no SQL reading row and can be published repeatedly.
+                if (!"sensor-reading-aborted".equals(value)) {
+                    eventRecorder.recordProduced(connection, runId, value);
                 }
-                span.tag("outcome", commit ? "committed" : "aborted");
+                producer.commitTransaction();
+                log.info("Published {}", value);
             } catch (Exception exception) {
                 try {
                     producer.abortTransaction();
@@ -122,59 +123,57 @@ public class MetricsSample implements ApplicationRunner {
                 }
                 throw exception;
             }
-        } catch (Exception exception) {
-            span.tag("outcome", "failed").error(exception);
-            throw exception;
-        } finally {
-            span.end();
-        }
+        });
     }
 
     private void consume() throws Exception {
-        var span = tracer.nextSpan().name("okafka.consumer.transaction").start();
-        try (var ignored = tracer.withSpan(span)) {
-            var records = consumer.poll(Duration.ofMillis(500));
-            if (records.isEmpty()) {
-                span.tag("outcome", "empty");
-                return;
-            }
-            Connection connection = consumer.getDBConnection();
-            try {
-                int count = 0;
-                for (var record : records) {
-                    if (runId.equals(record.key())) {
-                        if ("sensor-reading-aborted".equals(record.value())) {
-                            throw new IllegalStateException("Received a record from an aborted transaction");
-                        }
-                        eventRecorder.recordConsumed(connection, runId, record.value());
+        var records = consumer.poll(Duration.ofMillis(500));
+        if (records.isEmpty()) {
+            return;
+        }
+        Connection connection = consumer.getDBConnection();
+        try {
+            int count = 0;
+            boolean simulateFailure = false;
+            for (var record : records) {
+                if (runId.equals(record.key())) {
+                    if ("sensor-reading-aborted".equals(record.value())) {
+                        simulateFailure = true;
+                    } else {
+                        // Each record can have a different producer trace, even in the same batch.
+                        var context = new ReceiverContext<ConsumerRecord<String, String>>((carrier, key) -> {
+                            var header = carrier.headers().lastHeader(key);
+                            return header == null ? null : new String(header.value(), StandardCharsets.UTF_8);
+                        });
+                        context.setCarrier(record);
+                        Observation.createNotStarted("okafka.process", () -> context, observationRegistry)
+                                .observeChecked(() -> {
+                                    eventRecorder.recordConsumed(connection, runId, record.value());
+                                    log.info("Processed {}", record.value());
+                                });
                         count++;
                     }
                 }
-                if (rolledBack || count == 0) {
-                    consumer.commitSync();
-                    span.tag("outcome", "committed");
-                    if (count > 0) {
-                        log.info("Committed {} consumed readings", count);
-                    }
-                } else {
-                    connection.rollback();
-                    span.tag("outcome", "rolled_back");
-                    rolledBack = true;
-                    log.info("Rolled back consumed readings; retrying {} records", count);
+            }
+            // Fail once per batch containing a marker, then acknowledge it on retry.
+            if (rolledBack || !simulateFailure) {
+                consumer.commitSync();
+                rolledBack = false;
+                if (count > 0) {
+                    log.info("Committed {} consumed readings", count);
                 }
-            } catch (Exception exception) {
-                try {
-                    connection.rollback();
-                } catch (Exception rollbackFailure) {
-                    exception.addSuppressed(rollbackFailure);
-                }
-                throw exception;
+            } else {
+                connection.rollback();
+                rolledBack = true;
+                log.info("Rolled back consumed readings; retrying {} records", count);
             }
         } catch (Exception exception) {
-            span.tag("outcome", "failed").error(exception);
+            try {
+                connection.rollback();
+            } catch (Exception rollbackFailure) {
+                exception.addSuppressed(rollbackFailure);
+            }
             throw exception;
-        } finally {
-            span.end();
         }
     }
 

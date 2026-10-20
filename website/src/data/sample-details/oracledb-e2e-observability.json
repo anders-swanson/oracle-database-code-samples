@@ -1,0 +1,16 @@
+{
+  "id": "oracledb-e2e-observability",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracledb-e2e-observability/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "This lab connects a small Spring Boot app to Oracle AI Database Free using UCP and the JDBC observability provider. Grafana LGTM receives application/JDBC traces, correlated Logback logs, HTTP/JVM/UCP metrics, and database metrics. Database-native span export is configured through `DBMS_OBSERVABILITY` and an HTTPS proxy (The database spans require HTTPS, hence the proxy for local Grafana LGTM).",
+  "highlights": [],
+  "features": [
+    "Spring",
+    "Observability"
+  ],
+  "sourceUpdatedAt": "2026-10-20T20:01:17.146Z",
+  "metaTitle": "Observability with Oracle AI Database | Oracle AI Database Code Samples",
+  "metaDescription": "Trace a Spring Boot WebMVC request through Oracle JDBC and Oracle AI Database, with UCP metrics, database metrics, logs, Grafana LGTM, and generated TLS…",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/oracledb-e2e-observability/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/oracledb-e2e-observability.png"
+}

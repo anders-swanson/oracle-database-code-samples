@@ -3,7 +3,7 @@
     "slug": "java",
     "name": "Java",
     "title": "Java Samples for Oracle AI Database",
-    "description": "Java samples for JDBC, Spring Boot, messaging, search, JSON, graph, spatial, and test workflows on Oracle AI Database. Browse 51 runnable samples with linked source code.",
+    "description": "Java samples for JDBC, Spring Boot, messaging, search, JSON, graph, spatial, and test workflows on Oracle AI Database. Browse 52 runnable samples with linked source code.",
     "useWhen": "Use when JVM applications need real Oracle AI Database examples instead of pseudocode.",
     "sampleIds": [
       "txeventq-fraud-detection",
@@ -31,6 +31,7 @@
       "spring-jpa",
       "json--mongodb-duality-views",
       "news-event-streaming",
+      "oracledb-e2e-observability",
       "okafka-agent-memory",
       "oracle-database-kafka-apis",
       "mcp-agent",
@@ -61,17 +62,17 @@
     "relatedPatternIds": [
       "event-streaming",
       "json-documents-duality",
+      "observability",
       "spring-microservice-config",
       "kafka-migration",
       "semantic-search-rag",
       "ai-agents",
-      "api-facades",
-      "observability"
+      "api-facades"
     ],
     "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/languages/java/",
     "metaTitle": "Java Samples for Oracle AI Database | Oracle AI Database Code Samples",
-    "metaDescription": "Java samples for JDBC, Spring Boot, messaging, search, JSON, graph, spatial, and test workflows on Oracle AI Database. Browse 51 runnable samples with linked…",
-    "updatedAt": "2026-10-05T20:40:18.499Z"
+    "metaDescription": "Java samples for JDBC, Spring Boot, messaging, search, JSON, graph, spatial, and test workflows on Oracle AI Database. Browse 52 runnable samples with linked…",
+    "updatedAt": "2026-10-20T20:01:17.146Z"
   },
   {
     "slug": "python",

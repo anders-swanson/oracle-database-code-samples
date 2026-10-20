@@ -1,0 +1,79 @@
+name: oracledb-e2e-observability
+
+services:
+  oracle:
+    image: container-registry.oracle.com/database/free:latest
+    environment:
+      ORACLE_PWD: "Welcome123#"
+    ports:
+      - "127.0.0.1:${DATABASE_PORT:-1521}:1521"
+    volumes:
+      - ./oracle/init.sql:/opt/oracle/scripts/startup/01-schema.sql:ro
+      - ./oracle/setup-observability.sh:/opt/oracle/scripts/startup/02-observability.sh:ro
+      - ./oracle/observability.sql:/opt/oracle/scripts/observability.sql:ro
+    depends_on:
+      nginx:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          printf 'WHENEVER SQLERROR EXIT FAILURE\nSELECT 1 / COUNT(*) FROM lab_setup_status WHERE ready = 1;\nEXIT;\n'
+          | sqlplus -L -s 'LAB_APP/Welcome123#@//localhost:1521/FREEPDB1' > /dev/null
+      interval: 10s
+      timeout: 10s
+      retries: 60
+      start_period: 60s
+
+  exporter:
+    image: container-registry.oracle.com/database/observability-exporter:2.5.0
+    command: ["--config.file=/etc/exporter/config.yaml"]
+    environment:
+      DB_PASSWORD: "Welcome123#"
+    volumes:
+      - ./exporter/config.yaml:/etc/exporter/config.yaml:ro
+    depends_on:
+      oracle:
+        condition: service_healthy
+      grafana-lgtm:
+        condition: service_healthy
+
+  grafana-lgtm:
+    image: grafana/otel-lgtm:latest
+    environment:
+      GF_SERVER_ROOT_URL: "http://localhost:${GRAFANA_PORT:-3000}"
+    ports:
+      - "127.0.0.1:${GRAFANA_PORT:-3000}:3000"
+      - "127.0.0.1:${OTLP_GRPC_PORT:-4317}:4317"
+      - "127.0.0.1:${OTLP_HTTP_PORT:-4318}:4318"
+    volumes:
+      - ./grafana/dashboards.yaml:/otel-lgtm/grafana/conf/provisioning/dashboards/lab.yaml:ro
+      - ./grafana/dashboards:/otel-lgtm/grafana/conf/provisioning/dashboards/lab:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:3000/api/health > /dev/null && curl -fsS http://localhost:13133/ready > /dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  nginx:
+    image: nginx:stable
+    environment:
+      HTTPS_PORT: ${HTTPS_PORT:-8443}
+      CERT_DNS_NAME: ${CERT_DNS_NAME:-localhost}
+      NGINX_ENVSUBST_FILTER: ^HTTPS_PORT$
+    ports:
+      - "127.0.0.1:${HTTP_PORT:-8080}:80"
+      - "127.0.0.1:${HTTPS_PORT:-8443}:443"
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates:ro
+      - ./nginx/entrypoint/40-generate-certificate.sh:/docker-entrypoint.d/40-generate-certificate.sh:ro
+    depends_on:
+      grafana-lgtm:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1/health > /dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+

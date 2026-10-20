@@ -12,11 +12,12 @@
   "features": [
     "TxEventQ",
     "Testcontainers",
+    "Observability",
     "Kafka"
   ],
-  "sourceUpdatedAt": "2026-08-27T19:48:29.154Z",
+  "sourceUpdatedAt": "2026-10-08T17:35:09.098Z",
   "metaTitle": "Oracle AI Database Kafka APIs | Oracle AI Database Code Samples",
-  "metaDescription": "Java integration tests that use the Kafka APIs for Oracle AI Database Transactional Event Queues.",
+  "metaDescription": "Java samples and integration tests for Oracle AI Database Transactional Event Queues, including OpenTelemetry client metrics.",
   "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/oracle-database-kafka-apis/",
   "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/oracle-database-kafka-apis.png"
 }

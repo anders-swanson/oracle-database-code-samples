@@ -333,6 +333,8 @@
         "Observability"
       ],
       "sampleIds": [
+        "oracledb-e2e-observability",
+        "oracle-database-kafka-apis",
         "python-oracle--src--python_oracle--transcript_hook",
         "spring-boot-jms-tracing",
         "spring-boot-database-client-info",

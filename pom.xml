@@ -78,6 +78,7 @@
         <module>mcp-agent</module>
         <module>microtx-java-sample</module>
         <module>oracle-database-kafka-apis</module>
+        <module>oracledb-e2e-observability</module>
         <module>ords-testcontainers</module>
         <module>sessionless-transactions</module>
         <module>spring-boot-cdc</module>

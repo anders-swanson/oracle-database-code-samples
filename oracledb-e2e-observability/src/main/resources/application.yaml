@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: oracledb-e2e-observability
+  datasource:
+    url: ${JDBC_URL:jdbc:oracle:thin:@//localhost:1521/FREEPDB1}
+    username: ${DB_USERNAME:LAB_APP}
+    password: ${DB_PASSWORD:Welcome123#}
+    driver-class-name: oracle.jdbc.OracleDriver
+    type: oracle.ucp.jdbc.PoolDataSource
+    oracleucp:
+      initial-pool-size: 1
+      min-pool-size: 1
+      max-pool-size: 4
+      validate-connection-on-borrow: true
+      connection-pool-name: ${spring.application.name}
+      connection-factory-class-name: oracle.jdbc.pool.OracleDataSource
+      connection-properties:
+        "[oracle.jdbc.provider.traceEventListener]": observability-trace-event-listener-provider
+        "[oracle.jdbc.provider.traceEventListener.unique_identifier]": ${spring.application.name}
+        "[oracle.jdbc.serverTelemetryTracesEnabled]": ${lab.server-traces}
+        "[oracle.jdbc.serverTelemetryLoggingEnabled]": false
+logging:
+  structured:
+    format:
+      console: logstash
+server:
+  port: ${APP_PORT:8081}
+lab:
+  server-traces: true
+management:
+  metrics:
+    distribution:
+      # Finite HTTP buckets support p95 over OTLP. UCP function timers use mean/peak.
+      slo:
+        http.server.requests: 5ms,10ms,25ms,50ms,100ms,250ms,500ms,1s,2s,5s,10s
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: ${OTLP_ENDPOINT:http://localhost:4318}/v1/traces
+    logging:
+      export:
+        otlp:
+          endpoint: ${OTLP_ENDPOINT:http://localhost:4318}/v1/logs
+  otlp:
+    metrics:
+      export:
+        url: ${OTLP_ENDPOINT:http://localhost:4318}/v1/metrics
+        step: 10s
+  tracing:
+    sampling:
+      probability: 1.0
+    export:
+      otlp:
+        enabled: true
+  logging:
+    export:
+      otlp:
+        enabled: true

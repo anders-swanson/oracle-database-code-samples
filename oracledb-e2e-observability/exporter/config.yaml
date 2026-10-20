@@ -1,0 +1,20 @@
+databases:
+  freepdb1:
+    username: EXPORTER
+    password: ${DB_PASSWORD}
+    url: oracle:1521/FREEPDB1
+    queryTimeout: 5
+    maxOpenConns: 5
+    maxIdleConns: 5
+
+metrics:
+  default: /default-metrics.toml
+  scrapeInterval: 15s
+
+otlp:
+  endpoint: http://grafana-lgtm:4317
+  timeout: 10s
+
+# Alert-log forwarding can be added as a later lab exercise.
+log:
+  disable: 1

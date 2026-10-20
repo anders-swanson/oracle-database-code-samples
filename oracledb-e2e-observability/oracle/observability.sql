@@ -1,0 +1,32 @@
+WHENEVER SQLERROR EXIT FAILURE
+SET SERVEROUTPUT ON
+BEGIN
+    DBMS_OBSERVABILITY.ENABLE_SERVICE(DBMS_OBSERVABILITY.ALL_SERVICES);
+END;
+/
+ALTER SESSION SET CONTAINER = FREEPDB1;
+
+BEGIN
+    DBMS_NETWORK_ACL_ADMIN.APPEND_HOST_ACE(
+        host => 'nginx', lower_port => 443, upper_port => 443,
+        ace => xs$ace_type(privilege_list => xs$name_list('http', 'http_proxy', 'connect'),
+                          principal_name => 'LAB_APP', principal_type => xs_acl.ptype_db));
+    DBMS_NETWORK_ACL_ADMIN.APPEND_HOST_ACE(
+        host => 'nginx',
+        ace => xs$ace_type(privilege_list => xs$name_list('resolve'),
+                          principal_name => 'LAB_APP', principal_type => xs_acl.ptype_db));
+END;
+/
+BEGIN
+    DBMS_OBSERVABILITY.ADD_ENDPOINT(DBMS_OBSERVABILITY.OTEL_TRACES, 'https://nginx:443/v1/traces');
+    DBMS_OBSERVABILITY.ENABLE_ENDPOINT('https://nginx:443/v1/traces');
+    DBMS_OBSERVABILITY.ENABLE_SERVICE_OPTION(DBMS_OBSERVABILITY.CAPTURE_TRACES);
+    DBMS_OBSERVABILITY.ENABLE_SERVICE_OPTION(DBMS_OBSERVABILITY.SHOW_EXTRA_METADATA);
+    DBMS_OBSERVABILITY.ENABLE_SERVICE(DBMS_OBSERVABILITY.ALL_SERVICES);
+    DBMS_OUTPUT.PUT_LINE(DBMS_OBSERVABILITY.SHOW_SERVICE_STATUS);
+    DBMS_OUTPUT.PUT_LINE(DBMS_OBSERVABILITY.SHOW_ENDPOINTS);
+END;
+/
+INSERT INTO LAB_APP.LAB_SETUP_STATUS VALUES (1);
+COMMIT;
+EXIT;

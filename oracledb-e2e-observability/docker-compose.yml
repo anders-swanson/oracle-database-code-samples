@@ -26,7 +26,7 @@ services:
       start_period: 60s
 
   exporter:
-    image: container-registry.oracle.com/database/observability-exporter:2.5.0
+    image: container-registry.oracle.com/database/observability-exporter:2.5.1
     command: ["--config.file=/etc/exporter/config.yaml"]
     environment:
       DB_PASSWORD: "Welcome123#"

@@ -140,6 +140,30 @@ The dashboard opens with database health, request rate, latency, and error perce
 
 Rate panels need ongoing traffic and about one minute of samples after startup. UCP statistics become available after the first database request. UCP meters are also available under `http://localhost:8081/actuator/metrics`.
 
+## Screenshots
+
+These screenshots show the running lab with traffic against the seeded readings. They include application and JDBC telemetry; database-native server spans are not shown.
+
+### Spring Boot application
+
+The application dashboard shows database connectivity, request rate, errors, and HTTP latency:
+
+![Spring Boot dashboard with database health, request rate, and mean and p95 HTTP latency](images/app-dashboard.jpg)
+
+A request trace connects `GET /api/readings` to the `lab.readings` operation and Oracle JDBC calls:
+
+![Spring Boot request trace showing the HTTP span, lab.readings, and JDBC query spans in Tempo](images/app-trace.jpg)
+
+### ORDS
+
+The ORDS dashboard shows HTTP traffic and latency alongside UCP connection usage and pending requests:
+
+![ORDS dashboard with HTTP request rate, p95 latency, and UCP connection metrics](images/ords-dashboard.jpg)
+
+The Java agent captures the ORDS HTTP request, connection acquisition, dispatch, and SQL query for the REST endpoint:
+
+![ORDS request trace showing HTTP, connection acquisition, dispatch, and SELECT spans in Tempo](images/ords-trace.jpg)
+
 ## Database server spans and TLS
 
 The JDBC provider uses Boot's managed SDK and propagates trace context. UCP connection properties select `observability-trace-event-listener-provider` and enable server traces; the connection decorator forces the documented telemetry state transition and sets the trace-level context used in Oracle's example. The controller brackets SQL execution with JDBC `beginRequest()` / `endRequest()` before returning the session to UCP.

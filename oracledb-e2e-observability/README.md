@@ -1,15 +1,18 @@
 ---
 name: oracledb-e2e-observability
-description: Trace a Spring Boot WebMVC request through Oracle JDBC and Oracle AI Database, with UCP metrics, database metrics, logs, Grafana LGTM, and generated TLS certificates.
+description: Observe Spring Boot and optional ORDS requests to Oracle AI Database with JDBC traces, UCP and database metrics, correlated logs, and Grafana LGTM.
 tags:
   - Observability
   - SpringBoot
   - Java
+  - ORDS
 ---
 
 # Observability with Oracle AI Database
 
 This lab connects a small Spring Boot app to Oracle AI Database Free using UCP and the JDBC observability provider. Grafana LGTM receives application/JDBC traces, correlated Logback logs, HTTP/JVM/UCP metrics, and database metrics. Database-native span export is configured through `DBMS_OBSERVABILITY` and an HTTPS proxy (The database spans require HTTPS, hence the proxy for local Grafana LGTM).
+
+An optional Oracle REST Data Services (ORDS) container exposes the same application data over REST. Its OpenTelemetry Java agent exports metrics, logs, and traces to LGTM independently of the Spring Boot application.
 
 | Service | Purpose                                                                                                                                                 |
 | --- |---------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -17,6 +20,7 @@ This lab connects a small Spring Boot app to Oracle AI Database Free using UCP a
 | Oracle AI Database Metrics Exporter | Collects database metrics every 15 seconds and pushes them to LGTM over OTLP/gRPC.                                                                      |
 | Grafana LGTM | Grafana, Loki, Tempo, Prometheus, and an OpenTelemetry Collector with disposable container storage and a provisioned lab dashboard.                               |
 | NGINX | HTTPS entry point for Grafana, exporter metrics, and database OTLP/HTTP; dynamically generates certificates signed by a container-local CA on startup. |
+| ORDS (optional) | REST services and the MongoDB API connected to the same Oracle AI Database Free instance; enabled with `--profile ords`. |
 | Spring Boot application (host Maven process) | `GET /api/readings`, a real query through UCP, session identity, and managed Micrometer/OpenTelemetry export.                                           |
 
 **ARM limitation:** Server-side tracing is configured, but database server spans are not yet working on ARM architectures. Application and JDBC telemetry work on ARM.
@@ -53,6 +57,72 @@ Open [Grafana](http://localhost:3000), then open **Dashboards → Oracle AI Data
 | Database HTTPS OTLP base URL | `https://nginx:443` (inside Compose) |
 | HTTP redirect | `http://localhost:8080/` |
 | Oracle AI Database Free | `localhost:1521/FREEPDB1` |
+| ORDS readings (optional) | `http://localhost:8888/ords/lab/readings/` |
+| ORDS MongoDB API (optional) | `localhost:27017` |
+
+## Optional ORDS container
+
+Activate the `ords` profile to create ORDS alongside the four infrastructure services:
+
+```bash
+docker compose --profile ords up -d --build --wait --wait-timeout 900
+```
+
+A normal `docker compose up` does not create ORDS. Use `--profile ords` to include it.
+
+ORDS waits for the existing database to become healthy, then installs its metadata into `FREEPDB1`. Its HTTP endpoint is `http://localhost:8888/ords/`, and its MongoDB API listens on `localhost:27017`. Override the host ports with `ORDS_HTTP_PORT` and `ORDS_MONGO_PORT`. Both ports bind to loopback. APEX is disabled, and ORDS configuration stays inside the container, matching the lab's disposable database storage.
+
+The ORDS image includes OpenTelemetry Java agent **2.33.1**, downloaded with SHA-256 verification during the build. The launcher attaches it only to `ords serve`, leaving installation and SQLcl commands uninstrumented. The agent sends HTTP/JDBC traces, JVM/HTTP/UCP metrics, and Java Util Logging records directly to LGTM over OTLP/HTTP at `http://grafana-lgtm:4318`, with `service.name=ords`. Runtime logs also remain in `docker compose logs ords`. HTTP access-log files and container-entrypoint output are not Java log records and are not exported by this bridge.
+
+After installing ORDS, a startup hook enables the `LAB_APP` schema at `/ords/lab/` and exposes a read-only view of `LAB_READINGS` as `/ords/lab/readings/`. This public local-demo endpoint returns the same seeded readings as the Java app; writes to the view are rejected.
+
+```bash
+curl --fail http://localhost:8888/ords/lab/readings/
+curl --fail --get --data-urlencode 'q={"sensor":"temperature"}' http://localhost:8888/ords/lab/readings/
+```
+
+The collection response contains `items` with the temperature reading (`id=1`, `value=23.5`) and humidity reading (`id=2`, `value=42`). The filtered request returns only the temperature reading. ORDS queries `LAB_APP.LAB_READINGS_REST`, a read-only view over the original table, so the Spring Boot sample continues to use the same data.
+
+Generate continuous ORDS traffic without running the Spring Boot application:
+
+```bash
+ORDS_URL=http://localhost:8888/ords/lab/readings/ ./workload.sh
+```
+
+Open **Dashboards → Oracle AI Database → ORDS observability** for HTTP request rate/p95 latency, UCP usage/pending requests, JVM memory/CPU, and runtime logs. The dashboard includes links to ORDS traces and logs in Explore. Without the ORDS profile, these panels show no data.
+
+The lab provisions only its Oracle AI Database and ORDS dashboards; the LGTM image's bundled JVM Overview and RED Metrics dashboards are replaced by the lab provisioning configuration.
+
+Use these queries in Grafana **Explore**:
+
+| Signal / data source | Query | What to inspect |
+| --- | --- | --- |
+| Traces / Tempo | `{ resource.service.name = "ords" }` | HTTP server span and JDBC child spans, including the query against `LAB_READINGS_REST`. |
+| Logs / Loki | `{service_name="ords"}` | ORDS runtime messages, severity, and `trace_id` on records emitted inside an active span. |
+| Metrics / Prometheus | `sum by (state) (db_client_connections_usage{service_name="ords"})` | Used and idle connections in the ORDS UCP pool. |
+
+HTTP metrics use `http_server_request_duration_seconds_count` and `http_server_request_duration_seconds_bucket`; JVM memory uses `jvm_memory_used_bytes`. Metrics export every 15 seconds, and rate/p95 panels need about a minute of traffic. The container health check queries the readings endpoint every 10 seconds, so HTTP metrics include those requests even when the workload is stopped.
+
+To exercise error logging and trace correlation, attempt a write to the read-only view:
+
+```bash
+curl -i -H 'Content-Type: application/json' \
+  -d '{"id":999,"sensor":"test","value":1}' \
+  http://localhost:8888/ords/lab/readings/
+```
+
+ORDS rejects this request with HTTP `555` and `ORA-42399` (DML on a read-only view); no reading is inserted. In Loki, use `{service_name="ords"} |= "POST" |= "555"`, inspect the record's `trace_id`, and open that trace in Tempo to see the failed SQL under the HTTP request.
+
+The agent exports existing runtime log records; it does not create a log entry for every HTTP request. Ordinary startup logs have no request trace. ORDS JDBC spans do not establish database-native server span export or MongoDB wire-protocol tracing.
+
+Oracle documents the [ORDS Java agent integration](https://docs.oracle.com/en/database/oracle/oracle-rest-data-services/26.3/ordig/deploying-and-monitoring-oracle-rest-data-services.html). The agent's [Java Util Logging bridge](https://explorer.opentelemetry.io/java-agent/instrumentation/java-util-logging) exports runtime log records without a separate log collector.
+
+To remove an ORDS container that was previously enabled, bring the stack down before starting it without the flag:
+
+```bash
+docker compose --profile ords down
+docker compose up -d --wait --wait-timeout 900
+```
 
 ## Generate traffic and explore telemetry
 
@@ -92,7 +162,9 @@ mvn -pl oracledb-e2e-observability test
 
 ## Troubleshooting and cleanup
 
-Stop the Maven application with Ctrl+C, and then stop the containers with `docker compose down`.
+Stop the Maven application with Ctrl+C, and then stop the containers with `docker compose down` (or `docker compose --profile ords down` if ORDS was enabled).
+
+For ORDS startup failures, use `docker compose --profile ords logs ords`. The health check succeeds only when `/ords/lab/readings/` responds successfully, after ORDS installation and schema setup. If ORDS responds but telemetry is missing, check the logs for Java agent startup/export errors and confirm that the `ords` service uses the internal collector address `http://grafana-lgtm:4318`.
 
 If server spans are missing, check the database endpoint configuration, wallet trust, proxy access logs, and database trace files. In Tempo, inspect the request trace for an `oracle-db` span parented by its JDBC span. Server spans are not yet working on the ARM database free image.
 

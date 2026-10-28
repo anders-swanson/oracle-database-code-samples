@@ -25,6 +25,36 @@ services:
       retries: 60
       start_period: 60s
 
+  ords:
+    build: ./ords
+    profiles: ["ords"]
+    environment:
+      CONN_STRING: jdbc:oracle:thin:@oracle:1521/FREEPDB1
+      ORACLE_PWD: "Welcome123#"
+      ORACLE_USER_PWD: "Welcome123#"
+      APEX_ENABLED: "false"
+      OTEL_SERVICE_NAME: ords
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://grafana-lgtm:4318
+      OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
+      OTEL_TRACES_EXPORTER: otlp
+      OTEL_METRICS_EXPORTER: otlp
+      OTEL_LOGS_EXPORTER: otlp
+      OTEL_METRIC_EXPORT_INTERVAL: "15000"
+      OTEL_TRACES_SAMPLER: always_on
+      OTEL_INSTRUMENTATION_JAVA_UTIL_LOGGING_ENABLED: "true"
+    ports:
+      - "127.0.0.1:${ORDS_HTTP_PORT:-8888}:8080"
+      - "127.0.0.1:${ORDS_MONGO_PORT:-27017}:27017"
+    depends_on:
+      oracle:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/ords/lab/readings/ > /dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 60s
+
   exporter:
     image: container-registry.oracle.com/database/observability-exporter:2.5.1
     command: ["--config.file=/etc/exporter/config.yaml"]
@@ -47,7 +77,7 @@ services:
       - "127.0.0.1:${OTLP_GRPC_PORT:-4317}:4317"
       - "127.0.0.1:${OTLP_HTTP_PORT:-4318}:4318"
     volumes:
-      - ./grafana/dashboards.yaml:/otel-lgtm/grafana/conf/provisioning/dashboards/lab.yaml:ro
+      - ./grafana/dashboards.yaml:/otel-lgtm/grafana/conf/provisioning/dashboards/grafana-dashboards.yaml:ro
       - ./grafana/dashboards:/otel-lgtm/grafana/conf/provisioning/dashboards/lab:ro
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://localhost:3000/api/health > /dev/null && curl -fsS http://localhost:13133/ready > /dev/null"]

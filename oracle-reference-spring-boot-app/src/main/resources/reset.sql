@@ -1,0 +1,12 @@
+drop view if exists book_documents_dv;
+drop property graph if exists book_graph;
+drop table if exists stock_adjustments;
+drop table if exists book_embeddings;
+drop table if exists store_stock;
+drop table if exists bookstores;
+delete from user_sdo_geom_metadata where table_name = 'BOOKSTORES';
+drop table if exists book_relations;
+drop table if exists book_authors;
+drop table if exists books;
+drop table if exists publishers;
+drop table if exists authors;

@@ -104,6 +104,7 @@
         "python-oracle--src--python_oracle--langchain",
         "python-oracle--src--python_oracle--database",
         "okafka-agent-memory",
+        "oracle-reference-spring-boot-app",
         "sql",
         "support-ticket-intelligence"
       ]
@@ -164,6 +165,7 @@
         "migrate-kafka-to-oracle--kafka-app-step-3",
         "json--mongodb-duality-views",
         "python-oracle--src--python_oracle--full_text_search",
+        "oracle-reference-spring-boot-app",
         "support-ticket-intelligence"
       ]
     },
@@ -187,6 +189,7 @@
       "sampleIds": [
         "jdbc-graphql",
         "json--mongodb-duality-views",
+        "oracledb-e2e-observability",
         "ords-docker-compose",
         "ords-testcontainers",
         "spring-data-mongodb-oracle-api"
@@ -227,7 +230,8 @@
       ],
       "sampleIds": [
         "jdbc-spatial-example",
-        "txeventq-fraud-detection"
+        "txeventq-fraud-detection",
+        "oracle-reference-spring-boot-app"
       ]
     },
     {
@@ -339,7 +343,8 @@
         "spring-boot-jms-tracing",
         "spring-boot-database-client-info",
         "spring-boot-jdbc-custom-tracer",
-        "spring-boot-jdbc-tracing"
+        "spring-boot-jdbc-tracing",
+        "oracle-reference-spring-boot-app"
       ]
     }
   ]

@@ -1,0 +1,25 @@
+services:
+  oracle:
+    image: gvenzl/oracle-free:23.26.3-full-faststart
+    environment:
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD:?Set ORACLE_PASSWORD for local administration}
+      APP_USER: REFERENCE_APP
+      APP_USER_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD for the application schema}
+    ports:
+      - "127.0.0.1:${DB_PORT:-1522}:1521"
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+      - ./oracle/feature-grants.sql:/container-entrypoint-initdb.d/010-feature-grants.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 60s
+  grafana-lgtm:
+    image: grafana/otel-lgtm:latest
+    ports:
+      - "127.0.0.1:3001:3000"
+      - "127.0.0.1:4318:4318"
+volumes:
+  oracle-data:

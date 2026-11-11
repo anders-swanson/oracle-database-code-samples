@@ -1,0 +1,21 @@
+{
+  "id": "oracle-reference-spring-boot-app",
+  "githubReadmeUrl": "https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-reference-spring-boot-app/README.md",
+  "blogPost": "",
+  "readmeExcerpt": "Find related books matching a description and available at a nearby store. This sample combines graph, spatial, vector search, and JSON duality over one catalog, with transactional JPA/JDBC inventory updates.",
+  "highlights": [],
+  "features": [
+    "Vector Search",
+    "JSON",
+    "Duality Views",
+    "Spatial",
+    "Testcontainers",
+    "Spring",
+    "Observability"
+  ],
+  "sourceUpdatedAt": "2026-11-11T20:59:40.043Z",
+  "metaTitle": "Spring Boot Reference Application for Oracle AI Database | Oracle AI Database Code Samples",
+  "metaDescription": "A Spring Boot reference application joining graph, spatial, vector search, and JSON duality with transactional JPA/JDBC inventory on Oracle AI Database.",
+  "canonicalUrl": "https://anders-swanson.github.io/oracle-database-code-samples/samples/oracle-reference-spring-boot-app/",
+  "ogImageUrl": "https://anders-swanson.github.io/oracle-database-code-samples/sample-cards/oracle-reference-spring-boot-app.png"
+}

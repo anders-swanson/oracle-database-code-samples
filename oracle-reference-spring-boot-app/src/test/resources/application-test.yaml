@@ -1,0 +1,36 @@
+spring:
+  security:
+    user:
+      name: developer
+      password: test-api-password
+  datasource:
+    password: testpwd
+    oracleucp:
+      max-pool-size: 2
+      connection-pool-name: reference-test
+management:
+  logging:
+    export:
+      otlp:
+        enabled: true
+  otlp:
+    metrics:
+      export:
+        enabled: true
+        step: 1s
+  tracing:
+    sampling:
+      probability: 1.0
+    export:
+      otlp:
+        enabled: true
+  opentelemetry:
+    logging:
+      export:
+        schedule-delay: 100ms
+        otlp:
+          compression: none
+    tracing:
+      export:
+        otlp:
+          compression: none

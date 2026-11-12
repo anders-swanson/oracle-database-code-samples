@@ -1,12 +1,14 @@
-# Lab: find your next book, then change what is available
+# Find a book nearby. Then sell the last copy.
 
-A reader has finished **Demo Java Foundations** and wants a book about reliable Java services, available within five kilometers. Use the application's HTTP APIs to answer that request, sell the last copies at the closest store, and add a new recommendation to the catalog.
+> “I liked this Java book. Find me something similar that I can buy within five kilometers.”
 
-Along the way, you will see graph relationships choose candidates, vector search rank their synopses, spatial queries find stores, and inventory decide what can actually be bought. A JSON duality document shows the same catalog and stock as nested JSON in Oracle AI Database.
+Start with that request. Get a recommendation, sell the nearest store's remaining copies, and repeat the search. Will the book disappear, stay at the sold-out store, or move to another store?
 
-Allow about 30 minutes. All people, books, identifiers, stores, and coordinates in this lab are fictional test data.
+This Spring Boot lab uses Oracle AI Database and simple `curl` and `jq` commands. The main walkthrough ends with the changed result and an explanation of how it works. Optional exercises let you explore ranking, conflicting updates, catalog creation, and telemetry.
 
-## 1. Start with a fresh catalog
+All people, books, identifiers, stores, and coordinates are fictional test data.
+
+## 1. Start the app and check the catalog
 
 Follow **Start** in the [README](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-reference-spring-boot-app/README.md). You need Java 21+, Maven, Docker Compose, `curl`, and `jq`.
 
@@ -31,18 +33,132 @@ Expect eight seeded books. The examples below use the following IDs from a fresh
 
 If a command fails, resolve the error before continuing. A `401` usually means the API credentials differ from the app's configuration.
 
-## 2. Ask three smaller questions
+## 2. Find something you can buy nearby
 
-**Which books does the catalog recommend?**
+You finished **Demo Java Foundations** (book `1`). Ask for related books about reliable Java services, available within five kilometers of the test location:
+
+```bash
+curl -fsS -u 'developer:<API password>' --get \
+  'http://127.0.0.1:8080/api/discovery' \
+  --data-urlencode 'seedBookId=1' \
+  --data-urlencode 'q=reliable Java services with database transactions and connection pooling' \
+  --data-urlencode 'longitude=-30.0000' \
+  --data-urlencode 'latitude=35.0000' \
+  --data-urlencode 'radiusKm=5' \
+  --data-urlencode 'limit=50' \
+  | jq '.[] | {title, similarity, storeName, distanceKm, quantity}'
+```
+
+On a fresh catalog, expect two results: **Demo Reliable Java Services** and **Demo Gardening for Beginners**. Both select **Demo Willow Quay Books**. Reliable Java Services has four copies there.
+
+Keep that result in mind: **Reliable Java Services → Willow Quay → four copies**. The response includes similarity scores, but you do not need to interpret those yet.
+
+The gardening book looks unexpected. Leave it there for now; step 4 explains why it qualifies.
+
+## 3. The closest store sells its last copies
+
+Another customer buys the four remaining copies of Reliable Java Services at Willow Quay. Should that make the book unavailable everywhere?
+
+Read the current stock quantity and version:
+
+```bash
+curl -fsS -u 'developer:<API password>' \
+  'http://127.0.0.1:8080/api/stores/1/books/3' | jq '{quantity, version}'
+```
+
+On a fresh catalog, expect quantity `4` and version `0`. Sell those four copies using that version. If your values differ, reset the lab before continuing.
+
+```bash
+curl -fsS -u 'developer:<API password>' \
+  -H 'Content-Type: application/json' \
+  -d '{"delta":-4,"expectedVersion":0}' \
+  'http://127.0.0.1:8080/api/stores/1/books/3/stock-adjustments' \
+  | jq '{quantity, version}'
+```
+
+Now repeat the same search. Before running it, predict which store will appear for Reliable Java Services:
+
+```bash
+curl -fsS -u 'developer:<API password>' --get \
+  'http://127.0.0.1:8080/api/discovery' \
+  --data-urlencode 'seedBookId=1' \
+  --data-urlencode 'q=reliable Java services with database transactions and connection pooling' \
+  --data-urlencode 'longitude=-30.0000' \
+  --data-urlencode 'latitude=35.0000' \
+  --data-urlencode 'radiusKm=5' \
+  --data-urlencode 'limit=50' \
+  | jq '.[] | {title, similarity, storeName, distanceKm, quantity}'
+```
+
+Expect quantity `0`, version `1` at Willow Quay. Reliable Java Services remains discoverable, now at Cloudbank with eight copies. The book has moved to the next nearest store with stock. You changed inventory; you did not change its synopsis or recommendations.
+
+Read the book as a nested JSON document:
+
+```bash
+curl -fsS -u 'developer:<API password>' \
+  'http://127.0.0.1:8080/api/books/3/document' \
+  | jq '{title, authors, publisher, availability}'
+```
+
+Expect Willow Quay with quantity `0`, version `1`, and Cloudbank with quantity `8`. The document includes both stores; discovery selects the nearest one with positive stock. It also includes the book's two authors and publisher.
+
+Check the record of the sale:
+
+```bash
+curl -fsS -u 'developer:<API password>' \
+  'http://127.0.0.1:8080/api/stores/1/books/3/stock-adjustments?limit=20' | jq
+```
+
+Expect one entry with `delta: -4` and `resultingQuantity: 0`.
+
+JPA changes the versioned stock row while JDBC inserts the audit record in the same Spring transaction. Both writes commit or both roll back. Reading the document and discovery again requires no synchronization step.
+
+## 4. Why did these books appear?
+
+The search combines four decisions over shared data:
+
+1. **Recommendations choose candidates.** A directed graph traversal finds books one or two recommendation edges from Java Foundations.
+2. **Location and stock determine availability.** Stores must be within five kilometers and have positive inventory.
+3. **Meaning determines ranking.** Vector distance compares the query with each eligible book's synopsis. The app generates embeddings locally, without an external embedding service.
+4. **The nearest available store represents each book.** A JSON duality view supplies its nested catalog and inventory document.
+
+Reliable Java Services is two recommendations away:
+
+**Java Foundations → Software Design → Reliable Java Services**
+
+See the candidate IDs:
 
 ```bash
 curl -fsS -u 'developer:<API password>' \
   'http://127.0.0.1:8080/api/books/1/related-books' | jq
 ```
 
-Expect candidate IDs `[2, 3, 4, 6, 7, 8]`. Compare these with the catalog listing to find six candidates: Software Design, Reliable Java Services, Gardening for Beginners, Distributed Java Systems, Transactional Java Applications, and Connection Pooling in Practice (each with the `Demo` prefix).
+Expect `[2, 3, 4, 6, 7, 8]`. This API returns graph candidates without checking stock or location. Compare those IDs with the catalog from step 1.
 
-Reliable Java Services is reached in two hops: Java Foundations → Software Design → Reliable Java Services. Recommendations are directed, and the API traverses one or two edges. Java Concurrency Handbook is outside that graph neighborhood even though its subject is relevant.
+**Why is gardening included?** It has a recommendation edge and available stock nearby. Similarity ranks eligible books, but the API has no minimum similarity cutoff. A weaker match can still appear. For an application that should hide weak matches, deciding and validating a relevance cutoff would be a separate design step.
+
+Here is how every seeded book behaves on the initial, fresh catalog:
+
+| Seeded book | What happens in discovery |
+| --- | --- |
+| Demo Reliable Java Services | Related through two hops; positive stock nearby; eligible |
+| Demo Gardening for Beginners | Directly related; positive stock nearby; eligible even with a weaker semantic match |
+| Demo Software Design | Related, but has no inventory entry |
+| Demo Java Concurrency Handbook | Embedded and in stock nearby, but outside the seed's recommendation neighborhood |
+| Demo Distributed Java Systems | Related and in stock, but only at distant Far Harbor |
+| Demo Transactional Java Applications | Related, but its inventory quantity is zero |
+| Demo Connection Pooling in Practice | Related, but its inventory quantity is zero |
+| Demo Java Foundations | The seed itself is excluded |
+
+The combined discovery result is assembled by [one SQL statement](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-reference-spring-boot-app/src/main/java/com/example/reference/discovery/DiscoveryService.java) with one consistent snapshot. Graph and JSON duality describe the same relational rows used for inventory; the app needs no synchronization service between those representations. The endpoint also checks the seed exists before running that statement, so the whole HTTP request can contain other database calls.
+
+Separate HTTP requests can see different committed states if another client changes stock between them. This sample demonstrates the behavior on a small catalog; it does not establish performance at production scale.
+
+You have completed the main walkthrough: a search selected Willow Quay, a committed sale exhausted its stock, and the next search selected Cloudbank. Continue with any of the optional exercises below, or go to **Reset or stop**.
+
+## Optional: separate relevance from availability
+
+Try the two underlying searches independently. Predict whether each one will exclude a sold-out book before running it.
 
 **Which books match the reader's description?**
 
@@ -68,81 +184,9 @@ curl -fsS -u 'developer:<API password>' --get \
 
 Willow Quay is at the search point; Cloudbank is roughly 1.4 kilometers away. Far Harbor is outside the five-kilometer radius. Coordinates use longitude first, latitude second.
 
-## 3. Answer the reader's full request
+## Optional: reject a checkout with an old version
 
-```bash
-curl -fsS -u 'developer:<API password>' --get \
-  'http://127.0.0.1:8080/api/discovery' \
-  --data-urlencode 'seedBookId=1' \
-  --data-urlencode 'q=reliable Java services with database transactions and connection pooling' \
-  --data-urlencode 'longitude=-30.0000' \
-  --data-urlencode 'latitude=35.0000' \
-  --data-urlencode 'radiusKm=5' \
-  --data-urlencode 'limit=50' \
-  | jq '.[] | {title, similarity, storeName, distanceKm, quantity}'
-```
-
-On a fresh catalog, expect exactly two books: Demo Reliable Java Services and Demo Gardening for Beginners. Both select Willow Quay as their closest in-stock store. Compare their scores and order with the standalone semantic search.
-
-Why only these two?
-
-| Seeded book | What happens in discovery |
-| --- | --- |
-| Demo Reliable Java Services | Related through two hops; positive stock nearby; eligible |
-| Demo Gardening for Beginners | Directly related; positive stock nearby; eligible even with a weaker semantic match |
-| Demo Software Design | Related, but has no inventory entry |
-| Demo Java Concurrency Handbook | Embedded and in stock nearby, but outside the seed's recommendation neighborhood |
-| Demo Distributed Java Systems | Related and in stock, but only at distant Far Harbor |
-| Demo Transactional Java Applications | Related, but its inventory quantity is zero |
-| Demo Connection Pooling in Practice | Related, but its inventory quantity is zero |
-| Demo Java Foundations | The seed itself is excluded |
-
-Discovery filters by graph reachability, an available embedding, store radius, and positive stock. It then ranks the eligible books by semantic distance and returns one nearest in-stock store per book. There is no minimum similarity cutoff, which explains the gardening result.
-
-## 4. Open a result as a document
-
-```bash
-curl -fsS -u 'developer:<API password>' \
-  'http://127.0.0.1:8080/api/books/3/document' \
-  | jq '{title, authors, publisher, availability}'
-```
-
-The document contains two authors, a publisher, and availability at Willow Quay (four copies) and Cloudbank (eight copies). The discovery result's top-level store is just Willow Quay; its embedded document includes all inventory entries for that book.
-
-The document is a read-only JSON relational duality view over the relational catalog and inventory. The discovery query joins that document with the graph, spatial, vector, and stock results in one SQL statement with one consistent snapshot. Separate HTTP requests can observe different committed states if another client changes inventory between requests.
-
-## 5. Sell out the closest store
-
-Read the current stock quantity and version:
-
-```bash
-curl -fsS -u 'developer:<API password>' \
-  'http://127.0.0.1:8080/api/stores/1/books/3' | jq '{quantity, version}'
-```
-
-On a fresh catalog, expect quantity `4` and version `0`. Sell those four copies using that version. If your values differ, reset the lab before continuing.
-
-```bash
-curl -fsS -u 'developer:<API password>' \
-  -H 'Content-Type: application/json' \
-  -d '{"delta":-4,"expectedVersion":0}' \
-  'http://127.0.0.1:8080/api/stores/1/books/3/stock-adjustments' \
-  | jq '{quantity, version}'
-```
-
-Rerun the discovery command from step 3, then read the document and audit history:
-
-```bash
-curl -fsS -u 'developer:<API password>' \
-  'http://127.0.0.1:8080/api/books/3/document' | jq '.availability'
-
-curl -fsS -u 'developer:<API password>' \
-  'http://127.0.0.1:8080/api/stores/1/books/3/stock-adjustments?limit=20' | jq
-```
-
-Expect quantity `0`, version `1` at Willow Quay. Reliable Java Services remains discoverable, now at Cloudbank with eight copies. Its JSON document still includes Willow Quay with zero stock. The audit history contains a `delta` of `-4` and `resultingQuantity` of `0`.
-
-JPA changes the versioned stock row while JDBC inserts the audit record in the same Spring transaction. Both writes commit or both roll back. Reading the document and discovery again requires no synchronization step.
+Run this immediately after the sale in step 3, before making further stock changes.
 
 Now simulate a second checkout using the version read before the sale. This call deliberately omits `curl -f` so you can see the expected error body and status:
 
@@ -162,7 +206,7 @@ curl -fsS -u 'developer:<API password>' \
 
 Expect `409 Conflict`. Quantity and version remain `0` and `1`, and there is still only one audit entry. A client must reload current stock before attempting another adjustment.
 
-## 6. Publish a new recommendation through the APIs
+## Optional: publish a new recommendation through the APIs
 
 Create a fictional author, publisher, and book. Run this section once per fresh lab; repeating the book creation with the same identifier returns `409`.
 
@@ -217,7 +261,7 @@ curl -fsS -u 'developer:<API password>' \
   'http://127.0.0.1:8080/api/books/1/related-books' | jq
 ```
 
-The recommendation update also returns `204` with no response body. The graph now includes the new ID. Rerun discovery from step 3: the book is still absent because it has no available inventory. Add two copies at Willow Quay:
+The recommendation update also returns `204` with no response body. The graph now includes the new ID. Rerun discovery from step 2: the book is still absent because it has no available inventory. Add two copies at Willow Quay:
 
 ```bash
 curl -fsS -u 'developer:<API password>' \
@@ -242,9 +286,9 @@ curl -fsS -u 'developer:<API password>' --get \
 
 The new book is now eligible. Its result includes the author and publisher you created and the stock you just added. These API calls populate the relational rows that the graph, vector search, spatial joins, and JSON duality view use together.
 
-## 7. Inspect a request in Grafana
+## Optional: inspect a request in Grafana
 
-With the README's default observability configuration, rerun the discovery command from step 3 and open [Grafana](http://127.0.0.1:3001). In Explore, select Tempo, search for service `oracle-reference-spring-boot-app`, and open a recent `/api/discovery` trace. Allow a short delay for export.
+With the README's default observability configuration, rerun the discovery command from step 2 and open [Grafana](http://127.0.0.1:3001). In Explore, select Tempo, search for service `oracle-reference-spring-boot-app`, and open a recent `/api/discovery` trace. Allow a short delay for export.
 
 Look for the HTTP server span and Oracle JDBC client spans beneath it. The endpoint also checks that the seed exists, so the entire HTTP request can contain database calls in addition to the combined discovery statement. Local query embedding happens before that statement borrows a database connection. Database-server spans depend on the connected Oracle AI Database's support.
 
@@ -257,7 +301,7 @@ curl -fsS -u 'developer:<API password>' \
 
 This reports pool activity across the running app, rather than a per-request count. The [README's observability section](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-reference-spring-boot-app/README.md#observability) covers export settings and other pool metrics.
 
-## 8. Reset or stop
+## Reset or stop
 
 To repeat the lab, stop and restart the app, then rerun from step 1 and check the resource IDs again. Startup removes the lab's catalog additions, inventory changes, and audit history along with the rest of the sample schema data.
 

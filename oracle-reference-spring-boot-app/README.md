@@ -39,7 +39,7 @@ The seed data contains eight books, four authors, three publishers, three stores
 
 All names, titles, synopses, and businesses are fictional test data. The ISBN fields contain invented 13-digit identifiers, not issued ISBNs, and store coordinates are synthetic WGS84 test points. Every seeded book has an embedding; exclusion examples use graph relationships, distance, and stock.
 
-Follow the [discovery walkthrough](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-reference-spring-boot-app/DISCOVERY.md) to see ranking, two-hop traversal, nearest-store selection, and exclusions. If you need to restore the demo, simply restart the app to create-drop the schema and seed data.
+Follow the [discovery walkthrough](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/oracle-reference-spring-boot-app/LAB.md) to find a related book nearby, sell the closest store’s remaining copies, and watch the next search select another store. If you need to restore the demo, simply restart the app to create-drop the schema and seed data.
 
 ## How the features interact
 

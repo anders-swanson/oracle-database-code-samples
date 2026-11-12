@@ -17,12 +17,18 @@ services:
     depends_on:
       apex-download:
         condition: service_completed_successfully
+      ordsdb:
+        condition: service_healthy
+      mcp-config:
+        condition: service_completed_successfully
+        required: false
     ports:
       - 8888:8080 # HTTP
       - 27017:27017 # MongoDB API
     environment:
       - CONN_STRING=jdbc:oracle:thin:@ordsdb:1521/freepdb1
       - ORACLE_PWD=Welcome12345
+      - ORACLE_USER_PWD=Welcome12345
       - APEX_PWD=${APEX_PWD:-Welcome12345}
       - APEX_ENABLED=${APEX_ENABLED:-false}
     volumes:
@@ -30,25 +36,63 @@ services:
       - apex_files:/opt/oracle/apex:ro
     healthcheck:
       # Hack to enable TESTUSER schema for ORDS on startup
-      test: [ "CMD", "bash", "-c", "echo 'EXECUTE ORDS.ENABLE_SCHEMA;' | sql -s testuser/testpwd@ordsdb:1521/freepdb1" ]
+      test:
+        - CMD-SHELL
+        - >-
+          curl --fail --silent http://localhost:8080/ords/ > /dev/null &&
+          printf 'whenever sqlerror exit failure\nEXECUTE ORDS.ENABLE_SCHEMA;\nexit\n' |
+          sql -L -s testuser/testpwd@ordsdb:1521/freepdb1
       interval: 20s
       timeout: 10s
       retries: 5
   ordsdb:
-    image: gvenzl/oracle-free:23.26.3-slim-faststart
+    image: container-registry.oracle.com/database/free:latest
     container_name: ordsdb
     ports:
       - 1555:1521
     environment:
-      - ORACLE_PASSWORD=Welcome12345
+      - ORACLE_PWD=Welcome12345
     volumes:
-      - ./oracle:/container-entrypoint-initdb.d
+      - ./oracle:/opt/oracle/scripts/startup:ro
     healthcheck:
-      test: ["CMD-SHELL", "lsnrctl status | grep READY"]
+      # The final reader view is created after the startup script seeds the schema.
+      test: ["CMD-SHELL", "printf 'whenever sqlerror exit failure\\nselect count(*) from orders;\\nexit\\n' | sqlplus -L -s mcp_reader/ReadOnly12345@localhost:1521/freepdb1 > /dev/null"]
       interval: 15s
       timeout: 10s
       retries: 5
       start_period: 30s
+
+  keycloak:
+    profiles: [mcp]
+    image: quay.io/keycloak/keycloak:26.8.2
+    command: [start-dev, --import-realm]
+    environment:
+      KC_HOSTNAME: http://localhost:8081
+      KC_HEALTH_ENABLED: "true"
+    ports:
+      - "127.0.0.1:8081:8080"
+    volumes:
+      - ./keycloak/ords-lab-realm.json:/opt/keycloak/data/import/ords-lab-realm.json:ro
+    healthcheck:
+      test: [CMD-SHELL, "bash -c 'exec 3<>/dev/tcp/localhost/9000; printf \"GET /health/ready HTTP/1.0\\r\\n\\r\\n\" >&3; head -n 1 <&3 | grep -q 200'"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  mcp-config:
+    # The optional dependency above runs this only when the mcp profile is enabled.
+    profiles: [mcp]
+    image: container-registry.oracle.com/database/ords:latest
+    entrypoint: [bash, /scripts/configure-mcp.sh]
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      ordsdb:
+        condition: service_healthy
+    volumes:
+      - ./ords_config:/etc/ords/config
+      - ./scripts/configure-mcp.sh:/scripts/configure-mcp.sh:ro
 
 volumes:
   apex_files:

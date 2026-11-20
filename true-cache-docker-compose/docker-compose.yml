@@ -7,7 +7,7 @@ services:
   # The Oracle AI Database Free image runs as UID 54321. A new named volume is root-owned,
   # so initialize its ownership before the primary exports its password file.
   true-cache-password-volume-init:
-    image: busybox:1.36
+    image: busybox:1.37.0
     command: ["sh", "-c", "chown 54321:54321 /var/tmp && chmod 0755 /var/tmp"]
     volumes:
       - true-cache-primary-password:/var/tmp

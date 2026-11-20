@@ -12,7 +12,7 @@ import org.testcontainers.oracle.OracleContainer;
 @Testcontainers
 class JdbcGraphqlSampleTest {
     @Container
-    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.3-full-faststart")
+    static final OracleContainer oracle = new OracleContainer("gvenzl/oracle-free:23.26.4-full-faststart")
             .withStartupTimeout(Duration.ofMinutes(5))
             .withUsername("testuser")
             .withPassword("testpwd");

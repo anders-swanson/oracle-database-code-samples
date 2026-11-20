@@ -1,6 +1,6 @@
 services:
   oracle:
-    image: gvenzl/oracle-free:23.26.3-full-faststart
+    image: gvenzl/oracle-free:23.26.4-full-faststart
     environment:
       ORACLE_PASSWORD: ${ORACLE_PASSWORD:?Set ORACLE_PASSWORD for local administration}
       APP_USER: REFERENCE_APP

@@ -113,7 +113,7 @@ func defaultOrdsContainerCustomizers(config *ordsContainerConfig) []testcontaine
 		testcontainers.WithWaitStrategyAndDeadline(
 			ordsStartupTimeout,
 			wait.ForHTTP("/").
-				WithPort(nat.Port(ordsHTTPPort)).
+				WithPort(ordsHTTPPort).
 				WithStatusCodeMatcher(func(status int) bool {
 					return status >= 200 && status < 500
 				}).
@@ -204,15 +204,23 @@ func (o *OrdsContainer) BaseURL(ctx context.Context) (string, error) {
 }
 
 func (o *OrdsContainer) HTTPPort(ctx context.Context) (nat.Port, error) {
-	return o.MappedPort(ctx, nat.Port(ordsHTTPPort))
+	return o.mappedPort(ctx, ordsHTTPPort)
 }
 
 func (o *OrdsContainer) HTTPSPort(ctx context.Context) (nat.Port, error) {
-	return o.MappedPort(ctx, nat.Port(ordsHTTPSPort))
+	return o.mappedPort(ctx, ordsHTTPSPort)
 }
 
 func (o *OrdsContainer) MongoDBAPIPort(ctx context.Context) (nat.Port, error) {
-	return o.MappedPort(ctx, nat.Port(ordsMongoDBAPIPort))
+	return o.mappedPort(ctx, ordsMongoDBAPIPort)
+}
+
+func (o *OrdsContainer) mappedPort(ctx context.Context, containerPort string) (nat.Port, error) {
+	port, err := o.MappedPort(ctx, containerPort)
+	if err != nil {
+		return "", err
+	}
+	return nat.Port(port.String()), nil
 }
 
 func (o *OrdsContainer) enableSchemas(ctx context.Context) error {

@@ -19,7 +19,7 @@ services:
     restart: "no"
 
   microtxdb:
-    image: gvenzl/oracle-free:23.26.3-slim-faststart
+    image: gvenzl/oracle-free:23.26.4-slim-faststart
     container_name: microtxdb
     environment:
       ORACLE_PASSWORD: ${ORACLE_PASSWORD:-Welcome12345}
@@ -44,7 +44,7 @@ services:
         max-file: "3"
 
   coordinator:
-    image: container-registry.oracle.com/database/microtx-coordinator:${MICROTX_VERSION:-26.1.1}
+    image: container-registry.oracle.com/database/microtx-coordinator:${MICROTX_VERSION:-26.1.2}
     container_name: coordinator
     environment:
       CONFIG_FILE: /app/compose-config/tcs-config.yaml
@@ -71,7 +71,7 @@ services:
         max-file: "3"
 
   workflow-server:
-    image: container-registry.oracle.com/database/microtx-workflow:${MICROTX_VERSION:-26.1.1}
+    image: container-registry.oracle.com/database/microtx-workflow:${MICROTX_VERSION:-26.1.2}
     container_name: workflow-server
     mem_limit: 4g
     environment:
@@ -107,7 +107,7 @@ services:
         max-file: "3"
 
   console:
-    image: container-registry.oracle.com/database/microtx-console:${MICROTX_VERSION:-26.1.1}
+    image: container-registry.oracle.com/database/microtx-console:${MICROTX_VERSION:-26.1.2}
     container_name: console
     mem_limit: 4g
     environment:

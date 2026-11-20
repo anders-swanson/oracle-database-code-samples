@@ -55,7 +55,7 @@ The program will:
 To run the Testcontainers-backed integration test:
 
 ```bash
-docker pull gvenzl/oracle-free:23.26.3-slim-faststart
+docker pull gvenzl/oracle-free:23.26.4-slim-faststart
 mvn test
 ```
 

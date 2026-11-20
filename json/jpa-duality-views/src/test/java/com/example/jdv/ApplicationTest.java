@@ -21,10 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class ApplicationTest {
     // Pre-pull this image to avoid testcontainers image pull timeouts:
-    // docker pull gvenzl/oracle-free:23.26.3-slim-faststart
+    // docker pull gvenzl/oracle-free:23.26.4-slim-faststart
     @Container
     @ServiceConnection
-    private static final OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.3-slim-faststart")
+    private static final OracleContainer oracleContainer = new OracleContainer("gvenzl/oracle-free:23.26.4-slim-faststart")
             .withUsername("testuser")
             .withPassword("testpwd");
 

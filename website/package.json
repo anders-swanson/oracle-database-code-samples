@@ -23,9 +23,15 @@
     "typescript": "^5.9.3",
     "vite": "^7.3.7",
     "vite-ssg": "^28.3.0",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.12"
   },
   "overrides": {
-    "nanoid": "3.3.18"
+    "nanoid": "3.3.18",
+    "js-beautify": {
+      "glob": "^14.0.2"
+    },
+    "editorconfig": {
+      "minimatch": "^11.0.1"
+    }
   }
 }

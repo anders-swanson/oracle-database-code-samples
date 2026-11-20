@@ -56,7 +56,7 @@ services:
       start_period: 60s
 
   exporter:
-    image: container-registry.oracle.com/database/observability-exporter:2.5.1
+    image: container-registry.oracle.com/database/observability-exporter:2.5.2
     command: ["--config.file=/etc/exporter/config.yaml"]
     environment:
       DB_PASSWORD: "Welcome123#"
@@ -87,7 +87,7 @@ services:
       start_period: 30s
 
   nginx:
-    image: nginx:stable
+    image: nginx:1.30.7
     environment:
       HTTPS_PORT: ${HTTPS_PORT:-8443}
       CERT_DNS_NAME: ${CERT_DNS_NAME:-localhost}

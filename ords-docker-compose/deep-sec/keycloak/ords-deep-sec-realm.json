@@ -1,0 +1,132 @@
+{
+  "realm": "ords-deep-sec",
+  "enabled": true,
+  "sslRequired": "none",
+  "roles": {
+    "realm": [
+      {
+        "name": "ORDS_MCP_SERVER"
+      },
+      {
+        "name": "SALES_US"
+      },
+      {
+        "name": "SALES_CA"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "ords-lab-users",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "defaultClientScopes": [
+        "urn:oracle:dbtools:ords:mcpserver:all"
+      ],
+      "protocolMappers": [
+        {
+          "name": "subject",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-sub-mapper",
+          "config": {
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "sales-roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "config": {
+            "claim.name": "roles",
+            "multivalued": "true",
+            "jsonType.label": "String",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        }
+      ]
+    }
+  ],
+  "clientScopes": [
+    {
+      "name": "urn:oracle:dbtools:ords:mcpserver:all",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true"
+      },
+      "protocolMappers": [
+        {
+          "name": "ords-mcp-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "http://localhost:8888/mcp",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "sales-us",
+      "enabled": true,
+      "email": "sales-us@example.com",
+      "firstName": "Lab",
+      "lastName": "sales-us",
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "LocalSales12345",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "ORDS_MCP_SERVER",
+        "SALES_US"
+      ]
+    },
+    {
+      "username": "sales-ca",
+      "enabled": true,
+      "email": "sales-ca@example.com",
+      "firstName": "Lab",
+      "lastName": "sales-ca",
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "LocalSales12345",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "ORDS_MCP_SERVER",
+        "SALES_CA"
+      ]
+    },
+    {
+      "username": "sales-none",
+      "enabled": true,
+      "email": "sales-none@example.com",
+      "firstName": "Lab",
+      "lastName": "sales-none",
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "LocalSales12345",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "ORDS_MCP_SERVER"
+      ]
+    }
+  ]
+}

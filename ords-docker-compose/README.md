@@ -202,6 +202,85 @@ Both Codex and Claude Code renew expired tokens through the helper above. Only t
 
 See Oracle's [MCP configuration guide](https://docs.oracle.com/en/database/oracle/oracle-rest-data-services/26.3/ordig/configuring-model-context-protocol-mcp.html) and [MCP developer guide](https://docs.oracle.com/en/database/oracle/oracle-rest-data-services/26.3/orddg/using-ords-model-context-protocol-mcp.html) for the authentication and tool interfaces.
 
+## ORDS MCP with Deep Data Security
+
+The optional Deep Data Security mode runs locally in Compose. Keycloak issues a JWT with a top-level `roles` claim, and ORDS checks it against each pool's `mcp.role` setting. Each pool connects with `PASSWORD` authentication as a fixed Deep Data Security end user. Oracle AI Database applies that end user's read-only data grant to filter rows and mask columns on the same `TESTUSER.CUSTOMERS` table. See the [Keycloak realm](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/ords-docker-compose/deep-sec/keycloak/ords-deep-sec-realm.json) and [data grants](https://github.com/anders-swanson/oracle-database-code-samples/blob/main/ords-docker-compose/deep-sec/grants.sql).
+
+| Demo login | Keycloak sales role | MCP pool | Database end user | Visible rows | `EMAIL` |
+| --- | --- | --- | --- | --- | --- |
+| `sales-us` | `SALES_US` | `sales-us` | `SALES_US_READER` | Four US customers | `NULL` |
+| `sales-ca` | `SALES_CA` | `sales-ca` | `SALES_CA_READER` | Two Canadian customers | Visible |
+| `sales-none` | None | None | — | — | — |
+
+All three demo users have the `ORDS_MCP_SERVER` role to access the MCP endpoint. The sales roles determine which pools a caller can use. Callers in the same pool share its database identity.
+
+### Start the lab
+
+Stop any other instance of this lab before starting the profile, since they share host ports. From `ords-docker-compose/`, use ORDS 26.3 or later and an Oracle AI Database 26ai Free image with Deep Data Security support.
+
+```bash
+docker compose --env-file deep-sec/compose.env up -d --wait
+```
+
+The environment file enables the `mcp` profile and selects a dedicated Compose project, Keycloak realm, and ORDS configuration volume.
+
+### Connect Codex desktop or CLI
+
+Add these entries to `~/.codex/config.toml` and replace the helper paths with the absolute paths in your checkout. Restart Codex to load the configuration.
+
+```toml
+[mcp_servers.ords-sales-us]
+url = "http://localhost:8888/mcp"
+http_headers_helper = "/bin/bash \"/absolute/path/to/oracle-database-java-samples/ords-docker-compose/scripts/get-token.sh\" --headers sales-us"
+
+[mcp_servers.ords-sales-ca]
+url = "http://localhost:8888/mcp"
+http_headers_helper = "/bin/bash \"/absolute/path/to/oracle-database-java-samples/ords-docker-compose/scripts/get-token.sh\" --headers sales-ca"
+```
+
+### Connect Claude Code
+
+Merge these entries into `.mcp.json` in the lab directory and replace the helper paths with the absolute paths in your checkout. Start Claude Code from this directory and use `/mcp` to check the connections.
+
+```json
+{
+  "mcpServers": {
+    "ords-sales-us": {
+      "type": "http",
+      "url": "http://localhost:8888/mcp",
+      "headersHelper": "/bin/bash \"/absolute/path/to/oracle-database-java-samples/ords-docker-compose/scripts/get-token.sh\" --headers sales-us"
+    },
+    "ords-sales-ca": {
+      "type": "http",
+      "url": "http://localhost:8888/mcp",
+      "headersHelper": "/bin/bash \"/absolute/path/to/oracle-database-java-samples/ords-docker-compose/scripts/get-token.sh\" --headers sales-ca"
+    }
+  }
+}
+```
+
+### Verify row and column access
+
+In either client, ask `ords-sales-us` and `ords-sales-ca` to call `database_list` and then run the same query with `sql_run` against their respective pools. The helper signs in to Keycloak as the demo user named after `--headers` and supplies the bearer token for that entry.
+
+```sql
+select id, name, country, email
+from testuser.customers
+order by id;
+```
+
+A request to the other pool returns HTTP 403. To check access with a valid token that has no sales role, use `sales-none` as the helper's user argument. For that user, `tools/list` returns an empty list. For terminal requests, run `./scripts/get-token.sh sales-us` to print a raw bearer token.
+
+To stop the lab, use the same environment file.
+
+```bash
+docker compose --env-file deep-sec/compose.env down
+```
+
+### Token passthrough and private hostnames
+
+A single pool can use `APP_TOKEN_WITH_END_USER_TOKEN` to forward each caller's Keycloak token to Oracle AI Database as the end-user security context. ORDS first obtains a separate database-access token from the trusted HTTPS endpoint configured in `db.access.token.endpoint`. The database can then map the caller's Keycloak realm roles to data roles using `CREATE DATA ROLE … MAPPED TO 'ROLE=…'`. [ORDS application token authentication](https://docs.oracle.com/en/database/oracle/oracle-rest-data-services/26.3/orddg/ords-mcp-deep-security.html#GUID-29D9FC88-1FAD-4684-A89A-EF6B7790A7D9) · see also [Keycloak realm role mapping](https://docs.oracle.com/en/database/oracle/oracle-database/26/ddscg/configure-realm-roles-and-role-claim.html) and [ORDS configuration reference](https://docs.oracle.com/en/database/oracle/oracle-rest-data-services/26.3/ordig/about-REST-configuration-files.html#:~:text=db.access.token.endpoint)
+
 ## Customization
 
 - Add database initialization scripts to `oracle/` (e.g., modify `ords_init.sql` or add your own scripts).
